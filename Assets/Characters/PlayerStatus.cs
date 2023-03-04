@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour, IStatus
 {
-    public int hitPoints = 5;
-    public int attackPoints = 0;
-    public int defencePoints = 0;
+    public int HitPoints = 5;
+    public int AttackPoints = 0;
+    public int DefencePoints = 0;
 
-    int IStatus.hitPoints { get => hitPoints; set => hitPoints = value; }
-    int IStatus.attackPoints { get => attackPoints; set => attackPoints = value; }
-    int IStatus.defencePoints { get => defencePoints; set => defencePoints = value; }
+    int IStatus.HitPoints { get => HitPoints; set => HitPoints = value; }
+    int IStatus.AttackPoints { get => AttackPoints; set => AttackPoints = value; }
+    int IStatus.DefencePoints { get => DefencePoints; set => DefencePoints = value; }
 
     private bool isDamaged = false;
     private int invincibleCount = 0;
@@ -26,7 +26,7 @@ public class PlayerStatus : MonoBehaviour, IStatus
     [SerializeField]
     private Vector3 AdjPos;
 
-    public void addDamage(IStatus status)
+    public void AddDamage(IStatus status)
     {
         // ダメージを受けている最中は無敵
         if (isDamaged)
@@ -42,8 +42,8 @@ public class PlayerStatus : MonoBehaviour, IStatus
         playerRigitBody.AddForce(Vector2.up * 4, ForceMode2D.Impulse);
 
         // HPを減らす
-        hitPoints = hitPoints - status.attackPoints;
-        ViewDamage(status.attackPoints);
+        HitPoints = HitPoints - status.AttackPoints;
+        ViewDamage(status.AttackPoints);
     }
 
     public void FixedUpdate()

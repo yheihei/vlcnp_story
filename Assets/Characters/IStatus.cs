@@ -1,7 +1,7 @@
 public interface IStatus
 {
-    public int hitPoints { get; set; }
-    public int attackPoints { get; set; }
-    public int defencePoints { get; set; }
-    void addDamage(IStatus status);
+    public int HitPoints { get; set; }
+    public int AttackPoints { get; set; }
+    public int DefencePoints { get; set; }
+    void AddDamage(IStatus status);
 }

@@ -11,7 +11,7 @@ public class OnCollisionAttack : MonoBehaviour
             GameObject player = collision.gameObject;
             PlayerStatus playerStatus = player.GetComponent<PlayerStatus>();
             EnemyStatus enemyStatus = this.GetComponent<EnemyStatus>();
-            playerStatus.addDamage(enemyStatus);
+            playerStatus.AddDamage(enemyStatus);
         }
     }
 }
