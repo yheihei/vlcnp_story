@@ -140,9 +140,10 @@ GameObject:
   - component: {fileID: 424998730}
   - component: {fileID: 424998731}
   - component: {fileID: 424998732}
+  - component: {fileID: 424998733}
   m_Layer: 0
   m_Name: short_rabbit
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -270,7 +271,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 424998723}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8053, y: -1.5928, z: 0}
+  m_LocalPosition: {x: 0.4, y: -1.56, z: 0}
   m_LocalScale: {x: -0.2142816, y: 0.2142816, z: 0.2142816}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -335,9 +336,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a3e17a6718814793942fbd889d0d058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoints: 3
-  attackPoints: 2
-  defencePoints: 0
+  HitPoints: 2
+  AttackPoints: 2
+  DefencePoints: 0
 --- !u!114 &424998732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,6 +351,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6bca202d4b1c47499c4f7f3ff7e8b11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &424998733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424998723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b620128d6cd24406be2c07c232081aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentObj: {fileID: 582640156}
+  DamageObj: {fileID: 8230015901412495001, guid: f160b1e7eeb964ad1ab82001055245da, type: 3}
+  PosObj: {fileID: 424998723}
+  AdjPos: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4324,6 +4341,105 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1670375724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1670375725}
+  - component: {fileID: 1670375727}
+  - component: {fileID: 1670375728}
+  m_Layer: 0
+  m_Name: verylonggun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1670375725
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670375724}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.0400002, y: -0.66, z: 0}
+  m_LocalScale: {x: -0.27428573, y: 0.27428573, z: 0.192}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1741152110}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1670375727
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670375724}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 8ff0f8a2783da4470b6733a58537471f, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3.84, y: 2.16}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!114 &1670375728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670375724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 160c0a69f44f8412c916ff1644901aad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BeamObject: {fileID: 3019745064610586414, guid: 582b02b47317946778df139553a4c4a7, type: 3}
+  ReloadTime: 25
 --- !u!1 &1741152103
 GameObject:
   m_ObjectHideFlags: 0
@@ -4484,7 +4600,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 29931a23c60114355b1e90db8defdcbd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4507,7 +4623,8 @@ Transform:
   m_LocalPosition: {x: 7.268, y: -1.182, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1670375725}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4523,9 +4640,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d55e90f13ab4b95bad0a036c8e27bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoints: 5
-  attackPoints: 0
-  defencePoints: 0
+  HitPoints: 5
+  AttackPoints: 0
+  DefencePoints: 0
   ParentObj: {fileID: 582640156}
   DamageObj: {fileID: 8230015901412495001, guid: f160b1e7eeb964ad1ab82001055245da, type: 3}
   PosObj: {fileID: 1741152103}
@@ -4689,6 +4806,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a3e17a6718814793942fbd889d0d058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoints: -1
-  attackPoints: 2
-  defencePoints: 0
+  HitPoints: -1
+  AttackPoints: 2
+  DefencePoints: 0

@@ -4,17 +4,28 @@ using UnityEngine;
 
 public class EnemyStatus : MonoBehaviour, IStatus
 {
-    public int hitPoints = -1;
-    public int attackPoints = 2;
-    public int defencePoints = 0;
+    public int HitPoints = 2;
+    public int AttackPoints = 2;
+    public int DefencePoints = 0;
 
-    int IStatus.hitPoints { get => hitPoints; set => hitPoints = value; }
-    int IStatus.attackPoints { get => attackPoints; set => attackPoints = value; }
-    int IStatus.defencePoints { get => defencePoints; set => defencePoints = value; }
+    int IStatus.HitPoints { get => HitPoints; set => HitPoints = value; }
+    int IStatus.AttackPoints { get => AttackPoints; set => AttackPoints = value; }
+    int IStatus.DefencePoints { get => DefencePoints; set => DefencePoints = value; }
 
-    public void addDamage(IStatus status)
+    private Damage damage;
+
+
+    public void Start()
     {
-        this.hitPoints = this.hitPoints - status.attackPoints;
-        Debug.Log(hitPoints);
+        damage = GetComponent<Damage>();
+    }
+
+    public void AddDamage(IStatus status)
+    {
+        HitPoints = HitPoints - status.AttackPoints;
+        damage.ViewDamage(status.AttackPoints);
+        if (HitPoints <= 0) {
+            Destroy(this.gameObject);
+        }
     }
 }
