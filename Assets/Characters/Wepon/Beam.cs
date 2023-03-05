@@ -28,8 +28,6 @@ public class Beam : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log("IsLeft");
-        Debug.Log(IsLeft);
         float speed = IsLeft ? Speed : (-1) * Speed;
         transform.Translate(speed / 50, 0, 0);
     }
