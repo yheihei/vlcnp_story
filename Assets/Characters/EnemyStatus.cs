@@ -13,6 +13,7 @@ public class EnemyStatus : MonoBehaviour, IStatus
     int IStatus.DefencePoints { get => DefencePoints; set => DefencePoints = value; }
 
     private Damage damage;
+    public GameObject ExplodeObject;
 
 
     public void Start()
@@ -25,6 +26,9 @@ public class EnemyStatus : MonoBehaviour, IStatus
         HitPoints = HitPoints - status.AttackPoints;
         damage.ViewDamage(status.AttackPoints);
         if (HitPoints <= 0) {
+            GameObject explode = Instantiate(ExplodeObject);
+            //Vector3 position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            explode.transform.position = transform.position;
             Destroy(this.gameObject);
         }
     }
