@@ -12,8 +12,8 @@ public class Enemy_Sometime_Jump : MonoBehaviour
     private Animator animator;
     private int count = 0;
     private string currentMode = "";
-    public string groundAnime = "shortG";
-    public string jumpAnime = "shortJ";
+    public string groundAnime = "";
+    public string jumpAnime = "";
 
     void Start()
     {
@@ -41,6 +41,8 @@ public class Enemy_Sometime_Jump : MonoBehaviour
             enemyRbody.AddForce(new Vector2(0, JumpPower), ForceMode2D.Impulse);
             count = 0;
         }
-        animator.Play(currentMode);
+        if (currentMode != "" && animator != null) {
+            animator.Play(currentMode);
+        }
     }
 }
