@@ -5,10 +5,16 @@ using UnityEngine;
 public class EnemyStatus : MonoBehaviour, IStatus
 {
     public int HitPoints = 2;
+    public int MaxHitPoints = 2;
     public int AttackPoints = 2;
     public int DefencePoints = 0;
 
     int IStatus.HitPoints { get => HitPoints; set => HitPoints = value; }
+    int IStatus.MaxHitPoints
+    {
+        get { return MaxHitPoints; }
+        set { MaxHitPoints = value; }
+    }
     int IStatus.AttackPoints { get => AttackPoints; set => AttackPoints = value; }
     int IStatus.DefencePoints { get => DefencePoints; set => DefencePoints = value; }
 

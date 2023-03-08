@@ -6,10 +6,19 @@ using UnityEngine.UI;
 public class PlayerStatus : MonoBehaviour, IStatus
 {
     public int HitPoints = 5;
+    public int MaxHitPoints = 5;
     public int AttackPoints = 0;
     public int DefencePoints = 0;
 
-    int IStatus.HitPoints { get => HitPoints; set => HitPoints = value; }
+    int IStatus.HitPoints {
+        get { return HitPoints; }
+        set { HitPoints = value; }
+    }
+    int IStatus.MaxHitPoints
+    {
+        get { return MaxHitPoints; }
+        set { MaxHitPoints = value; }
+    }
     int IStatus.AttackPoints { get => AttackPoints; set => AttackPoints = value; }
     int IStatus.DefencePoints { get => DefencePoints; set => DefencePoints = value; }
 
@@ -25,6 +34,12 @@ public class PlayerStatus : MonoBehaviour, IStatus
     private GameObject PosObj;
     [SerializeField]
     private Vector3 AdjPos;
+
+    public void Start()
+    {
+        MaxHitPoints = HitPoints;
+        Debug.Log(MaxHitPoints);
+    }
 
     public void AddDamage(IStatus status)
     {
