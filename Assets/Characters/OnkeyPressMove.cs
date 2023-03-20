@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
 // キーを押すと、スプライトが移動する
@@ -18,6 +19,8 @@ public class OnkeyPressMove : MonoBehaviour
     Rigidbody2D rbody;
     Animator animator;
     SpriteRenderer player;
+    ILevel level;
+
     string currentMode = "";
     string groundAnime = "akim";
     string jumpAnime = "akim_jump";
@@ -28,22 +31,48 @@ public class OnkeyPressMove : MonoBehaviour
         rbody.constraints = RigidbodyConstraints2D.FreezeRotation;
         animator = GetComponent<Animator>();
         player = GetComponent<SpriteRenderer>();
+        level = GetComponent<ILevel>();
+        setLevelAnime();
+    }
+
+    private void setLevelAnime() {
+        if (level.Level == 1)
+        {
+            groundAnime = "akim";
+            jumpAnime = "akim_jump";
+        }
+        if (level.Level == 2)
+        {
+            groundAnime = "akim_level2";
+            jumpAnime = "akim_level2_jump";
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+        TilemapCollider2D tilemapCollider = collision.GetComponent<TilemapCollider2D>();
+        if (tilemapCollider == null)
+        {
+            return;
+        }
         groundFlag = true;
         currentMode = groundAnime;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        TilemapCollider2D tilemapCollider = collision.GetComponent<TilemapCollider2D>();
+        if (tilemapCollider == null)
+        {
+            return;
+        }
         groundFlag = false;
         currentMode = jumpAnime;
     }
 
     void Update()
-    { // ずっと行う
+    {
+        setLevelAnime();
         vx = 0;
         if (Input.GetKey("right"))
         { // もし、右キーが押されたら
@@ -70,8 +99,7 @@ public class OnkeyPressMove : MonoBehaviour
     }
 
     void FixedUpdate()
-    { // ずっと行う（一定時間ごとに）
-      // 移動する
+    {
         rbody.velocity = new Vector2(vx, rbody.velocity.y);
         // 左右の向きを変える
         if (leftFlag)
@@ -82,7 +110,6 @@ public class OnkeyPressMove : MonoBehaviour
         {
             player.transform.localScale = new Vector3(-1 * Mathf.Abs(player.transform.localScale.x), player.transform.localScale.y, player.transform.localScale.z);
         }
-        //this.GetComponent<SpriteRenderer>().flipX = !leftFlag;
         if (groundFlag && Mathf.Abs(rbody.velocity.x) < 0.01 && groundFlag && Mathf.Abs(rbody.velocity.y) < 0.01)
         {
             animator.Play(currentMode, 0, 0);
