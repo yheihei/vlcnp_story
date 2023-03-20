@@ -21,11 +21,6 @@ public class OnkeyPressMove : MonoBehaviour
     SpriteRenderer player;
     ILevel level;
 
-    private CapsuleCollider2D playerCollider;
-    private BoxCollider2D playerGroundCollider;
-    private GameObject weapon;
-    public GameObject LevelDownEffect;
-
     string currentMode = "";
     string groundAnime = "akim";
     string jumpAnime = "akim_jump";

@@ -26,13 +26,6 @@ public class PlayerStatus : MonoBehaviour, IStatus
     private int invincibleCount = 0;
     private const int INVINCIBLE_MAX_COUNT = 150;
 
-    Animator animator;
-    SpriteRenderer mainSprite;
-    public Sprite LowLevelAkimSprite;
-    private CapsuleCollider2D playerCollider;
-    private BoxCollider2D playerGroundCollider;
-    private GameObject weapon;
-    public GameObject LevelDownEffect;
     private PlayerLevel playerLevel;
 
     [SerializeField]
@@ -47,13 +40,7 @@ public class PlayerStatus : MonoBehaviour, IStatus
     public void Start()
     {
         MaxHitPoints = HitPoints;
-        Debug.Log(MaxHitPoints);
-        animator = GetComponent<Animator>();
-        mainSprite = GetComponent<SpriteRenderer>();
-        playerCollider = GetComponent<CapsuleCollider2D>();
-        playerGroundCollider = GetComponent<BoxCollider2D>();
         playerLevel = GetComponent<PlayerLevel>();
-        weapon = GameObject.FindWithTag("Weapon");
     }
 
     public void AddDamage(IStatus status)
@@ -72,18 +59,11 @@ public class PlayerStatus : MonoBehaviour, IStatus
         playerRigitBody.AddForce(Vector2.up * 4, ForceMode2D.Impulse);
 
         // HPを減らす
-        HitPoints = HitPoints - status.AttackPoints;
+        HitPoints -= status.AttackPoints;
         ViewDamage(status.AttackPoints);
 
-        // 短くする
+        // 経験値を減らす
         playerLevel.LoseExperience(status.AttackPoints);
-        //animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Player/akim_short_1");
-        //mainSprite.sprite = LowLevelAkimSprite;
-        //playerCollider.size = new Vector2(playerCollider.size.x, 1.3f);
-        //playerGroundCollider.offset = new Vector2(playerGroundCollider.offset.x, -0.65f);
-        //weapon.transform.position = new Vector3(weapon.transform.position.x, weapon.transform.position.y + 0.3f, weapon.transform.position.z);
-        //GameObject explode = Instantiate(LevelDownEffect);
-        //explode.transform.position = transform.position;
     }
 
     public void FixedUpdate()
