@@ -33,6 +33,7 @@ public class PlayerStatus : MonoBehaviour, IStatus
     private BoxCollider2D playerGroundCollider;
     private GameObject weapon;
     public GameObject LevelDownEffect;
+    private PlayerLevel playerLevel;
 
     [SerializeField]
     private GameObject ParentObj;
@@ -51,6 +52,7 @@ public class PlayerStatus : MonoBehaviour, IStatus
         mainSprite = GetComponent<SpriteRenderer>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerGroundCollider = GetComponent<BoxCollider2D>();
+        playerLevel = GetComponent<PlayerLevel>();
         weapon = GameObject.FindWithTag("Weapon");
     }
 
@@ -74,13 +76,14 @@ public class PlayerStatus : MonoBehaviour, IStatus
         ViewDamage(status.AttackPoints);
 
         // 短くする
-        animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Player/akim_short_1");
-        mainSprite.sprite = LowLevelAkimSprite;
-        playerCollider.size = new Vector2(playerCollider.size.x, 1.3f);
-        playerGroundCollider.offset = new Vector2(playerGroundCollider.offset.x, -0.65f);
-        weapon.transform.position = new Vector3(weapon.transform.position.x, weapon.transform.position.y + 0.3f, weapon.transform.position.z);
-        GameObject explode = Instantiate(LevelDownEffect);
-        explode.transform.position = transform.position;
+        playerLevel.LoseExperience(status.AttackPoints);
+        //animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Player/akim_short_1");
+        //mainSprite.sprite = LowLevelAkimSprite;
+        //playerCollider.size = new Vector2(playerCollider.size.x, 1.3f);
+        //playerGroundCollider.offset = new Vector2(playerGroundCollider.offset.x, -0.65f);
+        //weapon.transform.position = new Vector3(weapon.transform.position.x, weapon.transform.position.y + 0.3f, weapon.transform.position.z);
+        //GameObject explode = Instantiate(LevelDownEffect);
+        //explode.transform.position = transform.position;
     }
 
     public void FixedUpdate()
