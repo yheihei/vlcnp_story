@@ -47,8 +47,13 @@ public class OnKeyMessage : MonoBehaviour
         {
             return;
         }
+        StartCoroutine(Talk());
+    }
+
+    IEnumerator Talk() {
         Debug.Log("開始");
         Flowchart.ExecuteBlock(BlockName);
+        yield return new WaitUntil(() => Flowchart.GetExecutingBlocks().Count == 0);
         isChat = false;
         Debug.Log("終了");
     }
