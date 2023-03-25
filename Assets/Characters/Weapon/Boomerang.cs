@@ -10,16 +10,8 @@ public class Boomerang : MonoBehaviour
     private int count = 0;
     private bool isTurn = false;
     private GameObject targetObject;
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
+    private float vx;
+    private float vy;
 
     private void FixedUpdate()
     {
@@ -27,10 +19,6 @@ public class Boomerang : MonoBehaviour
         float speed = IsLeft ? Speed : (-1) * Speed;
 
         if (isTurn) {
-            targetObject = GameObject.FindGameObjectWithTag("Player");
-            Vector3 dir = (targetObject.transform.position - this.transform.position).normalized;
-            float vx = dir.x * speed / 50;
-            float vy = dir.y * speed / 50;
             transform.Translate(vx, vy, 0);
         } else
         {
@@ -38,15 +26,23 @@ public class Boomerang : MonoBehaviour
         }
         if (count == TurnCount)
         {
-            Speed *= -1;
+            if (!isTurn) {
+                TurnCount = TurnCount * 2;
+            }
             count = 0;
+            targetObject = GameObject.FindGameObjectWithTag("Player");
+            Vector3 dir = (targetObject.transform.position - this.transform.position).normalized;
+            vx = (-1) * dir.x * speed / 50;
+            vy = (-1) * dir.y * speed / 50;
             isTurn = true;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("ブーメランあたり");
-        Debug.Log(collision);
+        if (collision.tag.Equals("Player"))
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
