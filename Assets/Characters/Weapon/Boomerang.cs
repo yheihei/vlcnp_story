@@ -55,6 +55,7 @@ public class Boomerang : MonoBehaviour, IWeapon
         }
 
         // 敵との接触開始で、その敵が接触中でなければ接触中の敵リストに入れる
+        Debug.Log(collision.gameObject);
         if (collision.gameObject.CompareTag("Enemy") && !hittingEnemies.Contains(collision.gameObject))
         {
             hittingEnemies.Add(collision.gameObject);
