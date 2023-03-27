@@ -30,7 +30,7 @@ public class Beam : MonoBehaviour, IWeapon
 
     private void FixedUpdate()
     {
-        float speed = isLeft ? Speed : (-1) * Speed;
+        float speed = isLeft ? (-1) * Speed : Speed;
         transform.Translate(speed / 50, 0, 0);
     }
 }
