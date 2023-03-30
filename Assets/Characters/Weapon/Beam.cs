@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Beam : MonoBehaviour
+public class Beam : MonoBehaviour, IWeapon
 {
-    public bool IsLeft = false;
+    private bool isLeft = false;
     public float Speed = 15;
     public float deleteTime = 0.5f;
     private Rigidbody2D RBody;
+
+    bool IWeapon.IsLeft { get => isLeft; set => isLeft = value; }
 
     private void Start()
     {
@@ -28,7 +30,7 @@ public class Beam : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float speed = IsLeft ? Speed : (-1) * Speed;
+        float speed = isLeft ? (-1) * Speed : Speed;
         transform.Translate(speed / 50, 0, 0);
     }
 }

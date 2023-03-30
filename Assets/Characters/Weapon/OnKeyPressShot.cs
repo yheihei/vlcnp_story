@@ -11,6 +11,7 @@ public class OnKeyPressShot : MonoBehaviour
     private GameObject equipedCharacter;
     private int reloadCount = 0;
     public int ReloadTime = 25;
+    public int ShotLimit = 3;
 
     private void Start()
     {
@@ -18,11 +19,9 @@ public class OnKeyPressShot : MonoBehaviour
         equipedCharacter = transform.root.gameObject;
     }
 
-
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("x") && !isReload)
+        if (Input.GetKeyUp("x") && !isReload)
         {
             isShot = true;
         }
@@ -30,12 +29,11 @@ public class OnKeyPressShot : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Debug.Log(equipedCharacter.transform.localScale.x);
         if (isShot && !isReload) {
             GameObject beam = Instantiate(BeamObject);
             Vector3 position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             beam.transform.position = position;
-            beam.GetComponent<Beam>().IsLeft = equipedCharacter.transform.localScale.x < 0;
+            beam.GetComponent<IWeapon>().IsLeft = equipedCharacter.transform.localScale.x > 0;
             isReload = true;
             isShot = false;
         }

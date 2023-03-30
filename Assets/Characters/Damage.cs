@@ -15,6 +15,10 @@ public class Damage : MonoBehaviour
 
     public void ViewDamage(int _damage)
     {
+        if (ParentObj == null)
+        {
+            ParentObj = GameObject.Find("Canvas");
+        }
         GameObject _damageObj = Instantiate(DamageObj, ParentObj.transform);
         _damageObj.GetComponent<Text>().text = _damage.ToString();
         SpriteRenderer playerSprite = GetComponent<SpriteRenderer>();
