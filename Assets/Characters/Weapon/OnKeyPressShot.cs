@@ -33,7 +33,6 @@ public class OnKeyPressShot : MonoBehaviour
             GameObject beam = Instantiate(BeamObject);
             Vector3 position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             beam.transform.position = position;
-            Debug.Log(equipedCharacter);
             beam.GetComponent<IWeapon>().IsLeft = equipedCharacter.transform.localScale.x > 0;
             isReload = true;
             isShot = false;
