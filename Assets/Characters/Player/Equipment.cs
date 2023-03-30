@@ -32,4 +32,9 @@ public class Equipment : MonoBehaviour
             Instantiate(Weapons[currentIndex], transform);
         }
     }
+
+    public GameObject GetCurrentWeapon()
+    {
+        return Weapons[currentIndex];
+    }
 }
