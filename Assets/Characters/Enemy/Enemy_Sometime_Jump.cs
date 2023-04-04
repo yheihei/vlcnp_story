@@ -19,8 +19,8 @@ public class Enemy_Sometime_Jump : MonoBehaviour
     {
         enemy = GetComponent<SpriteRenderer>();
         enemyRbody = GetComponent<Rigidbody2D>();
-        //enemyRbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
-        enemyRbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+        enemyRbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+        // enemyRbody.constraints = RigidbodyConstraints2D.FreezeRotation;
         animator = GetComponent<Animator>();
     }
 
