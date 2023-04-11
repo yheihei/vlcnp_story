@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class OnKeyPressShot : MonoBehaviour
 {
-    public GameObject BeamObject;
+    public GameObject BeamLevel1;
+    public GameObject BeamLevel2;
+    public GameObject BeamLevel3;
     private bool isShot = false;
     private bool isReload = false;
     private SpriteRenderer sprite;
@@ -12,11 +14,13 @@ public class OnKeyPressShot : MonoBehaviour
     private int reloadCount = 0;
     public int ReloadTime = 25;
     public int ShotLimit = 3;
+    private ILevel playerLevel;
 
     private void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
         equipedCharacter = transform.root.gameObject;
+        playerLevel = equipedCharacter.GetComponent<ILevel>();
     }
 
     void Update()
@@ -30,7 +34,11 @@ public class OnKeyPressShot : MonoBehaviour
     private void FixedUpdate()
     {
         if (isShot && !isReload) {
-            GameObject beam = Instantiate(BeamObject);
+            GameObject beamObject = BeamLevel1;
+            if (playerLevel.Level == 2) {
+                beamObject = BeamLevel2;
+            }
+            GameObject beam = Instantiate(beamObject);
             Vector3 position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             beam.transform.position = position;
             beam.GetComponent<IWeapon>().IsLeft = equipedCharacter.transform.localScale.x > 0;
