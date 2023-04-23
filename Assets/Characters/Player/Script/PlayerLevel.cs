@@ -10,6 +10,7 @@ public class PlayerLevel : MonoBehaviour, ILevel
     private int maxLevel = 3;
     [SerializeField]
     private int experience = 0;
+    public int[] LevelToRequiredExperience = new int[] { 0, 3, 6, 10 };
 
     public int Level {
         get => level;
@@ -29,7 +30,6 @@ public class PlayerLevel : MonoBehaviour, ILevel
     Animator animator;
     private CapsuleCollider2D playerCollider;
     private BoxCollider2D playerGroundCollider;
-    private GameObject weapon;
     public GameObject LevelDownEffect;
 
     private void Start()
@@ -37,31 +37,41 @@ public class PlayerLevel : MonoBehaviour, ILevel
         animator = GetComponent<Animator>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerGroundCollider = GetComponent<BoxCollider2D>();
-        weapon = GameObject.FindWithTag("Weapon");
     }
 
     public void AddExperience(int point)
     {
-        if (level == maxLevel) {
+        // 最大レベル+1の必要経験値を超えたらそれ以上経験値もレベルも増えない
+        if (Experience + point > LevelToRequiredExperience[maxLevel])
+        {
+            Experience = LevelToRequiredExperience[maxLevel];
             return;
         }
         Experience += point;
-        if (level == 1 && Experience >= 3) {
+        if (level == 1 && Experience >= LevelToRequiredExperience[1]) {
             changeLevel(2);
+        }
+        if (level == 2 && Experience >= LevelToRequiredExperience[2])
+        {
+            changeLevel(3);
         }
     }
 
     public void LoseExperience(int point=3)
     {
         Experience -= point;
-        if (level == 1)
+        if (experience < 0)
         {
-            Debug.Log("min level!!");
+            experience = 0;
             return;
         }
-        if (level == 2 && Experience < 3)
+        if (level == 2 && Experience < LevelToRequiredExperience[1])
         {
             changeLevel(1);
+        }
+        if (level == 3 && Experience < LevelToRequiredExperience[2])
+        {
+            changeLevel(2);
         }
     }
 
@@ -73,6 +83,7 @@ public class PlayerLevel : MonoBehaviour, ILevel
             playerCollider.size = new Vector2(playerCollider.size.x, 1.2f);
             playerCollider.offset = new Vector2(playerCollider.offset.x, -0.1f);
             playerGroundCollider.offset = new Vector2(playerGroundCollider.offset.x, -0.7f);
+            GameObject weapon = GameObject.FindWithTag("Weapon");
             weapon.transform.position = new Vector3(weapon.transform.position.x, weapon.transform.position.y + 0.3f, weapon.transform.position.z);
             GameObject explode = Instantiate(LevelDownEffect);
             explode.transform.position = transform.position;
@@ -82,6 +93,7 @@ public class PlayerLevel : MonoBehaviour, ILevel
             playerCollider.size = new Vector2(playerCollider.size.x, 2.3f);
             playerCollider.offset = new Vector2(playerCollider.offset.x, 0);
             playerGroundCollider.offset = new Vector2(playerGroundCollider.offset.x, -1.1f);
+            GameObject weapon = GameObject.FindWithTag("Weapon");
             weapon.transform.position = new Vector3(weapon.transform.position.x, weapon.transform.position.y - 0.3f, weapon.transform.position.z);
             GameObject explode = Instantiate(LevelDownEffect);
             explode.transform.position = transform.position;

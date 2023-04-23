@@ -5,8 +5,8 @@ using UnityEngine;
 public class Beam : MonoBehaviour, IWeapon
 {
     private bool isLeft = false;
-    public float Speed = 15;
-    public float deleteTime = 0.5f;
+    public float Speed = 30;
+    public float deleteTime = 0.18f;
     private Rigidbody2D RBody;
 
     bool IWeapon.IsLeft { get => isLeft; set => isLeft = value; }

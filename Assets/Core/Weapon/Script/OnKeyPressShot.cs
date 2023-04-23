@@ -35,7 +35,8 @@ public class OnKeyPressShot : MonoBehaviour
     {
         if (isShot && !isReload) {
             GameObject beamObject = BeamLevel1;
-            if (playerLevel.Level == 2) {
+            // TODO: レベル3の武器も作ること
+            if (playerLevel.Level >= 2) {
                 beamObject = BeamLevel2;
             }
             GameObject beam = Instantiate(beamObject);
