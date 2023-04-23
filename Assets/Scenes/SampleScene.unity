@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item: {fileID: 144021052556899262, guid: d70b86eb5b24c4e7b9f4886a1cf80379, type: 3}
-  Frequency: 360
+  Frequency: 90
 --- !u!1 &87764015
 GameObject:
   m_ObjectHideFlags: 0
@@ -4391,6 +4391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 983301955}
   - component: {fileID: 983301956}
+  - component: {fileID: 983301957}
   m_Layer: 5
   m_Name: LevelSlider
   m_TagString: Untagged
@@ -4472,6 +4473,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &983301957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983301954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c40c3c6f3f1747d3a11fc5cf2af34ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1058074322
 GameObject:
   m_ObjectHideFlags: 0
@@ -4922,6 +4935,7 @@ GameObject:
   - component: {fileID: 1577816417}
   - component: {fileID: 1577816419}
   - component: {fileID: 1577816418}
+  - component: {fileID: 1577816420}
   m_Layer: 5
   m_Name: Level
   m_TagString: Untagged
@@ -4991,6 +5005,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1577816416}
   m_CullTransparentMesh: 1
+--- !u!114 &1577816420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577816416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db4938ca9571443e9a69d72a96e22967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1586312719
 GameObject:
   m_ObjectHideFlags: 0
@@ -5649,6 +5675,7 @@ MonoBehaviour:
   level: 1
   maxLevel: 3
   experience: 0
+  LevelToRequiredExperience: 0000000003000000060000000a000000
   LevelDownEffect: {fileID: 3413925121803709644, guid: 8d11bcc88135a4622bf6d7a19391f91d, type: 3}
 --- !u!114 &1741152113
 MonoBehaviour:
