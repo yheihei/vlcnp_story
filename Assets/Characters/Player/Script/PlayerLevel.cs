@@ -90,11 +90,10 @@ public class PlayerLevel : MonoBehaviour, ILevel
             weapon.transform.position = new Vector3(weapon.transform.position.x, weapon.transform.position.y + 0.3f, weapon.transform.position.z);
             GameObject explode = Instantiate(LevelDownEffect);
             explode.transform.position = transform.position;
-            if (_aura != null) {
-                Destroy(_aura);
-            }
+            RemoveAura();
         }
-        if (level == 2) {
+        if (level == 2)
+        {
             animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Player/akim_level_2");
             playerCollider.size = new Vector2(playerCollider.size.x, 2.3f);
             playerCollider.offset = new Vector2(playerCollider.offset.x, 0);
@@ -103,15 +102,24 @@ public class PlayerLevel : MonoBehaviour, ILevel
             weapon.transform.position = new Vector3(weapon.transform.position.x, weapon.transform.position.y - 0.3f, weapon.transform.position.z);
             GameObject explode = Instantiate(LevelDownEffect);
             explode.transform.position = transform.position;
-            if (_aura != null) {
-                Destroy(_aura);
-            }
+            RemoveAura();
         }
-        if (level ==3) {
-            // 子コンポーネントとしてauraを追加
-            // xに−0.26, yに-0.62の位置に表示
-            _aura = Instantiate(aura, transform.position, Quaternion.identity, transform);
-            _aura.transform.localPosition = new Vector3(-0.26f, -0.62f, 0);
+        if (level ==3)
+        {
+            InstantiateAura();
         }
+    }
+
+    private void InstantiateAura()
+    {
+        // 子コンポーネントとしてauraを追加
+        // xに−0.26, yに-0.62の位置に表示
+        _aura = Instantiate(aura, transform.position, Quaternion.identity, transform);
+        _aura.transform.localPosition = new Vector3(-0.26f, -0.62f, 0);
+    }
+    private void RemoveAura()
+    {
+        if (_aura == null) return;
+        Destroy(_aura);
     }
 }
