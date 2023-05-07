@@ -16,14 +16,17 @@ public class Beam : MonoBehaviour, IWeapon
     {
         RBody = GetComponent<Rigidbody2D>();
         RBody.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
-        particle = GetComponent<ParticleSystem>();
-        if (particle != null)
-        {
-            // 進行方向の逆にパーティクルを伸ばす
-            ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = particle.velocityOverLifetime;
-            velocityOverLifetime.x = isLeft? 100f : -100f;
-        }
+        SetParticleVelocity();
         Destroy(this.gameObject, deleteTime);
+    }
+
+    private void SetParticleVelocity()
+    {
+        particle = GetComponent<ParticleSystem>();
+        if (particle == null) return;
+        // 進行方向の逆にパーティクルを伸ばす
+        ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = particle.velocityOverLifetime;
+        velocityOverLifetime.x = isLeft ? 100f : -100f;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
