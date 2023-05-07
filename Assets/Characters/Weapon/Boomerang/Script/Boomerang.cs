@@ -13,7 +13,8 @@ public class Boomerang : MonoBehaviour, IWeapon
     private GameObject targetObject;
     private float vx;
     private float vy;
-    private float beforeX;
+    private Vector3 beforePosition;
+
     private List<GameObject> hittingEnemies = new List<GameObject>();
     private ParticleSystem particle;
 
@@ -22,7 +23,7 @@ public class Boomerang : MonoBehaviour, IWeapon
     private void Start()
     {
         speed = isLeft ? (-1) * Speed : Speed;
-        beforeX = transform.position.x;
+        beforePosition = transform.position;
         particle = GetComponent<ParticleSystem>();
     }
 
@@ -30,15 +31,18 @@ public class Boomerang : MonoBehaviour, IWeapon
     {
         count += 1;
 
-        if (isTurn) {
+        if (isTurn)
+        {
             transform.Translate(vx, vy, 0);
-        } else
+        }
+        else
         {
             transform.Translate(speed / 50, 0, 0);
         }
         if (count == TurnCount)
         {
-            if (!isTurn) {
+            if (!isTurn)
+            {
                 // 反対方向に2倍すすむようにする
                 TurnCount = TurnCount * 2;
             }
@@ -49,15 +53,19 @@ public class Boomerang : MonoBehaviour, IWeapon
             vy = (-1) * dir.y * speed / 50;
             isTurn = true;
         }
+        SetParticleVelocity();
+    }
+
+    private void SetParticleVelocity()
+    {
+        if (particle == null) return;
         // 現在の進行方向を取得
-        float nowX = transform.position.x - beforeX;
-        print(nowX);
-        beforeX = transform.position.x;
-        if (particle) {
-            // X方向の速度をパーティクルのlinearXに反映
-            ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = particle.velocityOverLifetime;
-            velocityOverLifetime.x = nowX > 0 ? -50f : 50f;
-        }
+        Vector3 currentVelocity = transform.position - beforePosition;
+        beforePosition = transform.position;
+        // 進行方向の逆にパーティクルを伸ばす
+        ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = particle.velocityOverLifetime;
+        velocityOverLifetime.x = currentVelocity.x > 0 ? -50f : 50f;
+        velocityOverLifetime.y = -100 * currentVelocity.y;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
