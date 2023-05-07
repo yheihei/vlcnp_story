@@ -10,11 +10,19 @@ public class Beam : MonoBehaviour, IWeapon
     private Rigidbody2D RBody;
 
     bool IWeapon.IsLeft { get => isLeft; set => isLeft = value; }
+    private ParticleSystem particle;
 
     private void Start()
     {
         RBody = GetComponent<Rigidbody2D>();
         RBody.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        particle = GetComponent<ParticleSystem>();
+        if (particle != null)
+        {
+            // 進行方向の逆にパーティクルを伸ばす
+            ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = particle.velocityOverLifetime;
+            velocityOverLifetime.x = isLeft? 100f : -100f;
+        }
         Destroy(this.gameObject, deleteTime);
     }
 
