@@ -13,13 +13,17 @@ public class Boomerang : MonoBehaviour, IWeapon
     private GameObject targetObject;
     private float vx;
     private float vy;
+    private float beforeX;
     private List<GameObject> hittingEnemies = new List<GameObject>();
+    private ParticleSystem particle;
 
     bool IWeapon.IsLeft { get => isLeft; set => isLeft = value; }
 
     private void Start()
     {
         speed = isLeft ? (-1) * Speed : Speed;
+        beforeX = transform.position.x;
+        particle = GetComponent<ParticleSystem>();
     }
 
     private void FixedUpdate()
@@ -44,6 +48,15 @@ public class Boomerang : MonoBehaviour, IWeapon
             vx = (-1) * dir.x * speed / 50;
             vy = (-1) * dir.y * speed / 50;
             isTurn = true;
+        }
+        // 現在の進行方向を取得
+        float nowX = transform.position.x - beforeX;
+        print(nowX);
+        beforeX = transform.position.x;
+        if (particle) {
+            // X方向の速度をパーティクルのlinearXに反映
+            ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = particle.velocityOverLifetime;
+            velocityOverLifetime.x = nowX > 0 ? -50f : 50f;
         }
     }
 
