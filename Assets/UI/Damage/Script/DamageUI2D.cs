@@ -8,21 +8,20 @@ public class DamageUI2D : MonoBehaviour
     [SerializeField]
     private float deleteTime = 1.5f;
     [SerializeField]
-    private float moveRange = 50.0f;
+    private float moveRange = 2f;
 
     private float timeCount;
-    private Text nowText;
 
     void Start()
     {
         timeCount = 0.0f;
-        Destroy(this.gameObject, deleteTime);
-        nowText = this.gameObject.GetComponent<Text>();
+        Destroy(gameObject, deleteTime);
     }
 
     void Update()
     {
         timeCount += Time.deltaTime;
-        this.gameObject.transform.localPosition += new Vector3(0, moveRange / deleteTime * Time.deltaTime, 0);
+        // 徐々にy座標を上げる
+        transform.position += new Vector3(0, moveRange / deleteTime * Time.deltaTime, 0);
     }
 }
