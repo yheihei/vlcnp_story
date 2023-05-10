@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Damage))]
 public class PlayerStatus : MonoBehaviour, IStatus
 {
     public int HitPoints = 5;
@@ -28,19 +29,13 @@ public class PlayerStatus : MonoBehaviour, IStatus
 
     private PlayerLevel playerLevel;
 
-    [SerializeField]
-    private GameObject ParentObj;
-    [SerializeField]
-    private GameObject DamageObj;
-    [SerializeField]
-    private GameObject PosObj;
-    [SerializeField]
-    private Vector3 AdjPos;
+    private Damage damage;
 
     public void Start()
     {
         MaxHitPoints = HitPoints;
         playerLevel = GetComponent<PlayerLevel>();
+        damage = GetComponent<Damage>();
     }
 
     public void AddDamage(IStatus status)
@@ -60,7 +55,7 @@ public class PlayerStatus : MonoBehaviour, IStatus
 
         // HPを減らす
         HitPoints -= status.AttackPoints;
-        ViewDamage(status.AttackPoints);
+        damage.ViewDamage(status.AttackPoints);
 
         // 経験値を減らす
         playerLevel.LoseExperience(status.AttackPoints);
@@ -83,13 +78,5 @@ public class PlayerStatus : MonoBehaviour, IStatus
                 playerSprite.color = new Color(1f, 1f, 1f, 1);
             }
         }
-    }
-
-    private void ViewDamage(int _damage)
-    {
-        GameObject _damageObj = Instantiate(DamageObj, ParentObj.transform);
-        _damageObj.GetComponent<Text>().text = _damage.ToString();
-        SpriteRenderer playerSprite = GetComponent<SpriteRenderer>();
-        _damageObj.transform.position = playerSprite.transform.position;
     }
 }
