@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace VLCNP.Movement
@@ -7,7 +5,11 @@ namespace VLCNP.Movement
     public class Mover : MonoBehaviour
     {
         [SerializeField] float speed = 4;
-        bool leftFlag = true;
+        [SerializeField] float jumpPower = 8;
+        bool isLeft = true;
+        bool isGround = true;
+        bool isJumping= false;
+        bool isPushing = false;
         float vx = 0;
         Rigidbody2D rbody;
         Animator animator;
@@ -23,12 +25,24 @@ namespace VLCNP.Movement
             if (Input.GetKey("right"))
             {
                 vx = speed;
-                leftFlag = false;
+                isLeft = false;
             }
             if (Input.GetKey("left"))
             {
                 vx = -speed;
-                leftFlag = true;
+                isLeft = true;
+            }
+            if (Input.GetKey("space") && isGround)
+            {
+                if (!isPushing)
+                {
+                    isJumping = true;
+                    isPushing = true;
+                }
+            }
+            else
+            {
+                isPushing = false;
             }
             UpdateAnimator();
         }
@@ -36,12 +50,24 @@ namespace VLCNP.Movement
         private void UpdateAnimator()
         {
             animator.SetFloat("vx", Mathf.Abs(vx));
+            animator.SetBool("isGround", isGround);
         }
 
         private void FixedUpdate()
         {
             UpdateMoveSpeed();
+            UpdateJumpState();
             UpdateCharacterDirection();
+        }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            isGround = true;
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            isGround = false;
         }
 
         private void UpdateMoveSpeed()
@@ -51,13 +77,22 @@ namespace VLCNP.Movement
 
         private void UpdateCharacterDirection()
         {
-            if (leftFlag)
+            if (isLeft)
             {
                 transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
             else
             {
                 transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+        }
+
+        private void UpdateJumpState()
+        {
+            if (isJumping)
+            {
+                rbody.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
+                isJumping = false;
             }
         }
     }    
