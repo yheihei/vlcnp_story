@@ -17,7 +17,7 @@ namespace VLCNP.Control
         void Update()
         {
             mover.Move();
-            fighter.Attack();
+            fighter.Attack(mover.IsLeft);
         }
     }    
 }

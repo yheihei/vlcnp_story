@@ -19,12 +19,11 @@ namespace VLCNP.Combat
             weaponConfig.Spawn(handTransform);
         }
 
-        public void Attack()
+        public void Attack(bool isLeft)
         {
-            if (Input.GetKeyUp("x"))
-            {
-                print("Attack");
-            }
+            if (!Input.GetKeyUp("x")) return;
+            if (!currentWeaponConfig.HasProjectile()) return;
+            currentWeaponConfig.LaunchProjectile(handTransform);
         }
     }
 }
