@@ -18,5 +18,13 @@ namespace VLCNP.Combat
         {
             weaponConfig.Spawn(handTransform);
         }
+
+        public void Attack()
+        {
+            if (Input.GetKeyUp("x"))
+            {
+                print("Attack");
+            }
+        }
     }
 }
