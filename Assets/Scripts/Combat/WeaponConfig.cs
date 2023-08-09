@@ -73,10 +73,10 @@ namespace VLCNP.Combat
         //     return weaponRange;
         // }
 
-        // public float GetDamage()
-        // {
-        //     return weaponDamage;
-        // }
+        public float GetDamage()
+        {
+            return weaponDamage;
+        }
 
         // public float GetPercentageBonus()
         // {
