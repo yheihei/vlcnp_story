@@ -1,0 +1,77 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using VLCNP.Stats;
+
+namespace VLCNP.Attributes
+{
+    public class Health : MonoBehaviour
+    {
+        float healthPoints = -1f;
+        // 無敵時間
+        [SerializeField] float invincibleTime = 3f;
+
+        bool isDead = false;
+
+        public bool IsDead { get => isDead; }
+
+        float timeSinceLastHit = Mathf.Infinity;
+        SpriteRenderer playerSprite;
+
+        private void Awake() {
+            healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
+            playerSprite = GetComponent<SpriteRenderer>();
+            print("Health: " + healthPoints);
+        }
+
+        private void Update() {
+            timeSinceLastHit += Time.deltaTime;
+        }
+
+        public void TakeDamage(float damage)
+        {
+            if (IsInvincible()) return;
+            timeSinceLastHit = 0f;
+            healthPoints = Mathf.Max(healthPoints - damage, 0);
+            print($"{gameObject.name} took {damage} damage, {healthPoints} health points left");
+            if (healthPoints == 0) {
+                Die();
+            } else {
+                // 吹っ飛ばす
+                GetComponent<Rigidbody2D>().AddForce(Vector2.up * 4, ForceMode2D.Impulse);
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            FlashingIfDamaged();
+        }
+
+        private void FlashingIfDamaged()
+        {
+            if (IsInvincible())
+            {
+                SpriteRenderer playerSprite = GetComponent<SpriteRenderer>();
+                float level = Mathf.Abs(Mathf.Sin(Time.time * 10));
+                playerSprite.color = new Color(1f, 1f, 1f, level);
+            }
+            else
+            {
+                playerSprite.color = new Color(1f, 1f, 1f, 1);
+            }
+        }
+
+        private bool IsInvincible()
+        {
+            return timeSinceLastHit < invincibleTime;
+        }
+
+        private void Die()
+        {
+            if (isDead) return;
+            // TODO: Trigger death animation
+            GetComponent<Animator>().SetTrigger("die");
+            isDead = true;
+        }
+    }    
+}

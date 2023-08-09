@@ -17,7 +17,15 @@ namespace VLCNP.Control
         void Update()
         {
             mover.Move();
-            fighter.Attack(mover.IsLeft);
+            AttackBehaviour();
+        }
+
+        private void AttackBehaviour()
+        {
+            if (Input.GetKeyUp("x"))
+            {
+                fighter.Attack();
+            }
         }
     }    
 }

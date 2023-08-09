@@ -1,4 +1,5 @@
 using UnityEngine;
+using VLCNP.Attributes;
 
 namespace VLCNP.Combat
 {
@@ -19,11 +20,13 @@ namespace VLCNP.Combat
             weaponConfig.Spawn(handTransform);
         }
 
-        public void Attack(bool isLeft)
+        public void Attack(GameObject target = null)
         {
-            if (!Input.GetKeyUp("x")) return;
-            if (!currentWeaponConfig.HasProjectile()) return;
-            currentWeaponConfig.LaunchProjectile(handTransform);
+            if (currentWeaponConfig.HasProjectile()) {
+                currentWeaponConfig.LaunchProjectile(handTransform);
+            } else {
+                target.GetComponent<Health>().TakeDamage(currentWeaponConfig.GetDamage());
+            }
         }
     }
 }
