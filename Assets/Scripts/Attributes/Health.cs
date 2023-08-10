@@ -10,6 +10,7 @@ namespace VLCNP.Attributes
         float healthPoints = -1f;
         // 無敵時間
         [SerializeField] float invincibleTime = 3f;
+        [SerializeField] GameObject deadEffect = null;
 
         bool isDead = false;
 
@@ -30,6 +31,7 @@ namespace VLCNP.Attributes
 
         public void TakeDamage(float damage)
         {
+            if (isDead) return;
             if (IsInvincible()) return;
             timeSinceLastHit = 0f;
             healthPoints = Mathf.Max(healthPoints - damage, 0);
@@ -69,8 +71,8 @@ namespace VLCNP.Attributes
         private void Die()
         {
             if (isDead) return;
-            // TODO: Trigger death animation
-            GetComponent<Animator>().SetTrigger("die");
+            gameObject.SetActive(false);
+            Instantiate(deadEffect, transform.position, Quaternion.identity);
             isDead = true;
         }
     }    
