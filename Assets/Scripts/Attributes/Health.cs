@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Stats;
+using UnityEngine.Events;
+using Fungus;
 
 namespace VLCNP.Attributes
 {
@@ -11,6 +13,7 @@ namespace VLCNP.Attributes
         // 無敵時間
         [SerializeField] float invincibleTime = 3f;
         [SerializeField] GameObject deadEffect = null;
+        [SerializeField] UnityEvent<float> takeDamage;
 
         bool isDead = false;
 
@@ -36,6 +39,7 @@ namespace VLCNP.Attributes
             timeSinceLastHit = 0f;
             healthPoints = Mathf.Max(healthPoints - damage, 0);
             print($"{gameObject.name} took {damage} damage, {healthPoints} health points left");
+            takeDamage.Invoke(damage);
             if (healthPoints == 0) {
                 Die();
             } else {
@@ -71,9 +75,9 @@ namespace VLCNP.Attributes
         private void Die()
         {
             if (isDead) return;
-            gameObject.SetActive(false);
             Instantiate(deadEffect, transform.position, Quaternion.identity);
             isDead = true;
+            gameObject.SetActive(false);
         }
     }    
 }
