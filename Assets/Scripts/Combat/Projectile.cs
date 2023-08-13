@@ -10,6 +10,7 @@ namespace VLCNP.Combat
         [SerializeField] GameObject hitEffect = null;
         [SerializeField] float deleteTime = 0.18f;
         [SerializeField] bool isLeft = true;
+        [SerializeField] string targetTagName = "Enemy";
 
         private void Start()
         {
@@ -22,13 +23,10 @@ namespace VLCNP.Combat
             transform.Translate(vx / 50, 0, 0);
         }
 
-        private void OnCollisionEnter2D(Collision2D collision)
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            if (collision.gameObject.CompareTag("Enemy"))
+            if (other.gameObject.CompareTag(targetTagName))
             {
-                // BeamStatus beamStatus = GetComponent<BeamStatus>();
-                // EnemyStatus enemyStatus = collision.gameObject.GetComponent<EnemyStatus>();
-                // enemyStatus.AddDamage(beamStatus);
                 print("hit!");
                 Destroy(this.gameObject);
             }

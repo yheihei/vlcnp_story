@@ -26,13 +26,13 @@ namespace VLCNP.Control
 
         private void OnCollisionStay2D(Collision2D other)
         {
-            AttackBehavior(other);
+            DirectAttackBehavior(other);
         }
 
-        private void AttackBehavior(Collision2D other)
+        private void DirectAttackBehavior(Collision2D other)
         {
             if (other.gameObject.tag != attackTargetTagName) return;
-            fighter.Attack(other.gameObject);
+            fighter.DirectAttack(other.gameObject);
         }
     }
 }

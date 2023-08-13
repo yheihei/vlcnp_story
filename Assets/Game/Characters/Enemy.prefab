@@ -94,6 +94,10 @@ PrefabInstance:
     - target: {fileID: 4002466559168597427, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: defaultWeaponConfig
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4002466559168597427, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: directAttackWeaponConfig
+      value: 
       objectReference: {fileID: 11400000, guid: c7dd3e642c7c84a66b54013da184e480, type: 2}
     - target: {fileID: 5620201915574244777, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: m_Size.x
@@ -131,6 +135,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 7162812308406061260, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
 --- !u!1 &1047699481217569550 stripped
@@ -164,3 +172,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2aef5ecb713244b1ab9c8ce65cbd864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackTargetTagName: Player
