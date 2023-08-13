@@ -12,9 +12,11 @@ namespace VLCNP.Movement
         [SerializeField] float jumpPower = 8;
         private float timeSinceLastJump = Mathf.Infinity;
         bool isGround = false;
+        Animator animator;
 
         private void Awake() {
             rBody = GetComponent<Rigidbody2D>();
+            animator = GetComponent<Animator>();
         }
 
         private void Update() {
@@ -24,11 +26,13 @@ namespace VLCNP.Movement
         private void OnTriggerStay2D(Collider2D collision)
         {
             isGround = true;
+            UpdateJumpAnimation();
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
             isGround = false;
+            UpdateJumpAnimation();
         }
 
         public void Move()
@@ -43,6 +47,11 @@ namespace VLCNP.Movement
         {
             rBody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             timeSinceLastJump = 0f;
+        }
+
+        private void UpdateJumpAnimation()
+        {
+            animator.SetBool("isGround", isGround);
         }
     }
 }
