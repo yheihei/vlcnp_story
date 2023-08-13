@@ -2,6 +2,7 @@ namespace VLCNP.Stats
 {
     public enum Stat
     {
-        Health
+        Health,
+        WeaponDamage
     }
 }

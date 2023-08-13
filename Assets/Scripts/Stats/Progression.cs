@@ -5,33 +5,33 @@ using UnityEngine;
 
 namespace VLCNP.Stats
 {
-    [CreateAssetMenu(fileName = "CharacterStats", menuName = "Stats/New CharacterStats", order = 0)]
-    public class CharacterStats : ScriptableObject
+    [CreateAssetMenu(fileName = "Progression", menuName = "Stats/New Progression", order = 0)]
+    public class Progression : ScriptableObject
     {
-        [SerializeField] StatsCharacterClass[] characterClasses = null;
+        [SerializeField] ObjectStatClass[] objectStatClasses = null;
 
-        Dictionary<CharacterClass, Dictionary<Stat, float[]>> lookupTable = null;
+        Dictionary<StatClass, Dictionary<Stat, float[]>> lookupTable = null;
 
         [System.Serializable]
-        class StatsCharacterClass
+        class ObjectStatClass
         {
-            [SerializeField] public CharacterClass characterClass;
-            public CharacterStat[] stats;
+            [SerializeField] public StatClass statClass;
+            public ObjectStat[] stats;
         }
 
         [System.Serializable]
-        class CharacterStat
+        class ObjectStat
         {
             public Stat stat;
             public float[] levels;
         }
 
-        public float GetStat(Stat stat, CharacterClass characterClass, int level)
+        public float GetStat(Stat stat, StatClass statClass, int level)
         {
             BuildLookup();
             try
             {
-                return lookupTable[characterClass][stat][level - 1];
+                return lookupTable[statClass][stat][level - 1];
             }
             catch (KeyNotFoundException e)
             {
@@ -49,17 +49,17 @@ namespace VLCNP.Stats
         {
             if (lookupTable != null) return;
 
-            lookupTable = new Dictionary<CharacterClass, Dictionary<Stat, float[]>>();
+            lookupTable = new Dictionary<StatClass, Dictionary<Stat, float[]>>();
 
-            foreach (StatsCharacterClass progressionClass in characterClasses)
+            foreach (ObjectStatClass progressionClass in objectStatClasses)
             {
                 Dictionary<Stat, float[]> startLookupTable = new Dictionary<Stat, float[]>();
 
-                foreach (CharacterStat progressionStat in progressionClass.stats)
+                foreach (ObjectStat progressionStat in progressionClass.stats)
                 {
                     startLookupTable[progressionStat.stat] = progressionStat.levels;
                 }
-                lookupTable[progressionClass.characterClass] = startLookupTable;
+                lookupTable[progressionClass.statClass] = startLookupTable;
             }
         }
     }
