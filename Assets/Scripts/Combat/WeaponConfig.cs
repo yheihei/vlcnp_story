@@ -7,11 +7,7 @@ namespace VLCNP.Combat
     {
         // [SerializeField] AnimatorOverrideController animatorOverride = null;
         [SerializeField] Weapon equieppedPrefab = null;
-
-        [SerializeField] float weaponRange = 2f;
         [SerializeField] float weaponDamage = 5f;
-        [SerializeField] float percentageBonus = 0;
-
         [SerializeField] Projectile projectile = null;
 
         const string weaponName = "Weapon";
@@ -68,19 +64,9 @@ namespace VLCNP.Combat
             Projectile projectileInstance = Instantiate(projectile, handTransform);
         }
 
-        // public float GetRange()
-        // {
-        //     return weaponRange;
-        // }
-
         public float GetDamage()
         {
             return weaponDamage;
         }
-
-        // public float GetPercentageBonus()
-        // {
-        //     return percentageBonus;
-        // }
     }    
 }
