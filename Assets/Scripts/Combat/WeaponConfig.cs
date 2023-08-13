@@ -62,6 +62,7 @@ namespace VLCNP.Combat
         public void LaunchProjectile(Transform handTransform)
         {
             Projectile projectileInstance = Instantiate(projectile, handTransform);
+            projectileInstance.SetDamage(weaponDamage);
         }
 
         public float GetDamage()

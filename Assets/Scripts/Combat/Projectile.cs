@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VLCNP.Attributes;
 
 namespace VLCNP.Combat
 {
@@ -11,23 +12,32 @@ namespace VLCNP.Combat
         [SerializeField] float deleteTime = 0.18f;
         [SerializeField] bool isLeft = true;
         [SerializeField] string targetTagName = "Enemy";
+        float damage = 0;
 
         private void Start()
         {
             Destroy(this.gameObject, deleteTime);
         }
 
+        public void SetDamage(float damage)
+        {
+            this.damage = damage;
+        }
+
         private void FixedUpdate()
         {
-            float vx = isLeft ? (-1) * speed : speed;
-            transform.Translate(vx / 50, 0, 0);
+            transform.Translate((-1) * speed / 50, 0, 0);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.gameObject.CompareTag(targetTagName))
             {
-                print("hit!");
+                Health health = other.gameObject.GetComponent<Health>();
+                if (health != null)
+                {
+                    health.TakeDamage(damage);
+                }
                 Destroy(this.gameObject);
             }
         }
