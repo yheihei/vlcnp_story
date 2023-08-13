@@ -17,7 +17,7 @@ namespace VLCNP.Control
         private void OnCollisionStay2D(Collision2D other)
         {
             if (other.gameObject.tag != targetTagName) return;
-            fighter.Attack(other.gameObject);
+            fighter.DirectAttack(other.gameObject);
         }
     }
 }

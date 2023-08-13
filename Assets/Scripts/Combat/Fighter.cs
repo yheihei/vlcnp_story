@@ -6,6 +6,7 @@ namespace VLCNP.Combat
     public class Fighter : MonoBehaviour
     {
         [SerializeField] WeaponConfig defaultWeaponConfig = null;
+        [SerializeField] WeaponConfig directAttackWeaponConfig = null;
         [SerializeField] Transform handTransform = null;
 
         WeaponConfig currentWeaponConfig;
@@ -17,6 +18,7 @@ namespace VLCNP.Combat
 
         private void EquipWeapon(WeaponConfig weaponConfig)
         {
+            if (weaponConfig == null) return;
             weaponConfig.Spawn(handTransform);
         }
 
@@ -27,6 +29,11 @@ namespace VLCNP.Combat
             } else {
                 target.GetComponent<Health>().TakeDamage(currentWeaponConfig.GetDamage());
             }
+        }
+
+        public void DirectAttack(GameObject target = null)
+        {
+            target.GetComponent<Health>().TakeDamage(directAttackWeaponConfig.GetDamage());
         }
     }
 }
