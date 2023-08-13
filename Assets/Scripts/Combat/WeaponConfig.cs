@@ -1,4 +1,5 @@
 using UnityEngine;
+using VLCNP.Stats;
 
 namespace VLCNP.Combat
 {
@@ -7,7 +8,7 @@ namespace VLCNP.Combat
     {
         // [SerializeField] AnimatorOverrideController animatorOverride = null;
         [SerializeField] Weapon equieppedPrefab = null;
-        [SerializeField] float weaponDamage = 5f;
+        [SerializeField] float[] weaponDamages = new float[] { 2f, 4f, 8f };
         [SerializeField] Projectile projectile = null;
 
         const string weaponName = "Weapon";
@@ -59,15 +60,15 @@ namespace VLCNP.Combat
             return projectile != null;
         }
 
-        public void LaunchProjectile(Transform handTransform)
+        public void LaunchProjectile(Transform handTransform, int level = 1)
         {
             Projectile projectileInstance = Instantiate(projectile, handTransform);
-            projectileInstance.SetDamage(weaponDamage);
+            projectileInstance.SetDamage(weaponDamages[level - 1]);
         }
 
-        public float GetDamage()
+        public float GetDamage(int level = 1)
         {
-            return weaponDamage;
+            return weaponDamages[level - 1];
         }
     }    
 }

@@ -25,7 +25,6 @@ namespace VLCNP.Attributes
         private void Awake() {
             healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
             playerSprite = GetComponent<SpriteRenderer>();
-            print("Health: " + healthPoints);
         }
 
         private void Update() {

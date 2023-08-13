@@ -1,8 +1,9 @@
 namespace VLCNP.Stats
 {
-    public enum CharacterClass
+    public enum StatClass
     {
         Player,
         ShortFacedCreature,
+        VeryLongGun,
     }
 }

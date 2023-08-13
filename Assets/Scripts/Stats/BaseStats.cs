@@ -6,18 +6,18 @@ namespace VLCNP.Stats
 {
     public class BaseStats : MonoBehaviour
     {
-        [SerializeField] CharacterClass characterClass;
-        [SerializeField] CharacterStats characterStats = null;
+        [SerializeField] StatClass statClass;
+        [SerializeField] Progression characterStats = null;
         int currentLevel = 1;
 
         public float GetStat(Stat stat)
         {
-            return GetBaseStat(Stat.Health);
+            return GetBaseStat(stat);
         }
 
         private float GetBaseStat(Stat stat)
         {
-            return characterStats.GetStat(stat, characterClass, currentLevel);
+            return characterStats.GetStat(stat, statClass, currentLevel);
         }
     }
 }
