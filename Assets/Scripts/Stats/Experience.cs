@@ -25,16 +25,5 @@ namespace VLCNP.Stats
             experiencePoints += experience;
             onExperienceGained();
         }
-
-        // private bool isMaxLevel()
-        // {
-        //     int maxLevel = baseStats.GetMaxLevel();
-        //     if (baseStats.GetLevel() >= maxLevel)
-        //     {
-        //         print("Max level reached");
-        //         return true;
-        //     }
-        //     return false;
-        // }
     }
 }

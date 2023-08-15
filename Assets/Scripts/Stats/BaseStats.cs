@@ -86,7 +86,6 @@ namespace VLCNP.Stats
 
         private float GetBaseStat(Stat stat)
         {
-            print(stat);
             return progression.GetStat(stat, statClass, currentLevel);
         }
     }
