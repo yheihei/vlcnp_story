@@ -27,7 +27,7 @@ namespace VLCNP.Combat
 
         public void Attack(GameObject target = null)
         {
-            int level = baseStats.GetLevel();
+            int level = baseStats ? baseStats.GetLevel() : 1;
             if (currentWeaponConfig.HasProjectile()) {
                 currentWeaponConfig.LaunchProjectile(handTransform, level);
             } else {
@@ -37,7 +37,8 @@ namespace VLCNP.Combat
 
         public void DirectAttack(GameObject target = null)
         {
-            target.GetComponent<Health>().TakeDamage(directAttackWeaponConfig.GetDamage(baseStats.GetLevel()));
+            int level = baseStats ? baseStats.GetLevel() : 1;
+            target.GetComponent<Health>().TakeDamage(directAttackWeaponConfig.GetDamage(level));
         }
     }
 }
