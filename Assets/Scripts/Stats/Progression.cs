@@ -45,6 +45,14 @@ namespace VLCNP.Stats
             }
         }
 
+        public int GetLevels(Stat stat, StatClass statClass)
+        {
+            BuildLookup();
+
+            float[] levels = lookupTable[statClass][stat];
+            return levels.Length;
+        }
+
         private void BuildLookup()
         {
             if (lookupTable != null) return;
