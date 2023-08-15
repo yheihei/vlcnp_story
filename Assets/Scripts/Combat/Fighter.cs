@@ -1,5 +1,6 @@
 using UnityEngine;
 using VLCNP.Attributes;
+using VLCNP.Stats;
 
 namespace VLCNP.Combat
 {
@@ -10,10 +11,12 @@ namespace VLCNP.Combat
         [SerializeField] Transform handTransform = null;
 
         WeaponConfig currentWeaponConfig;
+        BaseStats baseStats;
 
         private void Awake() {
             currentWeaponConfig = defaultWeaponConfig;
             EquipWeapon(currentWeaponConfig);
+            baseStats = GetComponent<BaseStats>();
         }
 
         private void EquipWeapon(WeaponConfig weaponConfig)
@@ -24,16 +27,17 @@ namespace VLCNP.Combat
 
         public void Attack(GameObject target = null)
         {
+            int level = baseStats.GetLevel();
             if (currentWeaponConfig.HasProjectile()) {
-                currentWeaponConfig.LaunchProjectile(handTransform);
+                currentWeaponConfig.LaunchProjectile(handTransform, level);
             } else {
-                target.GetComponent<Health>().TakeDamage(currentWeaponConfig.GetDamage());
+                target.GetComponent<Health>().TakeDamage(currentWeaponConfig.GetDamage(level));
             }
         }
 
         public void DirectAttack(GameObject target = null)
         {
-            target.GetComponent<Health>().TakeDamage(directAttackWeaponConfig.GetDamage());
+            target.GetComponent<Health>().TakeDamage(directAttackWeaponConfig.GetDamage(baseStats.GetLevel()));
         }
     }
 }

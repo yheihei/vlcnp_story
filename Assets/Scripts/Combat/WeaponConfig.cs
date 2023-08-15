@@ -1,3 +1,6 @@
+using System;
+using System.Drawing.Printing;
+using Fungus;
 using UnityEngine;
 using VLCNP.Stats;
 
@@ -63,12 +66,18 @@ namespace VLCNP.Combat
         public void LaunchProjectile(Transform handTransform, int level = 1)
         {
             Projectile projectileInstance = Instantiate(projectile, handTransform);
-            projectileInstance.SetDamage(weaponDamages[level - 1]);
+            projectileInstance.SetDamage(weaponDamages[GetCurrentLevelIndex(level)]);
         }
 
         public float GetDamage(int level = 1)
         {
-            return weaponDamages[level - 1];
+            return weaponDamages[GetCurrentLevelIndex(level)];
+        }
+
+        private int GetCurrentLevelIndex(int level)
+        {
+            // 武器のMaxレベル以上にはならない
+            return Math.Min(level, weaponDamages.Length) - 1;
         }
     }    
 }
