@@ -1,6 +1,7 @@
 using System;
 using System.Drawing.Printing;
 using Fungus;
+using Unity.VisualScripting;
 using UnityEngine;
 using VLCNP.Stats;
 
@@ -11,8 +12,14 @@ namespace VLCNP.Combat
     {
         // [SerializeField] AnimatorOverrideController animatorOverride = null;
         [SerializeField] Weapon equieppedPrefab = null;
-        [SerializeField] float[] weaponDamages = new float[] { 2f, 4f, 8f };
-        [SerializeField] Projectile projectile = null;
+        [SerializeField] WeaponLevel[] weaponLevels = null;
+
+        [System.Serializable]
+        class WeaponLevel
+        {
+            [SerializeField] public float damage;
+            [SerializeField] public Projectile projectile;
+        }
 
         const string weaponName = "Weapon";
 
@@ -58,26 +65,33 @@ namespace VLCNP.Combat
         //     return isRightHanded ? rightHand : leftHand;
         // }
 
-        public bool HasProjectile()
+        public bool HasProjectile(int level = 1)
         {
-            return projectile != null;
+            WeaponLevel _weaponLevel = GetCurrentWeapon(level);
+            if (_weaponLevel == null) return false;
+            return _weaponLevel.projectile != null;
         }
 
-        public void LaunchProjectile(Transform handTransform, int level = 1)
+        public void LaunchProjectile(Transform handTransform, int level = 1, bool isLeft = false)
         {
-            Projectile projectileInstance = Instantiate(projectile, handTransform);
-            projectileInstance.SetDamage(weaponDamages[GetCurrentLevelIndex(level)]);
+            WeaponLevel _weaponLevel = GetCurrentWeapon(level);
+            Projectile projectileInstance = Instantiate(_weaponLevel.projectile, handTransform.position, handTransform.rotation);
+            projectileInstance.IsLeft = isLeft;
+            projectileInstance.SetDamage(_weaponLevel.damage);
+        }
+
+        private WeaponLevel GetCurrentWeapon(int level = 1)
+        {
+            if (weaponLevels.Length == 0) return null;
+            // 武器のMaxレベル以上にはならない
+            return weaponLevels[Math.Min(level, weaponLevels.Length) - 1];
         }
 
         public float GetDamage(int level = 1)
         {
-            return weaponDamages[GetCurrentLevelIndex(level)];
-        }
-
-        private int GetCurrentLevelIndex(int level)
-        {
-            // 武器のMaxレベル以上にはならない
-            return Math.Min(level, weaponDamages.Length) - 1;
+            WeaponLevel _weaponLevel = GetCurrentWeapon(level);
+            if (_weaponLevel == null) return 0;
+            return _weaponLevel.damage;
         }
     }    
 }

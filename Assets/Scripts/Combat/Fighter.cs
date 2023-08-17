@@ -29,7 +29,7 @@ namespace VLCNP.Combat
         {
             int level = baseStats ? baseStats.GetLevel() : 1;
             if (currentWeaponConfig.HasProjectile()) {
-                currentWeaponConfig.LaunchProjectile(handTransform, level);
+                currentWeaponConfig.LaunchProjectile(handTransform, level, GetIsLeft());
             } else {
                 target.GetComponent<Health>().TakeDamage(currentWeaponConfig.GetDamage(level));
             }
@@ -39,6 +39,12 @@ namespace VLCNP.Combat
         {
             int level = baseStats ? baseStats.GetLevel() : 1;
             target.GetComponent<Health>().TakeDamage(directAttackWeaponConfig.GetDamage(level));
+        }
+
+        private bool GetIsLeft()
+        {
+            // 左向きキャラクターをlocalScaleで反転させているため、右を向いているときscaleが-1になる
+            return transform.lossyScale.x > 0;
         }
     }
 }
