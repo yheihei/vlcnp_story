@@ -12,7 +12,7 @@ namespace VLCNP.Combat
         // [SerializeField] AnimatorOverrideController animatorOverride = null;
         [SerializeField] Weapon equieppedPrefab = null;
         [SerializeField] float[] weaponDamages = new float[] { 2f, 4f, 8f };
-        [SerializeField] Projectile projectile = null;
+        [SerializeField] Projectile[] projectiles;
 
         const string weaponName = "Weapon";
 
@@ -60,12 +60,12 @@ namespace VLCNP.Combat
 
         public bool HasProjectile()
         {
-            return projectile != null;
+            return projectiles.Length > 0;
         }
 
         public void LaunchProjectile(Transform handTransform, int level = 1)
         {
-            Projectile projectileInstance = Instantiate(projectile, handTransform);
+            Projectile projectileInstance = Instantiate(GetCurrentLevelProjectile(level), handTransform);
             projectileInstance.SetDamage(weaponDamages[GetCurrentLevelIndex(level)]);
         }
 
@@ -78,6 +78,13 @@ namespace VLCNP.Combat
         {
             // 武器のMaxレベル以上にはならない
             return Math.Min(level, weaponDamages.Length) - 1;
+        }
+
+        private Projectile GetCurrentLevelProjectile(int level)
+        {
+            // 武器のMaxレベル以上にはならない
+            int index = Math.Min(level, projectiles.Length) - 1;
+            return projectiles[index];
         }
     }    
 }
