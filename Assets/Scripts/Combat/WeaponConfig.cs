@@ -1,6 +1,7 @@
 using System;
 using System.Drawing.Printing;
 using Fungus;
+using Unity.VisualScripting;
 using UnityEngine;
 using VLCNP.Stats;
 
@@ -71,10 +72,11 @@ namespace VLCNP.Combat
             return _weaponLevel.projectile != null;
         }
 
-        public void LaunchProjectile(Transform handTransform, int level = 1)
+        public void LaunchProjectile(Transform handTransform, int level = 1, bool isLeft = false)
         {
             WeaponLevel _weaponLevel = GetCurrentWeapon(level);
-            Projectile projectileInstance = Instantiate(_weaponLevel.projectile, handTransform);
+            Projectile projectileInstance = Instantiate(_weaponLevel.projectile, handTransform.position, handTransform.rotation);
+            projectileInstance.IsLeft = isLeft;
             projectileInstance.SetDamage(_weaponLevel.damage);
         }
 
