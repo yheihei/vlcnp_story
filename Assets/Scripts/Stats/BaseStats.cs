@@ -20,6 +20,7 @@ namespace VLCNP.Stats
             if (experience != null)
             {
                 experience.onExperienceGained += UpdateLevel;
+                experience.onExperienceLost += UpdateLevel;
             }
         }
 
@@ -27,6 +28,7 @@ namespace VLCNP.Stats
             if (experience != null)
             {
                 experience.onExperienceGained -= UpdateLevel;
+                experience.onExperienceLost -= UpdateLevel;
             }
         }
 
@@ -41,7 +43,19 @@ namespace VLCNP.Stats
                 //     LevelUpEffect();
                 //     onLevelUp();
                 // }
+                return;
             }
+            if (newLevel < currentLevel)
+            {
+                currentLevel = newLevel;
+                print($"Levelled Down! {currentLevel}");
+                // if (levelDownEffect != null)
+                // {
+                //     LevelDownEffect();
+                //     onLevelDown();
+                // }
+                return;
+            } 
         }
 
         private int CalculateLevel()
