@@ -46,6 +46,34 @@ PrefabInstance:
       propertyPath: invincibleTime
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 4373353058723386108}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoseExperience
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: VLCNP.Stats.Experience, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: -2641368885610136209, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: m_Material
       value: 
@@ -162,6 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   experiencePoints: 0
+  loseExperienceModifier: 2
 --- !u!4 &6362254506045297432 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3223142059203919296, guid: b53f7de505ed44dce9641241aeeba081, type: 3}

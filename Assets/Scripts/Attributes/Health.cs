@@ -13,7 +13,7 @@ namespace VLCNP.Attributes
         // 無敵時間
         [SerializeField] float invincibleTime = 3f;
         [SerializeField] GameObject deadEffect = null;
-        [SerializeField] UnityEvent<float> takeDamage;
+        [SerializeField] public UnityEvent<float> takeDamage;
 
         bool isDead = false;
 
