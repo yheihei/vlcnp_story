@@ -7,9 +7,18 @@ namespace VLCNP.Core
 {
     public class ChangeSpriteAnimationOnLevelUp : MonoBehaviour
     {
-        // レベルごとに採用するAnimationをSerializeFieldで指定する
-        [SerializeField] AnimatorOverrideController[] animatorOverrideControllers = null;
-        [SerializeField] ColliderPerLevel[] colliderPerLevels = null;
+        [SerializeField] AnimationsPerLevel[] animationsPerLevels = null;
+
+        [System.Serializable]
+        public class AnimationsPerLevel
+        {
+            [SerializeField]
+            public AnimatorOverrideController animatorOverrideController;
+            [SerializeField]
+            public ColliderPerLevel colliderPerLevel;
+            [SerializeField]
+            public GameObject auraEffect;
+        }
 
         [System.Serializable]
         public class ColliderPerLevel
@@ -18,13 +27,17 @@ namespace VLCNP.Core
             public float capsuleCollider2DYOffset;
             public float boxCollider2DYOffset;
             public float handTransformY;
+            public float legTransformY;
         }
 
         Animator animator;
+        GameObject aura;
+        Transform groundTransform;
 
         private void Awake() {
             animator = GetComponent<Animator>();
             ChangeAnimation(GetComponent<BaseStats>().GetLevel());
+            groundTransform = GetComponent<BoxCollider2D>() ? GetComponent<BoxCollider2D>().transform : null;
         }
 
         private void OnEnable() {
@@ -37,22 +50,43 @@ namespace VLCNP.Core
 
         public void ChangeAnimation(int level)
         {
-            int levelIndex = level < animatorOverrideControllers.Length ? level - 1 : animatorOverrideControllers.Length - 1;
-            animator.runtimeAnimatorController = animatorOverrideControllers[levelIndex];
+            int levelIndex = level < animationsPerLevels.Length ? level - 1 : animationsPerLevels.Length - 1;
+            animator.runtimeAnimatorController = animationsPerLevels[levelIndex].animatorOverrideController;
             ChangeCollider(levelIndex);
+            UpdateAuraEffect(levelIndex);
         }
 
         private void ChangeCollider(int levelIndex)
         {
             CapsuleCollider2D playerCollider = GetComponent<CapsuleCollider2D>();
             BoxCollider2D playerGroundCollider = GetComponent<BoxCollider2D>();
-            playerCollider.size = new Vector2(playerCollider.size.x, colliderPerLevels[levelIndex].capsuleCollider2DYSize);
-            playerCollider.offset = new Vector2(playerCollider.offset.x, colliderPerLevels[levelIndex].capsuleCollider2DYOffset);
-            playerGroundCollider.offset = new Vector2(playerGroundCollider.offset.x, colliderPerLevels[levelIndex].boxCollider2DYOffset);
+            ColliderPerLevel colliderPerLevel = animationsPerLevels[levelIndex].colliderPerLevel;
+            playerCollider.size = new Vector2(playerCollider.size.x, colliderPerLevel.capsuleCollider2DYSize);
+            playerCollider.offset = new Vector2(playerCollider.offset.x, colliderPerLevel.capsuleCollider2DYOffset);
+            playerGroundCollider.offset = new Vector2(playerGroundCollider.offset.x, colliderPerLevel.boxCollider2DYOffset);
             Transform hand = transform.Find("Hand");
             if (hand != null)
             {
-                hand.localPosition = new Vector3(hand.localPosition.x, colliderPerLevels[levelIndex].handTransformY, hand.localPosition.z);
+                hand.localPosition = new Vector3(hand.localPosition.x, colliderPerLevel.handTransformY, hand.localPosition.z);
+            }
+            Transform leg = transform.Find("Leg");
+            if (leg != null)
+            {
+                leg.localPosition = new Vector3(leg.localPosition.x, colliderPerLevel.legTransformY, leg.localPosition.z);
+            }
+        }
+
+        private void UpdateAuraEffect(int levelIndex)
+        {
+            GameObject auraEffect = animationsPerLevels[levelIndex].auraEffect;
+            if (auraEffect != null)
+            {
+                Transform leg = transform.Find("Leg");
+                aura = Instantiate(auraEffect, leg.position, Quaternion.identity, leg);
+            }
+            else
+            {
+                if (aura != null) Destroy(aura);
             }
         }
     }
