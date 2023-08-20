@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace VLCNP.Stats
         [SerializeField] Progression progression = null;
         int currentLevel = 1;
         Experience experience;
+        public event Action<int> OnChangeLevel;
 
         private void Awake() {
             experience = GetComponent<Experience>();
@@ -43,6 +45,7 @@ namespace VLCNP.Stats
                 //     LevelUpEffect();
                 //     onLevelUp();
                 // }
+                OnChangeLevel(currentLevel);
                 return;
             }
             if (newLevel < currentLevel)
@@ -54,6 +57,7 @@ namespace VLCNP.Stats
                 //     LevelDownEffect();
                 //     onLevelDown();
                 // }
+                OnChangeLevel(currentLevel);
                 return;
             } 
         }
