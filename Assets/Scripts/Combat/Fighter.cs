@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using VLCNP.Attributes;
 using VLCNP.Stats;
@@ -19,20 +21,32 @@ namespace VLCNP.Combat
             baseStats = GetComponent<BaseStats>();
         }
 
+        public void WeaponUp()
+        {
+            handTransform.rotation = GetIsLeft() ? Quaternion.Euler(0, 0, -90) : Quaternion.Euler(0, 0, 90);
+        }
+
+        public void WeaponDown()
+        {
+            handTransform.rotation = GetIsLeft() ? Quaternion.Euler(0, 0, 90) : Quaternion.Euler(0, 0, -90);
+        }
+
+        public void WeaponHorizontal()
+        {
+            handTransform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+
         private void EquipWeapon(WeaponConfig weaponConfig)
         {
             if (weaponConfig == null) return;
             weaponConfig.Spawn(handTransform);
         }
 
-        public void Attack(GameObject target = null)
+        public void Attack()
         {
             int level = baseStats ? baseStats.GetLevel() : 1;
-            if (currentWeaponConfig.HasProjectile()) {
-                currentWeaponConfig.LaunchProjectile(handTransform, level, GetIsLeft());
-            } else {
-                target.GetComponent<Health>().TakeDamage(currentWeaponConfig.GetDamage(level));
-            }
+            if (!currentWeaponConfig.HasProjectile()) return;
+            currentWeaponConfig.LaunchProjectile(handTransform, level, GetIsLeft());
         }
 
         public void DirectAttack(GameObject target = null)

@@ -22,6 +22,18 @@ namespace VLCNP.Control
 
         private void AttackBehaviour()
         {
+            if (Input.GetKey("up"))
+            {
+                fighter.WeaponUp();
+            }
+            else if (Input.GetKey("down"))
+            {
+                fighter.WeaponDown();
+            }
+            else
+            {
+                fighter.WeaponHorizontal();
+            }
             if (Input.GetKeyUp("x"))
             {
                 fighter.Attack();
