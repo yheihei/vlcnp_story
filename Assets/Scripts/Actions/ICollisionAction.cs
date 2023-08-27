@@ -6,5 +6,7 @@ namespace VLCNP.Actions
     {
         public bool IsAction { get; set; }
         public void Execute();
+        public void ShowInformation();
+        public void HideInformation();
     }
 }

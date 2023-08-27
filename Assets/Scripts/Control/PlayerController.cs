@@ -34,11 +34,15 @@ namespace VLCNP.Control
             if (_collisionAction == null) return;
             if (collisionAction != null) return;
             collisionAction = _collisionAction;
+            collisionAction.ShowInformation();
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
+            ICollisionAction _collisionAction = other.GetComponent<ICollisionAction>();
+            if (_collisionAction == null) return;
             if (collisionAction == other.GetComponent<ICollisionAction>()) {
+                collisionAction.HideInformation();
                 collisionAction = null;
             }
         }

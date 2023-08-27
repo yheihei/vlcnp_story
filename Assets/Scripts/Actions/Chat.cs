@@ -3,6 +3,7 @@ using Fungus;
 using System.Threading;
 using System.Collections;
 using VLCNP.Core;
+using VLCNP.UI;
 
 namespace VLCNP.Actions
 {
@@ -15,8 +16,12 @@ namespace VLCNP.Actions
         
         [SerializeField]
         public string TargetTag = "Player";
+        [SerializeField]
+        public string InformationText = null;
 
         bool isAction = true;
+
+        InformationText informationTextObject = null;
 
         public bool IsAction { get => isAction; set => isAction = value; }
 
@@ -38,6 +43,21 @@ namespace VLCNP.Actions
             yield return new WaitUntil(() => flowChart.GetExecutingBlocks().Count == 0);
             StartAll();
             isAction = true;
+        }
+
+        public void ShowInformation()
+        {
+            if (InformationText == null) return;
+            InformationTextSpawner spawner = GetComponent<InformationTextSpawner>();
+            if (spawner == null) return;
+            if (informationTextObject != null) return;
+            informationTextObject = spawner.Spawn(InformationText);
+        }
+
+        public void HideInformation()
+        {
+            if (informationTextObject == null) return;
+            Destroy(informationTextObject.gameObject);
         }
 
         private void StopAll()

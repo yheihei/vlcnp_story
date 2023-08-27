@@ -6061,6 +6061,7 @@ GameObject:
   - component: {fileID: 1871434426}
   - component: {fileID: 1871434428}
   - component: {fileID: 1871434429}
+  - component: {fileID: 1871434430}
   m_Layer: 0
   m_Name: uni
   m_TagString: Untagged
@@ -6176,6 +6177,20 @@ MonoBehaviour:
   flowChart: {fileID: 205488427927681391}
   BlockName: Message
   TargetTag: Player
+  InformationText: "(\u2191) \u30A6\u30CB\u30AD"
+--- !u!114 &1871434430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871434425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63c64faa27fa04df6bd4fc0eefa7d6a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textPrefab: {fileID: 7155506780549345452, guid: f7e35f3b6f5d249d88596864c51b65b4, type: 3}
 --- !u!1 &1891174360
 GameObject:
   m_ObjectHideFlags: 0
@@ -6576,7 +6591,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 5304988783140649967}
   selectedCommands:
-  - {fileID: 2906355836119371809}
+  - {fileID: 29}
   variables:
   - {fileID: 2481217347253268558}
   description: 
@@ -6900,7 +6915,7 @@ MonoBehaviour:
     y: 225
     width: 101
     height: 40
-  tint: {r: 1, g: 1, b: 1, a: 1}
+  tint: {r: 0, g: 0, b: 0, a: 1}
   useCustomTint: 0
   itemId: 0
   blockName: Message
