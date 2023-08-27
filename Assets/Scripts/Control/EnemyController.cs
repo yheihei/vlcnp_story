@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Nethereum.Quorum.RPC.DTOs;
 using UnityEngine;
 using VLCNP.Combat;
+using VLCNP.Core;
 using VLCNP.Movement;
 
 namespace VLCNP.Control
 {
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : MonoBehaviour, IStoppable
     {
         Fighter fighter;
         [SerializeField] string attackTargetTagName = "Player";
         IMoveAction[] moveActions;
+
+        bool isStopped = false;
+        public bool IsStopped { get => isStopped; set => isStopped = value; }
 
         private void Awake() {
             moveActions = GetComponents<IMoveAction>();
@@ -18,6 +23,7 @@ namespace VLCNP.Control
         }
 
         private void Update() {
+            if (isStopped) return;
             foreach (IMoveAction moveAction in moveActions)
             {
                 moveAction.Move();

@@ -64,11 +64,19 @@ namespace VLCNP.Movement
 
         private void OnTriggerStay2D(Collider2D collision)
         {
+            if (!collision.tag.Equals("Ground") && !collision.tag.Equals("Enemy"))
+            {
+                return;
+            }
             isGround = true;
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
+            if (!collision.tag.Equals("Ground") && !collision.tag.Equals("Enemy"))
+            {
+                return;
+            }
             isGround = false;
         }
 
@@ -93,8 +101,8 @@ namespace VLCNP.Movement
         {
             if (isJumping)
             {
-                rbody.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
                 isJumping = false;
+                rbody.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
             }
         }
     }    
