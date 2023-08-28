@@ -23,6 +23,7 @@ namespace VLCNP.UI
         {
             float hitPoints = player.GetComponent<Health>().GetHealthPoints();
             slider.value = (float) hitPoints / (float) baseStats.GetStat(Stat.Health);
+            print($"{hitPoints} / {baseStats.GetStat(Stat.Health)}");
         }
     }
 }
