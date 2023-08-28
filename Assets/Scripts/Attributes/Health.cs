@@ -78,5 +78,10 @@ namespace VLCNP.Attributes
             isDead = true;
             gameObject.SetActive(false);
         }
+
+        public float GetHealthPoints()
+        {
+            return healthPoints;
+        }
     }    
 }
