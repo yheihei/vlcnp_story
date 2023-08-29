@@ -10,6 +10,7 @@ namespace VLCNP.Stats
         [SerializeField] StatClass statClass;
         [SerializeField] Progression progression = null;
         int currentLevel = 1;
+        int currentHealthLevel = 1;
         Experience experience;
         public event Action<int> OnChangeLevel;
 
@@ -92,6 +93,26 @@ namespace VLCNP.Stats
             return currentLevel;
         }
 
+        // 次のレベルまでの経験値を取得
+        public float GetExperienceToNextLevel()
+        {
+            if (isReachedMaxLevel())
+            {
+                return 0;
+            }
+            return progression.GetStat(Stat.ExperienceToLevelUp, statClass, currentLevel);
+        }
+
+        // いまのレベルまでの経験値を取得
+        public float GetExperienceToCurrentLevel()
+        {
+            if (currentLevel == 1)
+            {
+                return 0;
+            }
+            return progression.GetStat(Stat.ExperienceToLevelUp, statClass, currentLevel - 1);
+        }
+
         public bool isReachedMaxLevel()
         {
             return currentLevel >= GetMaxLevel();
@@ -104,6 +125,10 @@ namespace VLCNP.Stats
 
         private float GetBaseStat(Stat stat)
         {
+            if (stat == Stat.Health)
+            {
+                return progression.GetStat(Stat.Health, statClass, currentHealthLevel);
+            }
             return progression.GetStat(stat, statClass, currentLevel);
         }
     }
