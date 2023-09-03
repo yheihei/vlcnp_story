@@ -8,7 +8,7 @@ namespace VLCNP.Movement
         [SerializeField] float jumpPower = 8;
         bool isLeft = true;
         // isLeftのgetterを定義
-        public bool IsLeft { get => isLeft; }
+        public bool IsLeft { get => isLeft;  set => isLeft = value;}
         bool isGround = true;
         bool isJumping= false;
         bool isPushing = false;
