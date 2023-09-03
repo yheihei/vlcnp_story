@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using VLCNP.Control;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,6 +18,9 @@ namespace VLCNP.SceneManagement
         [SerializeField] Transform spawnPoint;
         [SerializeField] bool isPlayerDirectionLeft;
         [SerializeField] DestinationIdentifier destination;
+        [SerializeField] float fadeOutTime = 1f;
+        [SerializeField] float fadeWaitTime = 0.2f;
+        [SerializeField] float fadeInTime = 1f;
 
         bool isTransitioning = false;
 
@@ -39,10 +43,24 @@ namespace VLCNP.SceneManagement
                 yield break;
             }
             DontDestroyOnLoad(gameObject);
+            DisableControl();
+
+            Fader fader = FindObjectOfType<Fader>();
+            yield return fader.FadeOut(fadeOutTime);
+
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
             print("Scene Loaded");
+
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
+
+            DisableControl();
+
+            yield return new WaitForSeconds(fadeWaitTime);
+            yield return fader.FadeIn(fadeInTime);
+
+            EnableControl();
+
             Destroy(gameObject);
         }
 
@@ -52,6 +70,19 @@ namespace VLCNP.SceneManagement
             player.transform.position = otherPortal.spawnPoint.position;
             // 向きを変える
             player.GetComponent<Movement.Mover>().IsLeft = otherPortal.isPlayerDirectionLeft;
+        }
+
+        void DisableControl()
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            player.GetComponent<PlayerController>().enabled = false;
+            player.GetComponent<Movement.Mover>().Stop();
+        }
+
+        void EnableControl()
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            player.GetComponent<PlayerController>().enabled = true;
         }
 
         private Portal GetOtherPortal()

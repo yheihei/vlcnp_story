@@ -46,6 +46,13 @@ namespace VLCNP.Movement
             UpdateAnimator();
         }
 
+        public void Stop()
+        {
+            vx = 0;
+            isPushing = false;
+            UpdateAnimator();
+        }
+
         private bool CanJump()
         {
             // 地面についていて、ジャンプボタン押しっぱなしでない、かつ、上向きの速度が0.1以下
