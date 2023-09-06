@@ -5,10 +5,10 @@ namespace VLCNP.Movement
     public class Mover : MonoBehaviour
     {
         [SerializeField] float speed = 4;
-        [SerializeField] float jumpPower = 8;
+        [SerializeField] float jumpPower = 7;
         bool isLeft = true;
         // isLeftのgetterを定義
-        public bool IsLeft { get => isLeft; }
+        public bool IsLeft { get => isLeft;  set => isLeft = value;}
         bool isGround = true;
         bool isJumping= false;
         bool isPushing = false;
@@ -34,19 +34,29 @@ namespace VLCNP.Movement
                 vx = -speed;
                 isLeft = true;
             }
-            if (Input.GetKey("space") && isGround)
+            if (Input.GetKey("space") && CanJump())
             {
-                if (!isPushing)
-                {
-                    isJumping = true;
-                    isPushing = true;
-                }
+                isJumping = true;
+                isPushing = true;
             }
             else
             {
                 isPushing = false;
             }
             UpdateAnimator();
+        }
+
+        public void Stop()
+        {
+            vx = 0;
+            isPushing = false;
+            UpdateAnimator();
+        }
+
+        private bool CanJump()
+        {
+            // 地面についていて、ジャンプボタン押しっぱなしでない、かつ、上向きの速度が0.1以下
+            return  isGround && !isPushing && rbody.velocity.y < 0.1f;
         }
 
         private void UpdateAnimator()
