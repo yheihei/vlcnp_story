@@ -1,8 +1,10 @@
+using Newtonsoft.Json.Linq;
 using UnityEngine;
+using VLCNP.Saving;
 
 namespace VLCNP.Movement
 {
-    public class Mover : MonoBehaviour
+    public class Mover : MonoBehaviour, IJsonSaveable
     {
         [SerializeField] float speed = 4;
         [SerializeField] float jumpPower = 7;
@@ -114,6 +116,16 @@ namespace VLCNP.Movement
                 isJumping = false;
                 rbody.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
             }
+        }
+
+        public JToken CaptureAsJToken()
+        {
+            return transform.position.ToToken();
+        }
+
+        public void RestoreFromJToken(JToken state)
+        {
+            transform.position = state.ToVector3();
         }
     }    
 }

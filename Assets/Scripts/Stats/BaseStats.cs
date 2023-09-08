@@ -37,30 +37,8 @@ namespace VLCNP.Stats
 
         private void UpdateLevel() {
             int newLevel = CalculateLevel();
-            if (newLevel > currentLevel)
-            {
-                currentLevel = newLevel;
-                print($"Levelled Up! {currentLevel}");
-                // if (levelUpEffect != null)
-                // {
-                //     LevelUpEffect();
-                //     onLevelUp();
-                // }
-                OnChangeLevel(currentLevel);
-                return;
-            }
-            if (newLevel < currentLevel)
-            {
-                currentLevel = newLevel;
-                print($"Levelled Down! {currentLevel}");
-                // if (levelDownEffect != null)
-                // {
-                //     LevelDownEffect();
-                //     onLevelDown();
-                // }
-                OnChangeLevel(currentLevel);
-                return;
-            } 
+            currentLevel = newLevel;
+            OnChangeLevel(currentLevel);
         }
 
         private int CalculateLevel()
@@ -68,9 +46,7 @@ namespace VLCNP.Stats
             Experience experience = GetComponent<Experience>();
             if (experience == null) return 1;
             float currentXP = experience.GetExperiencePoints();
-            print($"currentXP: {currentXP}");
             int penultimateLevel = progression.GetLevels(Stat.ExperienceToLevelUp, statClass);
-            print($"penultimateLevel: {penultimateLevel}");
             for (int level = 1; level <= penultimateLevel; level++)
             {
                 float XPToLevelUp = progression.GetStat(Stat.ExperienceToLevelUp, statClass, level);

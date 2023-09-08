@@ -79,14 +79,14 @@ namespace VLCNP.Core
         private void UpdateAuraEffect(int levelIndex)
         {
             GameObject auraEffect = animationsPerLevels[levelIndex].auraEffect;
-            if (auraEffect != null)
+            if (auraEffect != null && aura == null)
             {
                 Transform leg = transform.Find("Leg");
                 aura = Instantiate(auraEffect, leg.position, Quaternion.identity, leg);
             }
-            else
+            else if (auraEffect == null && aura != null)
             {
-                if (aura != null) Destroy(aura);
+                Destroy(aura);
             }
         }
     }

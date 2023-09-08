@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Stats;
 using UnityEngine.Events;
-using Fungus;
+using VLCNP.Saving;
+using Newtonsoft.Json.Linq;
 
 namespace VLCNP.Attributes
 {
-    public class Health : MonoBehaviour
+    public class Health : MonoBehaviour, IJsonSaveable
     {
         float healthPoints = -1f;
         // 無敵時間
@@ -37,7 +36,6 @@ namespace VLCNP.Attributes
             if (IsInvincible()) return;
             timeSinceLastHit = 0f;
             healthPoints = Mathf.Max(healthPoints - damage, 0);
-            print($"{gameObject.name} took {damage} damage, {healthPoints} health points left");
             takeDamage.Invoke(damage);
             if (healthPoints == 0) {
                 Die();
@@ -82,6 +80,20 @@ namespace VLCNP.Attributes
         public float GetHealthPoints()
         {
             return healthPoints;
+        }
+
+        public JToken CaptureAsJToken()
+        {
+            return JToken.FromObject(healthPoints);
+        }
+
+        public void RestoreFromJToken(JToken state)
+        {
+            healthPoints = state.ToObject<float>();
+            if (healthPoints == 0)
+            {
+                Die();
+            }
         }
     }    
 }

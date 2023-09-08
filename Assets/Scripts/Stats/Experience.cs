@@ -1,9 +1,11 @@
 using System;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
+using VLCNP.Saving;
 
 namespace VLCNP.Stats
 {
-    public class Experience : MonoBehaviour
+    public class Experience : MonoBehaviour, IJsonSaveable
     {
         [SerializeField] float experiencePoints = 0;
         [SerializeField] float loseExperienceModifier = 2f;
@@ -31,9 +33,19 @@ namespace VLCNP.Stats
         public void LoseExperience(float experience)
         {
             float loseExperiencePoint = experience * loseExperienceModifier;
-            print($"Lose {loseExperiencePoint} experience");
             experiencePoints = Mathf.Max(experiencePoints - loseExperiencePoint, 0);
             onExperienceLost();
+        }
+
+        public JToken CaptureAsJToken()
+        {
+            return JToken.FromObject(experiencePoints);
+        }
+
+        public void RestoreFromJToken(JToken state)
+        {
+            experiencePoints = state.ToObject<float>();
+            onExperienceGained();  // レベルの再計算
         }
     }
 }
