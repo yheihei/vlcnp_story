@@ -19,13 +19,16 @@ namespace VLCNP.Saving
         /// <param name="saveFile">The save file to consult for loading.</param>
         public IEnumerator LoadLastScene(string saveFile)
         {
+            print("LoadLastScene: " + saveFile);
             JObject state = LoadJsonFromFile(saveFile);
             IDictionary<string, JToken> stateDict = state; 
             int buildIndex = SceneManager.GetActiveScene().buildIndex;
             if (stateDict.ContainsKey("lastSceneBuildIndex"))
             {
+                print("lastSceneBuildIndex: " + stateDict["lastSceneBuildIndex"]);
                 buildIndex = (int)stateDict["lastSceneBuildIndex"];
             }
+            print("LoadLastScene: " + buildIndex);
             yield return SceneManager.LoadSceneAsync(buildIndex);
             RestoreFromToken(state);
         }
@@ -46,11 +49,6 @@ namespace VLCNP.Saving
         public void Delete(string saveFile)
         {
             File.Delete(GetPathFromSaveFile(saveFile));
-        }
-
-        public void Load(string saveFile)
-        {
-            RestoreFromToken(LoadJsonFromFile(saveFile));
         }
 
         public IEnumerable<string> ListSaves()
@@ -110,6 +108,7 @@ namespace VLCNP.Saving
             }
 
             stateDict["lastSceneBuildIndex"] = SceneManager.GetActiveScene().buildIndex;
+            print("CaptureAsToken: " + stateDict["lastSceneBuildIndex"]);
         }
 
 

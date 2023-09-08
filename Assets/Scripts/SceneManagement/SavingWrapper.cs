@@ -41,7 +41,7 @@ namespace VLCNP.SceneManagement
         public void Load()
         {
             print($"Loading: {defaultSaveFile}");
-            GetComponent<JsonSavingSystem>().Load(defaultSaveFile);
+            StartCoroutine(GetComponent<JsonSavingSystem>().LoadLastScene(defaultSaveFile));
         }
 
         public void Delete()
