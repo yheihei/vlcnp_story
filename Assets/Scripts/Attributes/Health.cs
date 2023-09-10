@@ -3,6 +3,7 @@ using VLCNP.Stats;
 using UnityEngine.Events;
 using VLCNP.Saving;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace VLCNP.Attributes
 {
@@ -13,6 +14,7 @@ namespace VLCNP.Attributes
         [SerializeField] float invincibleTime = 3f;
         [SerializeField] GameObject deadEffect = null;
         [SerializeField] public UnityEvent<float> takeDamage;
+        public event Action onDie;
 
         bool isDead = false;
 
@@ -74,6 +76,7 @@ namespace VLCNP.Attributes
             if (isDead) return;
             Instantiate(deadEffect, transform.position, Quaternion.identity);
             isDead = true;
+            onDie?.Invoke();
             gameObject.SetActive(false);
         }
 
