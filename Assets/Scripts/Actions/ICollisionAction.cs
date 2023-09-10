@@ -1,5 +1,3 @@
-using Fungus;
-
 namespace VLCNP.Actions
 {
     public interface ICollisionAction
