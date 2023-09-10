@@ -1,6 +1,7 @@
 using System.Collections;
 using VLCNP.Saving;
 using UnityEngine;
+using System.IO.Enumeration;
 
 namespace VLCNP.SceneManagement
 {
@@ -32,16 +33,22 @@ namespace VLCNP.SceneManagement
             }
         }
 
-        public void Save()
+        public void Save(string fileName=defaultSaveFile)
         {
-            print($"Saving: {defaultSaveFile}");
-            GetComponent<JsonSavingSystem>().Save(defaultSaveFile);
+            print($"Saving: {fileName}");
+            GetComponent<JsonSavingSystem>().Save(fileName);
         }
 
-        public void Load()
+        public void LoadOnlyState(string fileName=defaultSaveFile)
         {
-            print($"Loading: {defaultSaveFile}");
-            StartCoroutine(GetComponent<JsonSavingSystem>().LoadLastScene(defaultSaveFile));
+            print($"Loading: {fileName}");
+            GetComponent<JsonSavingSystem>().LoadOnlyState(fileName);
+        }
+
+        public void Load(string fileName=defaultSaveFile)
+        {
+            print($"Loading: {fileName}");
+            StartCoroutine(GetComponent<JsonSavingSystem>().LoadLastScene(fileName));
         }
 
         public void Delete()

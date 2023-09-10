@@ -51,6 +51,12 @@ namespace VLCNP.Saving
             File.Delete(GetPathFromSaveFile(saveFile));
         }
 
+        public void LoadOnlyState(string saveFile)
+        {
+            RestoreFromToken(LoadJsonFromFile(saveFile));
+        }
+
+
         public IEnumerable<string> ListSaves()
         {
             foreach (string path in Directory.EnumerateFiles(Application.persistentDataPath))

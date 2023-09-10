@@ -21,6 +21,7 @@ namespace VLCNP.SceneManagement
         [SerializeField] float fadeOutTime = 1f;
         [SerializeField] float fadeWaitTime = 0.2f;
         [SerializeField] float fadeInTime = 1f;
+        [SerializeField] string autoSaveFileName = "autoSave";
 
         bool isTransitioning = false;
 
@@ -48,11 +49,18 @@ namespace VLCNP.SceneManagement
             Fader fader = FindObjectOfType<Fader>();
             yield return fader.FadeOut(fadeOutTime);
 
+            // キャラたちの状態保存
+            SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();
+            wrapper.Save(autoSaveFileName);
+
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
             print("Scene Loaded");
 
+            // キャラたちの状態復元
+            wrapper.LoadOnlyState(autoSaveFileName);
+
             Portal otherPortal = GetOtherPortal();
-            UpdatePlayer(otherPortal);
+            UpdatePlayerPosition(otherPortal);
 
             DisableControl();
 
@@ -64,8 +72,9 @@ namespace VLCNP.SceneManagement
             Destroy(gameObject);
         }
 
-        private void UpdatePlayer(Portal otherPortal)
+        private void UpdatePlayerPosition(Portal otherPortal)
         {
+            print("UpdatePlayerPosition");
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.transform.position = otherPortal.spawnPoint.position;
             // 向きを変える
