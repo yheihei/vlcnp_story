@@ -28,6 +28,7 @@ namespace VLCNP.Actions
         public void Execute()
         {
             if (!isAction) return;
+            if (flowChart == null) return;
             if (flowChart.HasExecutingBlocks()) return;
             StartCoroutine(Talk());
         }
