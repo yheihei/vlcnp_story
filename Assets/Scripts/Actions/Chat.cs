@@ -4,6 +4,7 @@ using System.Threading;
 using System.Collections;
 using VLCNP.Core;
 using VLCNP.UI;
+using Unity.VisualScripting;
 
 namespace VLCNP.Actions
 {
@@ -19,6 +20,11 @@ namespace VLCNP.Actions
         [SerializeField]
         public string InformationText = null;
 
+        [SerializeField]
+        public bool IsOnce = false;
+
+        bool isOnceDone = false;
+
         bool isAction = true;
 
         InformationText informationTextObject = null;
@@ -29,8 +35,19 @@ namespace VLCNP.Actions
         {
             if (!isAction) return;
             if (flowChart == null) return;
+            if (isOnceDone) return;
             if (flowChart.HasExecutingBlocks()) return;
             StartCoroutine(Talk());
+        }
+
+        public void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.gameObject.tag != TargetTag) return;
+            if (IsOnce)
+            {
+                if (isOnceDone) return;
+                isOnceDone = true;
+            }
         }
 
         IEnumerator Talk() {
@@ -49,6 +66,7 @@ namespace VLCNP.Actions
         public void ShowInformation()
         {
             if (InformationText == null) return;
+            if (isOnceDone) return;
             InformationTextSpawner spawner = GetComponent<InformationTextSpawner>();
             if (spawner == null) return;
             if (informationTextObject != null) return;

@@ -8,6 +8,7 @@ using VLCNP.Actions;
 using VLCNP.Control;
 using VLCNP.Core;
 using VLCNP.Saving;
+using VLCNP.UI;
 
 namespace VLCNP.Movie
 {
@@ -46,10 +47,17 @@ namespace VLCNP.Movie
         void EnableControl(PlayableDirector director) {
             GameObject player = GameObject.FindWithTag("Player");
             // Akim、はてなマーク
-            StartCoroutine(Talk());
+            // StartCoroutine(Talk());
             player.GetComponent<PlayerController>().enabled = true;
             // プレイヤーを開始位置に移動
             player.transform.position = startPoint.position;
+            // AreaNameをタグで取得し、表示
+            AreaNameShow areaNameShow = GameObject.FindWithTag("AreaName").GetComponent<AreaNameShow>();
+            areaNameShow.Show();
+            // チュートリアルを有効にする
+            tutorial.SetActive(true);
+            // BGMをタグで取得し、再生し始める
+            GameObject.FindWithTag("BGM").GetComponent<AudioSource>().Play();
         }
 
         void Start()
@@ -65,8 +73,6 @@ namespace VLCNP.Movie
             flowChart.ExecuteBlock("AkimQuestion");
             yield return new WaitUntil(() => flowChart.GetExecutingBlocks().Count == 0);
             StartAll();
-            // チュートリアルを有効にする
-            tutorial.SetActive(true);
         }
 
         private void StopAll()
