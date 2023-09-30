@@ -13,7 +13,8 @@ namespace VLCNP.SceneManagement
         IEnumerator Start() {
             Fader fader = FindObjectOfType<Fader>();
             fader.FadeOutImmediate();
-            yield return GetComponent<JsonSavingSystem>().LoadLastScene(defaultSaveFile);
+            // ゲームスタート時のロードはやめる
+            // yield return GetComponent<JsonSavingSystem>().LoadLastScene(defaultSaveFile);
             yield return fader.FadeIn(fadeInTime);
         }
 
