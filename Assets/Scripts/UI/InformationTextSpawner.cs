@@ -17,6 +17,7 @@ namespace VLCNP.UI
                 transform.position + new Vector3(0, SpawnOffsetY, 0),
                 transform.rotation
             );
+            instance.GetComponent<Canvas>().sortingLayerID = SortingLayer.NameToID("UI");
             instance.SetValue(text);
             return instance;
         }
