@@ -11,7 +11,7 @@ namespace VLCNP.SceneManagement
         [SerializeField] float fadeInTime = 0.2f;
 
         IEnumerator Start() {
-            Fader fader = FindObjectOfType<Fader>();
+            Fader fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
             fader.FadeOutImmediate();
             // ゲームスタート時のロードはやめる
             // yield return GetComponent<JsonSavingSystem>().LoadLastScene(defaultSaveFile);

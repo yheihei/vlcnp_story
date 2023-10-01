@@ -53,7 +53,7 @@ namespace VLCNP.Core
         {
             print("RestoreSchene");
             DontDestroyOnLoad(gameObject);
-            Fader fader = FindObjectOfType<Fader>();
+            Fader fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
             yield return fader.FadeOut(fadeOutTime);
             yield return new WaitForSeconds(fadeWaitTime);
             SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();

@@ -4,11 +4,12 @@ using System.Threading;
 using System.Collections;
 using VLCNP.Core;
 using VLCNP.UI;
-using Unity.VisualScripting;
+using VLCNP.Saving;
+using Newtonsoft.Json.Linq;
 
 namespace VLCNP.Actions
 {
-    public class Chat : MonoBehaviour, ICollisionAction
+    public class Chat : MonoBehaviour, ICollisionAction, IJsonSaveable
     {
         [SerializeField]
         public Flowchart flowChart;
@@ -97,6 +98,16 @@ namespace VLCNP.Actions
                 if (stoppable == null) continue;
                 stoppable.IsStopped = false;
             }
+        }
+
+        public JToken CaptureAsJToken()
+        {
+            return JToken.FromObject(isOnceDone);
+        }
+
+        public void RestoreFromJToken(JToken state)
+        {
+            isOnceDone = state.ToObject<bool>();
         }
     }
 }
