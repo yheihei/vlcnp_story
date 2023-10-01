@@ -19,6 +19,12 @@ namespace VLCNP.Movie
         GameObject tutorial;
         [SerializeField]
         public Flowchart flowChart;
+        [SerializeField]
+        public AudioClip audioClip;
+        [SerializeField]
+        public float bgmVolume = 0.3f;
+        [SerializeField]
+        public float bgmPitch = 0.5f;
 
         bool isDone = false;
 
@@ -56,8 +62,20 @@ namespace VLCNP.Movie
             areaNameShow.Show();
             // チュートリアルを有効にする
             tutorial.SetActive(true);
-            // BGMをタグで取得し、再生し始める
-            GameObject.FindWithTag("BGM").GetComponent<AudioSource>().Play();
+            StartCoroutine(BGMPlay(4f));
+        }
+
+        IEnumerator BGMPlay(float waitTime)
+        {
+            yield return new WaitForSeconds(waitTime);
+            AudioSource audioSource = GameObject.FindWithTag("BGM").GetComponent<AudioSource>();
+            if (audioClip != null)
+            {
+                audioSource.clip = audioClip;
+                audioSource.volume = bgmVolume;
+                audioSource.pitch = bgmPitch;
+                audioSource.Play();
+            }
         }
 
         void Start()
