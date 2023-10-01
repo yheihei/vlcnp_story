@@ -44,6 +44,7 @@ namespace VLCNP.Movie
         }
 
         void DisableControl(PlayableDirector director) {
+            if (isDone) return;
             GameObject player = GameObject.FindWithTag("Player");
             player.GetComponent<PlayerController>().enabled = false;
             // チュートリアル取得して、disableにする
@@ -51,6 +52,7 @@ namespace VLCNP.Movie
         }
 
         void EnableControl(PlayableDirector director) {
+            if (isDone) return;
             GameObject player = GameObject.FindWithTag("Player");
             // Akim、はてなマーク
             // StartCoroutine(Talk());
@@ -63,6 +65,7 @@ namespace VLCNP.Movie
             // チュートリアルを有効にする
             tutorial.SetActive(true);
             StartCoroutine(BGMPlay(4f));
+            isDone = true;
         }
 
         IEnumerator BGMPlay(float waitTime)
@@ -83,7 +86,6 @@ namespace VLCNP.Movie
             startPoint = GameObject.Find("StartPoint").transform;
             if (isDone) return;
             playableDirector.Play();
-            isDone = true;
         }
 
         IEnumerator Talk() {
@@ -115,12 +117,12 @@ namespace VLCNP.Movie
 
         public JToken CaptureAsJToken()
         {
-            return isDone;
+            return JToken.FromObject(isDone);
         }
 
         public void RestoreFromJToken(JToken state)
         {
-            isDone = (bool) state;
+            isDone = state.ToObject<bool>();
         }
     }
 }

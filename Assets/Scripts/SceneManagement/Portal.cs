@@ -25,18 +25,18 @@ namespace VLCNP.SceneManagement
 
         bool isTransitioning = false;
 
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (isTransitioning) return;
-            if (other.gameObject.tag == "Player")
-            {
-                print("Portal");
-                isTransitioning = true;
-                StartCoroutine(Transition());
-            }
-        }
+        // private void OnTriggerEnter2D(Collider2D other)
+        // {
+        //     if (isTransitioning) return;
+        //     if (other.gameObject.tag == "Player")
+        //     {
+        //         print("Portal");
+        //         isTransitioning = true;
+        //         StartCoroutine(Transition());
+        //     }
+        // }
 
-        private IEnumerator Transition()
+        public IEnumerator Transition()
         {
             if (sceneToLoad < 0)
             {
@@ -46,7 +46,8 @@ namespace VLCNP.SceneManagement
             DontDestroyOnLoad(gameObject);
             DisableControl();
 
-            Fader fader = FindObjectOfType<Fader>();
+            // SceneFaderタグでFaderを取得
+            Fader fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
             yield return fader.FadeOut(fadeOutTime);
 
             // キャラたちの状態保存
