@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using VLCNP.Control;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VLCNP.Core;
 
 namespace VLCNP.SceneManagement
 {
@@ -22,6 +23,8 @@ namespace VLCNP.SceneManagement
         [SerializeField] float fadeWaitTime = 0.2f;
         [SerializeField] float fadeInTime = 1f;
         [SerializeField] string autoSaveFileName = "autoSave";
+        private AudioSource BGM;
+        private AreaBGM areaBGM;
 
         bool isTransitioning = false;
 
@@ -56,7 +59,8 @@ namespace VLCNP.SceneManagement
 
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
             print("Scene Loaded");
-
+            // BGMの変更があれば変更
+            StartCoroutine(ChangeBGM());
             // キャラたちの状態復元
             wrapper.LoadOnlyState(autoSaveFileName);
 
@@ -71,6 +75,34 @@ namespace VLCNP.SceneManagement
             EnableControl();
 
             Destroy(gameObject);
+        }
+
+        private IEnumerator ChangeBGM()
+        {
+            // 現在のBGMを取得
+            BGM = GameObject.FindWithTag("BGM").GetComponent<AudioSource>();
+            // エリアのBGMを取得
+            areaBGM = GameObject.FindWithTag("AreaBGM").GetComponent<AreaBGM>();
+            if (BGM.clip == areaBGM.GetAudioClip())
+            {
+                yield return null;
+            }
+            // clipの変更があれば変更
+            yield return StartCoroutine(BGMFadeRoutine(0, fadeWaitTime));
+            BGM.Stop();
+            BGM.clip = areaBGM.GetAudioClip();
+            BGM.volume = areaBGM.GetVolume();
+            BGM.pitch = areaBGM.GetPitch();
+            BGM.Play();
+        }
+
+        private IEnumerator BGMFadeRoutine(float targetVolume, float time)
+        {
+            while (!Mathf.Approximately(BGM.volume, targetVolume))
+            {
+                BGM.volume = Mathf.MoveTowards(BGM.volume, targetVolume, Time.deltaTime / time);
+                yield return null;
+            }
         }
 
         private void UpdatePlayerPosition(Portal otherPortal)
