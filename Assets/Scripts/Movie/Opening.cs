@@ -12,7 +12,7 @@ using VLCNP.UI;
 
 namespace VLCNP.Movie
 {
-    public class Opening : MonoBehaviour, IJsonSaveable
+    public class Opening : MonoBehaviour
     {
         PlayableDirector playableDirector;
         Transform startPoint;
@@ -26,11 +26,13 @@ namespace VLCNP.Movie
         [SerializeField]
         public float bgmPitch = 0.5f;
 
-        bool isDone = false;
+        // bool isDone = false;
+        FlagManager flagManager;
 
         private void Awake() {
             playableDirector = GetComponent<PlayableDirector>();
             tutorial = GameObject.Find("Tutorial");
+            flagManager = GameObject.FindWithTag("FlagManager").GetComponent<FlagManager>();
         }
 
         private void OnEnable() {
@@ -44,7 +46,7 @@ namespace VLCNP.Movie
         }
 
         void DisableControl(PlayableDirector director) {
-            if (isDone) return;
+            if (flagManager.GetFlag(Flag.OpeningDone)) return;
             GameObject player = GameObject.FindWithTag("Player");
             player.GetComponent<PlayerController>().enabled = false;
             // チュートリアル取得して、disableにする
@@ -52,7 +54,7 @@ namespace VLCNP.Movie
         }
 
         void EnableControl(PlayableDirector director) {
-            if (isDone) return;
+            if (flagManager.GetFlag(Flag.OpeningDone)) return;
             GameObject player = GameObject.FindWithTag("Player");
             // Akim、はてなマーク
             // StartCoroutine(Talk());
@@ -65,7 +67,7 @@ namespace VLCNP.Movie
             // チュートリアルを有効にする
             tutorial.SetActive(true);
             StartCoroutine(BGMPlay(4f));
-            isDone = true;
+            flagManager.SetFlag(Flag.OpeningDone, true);
         }
 
         IEnumerator BGMPlay(float waitTime)
@@ -84,7 +86,7 @@ namespace VLCNP.Movie
         void Start()
         {
             startPoint = GameObject.Find("StartPoint").transform;
-            if (isDone) return;
+            if (flagManager.GetFlag(Flag.OpeningDone)) return;
             playableDirector.Play();
         }
 
@@ -115,14 +117,14 @@ namespace VLCNP.Movie
             }
         }
 
-        public JToken CaptureAsJToken()
-        {
-            return JToken.FromObject(isDone);
-        }
+        // public JToken CaptureAsJToken()
+        // {
+        //     return JToken.FromObject(isDone);
+        // }
 
-        public void RestoreFromJToken(JToken state)
-        {
-            isDone = state.ToObject<bool>();
-        }
+        // public void RestoreFromJToken(JToken state)
+        // {
+        //     isDone = state.ToObject<bool>();
+        // }
     }
 }
