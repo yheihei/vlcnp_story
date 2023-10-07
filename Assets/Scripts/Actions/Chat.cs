@@ -6,6 +6,8 @@ using VLCNP.Core;
 using VLCNP.UI;
 using VLCNP.Saving;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System;
 
 namespace VLCNP.Actions
 {
@@ -15,6 +17,23 @@ namespace VLCNP.Actions
         public Flowchart flowChart;
         [SerializeField]
         public string BlockName = "Message";
+
+        [SerializeField]
+        public SerializableKeyPair<Flag, string>[] flagToBlockName;
+
+        [Serializable]
+        public class SerializableKeyPair<TKey, TValue>
+        {
+            [SerializeField] private TKey key;
+            [SerializeField] private TValue value;
+            // 会話終了時にセットするフラグ
+            [SerializeField] public Flag afterChatSetFlag;
+
+            public TKey Key => key;
+            public TValue Value => value;
+        }
+
+        private IPostChat postChat;  // 会話が終わった後に実行する処理
         
         [SerializeField]
         public string TargetTag = "Player";
@@ -26,11 +45,19 @@ namespace VLCNP.Actions
 
         bool isOnceDone = false;
 
+        FlagManager flagManager;
+
         bool isAction = true;
 
         InformationText informationTextObject = null;
 
         public bool IsAction { get => isAction; set => isAction = value; }
+
+        void Awake()
+        {
+            flagManager = GameObject.FindWithTag("FlagManager").GetComponent<FlagManager>();
+            postChat = GetComponent<IPostChat>();
+        }
 
         public void Execute()
         {
@@ -39,6 +66,19 @@ namespace VLCNP.Actions
             if (isOnceDone) return;
             if (flowChart.HasExecutingBlocks()) return;
             StartCoroutine(Talk());
+        }
+
+        public (Flag, string, Flag) GetCurrentBlockNameFromFlag()
+        {
+            // flagToBlockName を後ろから見ていって、最初に見つかったものを返す
+            for (int i = flagToBlockName.Length - 1; i >= 0; i--)
+            {
+                if (flagManager.GetFlag(flagToBlockName[i].Key))
+                {
+                    return (flagToBlockName[i].Key, flagToBlockName[i].Value, flagToBlockName[i].afterChatSetFlag);
+                }
+            }
+            return (Flag.None, BlockName, Flag.None);
         }
 
         public void OnTriggerExit2D(Collider2D other)
@@ -54,7 +94,8 @@ namespace VLCNP.Actions
         IEnumerator Talk() {
             isAction = false;
             StopAll();
-            flowChart.ExecuteBlock(BlockName);
+            (Flag currentFlag, string currentBlockName, Flag afterChatSetFlag) = GetCurrentBlockNameFromFlag();
+            flowChart.ExecuteBlock(currentBlockName);
             foreach (Variable variable in flowChart.Variables)
             {
                 print(variable.Key + " : " + variable.GetValue());
@@ -62,6 +103,10 @@ namespace VLCNP.Actions
             yield return new WaitUntil(() => flowChart.GetExecutingBlocks().Count == 0);
             StartAll();
             isAction = true;
+            // 会話終了時にフラグをセットする
+            print("afterChatSetFlag: " + afterChatSetFlag);
+            flagManager.SetFlag(afterChatSetFlag, true);
+            postChat?.Execute(currentFlag);
         }
 
         public void ShowInformation()
