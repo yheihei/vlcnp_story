@@ -5,5 +5,6 @@ namespace VLCNP.Stats
         Player,
         ShortFacedCreature,
         VeryLongGun,
+        SoftBlock,
     }
 }
