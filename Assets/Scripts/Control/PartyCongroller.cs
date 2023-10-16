@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 namespace VLCNP.Control
 {
@@ -8,10 +9,12 @@ namespace VLCNP.Control
     {
         [SerializeField] GameObject currentPlayer;
         [SerializeField] GameObject[] members;
+        CinemachineVirtualCamera virtualCamera;
 
         private void Awake()
         {
             SetCurrentPlayerActive();
+            virtualCamera = GameObject.FindWithTag("CMCamera").GetComponent<CinemachineVirtualCamera>();
         }
 
         private void SetCurrentPlayerActive()
@@ -42,6 +45,7 @@ namespace VLCNP.Control
             SetNextPlayerPosition(index);
             currentPlayer = members[index];
             SetCurrentPlayerActive();
+            virtualCamera.Follow = currentPlayer.transform;
         }
 
         private void SetNextPlayerPosition(int index)
