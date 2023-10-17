@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using VLCNP.UI;
 using VLCNP.Attributes;
+using VLCNP.Stats;
 
 namespace VLCNP.Control
 {
@@ -13,6 +14,8 @@ namespace VLCNP.Control
         [SerializeField] GameObject[] members;
         [SerializeField] HPDisplay hpDisplay;
         [SerializeField] HPBar hpBar;
+        [SerializeField] ExperienceBar experienceBar;
+        [SerializeField] LevelDisplay levelDisplay;
         CinemachineVirtualCamera virtualCamera;
 
         private void Awake()
@@ -53,9 +56,14 @@ namespace VLCNP.Control
             virtualCamera.Follow = currentPlayer.transform;
             // 前のキャラクターのHPを次のキャラクターに引き継ぐ
             currentPlayer.GetComponent<Health>().SetHealthPointsFromOther(previousPlayer.GetComponent<Health>());
-            // HP表示のプレイヤーの更新
+            // HP表示のプレイヤーの切り替え
             hpDisplay.SetPlayer(currentPlayer);
             hpBar.SetPlayer(currentPlayer);
+            // 前のキャラクターのExperienceを次のキャラクターに引き継ぐ
+            currentPlayer.GetComponent<Experience>().SetExperiencePointsFromOther(previousPlayer.GetComponent<Experience>());
+            // Experience表示のプレイヤーの切り替え
+            experienceBar.SetPlayerExperience(currentPlayer);
+            levelDisplay.SetBaseStats(currentPlayer.GetComponent<BaseStats>());
         }
 
         private void SetNextPlayerPosition(int index)

@@ -32,5 +32,11 @@ namespace VLCNP.UI
             float experienceToCurrentLevel = baseStats.GetExperienceToCurrentLevel();
             slider.value = (currentExperience - experienceToCurrentLevel) / (experienceToNextLevel - experienceToCurrentLevel);
         }
+
+        public void SetPlayerExperience(GameObject newPlayer)
+        {
+            playerExperience = newPlayer.GetComponent<Experience>();
+            baseStats = newPlayer.GetComponent<BaseStats>();
+        }
     }    
 }

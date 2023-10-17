@@ -37,6 +37,12 @@ namespace VLCNP.Stats
             onExperienceLost();
         }
 
+        public void SetExperiencePointsFromOther(Experience other)
+        {
+            experiencePoints = other.GetExperiencePoints();
+            onExperienceGained();  // レベルの再計算
+        }
+
         public JToken CaptureAsJToken()
         {
             return JToken.FromObject(experiencePoints);
