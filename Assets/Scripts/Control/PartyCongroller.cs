@@ -5,6 +5,7 @@ using Cinemachine;
 using VLCNP.UI;
 using VLCNP.Attributes;
 using VLCNP.Stats;
+using VLCNP.Core;
 
 namespace VLCNP.Control
 {
@@ -16,6 +17,7 @@ namespace VLCNP.Control
         [SerializeField] HPBar hpBar;
         [SerializeField] ExperienceBar experienceBar;
         [SerializeField] LevelDisplay levelDisplay;
+        [SerializeField] GameOver gameOver;
         CinemachineVirtualCamera virtualCamera;
 
         private void Awake()
@@ -64,6 +66,8 @@ namespace VLCNP.Control
             // Experience表示のプレイヤーの切り替え
             experienceBar.SetPlayerExperience(currentPlayer);
             levelDisplay.SetBaseStats(currentPlayer.GetComponent<BaseStats>());
+            // 前のキャラクターの死亡判定を次のキャラクターに引き継ぐ
+            gameOver.SetPlayerHealth(currentPlayer.GetComponent<Health>());
         }
 
         private void SetNextPlayerPosition(int index)
