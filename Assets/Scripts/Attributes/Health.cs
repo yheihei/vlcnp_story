@@ -85,6 +85,11 @@ namespace VLCNP.Attributes
             return healthPoints;
         }
 
+        public void SetHealthPointsFromOther(Health other)
+        {
+            healthPoints = other.GetHealthPoints();
+        }
+
         public JToken CaptureAsJToken()
         {
             return JToken.FromObject(healthPoints);

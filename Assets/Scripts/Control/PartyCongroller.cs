@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using VLCNP.UI;
+using VLCNP.Attributes;
 
 namespace VLCNP.Control
 {
@@ -9,6 +11,8 @@ namespace VLCNP.Control
     {
         [SerializeField] GameObject currentPlayer;
         [SerializeField] GameObject[] members;
+        [SerializeField] HPDisplay hpDisplay;
+        [SerializeField] HPBar hpBar;
         CinemachineVirtualCamera virtualCamera;
 
         private void Awake()
@@ -42,10 +46,16 @@ namespace VLCNP.Control
         {
             int index = System.Array.IndexOf(members, currentPlayer);
             index = (index + 1) % members.Length;
+            GameObject previousPlayer = currentPlayer;
             SetNextPlayerPosition(index);
             currentPlayer = members[index];
             SetCurrentPlayerActive();
             virtualCamera.Follow = currentPlayer.transform;
+            // 前のキャラクターのHPを次のキャラクターに引き継ぐ
+            currentPlayer.GetComponent<Health>().SetHealthPointsFromOther(previousPlayer.GetComponent<Health>());
+            // HP表示のプレイヤーの更新
+            hpDisplay.SetPlayer(currentPlayer);
+            hpBar.SetPlayer(currentPlayer);
         }
 
         private void SetNextPlayerPosition(int index)
