@@ -1,16 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using VLCNP.UI;
 using VLCNP.Attributes;
 using VLCNP.Stats;
 using VLCNP.Core;
-using System;
+using VLCNP.Saving;
+using Newtonsoft.Json.Linq;
 
 namespace VLCNP.Control
 {
-    public class PartyCongroller : MonoBehaviour
+    public class PartyCongroller : MonoBehaviour, IJsonSaveable
     {
         [SerializeField] GameObject currentPlayer;
         [SerializeField] GameObject[] members;
@@ -107,6 +106,30 @@ namespace VLCNP.Control
             float nextFootPositionY = nextPlayer.transform.Find("Leg").localPosition.y;
             // 高さの差分を足す
             nextPlayer.transform.position += new Vector3(0, previousFootPositionY - nextFootPositionY, 0);
+        }
+
+        [System.Serializable]
+        struct StatusSaveData
+        {
+            public float healthPoints;
+            public float experiencePoints;
+        }
+
+        public JToken CaptureAsJToken()
+        {
+            // HP, Experienceを保存
+            StatusSaveData statusSaveData = new StatusSaveData();
+            statusSaveData.healthPoints = currentPlayer.GetComponent<Health>().GetHealthPoints();
+            statusSaveData.experiencePoints = currentPlayer.GetComponent<Experience>().GetExperiencePoints();
+            return JToken.FromObject(statusSaveData);
+        }
+
+        public void RestoreFromJToken(JToken state)
+        {
+            // HP, Experienceを復元
+            StatusSaveData statusSaveData = state.ToObject<StatusSaveData>();
+            currentPlayer.GetComponent<Health>().SetHealthPoints(statusSaveData.healthPoints);
+            currentPlayer.GetComponent<Experience>().SetExperiencePoints(statusSaveData.experiencePoints);
         }
     }
 }

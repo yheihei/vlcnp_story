@@ -90,6 +90,11 @@ namespace VLCNP.Attributes
             healthPoints = other.GetHealthPoints();
         }
 
+        public void SetHealthPoints(float healthPoints)
+        {
+            this.healthPoints = healthPoints;
+        }
+
         public JToken CaptureAsJToken()
         {
             return JToken.FromObject(healthPoints);
