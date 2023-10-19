@@ -6,6 +6,7 @@ using VLCNP.UI;
 using VLCNP.Attributes;
 using VLCNP.Stats;
 using VLCNP.Core;
+using System;
 
 namespace VLCNP.Control
 {
@@ -44,16 +45,44 @@ namespace VLCNP.Control
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                SwitchPlayer();
+                SwitchNextPlayer();
             }
         }
 
-        private void SwitchPlayer()
+        private void SwitchNextPlayer()
+        {
+            GameObject nextPlayer = GetNextPlayer();
+            // 現在のキャラクターと同じであれば何もしない
+            if (nextPlayer == currentPlayer) return;
+
+            GameObject previousPlayer = currentPlayer;
+            SetNextPlayerPosition(nextPlayer);
+            currentPlayer = nextPlayer;
+            SetCurrentPlayerActive();
+
+            virtualCamera.Follow = currentPlayer.transform;
+
+            // 前のキャラクターのHPを次のキャラクターに引き継ぐ
+            currentPlayer.GetComponent<Health>().SetHealthPointsFromOther(previousPlayer.GetComponent<Health>());
+            // HP表示のプレイヤーの切り替え
+            hpDisplay.SetPlayer(currentPlayer);
+            hpBar.SetPlayer(currentPlayer);
+
+            // 前のキャラクターのExperienceを次のキャラクターに引き継ぐ
+            currentPlayer.GetComponent<Experience>().SetExperiencePointsFromOther(previousPlayer.GetComponent<Experience>());
+            // Experience表示のプレイヤーの切り替え
+            experienceBar.SetPlayerExperience(currentPlayer);
+            levelDisplay.SetBaseStats(currentPlayer.GetComponent<BaseStats>());
+
+            // 前のキャラクターの死亡判定を次のキャラクターに引き継ぐ
+            gameOver.SetPlayerHealth(currentPlayer.GetComponent<Health>());
+        }
+
+        private GameObject GetNextPlayer()
         {
             int index = System.Array.IndexOf(members, currentPlayer);
             index = (index + 1) % members.Length;
-            // 次のキャラクターの仲間フラグをチェックして、仲間でなければ次のキャラクターを選択
-            GameObject nextPlayer = null;
+            GameObject nextPlayer;
             while (true)
             {
                 // 次のキャラクター取得
@@ -65,37 +94,19 @@ namespace VLCNP.Control
                 // 見つからなければ次のキャラクターを選択
                 index = (index + 1) % members.Length;
             }
-            // 現在のキャラクターと同じであれば何もしない
-            if (nextPlayer == currentPlayer) return;
-            GameObject previousPlayer = currentPlayer;
-            SetNextPlayerPosition(index);
-            currentPlayer = members[index];
-            SetCurrentPlayerActive();
-            virtualCamera.Follow = currentPlayer.transform;
-            // 前のキャラクターのHPを次のキャラクターに引き継ぐ
-            currentPlayer.GetComponent<Health>().SetHealthPointsFromOther(previousPlayer.GetComponent<Health>());
-            // HP表示のプレイヤーの切り替え
-            hpDisplay.SetPlayer(currentPlayer);
-            hpBar.SetPlayer(currentPlayer);
-            // 前のキャラクターのExperienceを次のキャラクターに引き継ぐ
-            currentPlayer.GetComponent<Experience>().SetExperiencePointsFromOther(previousPlayer.GetComponent<Experience>());
-            // Experience表示のプレイヤーの切り替え
-            experienceBar.SetPlayerExperience(currentPlayer);
-            levelDisplay.SetBaseStats(currentPlayer.GetComponent<BaseStats>());
-            // 前のキャラクターの死亡判定を次のキャラクターに引き継ぐ
-            gameOver.SetPlayerHealth(currentPlayer.GetComponent<Health>());
+            return nextPlayer;
         }
 
-        private void SetNextPlayerPosition(int index)
+        private void SetNextPlayerPosition(GameObject nextPlayer)
         {
             // 位置を前のキャラに合わせる
-            members[index].transform.position = currentPlayer.transform.position;
+            nextPlayer.transform.position = currentPlayer.transform.position;
             // 前のキャラの足の位置の高さ取得
             float previousFootPositionY = currentPlayer.transform.Find("Leg").localPosition.y;
             // 次のキャラの足の位置の高さ取得
-            float nextFootPositionY = members[index].transform.Find("Leg").localPosition.y;
+            float nextFootPositionY = nextPlayer.transform.Find("Leg").localPosition.y;
             // 高さの差分を足す
-            members[index].transform.position += new Vector3(0, previousFootPositionY - nextFootPositionY, 0);
+            nextPlayer.transform.position += new Vector3(0, previousFootPositionY - nextFootPositionY, 0);
         }
     }
 }
