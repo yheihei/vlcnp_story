@@ -23,5 +23,10 @@ namespace VLCNP.UI
             }
             text.text = $"{baseStats.GetLevel()}";
         }
+
+        public void SetBaseStats(BaseStats newBaseStats)
+        {
+            baseStats = newBaseStats;
+        }
     }
 }

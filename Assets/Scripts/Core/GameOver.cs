@@ -60,5 +60,12 @@ namespace VLCNP.Core
             wrapper.Load(autoSaveFileName);
             Destroy(gameObject);
         }
+
+        public void SetPlayerHealth(Health newPlayerHealth)
+        {
+            playerHealth.onDie -= PlayerDie;
+            playerHealth = newPlayerHealth;
+            playerHealth.onDie += PlayerDie;
+        }
     }    
 }

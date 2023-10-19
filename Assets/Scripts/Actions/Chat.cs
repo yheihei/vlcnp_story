@@ -105,7 +105,7 @@ namespace VLCNP.Actions
             isAction = true;
             // 会話終了時にフラグをセットする
             print("afterChatSetFlag: " + afterChatSetFlag);
-            flagManager.SetFlag(afterChatSetFlag, true);
+            if (afterChatSetFlag != Flag.None) flagManager.SetFlag(afterChatSetFlag, true);
             postChat?.Execute(currentFlag);
         }
 

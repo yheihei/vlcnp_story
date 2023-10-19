@@ -5,5 +5,6 @@ namespace VLCNP.Core
         None, // なし
         OpeningDone, // オープニング済
         BabyLongOnceChat, // ベビロンと一度会話済
+        JoinedLeelee, // リーリーと仲間になった
     }
 }

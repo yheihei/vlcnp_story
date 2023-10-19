@@ -20,5 +20,10 @@ namespace VLCNP.UI
             float currentHP = player.GetComponent<Health>().GetHealthPoints();
             text.text = $"{currentHP}";
         }
+
+        public void SetPlayer(GameObject newPlayer)
+        {
+            player = newPlayer;
+        }
     }
 }
