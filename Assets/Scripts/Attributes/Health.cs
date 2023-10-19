@@ -85,11 +85,6 @@ namespace VLCNP.Attributes
             return healthPoints;
         }
 
-        public void SetHealthPointsFromOther(Health other)
-        {
-            healthPoints = other.GetHealthPoints();
-        }
-
         public void SetHealthPoints(float healthPoints)
         {
             this.healthPoints = healthPoints;

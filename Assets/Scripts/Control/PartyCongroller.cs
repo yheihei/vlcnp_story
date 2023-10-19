@@ -62,13 +62,13 @@ namespace VLCNP.Control
             virtualCamera.Follow = currentPlayer.transform;
 
             // 前のキャラクターのHPを次のキャラクターに引き継ぐ
-            currentPlayer.GetComponent<Health>().SetHealthPointsFromOther(previousPlayer.GetComponent<Health>());
+            currentPlayer.GetComponent<Health>().SetHealthPoints(previousPlayer.GetComponent<Health>().GetHealthPoints());
             // HP表示のプレイヤーの切り替え
             hpDisplay.SetPlayer(currentPlayer);
             hpBar.SetPlayer(currentPlayer);
 
             // 前のキャラクターのExperienceを次のキャラクターに引き継ぐ
-            currentPlayer.GetComponent<Experience>().SetExperiencePointsFromOther(previousPlayer.GetComponent<Experience>());
+            currentPlayer.GetComponent<Experience>().SetExperiencePoints(previousPlayer.GetComponent<Experience>().GetExperiencePoints());
             // Experience表示のプレイヤーの切り替え
             experienceBar.SetPlayerExperience(currentPlayer);
             levelDisplay.SetBaseStats(currentPlayer.GetComponent<BaseStats>());
