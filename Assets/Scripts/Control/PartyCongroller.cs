@@ -18,12 +18,13 @@ namespace VLCNP.Control
         [SerializeField] ExperienceBar experienceBar;
         [SerializeField] LevelDisplay levelDisplay;
         [SerializeField] GameOver gameOver;
+        [SerializeField] FlagManager flagManager;
+        [SerializeField]
         CinemachineVirtualCamera virtualCamera;
 
         private void Awake()
         {
             SetCurrentPlayerActive();
-            virtualCamera = GameObject.FindWithTag("CMCamera").GetComponent<CinemachineVirtualCamera>();
         }
 
         private void SetCurrentPlayerActive()
@@ -51,6 +52,21 @@ namespace VLCNP.Control
         {
             int index = System.Array.IndexOf(members, currentPlayer);
             index = (index + 1) % members.Length;
+            // 次のキャラクターの仲間フラグをチェックして、仲間でなければ次のキャラクターを選択
+            GameObject nextPlayer = null;
+            while (true)
+            {
+                // 次のキャラクター取得
+                nextPlayer = members[index];
+                // 名前がAkimであれば既に仲間なのでループを抜ける
+                if (nextPlayer.name == "Akim") break;
+                // 名前がLeeleeであれば、JoinedLeeleeフラグが立っていれば仲間なのでループを抜ける
+                if (nextPlayer.name == "Leelee" && flagManager.GetFlag(Flag.JoinedLeelee)) break;
+                // 見つからなければ次のキャラクターを選択
+                index = (index + 1) % members.Length;
+            }
+            // 現在のキャラクターと同じであれば何もしない
+            if (nextPlayer == currentPlayer) return;
             GameObject previousPlayer = currentPlayer;
             SetNextPlayerPosition(index);
             currentPlayer = members[index];
