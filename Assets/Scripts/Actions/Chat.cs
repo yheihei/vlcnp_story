@@ -45,6 +45,10 @@ namespace VLCNP.Actions
         [SerializeField]
         public bool IsOnce = false;
 
+        [Header("非表示になる場合のフラグ")]
+        [SerializeField]
+        Flag disableFlag;
+
         bool isOnceDone = false;
 
         FlagManager flagManager;
@@ -59,6 +63,21 @@ namespace VLCNP.Actions
         {
             flagManager = GameObject.FindWithTag("FlagManager").GetComponent<FlagManager>();
             postChat = GetComponent<IPostChat>();
+        }
+
+        void Start()
+        {
+            SetDisable();
+        }
+
+        public void SetDisable()
+        {
+            // Noneのときは常に表示
+            if (disableFlag == Flag.None) return;
+            if (flagManager.GetFlag(disableFlag))
+            {
+                gameObject.SetActive(false);
+            }
         }
 
         public void Execute()

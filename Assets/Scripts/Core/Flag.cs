@@ -7,5 +7,6 @@ namespace VLCNP.Core
         BabyLongOnceChat, // ベビロンと一度会話済
         JoinedLeelee, // リーリーと仲間になった
         LeeleeOnceChat, // リーリーと一度会話済
+        GetSowrd, // 剣を手に入れた
     }
 }
