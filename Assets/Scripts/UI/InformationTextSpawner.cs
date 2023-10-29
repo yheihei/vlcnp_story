@@ -15,7 +15,7 @@ namespace VLCNP.UI
             InformationText instance = Instantiate<InformationText>(
                 textPrefab,
                 transform.position + new Vector3(0, SpawnOffsetY, 0),
-                transform.rotation
+                Quaternion.identity
             );
             instance.GetComponent<Canvas>().sortingLayerID = SortingLayer.NameToID("UI");
             instance.SetValue(text);
