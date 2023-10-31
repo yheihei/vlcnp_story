@@ -466,6 +466,7 @@ Transform:
   - {fileID: 1692314598}
   - {fileID: 493445123}
   - {fileID: 2119483836}
+  - {fileID: 430717253}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2676,6 +2677,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 979dded9ce4b8476da058a8c63089cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &430717252
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 430717253}
+  m_Layer: 0
+  m_Name: StartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &430717253
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430717252}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.36, y: -1.86, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 162343734}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &440896813 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3564026850829729314, guid: 70e4f80265d902443a6249697d613d81, type: 3}
@@ -2778,6 +2810,7 @@ GameObject:
   - component: {fileID: 468763056}
   - component: {fileID: 468763055}
   - component: {fileID: 468763057}
+  - component: {fileID: 468763064}
   m_Layer: 0
   m_Name: LeeleeChat
   m_TagString: Untagged
@@ -2798,7 +2831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  scrollPos: {x: 38, y: 186}
+  scrollPos: {x: 75, y: 51}
   variablesScrollPos: {x: 0, y: 0}
   variablesExpanded: 1
   blockViewHeight: 400
@@ -2811,7 +2844,8 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 468763058}
-  selectedCommands: []
+  selectedCommands:
+  - {fileID: 468763064}
   variables: []
   description: 
   stepPause: 0
@@ -3080,7 +3114,8 @@ MonoBehaviour:
   blockName: Message4
   description: 
   eventHandler: {fileID: 0}
-  commandList: []
+  commandList:
+  - {fileID: 468763064}
   suppressAllAutoSelections: 0
 --- !u!114 &468763059
 MonoBehaviour:
@@ -3216,6 +3251,62 @@ MonoBehaviour:
   - {fileID: 468763061}
   - {fileID: 468763059}
   suppressAllAutoSelections: 0
+--- !u!114 &468763064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468763047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95d9ff288f3904c05ada7ac9c9a075bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 16
+  indentLevel: 0
+  description: 
+  delay: 0
+  invokeType: 0
+  staticEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2119483838}
+        m_TargetAssemblyTypeName: VLCNP.Movie.LeeleeFukkatu, Assembly-CSharp
+        m_MethodName: Execute
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  booleanParameter:
+    booleanRef: {fileID: 0}
+    booleanVal: 0
+  booleanEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  integerParameter:
+    integerRef: {fileID: 0}
+    integerVal: 0
+  integerEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  floatParameter:
+    floatRef: {fileID: 0}
+    floatVal: 0
+  floatEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  stringParameter:
+    stringRef: {fileID: 0}
+    stringVal: 
+  stringEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &475292730 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3564026850829729314, guid: 72a905bcc22e3e443be6f48bfb173c00, type: 3}
@@ -5587,11 +5678,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8104223883752621172, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.67
+      value: 12.2
       objectReference: {fileID: 0}
     - target: {fileID: 8104223883752621172, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.21
+      value: 1.29
       objectReference: {fileID: 0}
     - target: {fileID: 8104223883752621172, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5615,11 +5706,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8104223884404486430, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.67
+      value: 12.2
       objectReference: {fileID: 0}
     - target: {fileID: 8104223884404486430, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.21
+      value: 1.29
       objectReference: {fileID: 0}
     - target: {fileID: 8104223884404486430, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.z
@@ -16108,7 +16199,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 1ada80c74f4d5433894cdb732db1af07, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -16129,6 +16220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12d61580869e14dab9de6c8e94cbd97b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startPoint: {fileID: 430717253}
   flowChart: {fileID: 0}
   audioClip: {fileID: 0}
   bgmVolume: 0.3

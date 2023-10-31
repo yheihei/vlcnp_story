@@ -7,6 +7,7 @@ using UnityEngine.Playables;
 using VLCNP.Actions;
 using VLCNP.Control;
 using VLCNP.Core;
+using VLCNP.Movement;
 using VLCNP.Saving;
 using VLCNP.UI;
 
@@ -15,6 +16,7 @@ namespace VLCNP.Movie
     public class LeeleeFukkatu : MonoBehaviour
     {
         PlayableDirector playableDirector;
+        [SerializeField]
         Transform startPoint;
         [SerializeField]
         public Flowchart flowChart;
@@ -65,8 +67,12 @@ namespace VLCNP.Movie
             }
         }
 
-        public void Execute()
+        public async void Execute()
         {
+            // プレイヤーをイベント開始位置まで移動させる
+            GameObject player = GameObject.FindWithTag("Player");
+            Mover mover = player.GetComponent<Mover>();
+            await mover.MoveToPosition(startPoint.position);
             playableDirector.Play();
         }
 

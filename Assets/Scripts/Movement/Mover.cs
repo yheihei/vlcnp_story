@@ -1,3 +1,4 @@
+using System.Collections;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using VLCNP.Saving;
@@ -46,6 +47,29 @@ namespace VLCNP.Movement
                 isPushing = false;
             }
             UpdateAnimator();
+        }
+
+        public IEnumerator MoveToPosition(Vector3 position, float timeout = 0)
+        {
+            // 経過時間を格納する変数
+            float elapsedTime = 0;
+            // プレイヤーの位置と指定のx位置が0.05以内になるまでループ
+            while (Mathf.Abs(position.x - transform.position.x) > 0.05f)
+            {
+                // 経過時間加算
+                elapsedTime += Time.deltaTime;
+                // タイムアウト値になったらループを抜ける
+                if (timeout > 0 && elapsedTime > timeout)
+                {
+                    break;
+                }
+                // 指定の位置に向かって移動
+                vx = position.x < transform.position.x ? -speed : speed;
+                UpdateMoveSpeed();
+                UpdateAnimator();
+                UpdateCharacterDirection();
+                yield return null;
+            }
         }
 
         public void Stop()
