@@ -24,6 +24,7 @@ namespace VLCNP.Core
 
         public void SetFlag(Flag flag, bool value)
         {
+            print($"FlagManager: SetFlag {flag} {value}");
             // keyがなければ追加
             if (!flagDictionary.ContainsKey(flag))
             {
