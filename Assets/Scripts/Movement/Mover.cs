@@ -138,8 +138,13 @@ namespace VLCNP.Movement
             if (isJumping)
             {
                 isJumping = false;
-                rbody.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
+                Jump(jumpPower);
             }
+        }
+
+        public void Jump(float _jumpPower = 2)
+        {
+            rbody.AddForce(new Vector2(0, _jumpPower), ForceMode2D.Impulse);
         }
 
         public JToken CaptureAsJToken()
