@@ -29,19 +29,29 @@ namespace VLCNP.Movie
 
         FlagManager flagManager;
 
+        Vector3 defaultLocalPosition;
+
+        StoppableController stoppableController;
+
         private void Awake() {
             playableDirector = GetComponent<PlayableDirector>();
             flagManager = GameObject.FindWithTag("FlagManager").GetComponent<FlagManager>();
+            stoppableController = GetComponent<StoppableController>();
         }
 
         private void OnEnable() {
             playableDirector.played += DisableControl;
             playableDirector.stopped += EnableControl;
+            playableDirector.stopped += OnStop;
         }
 
         private void OnDisable() {
             playableDirector.played -= DisableControl;
             playableDirector.stopped -= EnableControl;
+        }
+
+        void OnStop(PlayableDirector director) {
+            StartCoroutine(Talk());
         }
 
         void DisableControl(PlayableDirector director) {
@@ -52,6 +62,8 @@ namespace VLCNP.Movie
         void EnableControl(PlayableDirector director) {
             GameObject player = GameObject.FindWithTag("Player");
             player.GetComponent<PlayerController>().enabled = true;
+            // Playerの位置をstartPointに戻す
+            player.transform.localPosition = defaultLocalPosition;
         }
 
         IEnumerator BGMPlay(float waitTime)
@@ -73,14 +85,17 @@ namespace VLCNP.Movie
             GameObject player = GameObject.FindWithTag("Player");
             Mover mover = player.GetComponent<Mover>();
             await mover.MoveToPosition(startPoint.position);
+            defaultLocalPosition = player.transform.localPosition;
             playableDirector.Play();
         }
 
         IEnumerator Talk() {
-            StopAll();
-            flowChart.ExecuteBlock("AkimQuestion");
+            // StopAll();
+            stoppableController.StopAll();
+            flowChart.ExecuteBlock("Message5");
             yield return new WaitUntil(() => flowChart.GetExecutingBlocks().Count == 0);
-            StartAll();
+            stoppableController.StartAll();
+            // StartAll();
         }
 
         private void StopAll()
