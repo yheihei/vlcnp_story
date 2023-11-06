@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace VLCNP.Core
     {
         [SerializeField]
         private Dictionary<Flag, bool> flagDictionary = new();
+        public event Action<Flag> OnChangeFlag;
 
         public bool GetFlag(Flag flag)
         {
@@ -24,14 +26,15 @@ namespace VLCNP.Core
 
         public void SetFlag(Flag flag, bool value)
         {
-            print($"FlagManager: SetFlag {flag} {value}");
             // keyがなければ追加
             if (!flagDictionary.ContainsKey(flag))
             {
                 flagDictionary.Add(flag, value);
+                OnChangeFlag(flag);
                 return;
             }
             flagDictionary[flag] = value;
+            OnChangeFlag(flag);
         }
 
         public JToken CaptureAsJToken()

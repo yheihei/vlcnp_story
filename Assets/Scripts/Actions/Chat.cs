@@ -70,6 +70,21 @@ namespace VLCNP.Actions
             SetDisable();
         }
 
+        void OnEnable()
+        {
+            flagManager.OnChangeFlag += OnChangeFlag;
+        }
+
+        void OnDisable()
+        {
+            flagManager.OnChangeFlag -= OnChangeFlag;
+        }
+
+        void OnChangeFlag(Flag flag)
+        {
+            SetDisable();
+        }
+
         public void SetDisable()
         {
             // Noneのときは常に表示
