@@ -14,18 +14,43 @@ public class StartBGM : MonoBehaviour
 
     void Start()
     {
+        Play();
+    }
+
+    public void Stop()
+    {
+        if (audioSource.clip == null) return;
+        audioSource.Stop();
+    }
+
+    public void SetAudioClip(AudioClip clip)
+    {
+        audioSource.clip = clip;
+    }
+
+    public void SetAudioVolume(float volume)
+    {
+        audioSource.volume = volume;
+    }
+
+    public void SetAudioPitch(float pitch)
+    {
+        audioSource.pitch = pitch;
+    }
+
+    public void Play()
+    {
         // audioSourceにclipが設定されていなければ、AreaBGMを探して再生
         if (audioSource.clip == null)
         {
-            // AreaBGMタグを使って取得
             AreaBGM areaBGM = GameObject.FindWithTag("AreaBGM").GetComponent<AreaBGM>();
             if (areaBGM != null)
             {
-                audioSource.clip = areaBGM.GetAudioClip();
-                audioSource.volume = areaBGM.GetVolume();
-                audioSource.pitch = areaBGM.GetPitch();
-                audioSource.Play();
+                SetAudioClip(areaBGM.GetAudioClip());
+                SetAudioVolume(areaBGM.GetVolume());
+                SetAudioPitch(areaBGM.GetPitch());
             }
         }
+        audioSource.Play();
     }
 }
