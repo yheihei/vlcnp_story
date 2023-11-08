@@ -7,26 +7,45 @@ namespace VLCNP.Core
 {
     public class BGMWrapper : MonoBehaviour
     {
-        StartBGM startBGM = null;
+        StartBGM bgm = null;
         void Start()
         {
             // BGMのtagを持つオブジェクトを探して、そのStartBGMを取得する
-            startBGM = GameObject.FindWithTag("BGM")?.GetComponent<StartBGM>();
+            bgm = GameObject.FindWithTag("BGM")?.GetComponent<StartBGM>();
         }
 
         public void Play(AudioClip clip, float volume, float pitch)
         {
-            if (startBGM == null) return;
-            startBGM.Stop();
-            startBGM.SetAudioClip(clip);
-            startBGM.SetAudioVolume(volume);
-            startBGM.SetAudioPitch(pitch);
-            startBGM.Play();
+            if (bgm == null) return;
+            bgm.Stop();
+            bgm.SetAudioClip(clip);
+            bgm.SetAudioVolume(volume);
+            bgm.SetAudioPitch(pitch);
+            bgm.Play();
+        }
+
+        // BGMをフェードアウトさせる
+        public void FadeOut(float duration)
+        {
+            if (bgm == null) return;
+            StartCoroutine(FadeOutCoroutine(duration));
+        }
+
+        IEnumerator FadeOutCoroutine(float duration)
+        {
+            float startVolume = bgm.GetAudioVolume();
+            float startTime = Time.time;
+            while (Time.time - startTime < duration)
+            {
+                float t = (Time.time - startTime) / duration;
+                bgm.SetAudioVolume(Mathf.Lerp(startVolume, 0, t));
+                yield return null;
+            }
         }
 
         public void ChangeVolume(float volume)
         {
-            startBGM?.SetAudioVolume(volume);
+            bgm?.SetAudioVolume(volume);
         }
     }
 }
