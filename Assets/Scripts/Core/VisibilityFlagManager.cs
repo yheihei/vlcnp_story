@@ -44,7 +44,6 @@ namespace VLCNP.Core
 
         void OnChangeFlag(Flag flag)
         {
-            print($"OnChangeFlag: {flag}");
             CheckVisibility();
         }
     }

@@ -33,6 +33,11 @@ public class StartBGM : MonoBehaviour
         audioSource.volume = volume;
     }
 
+    public float GetAudioVolume()
+    {
+        return audioSource.volume;
+    }
+
     public void SetAudioPitch(float pitch)
     {
         audioSource.pitch = pitch;
