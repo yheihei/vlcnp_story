@@ -25,6 +25,7 @@ namespace VLCNP.Core
 
         void Start()
         {
+            flagManager.OnChangeFlag += OnChangeFlag;
             CheckVisibility();
         }
 
@@ -41,18 +42,9 @@ namespace VLCNP.Core
             }
         }
 
-        void OnEnable()
-        {
-            flagManager.OnChangeFlag += OnChangeFlag;
-        }
-
-        void OnDisable()
-        {
-            flagManager.OnChangeFlag -= OnChangeFlag;
-        }
-
         void OnChangeFlag(Flag flag)
         {
+            print($"OnChangeFlag: {flag}");
             CheckVisibility();
         }
     }
