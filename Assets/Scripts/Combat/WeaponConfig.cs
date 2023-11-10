@@ -76,7 +76,8 @@ namespace VLCNP.Combat
         {
             WeaponLevel _weaponLevel = GetCurrentWeapon(level);
             Projectile projectileInstance = Instantiate(_weaponLevel.projectile, handTransform.position, handTransform.rotation);
-            projectileInstance.IsLeft = isLeft;
+            // projectileInstance.IsLeft = isLeft;
+            projectileInstance.SetDirection(isLeft);
             projectileInstance.SetDamage(_weaponLevel.damage);
         }
 
