@@ -11,6 +11,7 @@ namespace VLCNP.Combat
         [SerializeField] WeaponConfig defaultWeaponConfig = null;
         [SerializeField] WeaponConfig directAttackWeaponConfig = null;
         [SerializeField] Transform handTransform = null;
+        [SerializeField] bool canVerticalShot = true;
 
         WeaponConfig currentWeaponConfig;
         BaseStats baseStats;
@@ -23,11 +24,13 @@ namespace VLCNP.Combat
 
         public void WeaponUp()
         {
+            if (!canVerticalShot) return;
             handTransform.rotation = GetIsLeft() ? Quaternion.Euler(0, 0, -90) : Quaternion.Euler(0, 0, 90);
         }
 
         public void WeaponDown()
         {
+            if (!canVerticalShot) return;
             handTransform.rotation = GetIsLeft() ? Quaternion.Euler(0, 0, 90) : Quaternion.Euler(0, 0, -90);
         }
 
@@ -46,8 +49,6 @@ namespace VLCNP.Combat
         {
             int level = baseStats ? baseStats.GetLevel() : 1;
             if (!currentWeaponConfig.HasProjectile()) return;
-            print("Fighter Attack");
-            print($"left: {GetIsLeft()}");
             currentWeaponConfig.LaunchProjectile(handTransform, level, GetIsLeft());
         }
 
