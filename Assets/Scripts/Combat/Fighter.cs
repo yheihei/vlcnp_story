@@ -46,6 +46,8 @@ namespace VLCNP.Combat
         {
             int level = baseStats ? baseStats.GetLevel() : 1;
             if (!currentWeaponConfig.HasProjectile()) return;
+            print("Fighter Attack");
+            print($"left: {GetIsLeft()}");
             currentWeaponConfig.LaunchProjectile(handTransform, level, GetIsLeft());
         }
 

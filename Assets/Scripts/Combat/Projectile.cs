@@ -18,22 +18,24 @@ namespace VLCNP.Combat
 
         [SerializeField] float deleteTime = 0.18f;
         [SerializeField] string targetTagName = "Enemy";
+        [SerializeField] bool IsPenetration = false;
+        List<GameObject> penetratedObjects = new List<GameObject>();
         float damage = 0;
         private ParticleSystem particle;
 
         private void Start()
         {
-            SetParticleVelocity();
             Destroy(gameObject, deleteTime);
         }
 
-        private void SetParticleVelocity()
+        public void SetDirection(bool isLeft)
         {
-            particle = GetComponent<ParticleSystem>();
-            if (particle == null) return;
-            // 進行方向の逆にパーティクルを伸ばす
-            ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = particle.velocityOverLifetime;
-            velocityOverLifetime.x = isLeft ? 100f : -100f;
+            this.isLeft = isLeft;
+            if (isLeft)
+            {
+                // x方向のscaleを反転させる
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            }
         }
 
         public void SetDamage(float damage)
@@ -52,12 +54,22 @@ namespace VLCNP.Combat
         {
             if (other.gameObject.CompareTag(targetTagName))
             {
+                if (IsPenetration)
+                {
+                    // 既にヒットしたオブジェクトにはダメージを与えない
+                    if (penetratedObjects.Contains(other.gameObject))
+                    {
+                        return;
+                    }
+                    // ヒットしたオブジェクトを記録しておく
+                    penetratedObjects.Add(other.gameObject);
+                }
                 Health health = other.gameObject.GetComponent<Health>();
                 if (health != null)
                 {
                     health.TakeDamage(damage);
                 }
-                Destroy(this.gameObject);
+                if (!IsPenetration) Destroy(gameObject);
             }
         }
     }    
