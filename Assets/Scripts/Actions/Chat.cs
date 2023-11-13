@@ -49,6 +49,10 @@ namespace VLCNP.Actions
         [SerializeField]
         Flag disableFlag;
 
+        [Header("触れると自動でスタートする")]
+        [SerializeField]
+        bool isAutoStart = false;
+
         bool isOnceDone = false;
 
         FlagManager flagManager;
@@ -82,7 +86,9 @@ namespace VLCNP.Actions
 
         void OnChangeFlag(Flag flag)
         {
+            print($"Chat OnChangeFlag start {gameObject.name}");
             SetDisable();
+            print("Chat OnChangeFlag end");
         }
 
         public void SetDisable()
@@ -101,6 +107,7 @@ namespace VLCNP.Actions
             if (flowChart == null) return;
             if (isOnceDone) return;
             if (flowChart.HasExecutingBlocks()) return;
+            isAction = false;
             StartCoroutine(Talk());
         }
 
@@ -128,7 +135,6 @@ namespace VLCNP.Actions
         }
 
         IEnumerator Talk() {
-            isAction = false;
             StopAll();
             (Flag currentFlag, string currentBlockName, Flag afterChatSetFlag) = GetCurrentBlockNameFromFlag();
             flowChart.ExecuteBlock(currentBlockName);
@@ -191,6 +197,11 @@ namespace VLCNP.Actions
         public void RestoreFromJToken(JToken state)
         {
             isOnceDone = state.ToObject<bool>();
+        }
+
+        public bool IsAutoStart()
+        {
+            return isAutoStart;
         }
     }
 }

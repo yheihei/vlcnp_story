@@ -22,7 +22,11 @@ namespace VLCNP.Control
 
         void Update()
         {
-            if (isStopped) return;
+            if (isStopped)
+            {
+                mover.Stop();
+                return;
+            }
             mover.Move();
             AttackBehaviour();
             InteractWithCollisionActions();
@@ -35,6 +39,7 @@ namespace VLCNP.Control
             if (collisionAction != null) return;
             collisionAction = _collisionAction;
             collisionAction.ShowInformation();
+            if (collisionAction.IsAutoStart()) collisionAction.Execute();
         }
 
         private void OnTriggerExit2D(Collider2D other)

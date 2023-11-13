@@ -26,11 +26,14 @@ namespace VLCNP.Core
 
         public void SetFlag(Flag flag, bool value)
         {
+            print("SetFlag");
             // keyがなければ追加
             if (!flagDictionary.ContainsKey(flag))
             {
+                print("yaru");
                 flagDictionary.Add(flag, value);
                 OnChangeFlag(flag);
+                print("OnChangeFlag");
                 return;
             }
             flagDictionary[flag] = value;

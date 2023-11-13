@@ -9,5 +9,7 @@ namespace VLCNP.Core
         LeeleeOnceChat, // リーリーと一度会話済
         GetSowrd, // 剣を手に入れた
         LeeleeFukkatuDone, // リーリー復活済
+        LeeleeRakubanMaeChat, // リーリーと一緒にお昼寝部屋の落盤を見た
+        LeeleeRakubanMaeFinished, // リーリーと一緒にお昼寝部屋の落盤をこわしたあと
     }
 }
