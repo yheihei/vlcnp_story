@@ -86,9 +86,7 @@ namespace VLCNP.Actions
 
         void OnChangeFlag(Flag flag)
         {
-            print($"Chat OnChangeFlag start {gameObject.name}");
             SetDisable();
-            print("Chat OnChangeFlag end");
         }
 
         public void SetDisable()
