@@ -45,10 +45,6 @@ namespace VLCNP.Actions
         [SerializeField]
         public bool IsOnce = false;
 
-        [Header("非表示になる場合のフラグ")]
-        [SerializeField]
-        Flag disableFlag;
-
         [Header("触れると自動でスタートする")]
         [SerializeField]
         bool isAutoStart = false;
@@ -68,37 +64,6 @@ namespace VLCNP.Actions
             flagManager = GameObject.FindWithTag("FlagManager").GetComponent<FlagManager>();
             postChat = GetComponent<IPostChat>();
         }
-
-        void Start()
-        {
-            SetDisable();
-        }
-
-        void OnEnable()
-        {
-            flagManager.OnChangeFlag += OnChangeFlag;
-        }
-
-        void OnDisable()
-        {
-            flagManager.OnChangeFlag -= OnChangeFlag;
-        }
-
-        void OnChangeFlag(Flag flag)
-        {
-            SetDisable();
-        }
-
-        public void SetDisable()
-        {
-            // Noneのときは常に表示
-            if (disableFlag == Flag.None) return;
-            if (flagManager.GetFlag(disableFlag))
-            {
-                gameObject.SetActive(false);
-            }
-        }
-
         public void Execute()
         {
             if (!isAction) return;
@@ -189,12 +154,14 @@ namespace VLCNP.Actions
 
         public JToken CaptureAsJToken()
         {
+            print("isOnceDone: " + isOnceDone);
             return JToken.FromObject(isOnceDone);
         }
 
         public void RestoreFromJToken(JToken state)
         {
             isOnceDone = state.ToObject<bool>();
+            print("isOnceDone: " + isOnceDone);
         }
 
         public bool IsAutoStart()
