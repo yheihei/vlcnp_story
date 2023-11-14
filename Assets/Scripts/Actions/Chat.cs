@@ -154,14 +154,12 @@ namespace VLCNP.Actions
 
         public JToken CaptureAsJToken()
         {
-            print("isOnceDone: " + isOnceDone);
             return JToken.FromObject(isOnceDone);
         }
 
         public void RestoreFromJToken(JToken state)
         {
             isOnceDone = state.ToObject<bool>();
-            print("isOnceDone: " + isOnceDone);
         }
 
         public bool IsAutoStart()
