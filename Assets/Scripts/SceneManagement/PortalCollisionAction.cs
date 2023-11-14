@@ -49,5 +49,10 @@ namespace VLCNP.SceneManagement
             if (informationTextObject == null) return;
             Destroy(informationTextObject.gameObject);
         }
+
+        public bool IsAutoStart()
+        {
+            return false;
+        }
     }
 }

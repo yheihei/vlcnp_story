@@ -74,7 +74,8 @@ namespace VLCNP.Attributes
         private void Die()
         {
             if (isDead) return;
-            Instantiate(deadEffect, transform.position, Quaternion.identity);
+            GameObject _deadEffect = Instantiate(deadEffect, transform.position, Quaternion.identity);
+            Destroy(_deadEffect, 2f);
             isDead = true;
             onDie?.Invoke();
             gameObject.SetActive(false);
