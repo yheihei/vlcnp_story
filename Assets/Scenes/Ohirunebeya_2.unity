@@ -2164,7 +2164,6 @@ GameObject:
   - component: {fileID: 367386626}
   - component: {fileID: 367386628}
   - component: {fileID: 367386630}
-  - component: {fileID: 367386633}
   m_Layer: 0
   m_Name: nazohatoketa
   m_TagString: Untagged
@@ -2199,7 +2198,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 367386628}
   selectedCommands:
-  - {fileID: 367386633}
+  - {fileID: 367386630}
   variables: []
   description: 
   stepPause: 0
@@ -2237,7 +2236,6 @@ MonoBehaviour:
   eventHandler: {fileID: 0}
   commandList:
   - {fileID: 367386630}
-  - {fileID: 367386633}
   suppressAllAutoSelections: 0
 --- !u!114 &367386630
 MonoBehaviour:
@@ -2271,68 +2269,6 @@ Transform:
   m_Father: {fileID: 89812825}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &367386633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 367386625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 2
-  indentLevel: 0
-  description: 
-  targetObject: {fileID: 1520025448}
-  targetComponentAssemblyName: VLCNP.Core.FlagManager, Assembly-CSharp, Version=0.0.0.0,
-    Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
-  targetComponentText: FlagManager
-  targetMethod: SetFlag
-  targetMethodText: 'SetFlag (Flag, Boolean): Void'
-  methodParameters:
-  - objValue:
-      typeAssemblyname: VLCNP.Core.Flag, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      typeFullname: VLCNP.Core.Flag
-      intValue: 8
-      boolValue: 0
-      floatValue: 0
-      stringValue: 
-      colorValue: {r: 0, g: 0, b: 0, a: 0}
-      gameObjectValue: {fileID: 0}
-      materialValue: {fileID: 0}
-      objectValue: {fileID: 0}
-      spriteValue: {fileID: 0}
-      textureValue: {fileID: 0}
-      vector2Value: {x: 0, y: 0}
-      vector3Value: {x: 0, y: 0, z: 0}
-    variableKey: 
-  - objValue:
-      typeAssemblyname: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      typeFullname: System.Boolean
-      intValue: 0
-      boolValue: 1
-      floatValue: 0
-      stringValue: 
-      colorValue: {r: 0, g: 0, b: 0, a: 0}
-      gameObjectValue: {fileID: 0}
-      materialValue: {fileID: 0}
-      objectValue: {fileID: 0}
-      spriteValue: {fileID: 0}
-      textureValue: {fileID: 0}
-      vector2Value: {x: 0, y: 0}
-      vector3Value: {x: 0, y: 0, z: 0}
-    variableKey: 
-  saveReturnValue: 0
-  returnValueVariableKey: 
-  returnValueType: System.Void
-  showInherited: 0
-  callMode: 0
 --- !u!1001 &373650858
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8791,6 +8727,18 @@ PrefabInstance:
     - target: {fileID: 6310595414258977207, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
       propertyPath: InformationText
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310595414258977207, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
+      propertyPath: flagToBlockName.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310595414258977207, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
+      propertyPath: flagToBlockName.Array.data[0].value
+      value: Message
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310595414258977207, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
+      propertyPath: flagToBlockName.Array.data[0].afterChatSetFlag
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
@@ -36286,7 +36234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 525784043}
+  selectedFlowchart: {fileID: 367386626}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
