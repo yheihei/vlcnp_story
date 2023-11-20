@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace VLCNP.Movement
@@ -7,6 +8,8 @@ namespace VLCNP.Movement
         private Rigidbody2D rBody;
         [SerializeField] float jumpIntervalSecond = 3f;
         [SerializeField] float jumpPower = 8;
+
+        [SerializeField] float velocityX = 0;
         private float timeSinceLastJump = Mathf.Infinity;
         bool isGround = false;
         Animator animator;
@@ -20,14 +23,23 @@ namespace VLCNP.Movement
             timeSinceLastJump += Time.deltaTime;
         }
 
+        private void FixedUpdate() {
+            // ジャンプしていなかったら横方向の速度を0に
+            if (rBody.velocity.y == 0) rBody.velocity = new Vector2(0, rBody.velocity.y);
+        }
+
         private void OnTriggerStay2D(Collider2D collision)
         {
+            // ground tagじゃなければ無視
+            if (collision.gameObject.tag != "Ground") return;
             isGround = true;
             UpdateJumpAnimation();
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
+            // ground tagじゃなければ無視
+            if (collision.gameObject.tag != "Ground") return;
             isGround = false;
             UpdateJumpAnimation();
         }
@@ -43,6 +55,7 @@ namespace VLCNP.Movement
         private void Jump()
         {
             rBody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+            rBody.velocity = new Vector2(velocityX, rBody.velocity.y);
             timeSinceLastJump = 0f;
         }
 
