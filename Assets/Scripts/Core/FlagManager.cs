@@ -30,11 +30,11 @@ namespace VLCNP.Core
             if (!flagDictionary.ContainsKey(flag))
             {
                 flagDictionary.Add(flag, value);
-                OnChangeFlag(flag);
+                OnChangeFlag?.Invoke(flag);
                 return;
             }
             flagDictionary[flag] = value;
-            OnChangeFlag(flag);
+            OnChangeFlag?.Invoke(flag);
         }
 
         public JToken CaptureAsJToken()

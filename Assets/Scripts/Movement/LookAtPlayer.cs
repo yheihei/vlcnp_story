@@ -1,17 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VLCNP.Control;
 
 namespace VLCNP.Movement
 {
     public class LookAtPlayer : MonoBehaviour
     {
         Transform playerTransform;
+        PartyCongroller partyCongroller;
 
         void Awake()
         {
-            // PlayerタグからプレイヤーのTransformを取得
+            SetPlayerTransform(null);
+        }
+
+        private void SetPlayerTransform(GameObject player)
+        {
+            if (player != null) 
+            {
+                playerTransform = player.transform;
+                return;
+            }
             playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
+        }
+
+        void OnEnable()
+        {
+            // PartyタグのオブジェクトからPartyCongrollerを取得
+            partyCongroller = GameObject.FindGameObjectWithTag("Party")?.GetComponent<PartyCongroller>();
+            partyCongroller.OnChangeCharacter += SetPlayerTransform;
+        }
+
+        void OnDisable()
+        {
+            partyCongroller = GameObject.FindGameObjectWithTag("Party")?.GetComponent<PartyCongroller>();
+            partyCongroller.OnChangeCharacter -= SetPlayerTransform;
         }
 
         void FixedUpdate()
