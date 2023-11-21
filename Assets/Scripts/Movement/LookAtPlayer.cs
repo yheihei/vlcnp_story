@@ -29,12 +29,14 @@ namespace VLCNP.Movement
         {
             // PartyタグのオブジェクトからPartyCongrollerを取得
             partyCongroller = GameObject.FindGameObjectWithTag("Party")?.GetComponent<PartyCongroller>();
+            if (partyCongroller == null) return;
             partyCongroller.OnChangeCharacter += SetPlayerTransform;
         }
 
         void OnDisable()
         {
             partyCongroller = GameObject.FindGameObjectWithTag("Party")?.GetComponent<PartyCongroller>();
+            if (partyCongroller == null) return;
             partyCongroller.OnChangeCharacter -= SetPlayerTransform;
         }
 

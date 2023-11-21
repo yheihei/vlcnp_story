@@ -55,7 +55,9 @@ namespace VLCNP.Movement
         private void Jump()
         {
             rBody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-            rBody.velocity = new Vector2(velocityX, rBody.velocity.y);
+            // 向きをscaleから取得
+            bool isRight = transform.localScale.x > 0;
+            rBody.velocity = new Vector2(isRight ? velocityX : -1 * velocityX, rBody.velocity.y);
             timeSinceLastJump = 0f;
         }
 
