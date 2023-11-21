@@ -6,6 +6,7 @@ using VLCNP.Stats;
 using VLCNP.Core;
 using VLCNP.Saving;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace VLCNP.Control
 {
@@ -21,6 +22,7 @@ namespace VLCNP.Control
         [SerializeField] FlagManager flagManager;
         [SerializeField]
         CinemachineVirtualCamera virtualCamera;
+        public event Action<GameObject> OnChangeCharacter;
 
         private void Awake()
         {
@@ -75,6 +77,9 @@ namespace VLCNP.Control
 
             // 前のキャラクターの死亡判定を次のキャラクターに引き継ぐ
             gameOver.SetPlayerHealth(currentPlayer.GetComponent<Health>());
+
+            // キャラクターの変更イベントを発火
+            OnChangeCharacter?.Invoke(currentPlayer);
         }
 
         private GameObject GetNextPlayer()
