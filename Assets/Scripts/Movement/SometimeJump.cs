@@ -1,5 +1,7 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using VLCNP.Control;
 
 namespace VLCNP.Movement
 {
@@ -10,13 +12,38 @@ namespace VLCNP.Movement
         [SerializeField] float jumpPower = 8;
 
         [SerializeField] float velocityX = 0;
+
+        [SerializeField] float enemyDetectionRange = 12f;
         private float timeSinceLastJump = Mathf.Infinity;
         bool isGround = false;
         Animator animator;
+        GameObject player;
+        PartyCongroller partyCongroller;
 
         private void Awake() {
             rBody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+
+        private void SetPlayer(GameObject player)
+        {
+            this.player = player;
+        }
+
+        void OnEnable()
+        {
+            // PartyタグのオブジェクトからPartyCongrollerを取得
+            partyCongroller = GameObject.FindGameObjectWithTag("Party")?.GetComponent<PartyCongroller>();
+            if (partyCongroller == null) return;
+            partyCongroller.OnChangeCharacter += SetPlayer;
+        }
+
+        void OnDisable()
+        {
+            partyCongroller = GameObject.FindGameObjectWithTag("Party")?.GetComponent<PartyCongroller>();
+            if (partyCongroller == null) return;
+            partyCongroller.OnChangeCharacter -= SetPlayer;
         }
 
         private void Update() {
@@ -46,10 +73,19 @@ namespace VLCNP.Movement
 
         public void Move()
         {
+            if (!isDetectPlayer()) return;
             if (timeSinceLastJump > jumpIntervalSecond && isGround)
             {
                 Jump();
             }
+        }
+
+        private bool isDetectPlayer()
+        {
+            // playerとの距離を出す
+            if (player == null) return false;
+            float distance = Vector2.Distance(player.transform.position, transform.position);
+            return distance < enemyDetectionRange;
         }
 
         private void Jump()
@@ -64,6 +100,12 @@ namespace VLCNP.Movement
         private void UpdateJumpAnimation()
         {
             animator.SetBool("isGround", isGround);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, enemyDetectionRange);
         }
     }
 }
