@@ -69,8 +69,7 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 7507331662873950654}
-  selectedCommands:
-  - {fileID: 3398267667911420966}
+  selectedCommands: []
   variables: []
   description: 
   stepPause: 0
@@ -173,7 +172,7 @@ MonoBehaviour:
   itemId: 3
   indentLevel: 0
   description: 
-  targetObject: {fileID: 0}
+  targetObject: {fileID: 6884836960361539432}
   targetComponentAssemblyName: VLCNP.Attributes.PlayerHealthWrapper, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
@@ -534,6 +533,7 @@ GameObject:
   - component: {fileID: 6884836960361539437}
   - component: {fileID: 6884836960361539436}
   - component: {fileID: 6884836960361539439}
+  - component: {fileID: 1803947553251598871}
   m_Layer: 0
   m_Name: HealPoint
   m_TagString: Untagged
@@ -673,6 +673,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textPrefab: {fileID: 7155506780549345452, guid: f7e35f3b6f5d249d88596864c51b65b4, type: 3}
   SpawnOffsetY: 2.8
+--- !u!114 &1803947553251598871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6884836960361539432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9303876f5674e46678f22f48300d07d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &583330109586913611
 PrefabInstance:
   m_ObjectHideFlags: 0

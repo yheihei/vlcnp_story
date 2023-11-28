@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Control;
+using VLCNP.Core;
 
-public class AutoSpawn : MonoBehaviour
+public class AutoSpawn : MonoBehaviour, IStoppable
 {
     [SerializeField] GameObject spawnObject;
     [SerializeField] float intervalSecond = 3f;
@@ -16,6 +17,9 @@ public class AutoSpawn : MonoBehaviour
     private float timeSinceLastSpawn = Mathf.Infinity;
     private GameObject player;
     PartyCongroller partyCongroller;
+
+    bool isStopped = false;
+    public bool IsStopped { get => isStopped; set => isStopped = value; }
 
     // PartyTagのオブジェクトからPartyCongrollerを取得して、OnChangeCharacterのイベントを設定
     void OnEnable()
@@ -44,6 +48,7 @@ public class AutoSpawn : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isStopped) return;
         timeSinceLastSpawn += Time.deltaTime;
         // Playerとの距離が、スポーンする範囲内ならスポーンする
         if (!CanSpawnRange()) return;
