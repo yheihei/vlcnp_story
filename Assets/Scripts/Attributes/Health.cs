@@ -91,6 +91,13 @@ namespace VLCNP.Attributes
             this.healthPoints = healthPoints;
         }
 
+        // 全回復させるメソッド
+        public void RestoreHealth()
+        {
+            healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
+            SetHealthPoints(healthPoints);
+        }
+
         public JToken CaptureAsJToken()
         {
             return JToken.FromObject(healthPoints);
