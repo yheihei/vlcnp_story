@@ -5,6 +5,7 @@ using VLCNP.Control;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VLCNP.Core;
+using UnityEngine.Events;
 
 namespace VLCNP.SceneManagement
 {
@@ -23,6 +24,9 @@ namespace VLCNP.SceneManagement
         [SerializeField] float fadeWaitTime = 0.2f;
         [SerializeField] float fadeInTime = 1f;
         [SerializeField] string autoSaveFileName = "autoSave";
+        [SerializeField] bool isAutoSave = true;
+        [SerializeField] GameObject[] dontDestroyOnLoadObjects;
+
         private AudioSource BGM;
         private AreaBGM areaBGM;
 
@@ -39,6 +43,11 @@ namespace VLCNP.SceneManagement
         //     }
         // }
 
+        public void TransitionEvent()
+        {
+            StartCoroutine(Transition());
+        }
+
         public IEnumerator Transition()
         {
             if (sceneToLoad < 0)
@@ -47,6 +56,10 @@ namespace VLCNP.SceneManagement
                 yield break;
             }
             DontDestroyOnLoad(gameObject);
+            foreach (GameObject obj in dontDestroyOnLoadObjects)
+            {
+                DontDestroyOnLoad(obj);
+            }
             DisableControl();
 
             // SceneFaderタグでFaderを取得
@@ -55,7 +68,10 @@ namespace VLCNP.SceneManagement
 
             // キャラたちの状態保存
             SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();
-            wrapper.Save(autoSaveFileName);
+            if (isAutoSave)
+            {
+                wrapper.Save(autoSaveFileName);
+            }
 
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
             print("Scene Loaded");
@@ -75,6 +91,10 @@ namespace VLCNP.SceneManagement
             EnableControl();
 
             Destroy(gameObject);
+            foreach (GameObject obj in dontDestroyOnLoadObjects)
+            {
+                Destroy(obj);
+            }
         }
 
         private IEnumerator ChangeBGM()
@@ -83,9 +103,9 @@ namespace VLCNP.SceneManagement
             BGM = GameObject.FindWithTag("BGM").GetComponent<AudioSource>();
             // エリアのBGMを取得
             areaBGM = GameObject.FindWithTag("AreaBGM").GetComponent<AreaBGM>();
-            if (BGM.clip == areaBGM.GetAudioClip())
+            if (BGM.clip.name == areaBGM.GetAudioClip().name)
             {
-                yield return null;
+                yield break;
             }
             // clipの変更があれば変更
             yield return StartCoroutine(BGMFadeRoutine(0, fadeWaitTime));
