@@ -75,6 +75,9 @@ namespace VLCNP.SceneManagement
 
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
             print("Scene Loaded");
+            // StoppableControllerをタグから取得
+            StoppableController stoppableController = GameObject.FindWithTag("StoppableController").GetComponent<StoppableController>();
+            stoppableController?.StopAll();
             // BGMの変更があれば変更
             StartCoroutine(ChangeBGM());
             // キャラたちの状態復元
@@ -89,6 +92,7 @@ namespace VLCNP.SceneManagement
             yield return fader.FadeIn(fadeInTime);
 
             EnableControl();
+            stoppableController?.StartAll();
 
             Destroy(gameObject);
             foreach (GameObject obj in dontDestroyOnLoadObjects)
