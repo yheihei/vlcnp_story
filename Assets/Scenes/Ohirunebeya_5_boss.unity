@@ -24184,6 +24184,9 @@ GameObject:
   - component: {fileID: 766582169}
   - component: {fileID: 766582171}
   - component: {fileID: 766582172}
+  - component: {fileID: 766582174}
+  - component: {fileID: 766582173}
+  - component: {fileID: 766582175}
   m_Layer: 0
   m_Name: verylonggun_fukkatu
   m_TagString: Untagged
@@ -24224,7 +24227,7 @@ MonoBehaviour:
   itemId: 2
   indentLevel: 0
   soundClip: {fileID: 8300000, guid: a979785ec5f794f23b352560d0a3c338, type: 3}
-  volume: 0.5
+  volume: 1
   waitUntilFinished: 0
 --- !u!114 &766582165
 MonoBehaviour:
@@ -24281,6 +24284,9 @@ MonoBehaviour:
   - {fileID: 766582170}
   - {fileID: 766582164}
   - {fileID: 766582165}
+  - {fileID: 766582174}
+  - {fileID: 766582175}
+  - {fileID: 766582173}
   - {fileID: 766582163}
   - {fileID: 766582169}
   - {fileID: 766582172}
@@ -24313,7 +24319,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 766582166}
   selectedCommands:
-  - {fileID: 766582170}
+  - {fileID: 766582164}
   variables: []
   description: 
   stepPause: 0
@@ -24548,6 +24554,92 @@ MonoBehaviour:
   stringEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &766582173
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766582161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10cd462c89cb047158ccfb8a8df3f60a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 10
+  indentLevel: 0
+  spriteRenderer: {fileID: 1513052543}
+  _visible:
+    booleanRef: {fileID: 0}
+    booleanVal: 0
+  affectChildren: 1
+  visibleOLD: 0
+--- !u!114 &766582174
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766582161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 9
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1992362641}
+  targetComponentAssemblyName: VLCNP.Combat.Fighter, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: Fighter
+  targetMethod: EquipWeapon
+  targetMethodText: 'EquipWeapon (WeaponConfig): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: VLCNP.Combat.WeaponConfig, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      typeFullname: VLCNP.Combat.WeaponConfig
+      intValue: 0
+      boolValue: 0
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 11400000, guid: 5c58eb1f0190245e4b4c3c21c543306e, type: 2}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &766582175
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766582161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd8c931f22994b9d90e2037fffaa770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 11
+  indentLevel: 0
+  _targetGameObject:
+    gameObjectRef: {fileID: 0}
+    gameObjectVal: {fileID: 807573100}
+  activeState:
+    booleanRef: {fileID: 0}
+    booleanVal: 0
+  targetGameObjectOLD: {fileID: 0}
 --- !u!4 &766667196 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3564026850829729314, guid: 406ae01b7bf025d478da7b57dfe1715c, type: 3}
@@ -34820,6 +34912,11 @@ MonoBehaviour:
   visibilityFlags:
   - flag: 9
     isVisible: 0
+--- !u!212 &1513052543 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7322416563294934330, guid: 4452a451d413c476bbb4b8082469baff, type: 3}
+  m_PrefabInstance: {fileID: 7322416563250743695}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1520025446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -108031,6 +108128,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27277137d0605bd45bd741cdb791e0c1, type: 3}
+--- !u!1 &1992362641 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2553795758778975881, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 1520025446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2004424173
 PrefabInstance:
   m_ObjectHideFlags: 0

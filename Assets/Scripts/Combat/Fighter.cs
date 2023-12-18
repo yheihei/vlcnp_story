@@ -1,12 +1,14 @@
 using System;
+using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using VLCNP.Attributes;
+using VLCNP.Saving;
 using VLCNP.Stats;
 
 namespace VLCNP.Combat
 {
-    public class Fighter : MonoBehaviour
+    public class Fighter : MonoBehaviour, IJsonSaveable
     {
         [SerializeField] WeaponConfig defaultWeaponConfig = null;
         [SerializeField] WeaponConfig directAttackWeaponConfig = null;
@@ -16,9 +18,8 @@ namespace VLCNP.Combat
         WeaponConfig currentWeaponConfig;
         BaseStats baseStats;
 
-        private void Awake() {
-            currentWeaponConfig = defaultWeaponConfig;
-            EquipWeapon(currentWeaponConfig);
+        protected void Awake() {
+            EquipWeapon(defaultWeaponConfig);
             baseStats = GetComponent<BaseStats>();
         }
 
@@ -39,10 +40,12 @@ namespace VLCNP.Combat
             handTransform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
-        private void EquipWeapon(WeaponConfig weaponConfig)
+        public void EquipWeapon(WeaponConfig weaponConfig)
         {
             if (weaponConfig == null) return;
-            weaponConfig.Spawn(handTransform);
+            currentWeaponConfig = weaponConfig;
+            currentWeaponConfig.Spawn(handTransform);
+            WeaponHorizontal();
         }
 
         public void Attack()
@@ -63,6 +66,18 @@ namespace VLCNP.Combat
         {
             // 左向きキャラクターをlocalScaleで反転させているため、右を向いているときscaleが-1になる
             return transform.lossyScale.x > 0;
+        }
+
+        public JToken CaptureAsJToken()
+        {
+            return JToken.FromObject(currentWeaponConfig.name);
+        }
+
+        public void RestoreFromJToken(JToken state)
+        {
+            WeaponConfig weaponConfig = Resources.Load<WeaponConfig>(state.ToObject<string>());
+            if (weaponConfig == null) return;
+            EquipWeapon(weaponConfig);
         }
     }
 }
