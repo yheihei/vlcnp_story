@@ -11,5 +11,6 @@ namespace VLCNP.Core
         LeeleeFukkatuDone, // リーリー復活済
         LeeleeRakubanMaeChat, // リーリーと一緒にお昼寝部屋の落盤を見た
         LeeleeRakubanMaeFinished, // リーリーと一緒にお昼寝部屋の落盤をこわしたあと
+        VeryLongGunEquipped, // ベリーロングガンを装備した
     }
 }
