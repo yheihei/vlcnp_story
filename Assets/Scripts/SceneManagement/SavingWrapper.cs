@@ -24,10 +24,10 @@ namespace VLCNP.SceneManagement
             {
                 Load();
             }
-            // if (Input.GetKeyDown(KeyCode.S))
-            // {
-            //     Save();
-            // }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                Save();
+            }
             if (Input.GetKeyDown(KeyCode.D))
             {
                 Delete();
