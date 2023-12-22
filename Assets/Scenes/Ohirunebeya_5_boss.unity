@@ -35919,6 +35919,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2888467994159925159, guid: 98598c196eba0462d8570f387783f42b, type: 3}
   m_PrefabInstance: {fileID: 1663708225}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1567130625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445716051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aca3c0fe3a474c968b25caabd5fd058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpIntervalSecond: 3
+  jumpPower: 120
+  velocityX: 5
+  enemyDetectionRange: 100
 --- !u!4 &1568057719 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2048213961823272354, guid: 27277137d0605bd45bd741cdb791e0c1, type: 3}
@@ -36924,7 +36940,8 @@ PrefabInstance:
       propertyPath: enemyDetectionRange
       value: 100
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7908865378708027638, guid: 98598c196eba0462d8570f387783f42b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 98598c196eba0462d8570f387783f42b, type: 3}
 --- !u!4 &1664029236 stripped
 Transform:
