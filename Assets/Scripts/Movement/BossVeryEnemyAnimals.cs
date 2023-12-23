@@ -1,6 +1,7 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using VLCNP.Combat;
 using VLCNP.Control;
 
 namespace VLCNP.Movement
@@ -20,11 +21,13 @@ namespace VLCNP.Movement
         GameObject player;
         PartyCongroller partyCongroller;
         private int jumpCount = 1;
+        DamageStun damageStun;
 
         private void Awake() {
             rBody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
             player = GameObject.FindGameObjectWithTag("Player");
+            damageStun = GetComponent<DamageStun>();
         }
 
         private void SetPlayer(GameObject player)
@@ -61,6 +64,8 @@ namespace VLCNP.Movement
             // ground tagじゃなければ無視
             if (collision.gameObject.tag != "Ground") return;
             isGround = true;
+            // 地面にいる間はStunする
+            damageStun?.ValidStan();
             UpdateJumpAnimation();
         }
 
@@ -69,6 +74,8 @@ namespace VLCNP.Movement
             // ground tagじゃなければ無視
             if (collision.gameObject.tag != "Ground") return;
             isGround = false;
+            // 地面から離れたらStunしない
+            damageStun?.InvalidStan();
             UpdateJumpAnimation();
         }
 
@@ -76,6 +83,8 @@ namespace VLCNP.Movement
         {
             if (!isDetectPlayer()) return;
             if (!isMove()) return;
+            // 移動時はStunしない
+            damageStun?.InvalidStan();
             if (jumpCount % 3 == 0)
             {
                 Tackle();

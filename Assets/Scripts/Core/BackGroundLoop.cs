@@ -8,7 +8,6 @@ namespace VLCNP.Core
     {
         [SerializeField, Header("視差効果"), Range(0f, 1f)]
         float parallaxEffect = 1f;
-        GameObject mainCamera;
         float length;
         float startPosX;
 
@@ -16,7 +15,6 @@ namespace VLCNP.Core
         {
             startPosX = transform.position.x;
             length = GetComponent<SpriteRenderer>().bounds.size.x;
-            mainCamera = Camera.main.gameObject;
         }
 
         void FixedUpdate()
