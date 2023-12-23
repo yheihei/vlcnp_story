@@ -26,8 +26,8 @@ namespace VLCNP.Core
 
         void Parallax()
         {
-            float temp = mainCamera.transform.position.x * (1 - parallaxEffect);
-            float dist = mainCamera.transform.position.x * parallaxEffect;
+            float temp = Camera.main.gameObject.transform.position.x * (1 - parallaxEffect);
+            float dist = Camera.main.gameObject.transform.position.x * parallaxEffect;
 
             transform.position = new Vector3(startPosX + dist, transform.position.y, transform.position.z);
 
