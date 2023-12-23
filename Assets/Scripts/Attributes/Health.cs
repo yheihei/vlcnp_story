@@ -2,6 +2,7 @@ using UnityEngine;
 using VLCNP.Stats;
 using UnityEngine.Events;
 using VLCNP.Saving;
+using VLCNP.Combat;
 using Newtonsoft.Json.Linq;
 using System;
 
@@ -38,6 +39,7 @@ namespace VLCNP.Attributes
             if (IsInvincible()) return;
             timeSinceLastHit = 0f;
             healthPoints = Mathf.Max(healthPoints - damage, 0);
+            GetComponent<TakeDamageSe>()?.Play();
             takeDamage.Invoke(damage);
             if (healthPoints == 0) {
                 Die();
