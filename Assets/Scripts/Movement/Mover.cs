@@ -31,7 +31,7 @@ namespace VLCNP.Movement
         {
             vx = 0;
             // Stun状態の場合は移動不可
-            if (playerStun != null && playerStun.IsStunned()) return;
+            if (isStunned()) return;
             if (Input.GetKey("right"))
             {
                 vx = speed;
@@ -52,6 +52,11 @@ namespace VLCNP.Movement
                 isPushing = false;
             }
             UpdateAnimator();
+        }
+
+        private bool isStunned()
+        {
+            return playerStun != null && playerStun.IsStunned();
         }
 
         public IEnumerator MoveToPosition(Vector3 position, float timeout = 0)
@@ -99,7 +104,7 @@ namespace VLCNP.Movement
         private void FixedUpdate()
         {
             // Stun状態の場合は移動不可
-            if (playerStun != null && playerStun.IsStunned()) return;
+            if (isStunned()) return;
             UpdateMoveSpeed();
             UpdateJumpState();
             UpdateCharacterDirection();
