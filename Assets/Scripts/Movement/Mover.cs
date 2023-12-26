@@ -1,6 +1,7 @@
 using System.Collections;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using VLCNP.Combat;
 using VLCNP.Saving;
 
 namespace VLCNP.Movement
@@ -18,15 +19,19 @@ namespace VLCNP.Movement
         float vx = 0;
         Rigidbody2D rbody;
         Animator animator;
+        PlayerStun playerStun;
 
         private void Awake() {
             rbody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
+            playerStun = GetComponent<PlayerStun>();
         }
 
         public void Move()
         {
             vx = 0;
+            // Stun状態の場合は移動不可
+            if (isStunned()) return;
             if (Input.GetKey("right"))
             {
                 vx = speed;
@@ -47,6 +52,11 @@ namespace VLCNP.Movement
                 isPushing = false;
             }
             UpdateAnimator();
+        }
+
+        private bool isStunned()
+        {
+            return playerStun != null && playerStun.IsStunned();
         }
 
         public IEnumerator MoveToPosition(Vector3 position, float timeout = 0)
@@ -93,6 +103,8 @@ namespace VLCNP.Movement
 
         private void FixedUpdate()
         {
+            // Stun状態の場合は移動不可
+            if (isStunned()) return;
             UpdateMoveSpeed();
             UpdateJumpState();
             UpdateCharacterDirection();

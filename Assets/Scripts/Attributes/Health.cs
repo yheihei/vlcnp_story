@@ -24,6 +24,8 @@ namespace VLCNP.Attributes
         float timeSinceLastHit = Mathf.Infinity;
         SpriteRenderer playerSprite;
         TakeDamageSe takeDamageSe;
+        // ダメージを受けたときにふっとばすかどうか
+        [SerializeField] bool isBlowAway = false;
 
         private void Awake() {
             healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
@@ -47,7 +49,8 @@ namespace VLCNP.Attributes
                 Die();
             } else {
                 // 吹っ飛ばす
-                GetComponent<Rigidbody2D>().AddForce(Vector2.up * 4, ForceMode2D.Impulse);
+                Rigidbody2D rBody = GetComponent<Rigidbody2D>();
+                rBody.AddForce(new Vector2(rBody.velocity.x, 3), ForceMode2D.Impulse);
             }
         }
 

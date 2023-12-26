@@ -78,23 +78,39 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4594576680496137720, guid: ffd99270be4a04e47b39ad33d90e4690, type: 3}
     - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: isBlowAway
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: invincibleTime
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 4373353058723386108}
     - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 3305647210527678468}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
@@ -102,11 +118,23 @@ PrefabInstance:
       value: LoseExperience
       objectReference: {fileID: 0}
     - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: Stun
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: VLCNP.Stats.Experience, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: VLCNP.Combat.PlayerStun, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: -4722061021500989054, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: -2641368885610136209, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
@@ -117,6 +145,10 @@ PrefabInstance:
       propertyPath: audioClip
       value: 
       objectReference: {fileID: 8300000, guid: 7b9e9eb8036f34f43b6400f25c0730d6, type: 3}
+    - target: {fileID: 3902185951847420, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: speed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3902185951847420, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: jumpPower
       value: 7
@@ -294,6 +326,19 @@ MonoBehaviour:
       handTransformY: -0.7
       legTransformY: -1
     auraEffect: {fileID: 6635891042781509351, guid: 6ebcc229d34e948359fba69a25acb870, type: 3}
+--- !u!114 &3305647210527678468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699767717115717140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a5ea89800ec54eb6b733a84647dd8da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stunDuration: 0.3
 --- !u!114 &3981693041705620213
 MonoBehaviour:
   m_ObjectHideFlags: 0
