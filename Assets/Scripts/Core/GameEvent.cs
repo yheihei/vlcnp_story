@@ -44,17 +44,31 @@ namespace VLCNP.Core
             flagManager = GameObject.FindWithTag("FlagManager").GetComponent<FlagManager>();
         }
 
-        public void Execute()
+        void Start()
         {
-            if (!isAction) return;
-            if (flowChart == null) return;
-            if (flowChart.HasExecutingBlocks()) return;
-            isAction = false;
-            StartCoroutine(EventExecute());
+            FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
+            // 自動実行のBlockNameが設定されていたら即時実行
+            if (flagToBlockName.IsAutoStart)
+            {
+                StartCoroutine(EventExecute(flagToBlockName));
+            }
         }
 
-        IEnumerator EventExecute() {
+        /***
+         * 外部からイベントを実行する
+         */
+        public void Execute()
+        {
             FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
+            // 現在のBlockNameが即時実行なら実行しない
+            if (flagToBlockName.IsAutoStart) return;
+            StartCoroutine(EventExecute(flagToBlockName));
+        }
+
+        IEnumerator EventExecute(FlagToBlockName flagToBlockName) {
+            if (!isAction) yield break;
+            if (flowChart.HasExecutingBlocks()) yield break;
+            isAction = false;
             flowChart.ExecuteBlock(flagToBlockName.BlockName);
             yield return new WaitUntil(() => flowChart.HasExecutingBlocks() == false);
             // メニューが開いていたら閉じるまで待つ
