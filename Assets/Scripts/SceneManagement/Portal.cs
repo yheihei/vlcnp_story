@@ -67,21 +67,23 @@ namespace VLCNP.SceneManagement
             yield return fader.FadeOut(fadeOutTime);
 
             // キャラたちの状態保存
-            SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();
+            SavingWrapper savingWrapper = FindObjectOfType<SavingWrapper>();
             if (isAutoSave)
             {
-                wrapper.Save(autoSaveFileName);
+                savingWrapper.Save(autoSaveFileName);
             }
 
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
-            print("Scene Loaded");
+
+            // 遷移後 こちらのシーンでのSaving wrapperを再取得
+            savingWrapper = FindObjectOfType<SavingWrapper>();
             // StoppableControllerをタグから取得
             StoppableController stoppableController = GameObject.FindWithTag("StoppableController").GetComponent<StoppableController>();
             stoppableController?.StopAll();
             // BGMの変更があれば変更
             StartCoroutine(ChangeBGM());
             // キャラたちの状態復元
-            wrapper.LoadOnlyState(autoSaveFileName);
+            savingWrapper.LoadOnlyState(autoSaveFileName);
 
             Portal otherPortal = GetOtherPortal();
             UpdatePlayerPosition(otherPortal);

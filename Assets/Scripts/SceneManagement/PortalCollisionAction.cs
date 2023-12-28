@@ -50,9 +50,15 @@ namespace VLCNP.SceneManagement
             Destroy(informationTextObject.gameObject);
         }
 
-        public bool IsAutoStart()
+        public bool IsCollisionStart()
         {
             return false;
+        }
+
+        public void ExecuteCollisionStart()
+        {
+            if (!isAction) return;
+            StartCoroutine(Transition());
         }
     }
 }

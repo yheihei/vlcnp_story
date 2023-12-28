@@ -39,7 +39,7 @@ namespace VLCNP.Control
             if (collisionAction != null) return;
             collisionAction = _collisionAction;
             collisionAction.ShowInformation();
-            if (collisionAction.IsAutoStart()) collisionAction.Execute();
+            if (collisionAction.IsCollisionStart()) collisionAction.ExecuteCollisionStart();
         }
 
         private void OnTriggerExit2D(Collider2D other)
