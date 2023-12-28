@@ -94,6 +94,16 @@ namespace VLCNP.Actions
             StartCoroutine(Talk());
         }
 
+        public void ExecuteCollisionStart()
+        {
+            if (!isAction) return;
+            if (flowChart == null) return;
+            if (isOnceDone) return;
+            if (flowChart.HasExecutingBlocks()) return;
+            isAction = false;
+            StartCoroutine(Talk());
+        }
+
         public (Flag, string, Flag) GetCurrentBlockNameFromFlag()
         {
             // flagToBlockName を後ろから見ていって、最初に見つかったものを返す
@@ -182,7 +192,7 @@ namespace VLCNP.Actions
             isOnceDone = state.ToObject<bool>();
         }
 
-        public bool IsAutoStart()
+        public bool IsCollisionStart()
         {
             return isAutoStart;
         }

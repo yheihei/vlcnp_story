@@ -76,9 +76,18 @@ namespace VLCNP.Core
             StartCoroutine(EventExecute(flagToBlockName));
         }
 
+        public void ExecuteCollisionStart()
+        {
+            FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
+            // 現在のBlockNameがcollisionStartでないなら実行しない
+            if (!flagToBlockName.IsCollisionStart) return;
+            StartCoroutine(EventExecute(flagToBlockName));
+        }
+
         IEnumerator EventExecute(FlagToBlockName flagToBlockName) {
             if (!isAction) yield break;
             if (flowChart.HasExecutingBlocks()) yield break;
+            if (flagToBlockName.BlockName == "") yield break;
             isAction = false;
             flowChart.ExecuteBlock(flagToBlockName.BlockName);
             yield return new WaitUntil(() => flowChart.HasExecutingBlocks() == false);
@@ -97,8 +106,7 @@ namespace VLCNP.Core
             Destroy(informationTextObject.gameObject);
         }
 
-        // TODO: Chat.csからGameEvent.csに置き換えられたタイミングで IsCollisionStart() に直す
-        public bool IsAutoStart()
+        public bool IsCollisionStart()
         {
             return GetCurrentBlockNameFromFlag().IsCollisionStart;
         }
@@ -125,6 +133,5 @@ namespace VLCNP.Core
             // 設定がなければException
             throw new Exception("flagToBlockNameが設定されていません");
         }
-        
     }    
 }
