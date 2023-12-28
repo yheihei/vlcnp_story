@@ -47,7 +47,11 @@ namespace VLCNP.Actions
 
         [Header("触れると自動でスタートする")]
         [SerializeField]
-        bool isAutoStart = false;
+        bool isAutoStart = false;  // TODO: なぜかController側がキック契機になっている
+
+        [Header("自動でスタート")]
+        [SerializeField]
+        bool isFlagAwakeStart = false;
 
         bool isOnceDone = false;
 
@@ -64,6 +68,21 @@ namespace VLCNP.Actions
             flagManager = GameObject.FindWithTag("FlagManager").GetComponent<FlagManager>();
             postChat = GetComponent<IPostChat>();
         }
+
+        void Start()
+        {
+            // flagManager.OnChangeFlag += OnChangeFlag;
+            FlagAwakeStart();
+        }
+
+        private void FlagAwakeStart()
+        {
+            if (isFlagAwakeStart)
+            {
+                Execute();
+            }
+        }
+
         public void Execute()
         {
             if (!isAction) return;

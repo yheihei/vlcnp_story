@@ -6602,7 +6602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 603898114}
+  selectedFlowchart: {fileID: 205488427927681391}
 --- !u!4 &1571082382
 Transform:
   m_ObjectHideFlags: 1
@@ -7097,8 +7097,8 @@ GameObject:
   - component: {fileID: 1871434427}
   - component: {fileID: 1871434426}
   - component: {fileID: 1871434428}
-  - component: {fileID: 1871434429}
   - component: {fileID: 1871434430}
+  - component: {fileID: 1871434429}
   m_Layer: 0
   m_Name: uni
   m_TagString: Untagged
@@ -7208,16 +7208,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1871434425}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3e3d9748c8ec402aac08272b11a33f3, type: 3}
+  m_Script: {fileID: 11500000, guid: d1fb2e16742a545bb86037aae2a47552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   flowChart: {fileID: 205488427927681391}
-  BlockName: Message
-  flagToBlockName: []
-  TargetTag: Player
-  InformationText: "(\u2191) \u30A6\u30CB\u30AD"
-  IsOnce: 0
-  isAutoStart: 0
+  flagToBlockName:
+  - flag: 0
+    blockName: Message
+    isAutoStart: 0
+    isCollisionStart: 0
+  InformationText: "(\u2191)\u30A6\u30CB\u30AD"
 --- !u!114 &1871434430
 MonoBehaviour:
   m_ObjectHideFlags: 0
