@@ -7226,6 +7226,10 @@ MonoBehaviour:
     blockName: Message2
     isAutoStart: 0
     isCollisionStart: 0
+  - flag: 3
+    blockName: Message3
+    isAutoStart: 1
+    isCollisionStart: 0
   InformationText: "(\u2191)\u30A6\u30CB\u30AD"
 --- !u!114 &1871434430
 MonoBehaviour:
@@ -7449,9 +7453,9 @@ MonoBehaviour:
     width: 0
     height: 0
   selectedBlocks:
-  - {fileID: 5304988783140649967}
+  - {fileID: 6448916648448277121}
   selectedCommands:
-  - {fileID: 6448916648448277117}
+  - {fileID: 6448916648448277120}
   variables:
   - {fileID: 2481217347253268558}
   description: 
@@ -7554,6 +7558,8 @@ GameObject:
   - component: {fileID: 6448916648448277117}
   - component: {fileID: 6448916648448277119}
   - component: {fileID: 6448916648448277118}
+  - component: {fileID: 6448916648448277121}
+  - component: {fileID: 6448916648448277120}
   m_Layer: 0
   m_Name: UniGreeting
   m_TagString: Untagged
@@ -7723,6 +7729,60 @@ MonoBehaviour:
   eventHandler: {fileID: 0}
   commandList:
   - {fileID: 6448916648448277118}
+  suppressAllAutoSelections: 0
+--- !u!114 &6448916648448277120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4880943424496289759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 20
+  indentLevel: 0
+  storyText: "\u30D5\u30E9\u30B0\u304CON\u306B\u306A\u3063\u305F\u304B\u3089\u306D\uFF1F\n\u6025\u306B\u81EA\u52D5\u3067\u8A71\u3057\u304B\u3051\u3066\u304F\u308B\u30A6\u30CB\u3060\u3088"
+  description: 
+  character: {fileID: 1836443559}
+  portrait: {fileID: 21300000, guid: f1040826dbcad4d138fd29d6c972e62a, type: 3}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &6448916648448277121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4880943424496289759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3d73aef2cfc4f51abf34ac00241f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeRect:
+    serializedVersion: 2
+    x: 111
+    y: 371
+    width: 109
+    height: 40
+  tint: {r: 0, g: 0, b: 0, a: 1}
+  useCustomTint: 0
+  itemId: 18
+  blockName: Message3
+  description: 
+  eventHandler: {fileID: 0}
+  commandList:
+  - {fileID: 6448916648448277120}
   suppressAllAutoSelections: 0
 --- !u!1001 &8104223883927387380
 PrefabInstance:

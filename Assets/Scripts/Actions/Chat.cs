@@ -13,6 +13,7 @@ using System.Collections.Concurrent;
 
 namespace VLCNP.Actions
 {
+    // TODO: GameEventに移行する
     public class Chat : MonoBehaviour, ICollisionAction, IJsonSaveable
     {
         [SerializeField]

@@ -46,8 +46,19 @@ namespace VLCNP.Core
 
         void Start()
         {
+            AutoStartBlock();
+            flagManager.OnChangeFlag += OnChangeFlag;
+        }
+
+        // Flagの変更通知時、自動実行のBlockNameが設定されていたら即時実行
+        void OnChangeFlag(Flag flag)
+        {
+            AutoStartBlock();
+        }
+
+        private void AutoStartBlock()
+        {
             FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
-            // 自動実行のBlockNameが設定されていたら即時実行
             if (flagToBlockName.IsAutoStart)
             {
                 StartCoroutine(EventExecute(flagToBlockName));
