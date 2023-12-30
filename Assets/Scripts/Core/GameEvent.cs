@@ -59,6 +59,7 @@ namespace VLCNP.Core
         private void AutoStartBlock()
         {
             FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
+            if (flagToBlockName == null) return;
             if (flagToBlockName.IsAutoStart)
             {
                 StartCoroutine(EventExecute(flagToBlockName));
@@ -71,6 +72,7 @@ namespace VLCNP.Core
         public void Execute()
         {
             FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
+            if (flagToBlockName == null) return;
             // 現在のBlockNameが即時実行なら実行しない
             if (flagToBlockName.IsAutoStart) return;
             StartCoroutine(EventExecute(flagToBlockName));
@@ -108,7 +110,9 @@ namespace VLCNP.Core
 
         public bool IsCollisionStart()
         {
-            return GetCurrentBlockNameFromFlag().IsCollisionStart;
+            FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
+            if (flagToBlockName == null) return false;
+            return flagToBlockName.IsCollisionStart;
         }
 
         public void ShowInformation()
@@ -120,7 +124,7 @@ namespace VLCNP.Core
             informationTextObject = spawner.Spawn(InformationText);
         }
 
-        public FlagToBlockName GetCurrentBlockNameFromFlag()
+        public FlagToBlockName? GetCurrentBlockNameFromFlag()
         {
             // flagToBlockName を後ろから見ていって、現在有効なフラグのBlockNameを返す
             for (int i = flagToBlockName.Length - 1; i >= 0; i--)
@@ -130,8 +134,8 @@ namespace VLCNP.Core
                     return flagToBlockName[i];
                 }
             }
-            // 設定がなければException
-            throw new Exception("flagToBlockNameが設定されていません");
+            // 設定がなければnullを返す
+            return null;
         }
     }    
 }
