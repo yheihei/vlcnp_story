@@ -1,50 +1,33 @@
-using System;
 using System.Collections;
-using Unity.VisualScripting;
-using VLCNP.Control;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine;
+using VLCNP.Control;
 using VLCNP.Core;
-using UnityEngine.Events;
 
 namespace VLCNP.SceneManagement
 {
-    // TODO: TransitionEventの方を使うこと
-    public class Portal : MonoBehaviour
+    /**
+     * シーン遷移をする
+     */
+    public class TransitionEvent : MonoBehaviour
     {
-        enum DestinationIdentifier
-        {
-            A, B, C, D, E
-        }
-
         [SerializeField] int sceneToLoad = -1;
-        [SerializeField] Transform spawnPoint;
-        [SerializeField] bool isPlayerDirectionLeft;
-        [SerializeField] DestinationIdentifier destination;
+
+        // シーン遷移後に出現するTransitionSpawnPointの名前
+        [SerializeField] string destinationSpawnPointName = "A";
+
         [SerializeField] float fadeOutTime = 1f;
         [SerializeField] float fadeWaitTime = 0.2f;
         [SerializeField] float fadeInTime = 1f;
         [SerializeField] string autoSaveFileName = "autoSave";
         [SerializeField] bool isAutoSave = true;
-        [SerializeField] GameObject[] dontDestroyOnLoadObjects;
 
         private AudioSource BGM;
         private AreaBGM areaBGM;
 
         bool isTransitioning = false;
 
-        // private void OnTriggerEnter2D(Collider2D other)
-        // {
-        //     if (isTransitioning) return;
-        //     if (other.gameObject.tag == "Player")
-        //     {
-        //         print("Portal");
-        //         isTransitioning = true;
-        //         StartCoroutine(Transition());
-        //     }
-        // }
-
-        public void TransitionEvent()
+        public void ExecuteTransition()
         {
             StartCoroutine(Transition());
         }
@@ -57,11 +40,10 @@ namespace VLCNP.SceneManagement
                 yield break;
             }
             DontDestroyOnLoad(gameObject);
-            foreach (GameObject obj in dontDestroyOnLoadObjects)
-            {
-                DontDestroyOnLoad(obj);
-            }
-            DisableControl();
+
+            // StoppableControllerをタグから取得
+            StoppableController stoppableController = GameObject.FindWithTag("StoppableController").GetComponent<StoppableController>();
+            stoppableController?.StopAll();
 
             // SceneFaderタグでFaderを取得
             Fader fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
@@ -74,34 +56,28 @@ namespace VLCNP.SceneManagement
                 savingWrapper.Save(autoSaveFileName);
             }
 
+            yield return new WaitForSeconds(fadeWaitTime);
+
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
 
-            // 遷移後 こちらのシーンでのSaving wrapperを再取得
-            savingWrapper = FindObjectOfType<SavingWrapper>();
-            // StoppableControllerをタグから取得
-            StoppableController stoppableController = GameObject.FindWithTag("StoppableController").GetComponent<StoppableController>();
-            stoppableController?.StopAll();
             // BGMの変更があれば変更
             StartCoroutine(ChangeBGM());
             // キャラたちの状態復元
+            // 遷移後 こちらのシーンでのSaving wrapperを再取得
+            savingWrapper = FindObjectOfType<SavingWrapper>();
             savingWrapper.LoadOnlyState(autoSaveFileName);
 
-            Portal otherPortal = GetOtherPortal();
-            UpdatePlayerPosition(otherPortal);
+            TransitionSpawnPoint transitionSpawnPoint = GetTransitionSpawnPoint();
+            if (transitionSpawnPoint == null)
+            {
+                throw new System.Exception("Transition spawn point not found");
+            }
+            UpdatePlayerPosition(transitionSpawnPoint);
 
-            DisableControl();
-
-            yield return new WaitForSeconds(fadeWaitTime);
+            fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
             yield return fader.FadeIn(fadeInTime);
 
-            EnableControl();
-            stoppableController?.StartAll();
-
             Destroy(gameObject);
-            foreach (GameObject obj in dontDestroyOnLoadObjects)
-            {
-                Destroy(obj);
-            }
         }
 
         private IEnumerator ChangeBGM()
@@ -132,35 +108,21 @@ namespace VLCNP.SceneManagement
             }
         }
 
-        private void UpdatePlayerPosition(Portal otherPortal)
+        private void UpdatePlayerPosition(TransitionSpawnPoint transitionSpawnPoint)
         {
             print("UpdatePlayerPosition");
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.transform.position = otherPortal.spawnPoint.position;
+            player.transform.position = transitionSpawnPoint.transform.position;
             // 向きを変える
-            player.GetComponent<Movement.Mover>().IsLeft = otherPortal.isPlayerDirectionLeft;
+            player.GetComponent<Movement.Mover>().IsLeft = transitionSpawnPoint.isPlayerDirectionLeft;
         }
 
-        void DisableControl()
+        private TransitionSpawnPoint GetTransitionSpawnPoint()
         {
-            GameObject player = GameObject.FindWithTag("Player");
-            player.GetComponent<PlayerController>().enabled = false;
-            player.GetComponent<Movement.Mover>().Stop();
-        }
-
-        void EnableControl()
-        {
-            GameObject player = GameObject.FindWithTag("Player");
-            player.GetComponent<PlayerController>().enabled = true;
-        }
-
-        private Portal GetOtherPortal()
-        {
-            foreach (Portal portal in FindObjectsOfType<Portal>())
+            foreach (TransitionSpawnPoint spawnPoint in FindObjectsOfType<TransitionSpawnPoint>())
             {
-                if (portal == this) continue;
-                if (portal.destination != destination) continue;
-                return portal;
+                if (spawnPoint.spawnPointName != destinationSpawnPointName) continue;
+                return spawnPoint;
             }
             return null;
         }
