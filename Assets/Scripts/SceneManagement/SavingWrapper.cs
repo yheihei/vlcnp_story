@@ -10,19 +10,25 @@ namespace VLCNP.SceneManagement
         const string defaultSaveFile = "save";
         [SerializeField] float fadeInTime = 0.2f;
 
-        IEnumerator Start() {
-            Fader fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
-            fader.FadeOutImmediate();
-            // ゲームスタート時のロードはやめる
-            // yield return GetComponent<JsonSavingSystem>().LoadLastScene(defaultSaveFile);
-            yield return fader.FadeIn(fadeInTime);
-        }
+        // IEnumerator Start() {
+        //     print("@@@@@@@SavingWrapper@@@@@@@");
+        //     Fader fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
+        //     fader.FadeOutImmediate();
+        //     // ゲームスタート時のロードはやめる
+        //     // yield return GetComponent<JsonSavingSystem>().LoadLastScene(defaultSaveFile);
+        //     print("@@@@@@@SavingWrapper FadeIn@@@@@@@");
+        //     yield return fader.FadeIn(fadeInTime);
+        // }
 
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.L))
             {
                 Load();
+            }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Load("save");
             }
             if (Input.GetKeyDown(KeyCode.S))
             {

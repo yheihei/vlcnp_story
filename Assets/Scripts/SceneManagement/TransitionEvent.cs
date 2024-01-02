@@ -59,6 +59,7 @@ namespace VLCNP.SceneManagement
             yield return new WaitForSeconds(fadeWaitTime);
 
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
+            print("scene load end");
 
             // BGMの変更があれば変更
             StartCoroutine(ChangeBGM());
@@ -67,15 +68,14 @@ namespace VLCNP.SceneManagement
             savingWrapper = FindObjectOfType<SavingWrapper>();
             savingWrapper.LoadOnlyState(autoSaveFileName);
 
-            TransitionSpawnPoint transitionSpawnPoint = GetTransitionSpawnPoint();
-            if (transitionSpawnPoint == null)
-            {
-                throw new System.Exception("Transition spawn point not found");
-            }
+            TransitionSpawnPoint transitionSpawnPoint = GetTransitionSpawnPoint() ?? throw new System.Exception("Transition spawn point not found");
+            print("transition spawn point found");
             UpdatePlayerPosition(transitionSpawnPoint);
 
             fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
+            print("fade in start");
             yield return fader.FadeIn(fadeInTime);
+            print("fade in end");
 
             Destroy(gameObject);
         }
@@ -110,7 +110,7 @@ namespace VLCNP.SceneManagement
 
         private void UpdatePlayerPosition(TransitionSpawnPoint transitionSpawnPoint)
         {
-            print("UpdatePlayerPosition");
+            print("UpdatePlayerPosition@@@@@@@");
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.transform.position = transitionSpawnPoint.transform.position;
             // 向きを変える

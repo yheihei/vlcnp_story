@@ -42,12 +42,14 @@ namespace VLCNP.SceneManagement
             {
                 StopCoroutine(currentActiveFade);
             }
+            print("Fade");
             currentActiveFade = StartCoroutine(FadeRoutine(targetAlpha, time));
             return currentActiveFade;
         }
 
         private IEnumerator FadeRoutine(float targetAlpha, float time)
         {
+            print("FadeRoutine");
             while (!Mathf.Approximately(canvasGroup.alpha, targetAlpha))
             {
                 canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, targetAlpha, Time.deltaTime / time);
