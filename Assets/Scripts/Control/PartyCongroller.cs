@@ -44,7 +44,7 @@ namespace VLCNP.Control
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S))
             {
                 SwitchNextPlayer();
             }

@@ -66,7 +66,7 @@ namespace VLCNP.Control
             {
                 fighter.WeaponHorizontal();
             }
-            if (Input.GetKeyUp("x"))
+            if (Input.GetKeyUp("x") || Input.GetKeyUp("z"))
             {
                 fighter.Attack();
             }
