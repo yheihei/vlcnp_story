@@ -13,5 +13,6 @@ namespace VLCNP.Core
         LeeleeRakubanMaeFinished, // リーリーと一緒にお昼寝部屋の落盤をこわしたあと
         VeryLongGunEquipped, // ベリーロングガンを装備した
         VeryEnemyAnimalsBossDefeated, // ベリーエネミーアニマルズのボスを倒した
+        OhirunebeyaBeforeEscapeChat, // お昼寝部屋の脱出直前にリーリーと会話した
     }
 }
