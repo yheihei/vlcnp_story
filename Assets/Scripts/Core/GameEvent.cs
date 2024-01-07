@@ -72,7 +72,6 @@ namespace VLCNP.Core
         public void Execute()
         {
             FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
-            if (flagToBlockName == null) return;
             // 現在のBlockNameが即時実行なら実行しない
             if (flagToBlockName.IsAutoStart) return;
             StartCoroutine(EventExecute(flagToBlockName));
@@ -88,8 +87,8 @@ namespace VLCNP.Core
 
         IEnumerator EventExecute(FlagToBlockName flagToBlockName) {
             if (!isAction) yield break;
-            if (flowChart.HasExecutingBlocks()) yield break;
             if (flagToBlockName.BlockName == "") yield break;
+            if (flowChart.HasExecutingBlocks()) yield break;
             isAction = false;
             flowChart.ExecuteBlock(flagToBlockName.BlockName);
             yield return new WaitUntil(() => flowChart.HasExecutingBlocks() == false);

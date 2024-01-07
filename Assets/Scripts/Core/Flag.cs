@@ -14,5 +14,6 @@ namespace VLCNP.Core
         VeryLongGunEquipped, // ベリーロングガンを装備した
         VeryEnemyAnimalsBossDefeated, // ベリーエネミーアニマルズのボスを倒した
         OhirunebeyaBeforeEscapeChat, // お昼寝部屋の脱出直前にリーリーと会話した
+        OhirunebeyaBlockBroken, // お昼寝部屋の落盤をこわした
     }
 }
