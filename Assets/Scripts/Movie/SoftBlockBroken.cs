@@ -6,7 +6,6 @@ using VLCNP.Core;
 
 namespace VLCNP.Movie
 {
-    // 3sに1回 子オブジェクトの数を数えて最初から4つ減ったら FungusのBlockを実行する
     public class SoftBlockBroken : MonoBehaviour
     {
         [SerializeField] GameObject parentObject;
