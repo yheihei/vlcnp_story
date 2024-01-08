@@ -110,6 +110,14 @@ namespace VLCNP.SceneManagement
             BGM = GameObject.FindWithTag("BGM").GetComponent<AudioSource>();
             // エリアのBGMを取得
             areaBGM = GameObject.FindWithTag("AreaBGM").GetComponent<AreaBGM>();
+            print($"BGM: {BGM.clip.name}, areaBGM: {areaBGM}");
+            // areaBGMがなければBGMをStop
+            if (areaBGM.GetAudioClip() == null)
+            {
+                yield return StartCoroutine(BGMFadeRoutine(0, fadeWaitTime));
+                BGM.Stop();
+                yield break;
+            }
             if (BGM.clip.name == areaBGM.GetAudioClip().name)
             {
                 yield break;
