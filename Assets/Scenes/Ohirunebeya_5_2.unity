@@ -1547,6 +1547,8 @@ GameObject:
   - component: {fileID: 296661689}
   - component: {fileID: 296661691}
   - component: {fileID: 296661690}
+  - component: {fileID: 296661693}
+  - component: {fileID: 296661692}
   m_Layer: 0
   m_Name: Start
   m_TagString: Untagged
@@ -1669,7 +1671,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 296661691}
   selectedCommands:
-  - {fileID: 296661690}
+  - {fileID: 296661692}
   variables: []
   description: 
   stepPause: 0
@@ -2412,7 +2414,7 @@ MonoBehaviour:
   callMode: 0
 --- !u!114 &296661690
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -2440,7 +2442,7 @@ MonoBehaviour:
   setSayDialog: {fileID: 0}
 --- !u!114 &296661691
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -2463,8 +2465,66 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 296661693}
   - {fileID: 296661690}
+  - {fileID: 296661692}
   suppressAllAutoSelections: 0
+--- !u!114 &296661692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296661662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 44
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1496368074}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &296661693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296661662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 43
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1496368074}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!4 &303057920 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3564026850829729314, guid: 406ae01b7bf025d478da7b57dfe1715c, type: 3}
