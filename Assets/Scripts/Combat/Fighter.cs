@@ -17,27 +17,41 @@ namespace VLCNP.Combat
 
         WeaponConfig currentWeaponConfig;
         BaseStats baseStats;
+        Vector3 positionWhenHorizontal = new(-0.903f, -0.365f, 0f);
+        Vector3 positionWhenUp = new(-0.7f, 0.1f, 0f);
+        Vector3 positionWhenDown = new(-0.7f, -0.515f, 0f);
 
         protected void Awake() {
             EquipWeapon(defaultWeaponConfig);
             baseStats = GetComponent<BaseStats>();
         }
 
+        void Start()
+        {
+            // ローカルでの位置を取得
+            print($"handTransform.localPosition.y: {handTransform.localPosition.y}");
+        }
+
         public void WeaponUp()
         {
             if (!canVerticalShot) return;
             handTransform.rotation = GetIsLeft() ? Quaternion.Euler(0, 0, -90) : Quaternion.Euler(0, 0, 90);
+            // 回転の軸を少し上にずらす
+            handTransform.localPosition = positionWhenUp;
         }
 
         public void WeaponDown()
         {
             if (!canVerticalShot) return;
             handTransform.rotation = GetIsLeft() ? Quaternion.Euler(0, 0, 90) : Quaternion.Euler(0, 0, -90);
+            // 回転の軸を少し下にずらす
+            handTransform.localPosition = positionWhenDown;
         }
 
         public void WeaponHorizontal()
         {
             handTransform.rotation = Quaternion.Euler(0, 0, 0);
+            handTransform.localPosition = positionWhenHorizontal;
         }
 
         public void EquipWeapon(WeaponConfig weaponConfig)
