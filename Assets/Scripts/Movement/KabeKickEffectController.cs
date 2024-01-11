@@ -9,12 +9,20 @@ namespace VLCNP.Movement
     {
         [SerializeField] GameObject effect = null;
         [SerializeField] float effectWaitTime = 0.5f;
-        [SerializeField] Rigidbody2D player = null;
+        [SerializeField] GameObject player = null;
+        Rigidbody2D playerRigidbody2D;
+        Mover playerMover;
         // エフェクトが最後に発生した後の経過時間
         float effectElapsedTime = 0f;
 
         // 壁に接触しているかどうか
         bool isColliding = false;
+
+        void Awake()
+        {
+            playerRigidbody2D = player.GetComponent<Rigidbody2D>();
+            playerMover = player.GetComponent<Mover>();
+        }
 
         void OnTriggerStay2D(Collider2D other)
         {
@@ -46,13 +54,13 @@ namespace VLCNP.Movement
                 return false;
             }
             // x方向に移動していれば壁ではないので何もしない
-            if (player.velocity.x != 0f)
+            if (playerRigidbody2D.velocity.x != 0f)
             {
                 effectElapsedTime = 0f;
                 return false;
             }
             // y方向の速度が一定以上であれば何もしない
-            if (player.velocity.y >= -0.05f)
+            if (playerRigidbody2D.velocity.y >= -0.05f)
             {
                 effectElapsedTime = 0f;
                 return false;
@@ -68,7 +76,11 @@ namespace VLCNP.Movement
 
         void InstantiateEffect()
         {
-            Instantiate(effect, transform.position, Quaternion.identity);
+            GameObject _effect = Instantiate(
+                effect,
+                transform.position,
+                playerMover.transform.lossyScale.x > 0 ? Quaternion.Euler(10, 90, 0) : Quaternion.Euler(10, -90, 0)
+            );
             effectElapsedTime = 0f;
         }
     }    

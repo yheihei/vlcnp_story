@@ -37,6 +37,7 @@ namespace VLCNP.SceneManagement
             if (Input.GetKeyDown(KeyCode.D))
             {
                 Delete();
+                Delete("save");
             }
         }
 
@@ -58,9 +59,9 @@ namespace VLCNP.SceneManagement
             StartCoroutine(GetComponent<JsonSavingSystem>().LoadLastScene(fileName));
         }
 
-        public void Delete()
+        public void Delete(string fileName=defaultSaveFile)
         {
-            GetComponent<JsonSavingSystem>().Delete(defaultSaveFile);
+            GetComponent<JsonSavingSystem>().Delete(fileName);
         }
     }
 }
