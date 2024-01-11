@@ -12,6 +12,7 @@ namespace VLCNP.Movement
         [SerializeField] GameObject player = null;
         Rigidbody2D playerRigidbody2D;
         Mover playerMover;
+        Animator animator;
         // エフェクトが最後に発生した後の経過時間
         float effectElapsedTime = 0f;
 
@@ -22,13 +23,14 @@ namespace VLCNP.Movement
         {
             playerRigidbody2D = player.GetComponent<Rigidbody2D>();
             playerMover = player.GetComponent<Mover>();
+            animator = player.GetComponent<Animator>();
         }
 
         void OnTriggerStay2D(Collider2D other)
         {
             if (other.gameObject.tag == "Ground")
             {
-                isColliding = true;
+                SetColliding(true);
             }
         }
 
@@ -36,8 +38,14 @@ namespace VLCNP.Movement
         {
             if (other.gameObject.tag == "Ground")
             {
-                isColliding = false;
+                SetColliding(false);
             }
+        }
+
+        void SetColliding(bool value)
+        {
+            isColliding = value;
+            animator.SetBool("isKabe", value);
         }
 
         void FixedUpdate()
