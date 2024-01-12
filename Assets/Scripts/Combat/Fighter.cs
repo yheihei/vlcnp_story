@@ -26,12 +26,6 @@ namespace VLCNP.Combat
             baseStats = GetComponent<BaseStats>();
         }
 
-        void Start()
-        {
-            // ローカルでの位置を取得
-            print($"handTransform.localPosition.y: {handTransform.localPosition.y}");
-        }
-
         public void WeaponUp()
         {
             if (!canVerticalShot) return;
