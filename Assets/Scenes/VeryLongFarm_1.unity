@@ -10746,6 +10746,11 @@ Transform:
   m_Father: {fileID: 1572485342}
   m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1057294262 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5598845851302252394, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 1520025446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1062074307
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13194,6 +13199,37 @@ Transform:
   m_Father: {fileID: 1572485342}
   m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1369654457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1369654458}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1369654458
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369654457}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 14.33, y: -16.84, z: 0.42454746}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1373056885
 GameObject:
   m_ObjectHideFlags: 0
@@ -13275,8 +13311,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1958118885
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -1164994111, guid: fb0fcef019eb44abe8f8903adaf31101, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -13316,6 +13352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64429550f4e3462e8ae7da144b1a0ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 4
 --- !u!61 &1373056891
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13340,7 +13377,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.50390625, y: 0.9980469}
+  m_Size: {x: 1, y: 2.55}
   m_EdgeRadius: 0
 --- !u!61 &1373056892
 BoxCollider2D:
@@ -13355,7 +13392,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.51}
+  m_Offset: {x: 0, y: -1.34}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -13366,7 +13403,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.2}
+  m_Size: {x: 1, y: 0.2}
   m_EdgeRadius: 0
 --- !u!95 &1373056893
 Animator:
@@ -15213,7 +15250,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7831032761652949893, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalScale.x
-      value: -0.7
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7831032761652949893, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalRotation.w
@@ -40379,6 +40416,10 @@ GameObject:
   - component: {fileID: 1795535050}
   - component: {fileID: 1795535051}
   - component: {fileID: 1795535052}
+  - component: {fileID: 1795535053}
+  - component: {fileID: 1795535054}
+  - component: {fileID: 1795535055}
+  - component: {fileID: 1795535056}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -40411,9 +40452,13 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 1795535054}
   - {fileID: 1795535052}
   - {fileID: 1795535051}
   - {fileID: 1795535050}
+  - {fileID: 1795535053}
+  - {fileID: 1795535056}
+  - {fileID: 1795535055}
   suppressAllAutoSelections: 0
 --- !u!114 &1795535048
 MonoBehaviour:
@@ -40442,7 +40487,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1795535047}
   selectedCommands:
-  - {fileID: 1795535051}
+  - {fileID: 1795535053}
   variables: []
   description: 
   stepPause: 0
@@ -40543,7 +40588,7 @@ MonoBehaviour:
   callMode: 0
 --- !u!114 &1795535052
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -40559,6 +40604,185 @@ MonoBehaviour:
     floatRef: {fileID: 0}
     floatVal: 2
   durationOLD: 0
+--- !u!114 &1795535053
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795535046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 4
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1373056885}
+  targetComponentAssemblyName: VLCNP.Movie.NPCController, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: NPCController
+  targetMethod: MoveToPositionEvent
+  targetMethodText: 'MoveToPositionEvent (Vector3, Single): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      typeFullname: UnityEngine.Vector3
+      intValue: 0
+      boolValue: 0
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 14.33, y: 0, z: 0}
+    variableKey: 
+  - objValue:
+      typeAssemblyname: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Single
+      intValue: 0
+      boolValue: 0
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1795535054
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795535046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 5
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1057294262}
+  targetComponentAssemblyName: VLCNP.Control.PartyCongroller, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: PartyCongroller
+  targetMethod: SetVisibility
+  targetMethodText: 'SetVisibility (Boolean): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Boolean
+      intValue: 0
+      boolValue: 0
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1795535055
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795535046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 6
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1057294262}
+  targetComponentAssemblyName: VLCNP.Control.PartyCongroller, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: PartyCongroller
+  targetMethod: SetVisibility
+  targetMethodText: 'SetVisibility (Boolean): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Boolean
+      intValue: 0
+      boolValue: 1
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1795535056
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795535046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 7
+  indentLevel: 0
+  storyText: "\u3044\u3063\u3061\u3083\u3063\u305F..."
+  description: 
+  character: {fileID: 0}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
 --- !u!1 &1799820188
 GameObject:
   m_ObjectHideFlags: 0

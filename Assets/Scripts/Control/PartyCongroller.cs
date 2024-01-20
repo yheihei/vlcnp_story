@@ -113,6 +113,12 @@ namespace VLCNP.Control
             nextPlayer.transform.position += new Vector3(0, previousFootPositionY - nextFootPositionY, 0);
         }
 
+        public void SetVisibility(bool isVisible)
+        {
+            // 今有効なmemberを表示、非表示する
+            currentPlayer.SetActive(isVisible);
+        }
+
         [System.Serializable]
         struct StatusSaveData
         {
