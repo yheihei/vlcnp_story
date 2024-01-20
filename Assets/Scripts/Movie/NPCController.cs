@@ -48,7 +48,13 @@ namespace VLCNP.Movie
             rbody.AddForce(new Vector2(0, _jumpPower), ForceMode2D.Impulse);
         }
 
-        public IEnumerator MoveToPosition(Vector3 position, float timeout = 0)
+
+        public void MoveToPositionEvent(Vector3 position, float timeout = 0)
+        {
+            StartCoroutine(MoveToPosition(position, timeout));
+        }
+
+        private IEnumerator MoveToPosition(Vector3 position, float timeout = 0)
         {
             // プレイヤーの位置が指定のx位置より左にある場合は左を向く
             if (position.x < transform.position.x)
