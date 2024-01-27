@@ -62,7 +62,7 @@ namespace VLCNP.SceneManagement
             print("scene load end");
 
             // BGMの変更があれば変更
-            StartCoroutine(ChangeBGM());
+            yield return ChangeBGM();
             // キャラたちの状態復元
             // 遷移後 こちらのシーンでのSaving wrapperを再取得
             savingWrapper = FindObjectOfType<SavingWrapper>();
@@ -86,16 +86,24 @@ namespace VLCNP.SceneManagement
             BGM = GameObject.FindWithTag("BGM").GetComponent<AudioSource>();
             // エリアのBGMを取得
             areaBGM = GameObject.FindWithTag("AreaBGM").GetComponent<AreaBGM>();
+            print("@@@@@@");
+            print("BGM.clip.name: " + BGM.clip.name);
+            print("areaBGM.GetAudioClip().name: " + areaBGM.GetAudioClip().name);
             if (BGM.clip.name == areaBGM.GetAudioClip().name)
             {
+                print("クリップの変更なし");
                 yield break;
             }
+            print("クリップの変更");
             // clipの変更があれば変更
-            yield return StartCoroutine(BGMFadeRoutine(0, fadeWaitTime));
+            yield return BGMFadeRoutine(0, fadeWaitTime);
             BGM.Stop();
             BGM.clip = areaBGM.GetAudioClip();
             BGM.volume = areaBGM.GetVolume();
             BGM.pitch = areaBGM.GetPitch();
+            print("BGM.clip.name: " + BGM.clip.name);
+            print("BGM.volume: " + BGM.volume);
+            print("BGM.pitch: " + BGM.pitch);
             BGM.Play();
         }
 
@@ -112,6 +120,7 @@ namespace VLCNP.SceneManagement
         {
             print("UpdatePlayerPosition@@@@@@@");
             GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player == null) return;
             player.transform.position = transitionSpawnPoint.transform.position;
             // 向きを変える
             player.GetComponent<Movement.Mover>().IsLeft = transitionSpawnPoint.isPlayerDirectionLeft;

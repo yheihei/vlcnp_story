@@ -45,6 +45,7 @@ public class StartBGM : MonoBehaviour
 
     public void Play()
     {
+        print("StartBGM.Play()");
         // audioSourceにclipが設定されていなければ、AreaBGMを探して再生
         if (audioSource.clip == null)
         {
