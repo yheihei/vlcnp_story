@@ -3078,9 +3078,9 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 468763066}
+  - {fileID: 468763050}
   selectedCommands:
-  - {fileID: 468763072}
+  - {fileID: 468763052}
   variables: []
   description: 
   stepPause: 0
@@ -4667,6 +4667,7 @@ MonoBehaviour:
   InformationText: "(\u2191) \u3055\u3073\u305F\u3064\u308B\u304E"
   IsOnce: 0
   isAutoStart: 0
+  isFlagAwakeStart: 0
 --- !u!61 &493445127
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20820,9 +20821,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7502896672554619898, guid: d03f6f967ea154e02bbc40708cd0ad99, type: 3}
+      propertyPath: nameText
+      value: "VL\u30EA\u30FC\u30EA\u30FC"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7502896672554619898, guid: d03f6f967ea154e02bbc40708cd0ad99, type: 3}
       propertyPath: setSayDialog
       value: 
       objectReference: {fileID: 721998564}
+    - target: {fileID: 7502896672554619898, guid: d03f6f967ea154e02bbc40708cd0ad99, type: 3}
+      propertyPath: portraits.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7502896672554619898, guid: d03f6f967ea154e02bbc40708cd0ad99, type: 3}
+      propertyPath: portraits.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
     - target: {fileID: 7502896672554619899, guid: d03f6f967ea154e02bbc40708cd0ad99, type: 3}
       propertyPath: m_Name
       value: LeeleeCharacterWithFace

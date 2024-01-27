@@ -40,7 +40,9 @@ namespace VLCNP.Stats
         public void SetExperiencePoints(float experience)
         {
             experiencePoints = experience;
-            onExperienceGained();  // レベルの再計算
+            // onExperienceGained();  // レベルの再計算
+            // 通知対象があれば通知する
+            if (onExperienceGained != null) onExperienceGained();
         }
 
         public JToken CaptureAsJToken()
