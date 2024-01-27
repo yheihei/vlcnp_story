@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Nethereum.ENS.EthRegistrarSubdomainRegistrar.ContractDefinition;
 using UnityEngine;
 
 
@@ -15,6 +16,11 @@ namespace VLCNP.Movie
         Animator animator;
         float vx = 0;
         bool isLeft = true;
+        public enum Direction
+        {
+            Left,
+            Right
+        }
 
         private void Awake() {
             rbody = GetComponent<Rigidbody2D>();
@@ -46,6 +52,20 @@ namespace VLCNP.Movie
         public void Jump(float _jumpPower = 2)
         {
             rbody.AddForce(new Vector2(0, _jumpPower), ForceMode2D.Impulse);
+        }
+
+        public void SetDirection(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Left:
+                    isLeft = true;
+                    break;
+                case Direction.Right:
+                    isLeft = false;
+                    break;
+            }
+            UpdateCharacterDirection();
         }
 
 
