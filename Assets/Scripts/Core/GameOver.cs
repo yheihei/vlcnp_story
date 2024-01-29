@@ -15,6 +15,10 @@ namespace VLCNP.Core
         public Flowchart flowChart;
         [SerializeField] float fadeOutTime = 3f;
         [SerializeField] float fadeWaitTime = 3f;
+        [SerializeField] float fadeInTime = 1f;
+
+        private AudioSource BGM;
+        private AreaBGM areaBGM;
 
         void Awake()
         {
@@ -57,7 +61,9 @@ namespace VLCNP.Core
             yield return fader.FadeOut(fadeOutTime);
             yield return new WaitForSeconds(fadeWaitTime);
             SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();
-            wrapper.Load(autoSaveFileName);
+            yield return wrapper.Load(autoSaveFileName);
+            yield return ChangeBGM();
+            yield return fader.FadeIn(fadeInTime);
             Destroy(gameObject);
         }
 
@@ -66,6 +72,38 @@ namespace VLCNP.Core
             playerHealth.onDie -= PlayerDie;
             playerHealth = newPlayerHealth;
             playerHealth.onDie += PlayerDie;
+        }
+
+        private IEnumerator ChangeBGM()
+        {
+            // 現在のBGMを取得
+            BGM = GameObject.FindWithTag("BGM").GetComponent<AudioSource>();
+            // エリアのBGMを取得
+            areaBGM = GameObject.FindWithTag("AreaBGM").GetComponent<AreaBGM>();
+            print($"BGM: {BGM.clip.name}, areaBGM: {areaBGM.GetAudioClip().name}");
+            // areaBGMがなければBGMをStop
+            if (areaBGM.GetAudioClip() == null)
+            {
+                yield return BGMFadeRoutine(0, fadeWaitTime);
+                BGM.Stop();
+                yield break;
+            }
+            yield return BGMFadeRoutine(0, fadeWaitTime);
+            BGM.Stop();
+            BGM.clip = areaBGM.GetAudioClip();
+            BGM.volume = areaBGM.GetVolume();
+            BGM.pitch = areaBGM.GetPitch();
+            print("Play");
+            BGM.Play();
+        }
+
+        private IEnumerator BGMFadeRoutine(float targetVolume, float time)
+        {
+            while (!Mathf.Approximately(BGM.volume, targetVolume))
+            {
+                BGM.volume = Mathf.MoveTowards(BGM.volume, targetVolume, Time.deltaTime / time);
+                yield return null;
+            }
         }
     }    
 }

@@ -53,10 +53,10 @@ namespace VLCNP.SceneManagement
             GetComponent<JsonSavingSystem>().LoadOnlyState(fileName);
         }
 
-        public void Load(string fileName=defaultSaveFile)
+        public IEnumerator Load(string fileName=defaultSaveFile)
         {
             print($"Loading: {fileName}");
-            StartCoroutine(GetComponent<JsonSavingSystem>().LoadLastScene(fileName));
+            yield return GetComponent<JsonSavingSystem>().LoadLastScene(fileName);
         }
 
         public void Delete(string fileName=defaultSaveFile)
