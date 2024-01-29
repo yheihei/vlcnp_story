@@ -18,7 +18,7 @@ namespace VLCNP.Control
         [SerializeField] HPBar hpBar;
         [SerializeField] ExperienceBar experienceBar;
         [SerializeField] LevelDisplay levelDisplay;
-        [SerializeField] GameOver gameOver;
+        GameOver gameOver;
         [SerializeField] FlagManager flagManager;
         [SerializeField]
         CinemachineVirtualCamera virtualCamera;
@@ -27,6 +27,8 @@ namespace VLCNP.Control
         private void Awake()
         {
             SetCurrentPlayerActive();
+            // GameOverタグからGameOverを取得
+            gameOver = GameObject.FindWithTag("GameOver").GetComponent<GameOver>();
         }
 
         private void SetCurrentPlayerActive()
