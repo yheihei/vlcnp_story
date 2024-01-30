@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using VLCNP.Core;
 using UnityEngine.Events;
+using VLCNP.Movement;
 
 namespace VLCNP.SceneManagement
 {
@@ -27,6 +28,7 @@ namespace VLCNP.SceneManagement
         [SerializeField] string autoSaveFileName = "autoSave";
         [SerializeField] bool isAutoSave = true;
         [SerializeField] GameObject[] dontDestroyOnLoadObjects;
+        [SerializeField] bool isUpdatePlayerPosition = true;
 
         private AudioSource BGM;
         private AreaBGM areaBGM;
@@ -143,23 +145,36 @@ namespace VLCNP.SceneManagement
         private void UpdatePlayerPosition(Portal otherPortal)
         {
             print("UpdatePlayerPosition");
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.transform.position = otherPortal.spawnPoint.position;
-            // 向きを変える
-            player.GetComponent<Movement.Mover>().IsLeft = otherPortal.isPlayerDirectionLeft;
+            // Playerタグ全てをspawnPointの位置に移動
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject player in players)
+            {
+                print(player.name);
+                player.transform.position = otherPortal.spawnPoint.position;
+                // 向きを変える
+                Mover mover = player.GetComponent<Movement.Mover>();
+                if (mover == null) return;
+                mover.IsLeft = otherPortal.isPlayerDirectionLeft;
+            }
         }
 
         void DisableControl()
         {
             GameObject player = GameObject.FindWithTag("Player");
-            player.GetComponent<PlayerController>().enabled = false;
+            if (player == null) return;
+            PlayerController playerController = player.GetComponent<PlayerController>();
+            if (playerController == null) return;
+            playerController.enabled = false;
             player.GetComponent<Movement.Mover>().Stop();
         }
 
         void EnableControl()
         {
             GameObject player = GameObject.FindWithTag("Player");
-            player.GetComponent<PlayerController>().enabled = true;
+            if (player == null) return;
+            PlayerController playerController = player.GetComponent<PlayerController>();
+            if (playerController == null) return;
+            playerController.enabled = true;
         }
 
         private Portal GetOtherPortal()

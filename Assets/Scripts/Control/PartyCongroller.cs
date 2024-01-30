@@ -28,7 +28,7 @@ namespace VLCNP.Control
         {
             SetCurrentPlayerActive();
             // GameOverタグからGameOverを取得
-            gameOver = GameObject.FindWithTag("GameOver").GetComponent<GameOver>();
+            gameOver = GameObject.FindWithTag("GameOver")?.GetComponent<GameOver>();
         }
 
         private void SetCurrentPlayerActive()
@@ -42,6 +42,26 @@ namespace VLCNP.Control
                 }
                 member.gameObject.SetActive(true);
             }
+        }
+
+        public void SetCurrentPlayerByName(string name = "Akim")
+        {
+
+            GameObject nextPlayer = Array.Find(members, member => member.name == name);
+            if (nextPlayer == null) return;
+            GameObject previousPlayer = currentPlayer;
+            SetNextPlayerPosition(nextPlayer);
+            currentPlayer = nextPlayer;
+            SetCurrentPlayerActive();
+
+            // 前のキャラクターのHPを次のキャラクターに引き継ぐ
+            currentPlayer.GetComponent<Health>().SetHealthPoints(previousPlayer.GetComponent<Health>().GetHealthPoints());
+
+            // 前のキャラクターのExperienceを次のキャラクターに引き継ぐ
+            currentPlayer.GetComponent<Experience>().SetExperiencePoints(previousPlayer.GetComponent<Experience>().GetExperiencePoints());
+            ChangeDisplay();
+            // キャラクターの変更イベントを発火
+            OnChangeCharacter?.Invoke(currentPlayer);
         }
 
         private void Update()
@@ -85,7 +105,7 @@ namespace VLCNP.Control
             levelDisplay.SetBaseStats(currentPlayer.GetComponent<BaseStats>());
 
             // キャラクターの死亡判定を今のキャラクターに引き継ぐ
-            gameOver.SetPlayerHealth(currentPlayer.GetComponent<Health>());
+            gameOver?.SetPlayerHealth(currentPlayer.GetComponent<Health>());
         }
 
         private GameObject GetNextPlayer()
@@ -126,8 +146,11 @@ namespace VLCNP.Control
 
         public void SetVisibility(bool isVisible)
         {
-            // 今有効なmemberを表示、非表示する
-            currentPlayer.SetActive(isVisible);
+            // 今有効なmemberのSpriteRendereを表示、非表示する
+            // currentPlayer.SetActive(isVisible);
+            currentPlayer.GetComponent<SpriteRenderer>().enabled = isVisible;
+            // 現在のplayerのHandの状態も変えて武器も表示、非表示する
+            currentPlayer.transform.Find("Hand").gameObject.SetActive(isVisible);
         }
 
         [System.Serializable]

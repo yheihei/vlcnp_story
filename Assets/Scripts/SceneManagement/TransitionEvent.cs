@@ -60,13 +60,13 @@ namespace VLCNP.SceneManagement
 
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
             print("scene load end");
-
-            // BGMの変更があれば変更
-            yield return ChangeBGM();
             // キャラたちの状態復元
             // 遷移後 こちらのシーンでのSaving wrapperを再取得
             savingWrapper = FindObjectOfType<SavingWrapper>();
             savingWrapper.LoadOnlyState(autoSaveFileName);
+
+            // BGMの変更があれば変更
+            yield return ChangeBGM();
 
             TransitionSpawnPoint transitionSpawnPoint = GetTransitionSpawnPoint() ?? throw new System.Exception("Transition spawn point not found");
             print("transition spawn point found");
@@ -86,7 +86,6 @@ namespace VLCNP.SceneManagement
             BGM = GameObject.FindWithTag("BGM").GetComponent<AudioSource>();
             // エリアのBGMを取得
             areaBGM = GameObject.FindWithTag("AreaBGM").GetComponent<AreaBGM>();
-            print("@@@@@@");
             print("BGM.clip.name: " + BGM.clip.name);
             print("areaBGM.GetAudioClip().name: " + areaBGM.GetAudioClip().name);
             if (BGM.clip.name == areaBGM.GetAudioClip().name)
@@ -118,12 +117,15 @@ namespace VLCNP.SceneManagement
 
         private void UpdatePlayerPosition(TransitionSpawnPoint transitionSpawnPoint)
         {
-            print("UpdatePlayerPosition@@@@@@@");
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player == null) return;
-            player.transform.position = transitionSpawnPoint.transform.position;
-            // 向きを変える
-            player.GetComponent<Movement.Mover>().IsLeft = transitionSpawnPoint.isPlayerDirectionLeft;
+            print("UpdatePlayerPosition");
+            // Playerタグ全てをspawnPointの位置に移動
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject player in players)
+            {
+                player.transform.position = transitionSpawnPoint.transform.position;
+                // 向きを変える
+                player.GetComponent<Movement.Mover>().IsLeft = transitionSpawnPoint.isPlayerDirectionLeft;
+            }
         }
 
         private TransitionSpawnPoint GetTransitionSpawnPoint()
