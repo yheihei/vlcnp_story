@@ -58,7 +58,9 @@ namespace VLCNP.Core
 
         private void AutoStartBlock()
         {
+            print("AutoStartBlock");
             FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
+            print("FlagToBlockName: " + flagToBlockName?.BlockName);
             if (flagToBlockName == null) return;
             if (flagToBlockName.IsAutoStart)
             {

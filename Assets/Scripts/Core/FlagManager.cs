@@ -47,6 +47,11 @@ namespace VLCNP.Core
             print("Restore Flag");
             flagDictionary = state.ToObject<Dictionary<Flag, bool>>();
             print(flagDictionary);
+            // 全フラグOnChangeFlagを発火
+            foreach (KeyValuePair<Flag, bool> pair in flagDictionary)
+            {
+                OnChangeFlag?.Invoke(pair.Key);
+            }
         }
     }
 }
