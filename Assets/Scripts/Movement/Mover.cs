@@ -6,7 +6,7 @@ using VLCNP.Saving;
 
 namespace VLCNP.Movement
 {
-    public class Mover : MonoBehaviour, IJsonSaveable
+    public class Mover : MonoBehaviour
     {
         [SerializeField] float speed = 4;
         [SerializeField] float jumpPower = 7;
@@ -157,16 +157,6 @@ namespace VLCNP.Movement
         public void Jump(float _jumpPower = 2)
         {
             rbody.AddForce(new Vector2(0, _jumpPower), ForceMode2D.Impulse);
-        }
-
-        public JToken CaptureAsJToken()
-        {
-            return transform.position.ToToken();
-        }
-
-        public void RestoreFromJToken(JToken state)
-        {
-            transform.position = state.ToVector3();
         }
     }    
 }

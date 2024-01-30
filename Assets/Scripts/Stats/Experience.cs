@@ -53,7 +53,7 @@ namespace VLCNP.Stats
         public void RestoreFromJToken(JToken state)
         {
             experiencePoints = state.ToObject<float>();
-            onExperienceGained();  // レベルの再計算
+            if (onExperienceGained != null) onExperienceGained();  // レベルの再計算
         }
     }
 }
