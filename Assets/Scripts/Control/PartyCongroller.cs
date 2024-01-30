@@ -63,25 +63,29 @@ namespace VLCNP.Control
             currentPlayer = nextPlayer;
             SetCurrentPlayerActive();
 
-            virtualCamera.Follow = currentPlayer.transform;
-
             // 前のキャラクターのHPを次のキャラクターに引き継ぐ
             currentPlayer.GetComponent<Health>().SetHealthPoints(previousPlayer.GetComponent<Health>().GetHealthPoints());
-            // HP表示のプレイヤーの切り替え
-            hpDisplay.SetPlayer(currentPlayer);
-            hpBar.SetPlayer(currentPlayer);
 
             // 前のキャラクターのExperienceを次のキャラクターに引き継ぐ
             currentPlayer.GetComponent<Experience>().SetExperiencePoints(previousPlayer.GetComponent<Experience>().GetExperiencePoints());
+            ChangeDisplay();
+            // キャラクターの変更イベントを発火
+            OnChangeCharacter?.Invoke(currentPlayer);
+        }
+
+        private void ChangeDisplay()
+        {
+            virtualCamera.Follow = currentPlayer.transform;
+
+            // HP表示のプレイヤーの切り替え
+            hpDisplay.SetPlayer(currentPlayer);
+            hpBar.SetPlayer(currentPlayer);
             // Experience表示のプレイヤーの切り替え
             experienceBar.SetPlayerExperience(currentPlayer);
             levelDisplay.SetBaseStats(currentPlayer.GetComponent<BaseStats>());
 
-            // 前のキャラクターの死亡判定を次のキャラクターに引き継ぐ
+            // キャラクターの死亡判定を今のキャラクターに引き継ぐ
             gameOver.SetPlayerHealth(currentPlayer.GetComponent<Health>());
-
-            // キャラクターの変更イベントを発火
-            OnChangeCharacter?.Invoke(currentPlayer);
         }
 
         private GameObject GetNextPlayer()
@@ -115,6 +119,11 @@ namespace VLCNP.Control
             nextPlayer.transform.position += new Vector3(0, previousFootPositionY - nextFootPositionY, 0);
         }
 
+        public GameObject GetCurrentPlayer()
+        {
+            return currentPlayer;
+        }
+
         public void SetVisibility(bool isVisible)
         {
             // 今有効なmemberを表示、非表示する
@@ -126,6 +135,8 @@ namespace VLCNP.Control
         {
             public float healthPoints;
             public float experiencePoints;
+            public string currentPlayerName;
+            public JToken currentPlayerPosition;
         }
 
         public JToken CaptureAsJToken()
@@ -134,15 +145,27 @@ namespace VLCNP.Control
             StatusSaveData statusSaveData = new StatusSaveData();
             statusSaveData.healthPoints = currentPlayer.GetComponent<Health>().GetHealthPoints();
             statusSaveData.experiencePoints = currentPlayer.GetComponent<Experience>().GetExperiencePoints();
+            statusSaveData.currentPlayerName = currentPlayer.name;
+            statusSaveData.currentPlayerPosition = currentPlayer.transform.position.ToToken();
             return JToken.FromObject(statusSaveData);
         }
 
         public void RestoreFromJToken(JToken state)
         {
-            // HP, Experienceを復元
+            // セーブ時のキャラクターをcurrentPlayerとして復元
             StatusSaveData statusSaveData = state.ToObject<StatusSaveData>();
+            string currentPlayerName = statusSaveData.currentPlayerName;
+            if (currentPlayerName != null)
+            {
+                currentPlayer = Array.Find(members, member => member.name == currentPlayerName);
+            }
             currentPlayer.GetComponent<Health>().SetHealthPoints(statusSaveData.healthPoints);
             currentPlayer.GetComponent<Experience>().SetExperiencePoints(statusSaveData.experiencePoints);
+            currentPlayer.transform.position = statusSaveData.currentPlayerPosition.ToVector3();
+            SetCurrentPlayerActive();
+            ChangeDisplay();
+            // キャラクターの変更イベントを発火
+            OnChangeCharacter?.Invoke(currentPlayer);
         }
     }
 }
