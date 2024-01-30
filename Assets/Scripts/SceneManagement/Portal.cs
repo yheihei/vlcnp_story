@@ -67,18 +67,6 @@ namespace VLCNP.SceneManagement
             Fader fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
             yield return fader.FadeOut(fadeOutTime);
 
-            // 現在アクティブでないキャラクターの位置を現在のキャラクターの位置と同じにする
-            // GameObject party = GameObject.FindWithTag("Party");
-            // PartyCongroller partyController = party.GetComponent<PartyCongroller>();
-            // GameObject currentPlayer = partyController.GetCurrentPlayer();
-            // foreach (Transform child in party.transform)
-            // {
-            //     if (child.gameObject == currentPlayer) continue;
-            //     if (child.gameObject.activeSelf) continue;
-            //     child.position = currentPlayer.transform.position;
-            //     print($"child: {child.gameObject.name}, position: {child.position}");
-            // }
-
             // キャラたちの状態保存
             SavingWrapper savingWrapper = FindObjectOfType<SavingWrapper>();
             if (isAutoSave)
