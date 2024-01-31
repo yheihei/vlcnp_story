@@ -8,11 +8,11 @@ using VLCNP.SceneManagement;
 namespace VLCNP.SceneManagement
 {
     [RequireComponent(typeof(ChangeAreaBGM))]
-    public class NewGame : MonoBehaviour
+    public class ContinueGame : MonoBehaviour
     {
         [SerializeField] float fadeOutTime = 1f;
         [SerializeField] float fadeWaitTime = 3f;
-        [SerializeField] float fadeInTime = 5f;
+        [SerializeField] float fadeInTime = 1f;
 
         public void Execute()
         {
@@ -29,8 +29,9 @@ namespace VLCNP.SceneManagement
             // fadeWaitTime分待つ
             yield return new WaitForSeconds(fadeWaitTime);
 
-            // Schene0をロード
-            yield return SceneManager.LoadSceneAsync(0);
+            // SavingWrapperを取得し、save.jsonをロード
+            SavingWrapper savingWrapper = FindObjectOfType<SavingWrapper>();
+            yield return savingWrapper.Load();
 
             ChangeAreaBGM changeBGM = GetComponent<ChangeAreaBGM>();
             changeBGM.Execute();
