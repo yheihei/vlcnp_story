@@ -47,6 +47,7 @@ namespace VLCNP.Movie
 
         void DisableControl(PlayableDirector director) {
             if (flagManager.GetFlag(Flag.OpeningDone)) return;
+            StopAll();
             GameObject player = GameObject.FindWithTag("Player");
             player.GetComponent<PlayerController>().enabled = false;
             // チュートリアル取得して、disableにする
@@ -55,6 +56,7 @@ namespace VLCNP.Movie
 
         void EnableControl(PlayableDirector director) {
             if (flagManager.GetFlag(Flag.OpeningDone)) return;
+            StartAll();
             GameObject player = GameObject.FindWithTag("Player");
             // Akim、はてなマーク
             // StartCoroutine(Talk());

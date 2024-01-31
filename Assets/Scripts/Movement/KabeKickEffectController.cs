@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using VLCNP.Core;
 
 namespace VLCNP.Movement
 {
-    public class KabeKickEffectController : MonoBehaviour
+    public class KabeKickEffectController : MonoBehaviour, IStoppable
     {
         [SerializeField] GameObject effect = null;
         [SerializeField] float effectWaitTime = 0.5f;
@@ -19,6 +20,9 @@ namespace VLCNP.Movement
         // 壁に接触しているかどうか
         bool isColliding = false;
 
+        bool isStopped = false;
+        public bool IsStopped { get => isStopped; set => isStopped = value; }
+
         void Awake()
         {
             playerRigidbody2D = player.GetComponent<Rigidbody2D>();
@@ -28,6 +32,7 @@ namespace VLCNP.Movement
 
         void OnTriggerStay2D(Collider2D other)
         {
+            if (isStopped) return;
             if (other.gameObject.tag == "Ground")
             {
                 SetColliding(true);
@@ -36,6 +41,7 @@ namespace VLCNP.Movement
 
         void OnTriggerExit2D(Collider2D other)
         {
+            if (isStopped) return;
             if (other.gameObject.tag == "Ground")
             {
                 SetColliding(false);
@@ -50,6 +56,7 @@ namespace VLCNP.Movement
 
         void FixedUpdate()
         {
+            if (isStopped) return;
             if (!CheckEffecting()) return;
             InstantiateEffect();
         }
