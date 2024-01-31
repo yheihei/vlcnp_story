@@ -10,7 +10,7 @@ using System;
 
 namespace VLCNP.Control
 {
-    public class PartyCongroller : MonoBehaviour, IJsonSaveable
+    public class PartyCongroller : MonoBehaviour, IJsonSaveable, IStoppable
     {
         [SerializeField] GameObject currentPlayer;
         [SerializeField] GameObject[] members;
@@ -22,6 +22,10 @@ namespace VLCNP.Control
         [SerializeField] FlagManager flagManager;
         [SerializeField]
         CinemachineVirtualCamera virtualCamera;
+
+        bool isStopped = false;
+        public bool IsStopped { get => isStopped; set => isStopped = value; }
+
         public event Action<GameObject> OnChangeCharacter;
 
         private void Awake()
@@ -66,6 +70,7 @@ namespace VLCNP.Control
 
         private void Update()
         {
+            if (isStopped) return;
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S))
             {
                 SwitchNextPlayer();
