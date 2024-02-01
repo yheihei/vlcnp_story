@@ -94,6 +94,14 @@ namespace VLCNP.Control
             // 前のキャラクターのExperienceを次のキャラクターに引き継ぐ
             currentPlayer.GetComponent<Experience>().SetExperiencePoints(previousPlayer.GetComponent<Experience>().GetExperiencePoints());
             ChangeDisplay();
+
+            // キャラクターを止めていたら動かす
+            IStoppable stoppable = currentPlayer.GetComponent<IStoppable>();
+            if (stoppable != null)
+            {
+                stoppable.IsStopped = false;
+            }
+
             // キャラクターの変更イベントを発火
             OnChangeCharacter?.Invoke(currentPlayer);
         }
