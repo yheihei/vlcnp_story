@@ -34,7 +34,6 @@ namespace VLCNP.SceneManagement
 
         public IEnumerator Transition()
         {
-            print("@@@@@@@scene load start: " + sceneToLoad);
             if (sceneToLoad < 0)
             {
                 Debug.LogError("Scene to load not set");
