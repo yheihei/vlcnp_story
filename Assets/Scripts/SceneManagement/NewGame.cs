@@ -29,8 +29,8 @@ namespace VLCNP.SceneManagement
             // fadeWaitTime分待つ
             yield return new WaitForSeconds(fadeWaitTime);
 
-            // Schene0をロード
-            yield return SceneManager.LoadSceneAsync(0);
+            // Schene1をロード
+            yield return SceneManager.LoadSceneAsync(1);
 
             ChangeAreaBGM changeBGM = GetComponent<ChangeAreaBGM>();
             changeBGM.Execute();

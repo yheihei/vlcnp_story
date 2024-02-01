@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Fungus;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VLCNP.Attributes;
 using VLCNP.SceneManagement;
 
@@ -62,6 +63,26 @@ namespace VLCNP.Core
             yield return new WaitForSeconds(fadeWaitTime);
             SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();
             yield return wrapper.Load(autoSaveFileName);
+            yield return ChangeBGM();
+            yield return fader.FadeIn(fadeInTime);
+            Destroy(gameObject);
+        }
+
+        public void BackToTitle()
+        {
+            StartCoroutine(BackToTitleRoutine());
+        }
+
+        public IEnumerator BackToTitleRoutine()
+        {
+            print("BackToTitle");
+            DontDestroyOnLoad(gameObject);
+            Fader fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
+            yield return fader.FadeOut(fadeOutTime);
+            yield return new WaitForSeconds(fadeWaitTime);
+            // Schene0をロード
+            yield return SceneManager.LoadSceneAsync(0);
+
             yield return ChangeBGM();
             yield return fader.FadeIn(fadeInTime);
             Destroy(gameObject);

@@ -34,6 +34,7 @@ namespace VLCNP.SceneManagement
 
         public IEnumerator Transition()
         {
+            print("@@@@@@@scene load start: " + sceneToLoad);
             if (sceneToLoad < 0)
             {
                 Debug.LogError("Scene to load not set");
@@ -59,7 +60,7 @@ namespace VLCNP.SceneManagement
             yield return new WaitForSeconds(fadeWaitTime);
 
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
-            print("scene load end");
+            print("scene load end: " + sceneToLoad);
             // キャラたちの状態復元
             // 遷移後 こちらのシーンでのSaving wrapperを再取得
             savingWrapper = FindObjectOfType<SavingWrapper>();
