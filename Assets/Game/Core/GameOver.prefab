@@ -115,16 +115,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6513501814618206521, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: selectedCommands.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6513501814618206521, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: selectedBlocks.Array.data[0]
       value: 
-      objectReference: {fileID: 5819583098943776378}
+      objectReference: {fileID: 5819583098943776368}
     - target: {fileID: 6513501814618206521, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: selectedCommands.Array.data[0]
       value: 
-      objectReference: {fileID: 8595771937811974517, guid: 011494565755b490386e78a113e3c871, type: 3}
+      objectReference: {fileID: 4166532167893590805}
     - target: {fileID: 7647600566749555143, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: m_Name
       value: GameOverChat
@@ -208,7 +208,8 @@ MonoBehaviour:
   blockName: Title
   description: 
   eventHandler: {fileID: 0}
-  commandList: []
+  commandList:
+  - {fileID: 4166532167893590805}
   suppressAllAutoSelections: 0
 --- !u!114 &5819583098943776369
 MonoBehaviour:
@@ -358,6 +359,34 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
+--- !u!114 &4166532167893590805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243221859575530451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 8
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 5819583099654007865}
+  targetComponentAssemblyName: VLCNP.Core.GameOver, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: GameOver
+  targetMethod: BackToTitle
+  targetMethodText: 'BackToTitle (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!4 &7959362377202371281 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4518827965383139525, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}

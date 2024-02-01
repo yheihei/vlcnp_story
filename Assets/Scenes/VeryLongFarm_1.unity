@@ -40785,6 +40785,7 @@ GameObject:
   - component: {fileID: 1795535077}
   - component: {fileID: 1795535079}
   - component: {fileID: 1795535080}
+  - component: {fileID: 1795535081}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -40807,7 +40808,7 @@ MonoBehaviour:
   nodeRect:
     serializedVersion: 2
     x: 62
-    y: 70
+    y: 71
     width: 101
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
@@ -40848,6 +40849,7 @@ MonoBehaviour:
   - {fileID: 1795535075}
   - {fileID: 1795535069}
   - {fileID: 1795535080}
+  - {fileID: 1795535081}
   suppressAllAutoSelections: 0
 --- !u!114 &1795535048
 MonoBehaviour:
@@ -40876,7 +40878,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1795535047}
   selectedCommands:
-  - {fileID: 1795535080}
+  - {fileID: 1795535081}
   variables: []
   description: 
   stepPause: 0
@@ -41969,7 +41971,7 @@ MonoBehaviour:
   callMode: 0
 --- !u!114 &1795535080
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41995,6 +41997,34 @@ MonoBehaviour:
   returnValueType: System.Void
   showInherited: 0
   callMode: 0
+--- !u!114 &1795535081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795535046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 32
+  indentLevel: 0
+  storyText: "\u3053\u3053\u3067\u30D7\u30ED\u30C8\u30BF\u30A4\u30D7\u7248\u306F\u304A\u308F\u308A\u3067\u3059\n\u3053\u306E\u3042\u3068
+    VL\u30E4\u30FC\u30DE\u3068\u305D\u306E\u4EF2\u9593\u305F\u3061\u304CVL\u30D5\u30A1\u30FC\u30E0\u306B\u8972\u3044\u304B\u304B\u308A\nVL\u30EA\u30FC\u30EA\u30FC\u3068\u30E4\u30FC\u30DE\u306E\u56E0\u7E01\u304C\u660E\u3089\u304B\u306B\u306A\u308A\u307E\u3059"
+  description: 
+  character: {fileID: 0}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
 --- !u!1 &1799820188
 GameObject:
   m_ObjectHideFlags: 0
