@@ -15496,6 +15496,10 @@ PrefabInstance:
       propertyPath: m_TrackedObjectOffset.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8163937388805150874, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: m_Text
+      value: "\u30D9\u30EA\u30FC\u30ED\u30F3\u30B0\u30D5\u30A1\u30FC\u30E0"
+      objectReference: {fileID: 0}
     - target: {fileID: 8344720955531288537, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_SceneBindings.Array.size
       value: 2
@@ -16825,6 +16829,11 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4892250884329972, guid: 5abad144a2ce29748b1748caaf9a5a87, type: 3}
   m_PrefabInstance: {fileID: 1700104496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1676001062 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1616334883140597017, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 1520025446}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1686379201 stripped
 Transform:
@@ -40786,6 +40795,7 @@ GameObject:
   - component: {fileID: 1795535079}
   - component: {fileID: 1795535080}
   - component: {fileID: 1795535081}
+  - component: {fileID: 1795535082}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -40850,6 +40860,7 @@ MonoBehaviour:
   - {fileID: 1795535069}
   - {fileID: 1795535080}
   - {fileID: 1795535081}
+  - {fileID: 1795535082}
   suppressAllAutoSelections: 0
 --- !u!114 &1795535048
 MonoBehaviour:
@@ -40878,7 +40889,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1795535047}
   selectedCommands:
-  - {fileID: 1795535081}
+  - {fileID: 1795535082}
   variables: []
   description: 
   stepPause: 0
@@ -41999,7 +42010,7 @@ MonoBehaviour:
   callMode: 0
 --- !u!114 &1795535081
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -42025,6 +42036,51 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
+--- !u!114 &1795535082
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795535046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 33
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1676001062}
+  targetComponentAssemblyName: VLCNP.UI.AreaNameShow, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: AreaNameShow
+  targetMethod: Show
+  targetMethodText: 'Show (String): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.String
+      intValue: 0
+      boolValue: 0
+      floatValue: 0
+      stringValue: "\u30D9\u30EA\u30FC\u30ED\u30F3\u30B0\u30D5\u30A1\u30FC\u30E0"
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1 &1799820188
 GameObject:
   m_ObjectHideFlags: 0
