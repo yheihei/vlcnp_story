@@ -9,6 +9,7 @@ using VLCNP.Control;
 using VLCNP.Core;
 using VLCNP.Movement;
 using VLCNP.Saving;
+using VLCNP.SceneManagement;
 using VLCNP.UI;
 
 namespace VLCNP.Movie
@@ -26,17 +27,24 @@ namespace VLCNP.Movie
         public float bgmVolume = 0.3f;
         [SerializeField]
         public float bgmPitch = 0.5f;
+        [SerializeField]
+        GameObject playerNPC;
+        [SerializeField]
+        PartyCongroller partyCongroller;
 
         FlagManager flagManager;
 
         Vector3 defaultLocalPosition;
 
         StoppableController stoppableController;
+        Fader fader;
 
         private void Awake() {
             playableDirector = GetComponent<PlayableDirector>();
             flagManager = GameObject.FindWithTag("FlagManager").GetComponent<FlagManager>();
             stoppableController = GetComponent<StoppableController>();
+            playerNPC.SetActive(false);
+            fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
         }
 
         private void OnEnable() {
@@ -62,8 +70,6 @@ namespace VLCNP.Movie
         void EnableControl(PlayableDirector director) {
             GameObject player = GameObject.FindWithTag("Player");
             player.GetComponent<PlayerController>().enabled = true;
-            // Playerの位置をstartPointに戻す
-            player.transform.localPosition = defaultLocalPosition;
         }
 
         IEnumerator BGMPlay(float waitTime)
@@ -79,23 +85,25 @@ namespace VLCNP.Movie
             }
         }
 
-        public async void Execute()
+        public void Execute()
         {
-            // プレイヤーをイベント開始位置まで移動させる
-            GameObject player = GameObject.FindWithTag("Player");
-            Mover mover = player.GetComponent<Mover>();
-            await mover.MoveToPosition(startPoint.position);
-            defaultLocalPosition = player.transform.localPosition;
+            StartCoroutine(ExecuteAsync());
+        }
+
+        private IEnumerator ExecuteAsync()
+        {
+            yield return fader.FadeOut(0.5f);
+            partyCongroller.SetVisibility(false);
+            playerNPC.SetActive(true);
+            yield return fader.FadeIn(0.5f);
             playableDirector.Play();
         }
 
         IEnumerator Talk() {
-            // StopAll();
             stoppableController.StopAll();
             flowChart.ExecuteBlock("Message5");
             yield return new WaitUntil(() => flowChart.GetExecutingBlocks().Count == 0);
             stoppableController.StartAll();
-            // StartAll();
         }
 
         private void StopAll()
