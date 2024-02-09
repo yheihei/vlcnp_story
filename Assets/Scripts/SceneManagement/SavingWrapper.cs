@@ -8,50 +8,26 @@ namespace VLCNP.SceneManagement
     public class SavingWrapper : MonoBehaviour
     {
         const string defaultSaveFile = "save";
-        [SerializeField] float fadeInTime = 0.2f;
 
-        void Update()
-        {
-            if (Input.GetKeyUp("l"))
-            {
-                Load();
-            }
-            if (Input.GetKeyUp("r"))
-            {
-                print("Load!!");
-                StartCoroutine(Load("save"));
-                return;
-            }
-            // if (Input.GetKeyUp("s"))
-            // {
-            //     Save();
-            // }
-            if (Input.GetKeyUp("d"))
-            {
-                Delete();
-                Delete("save");
-            }
-        }
-
-        public void Save(string fileName=defaultSaveFile)
+        public void Save(string fileName = defaultSaveFile)
         {
             print($"Saving: {fileName}");
             GetComponent<JsonSavingSystem>().Save(fileName);
         }
 
-        public void LoadOnlyState(string fileName=defaultSaveFile)
+        public void LoadOnlyState(string fileName = defaultSaveFile)
         {
             print($"Loading: {fileName}");
             GetComponent<JsonSavingSystem>().LoadOnlyState(fileName);
         }
 
-        public IEnumerator Load(string fileName=defaultSaveFile)
+        public IEnumerator Load(string fileName = defaultSaveFile)
         {
             print($"Loading: {fileName}");
             yield return GetComponent<JsonSavingSystem>().LoadLastScene(fileName);
         }
 
-        public void Delete(string fileName=defaultSaveFile)
+        public void Delete(string fileName = defaultSaveFile)
         {
             GetComponent<JsonSavingSystem>().Delete(fileName);
         }
