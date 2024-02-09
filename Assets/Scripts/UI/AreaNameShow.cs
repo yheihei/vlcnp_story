@@ -15,9 +15,9 @@ namespace VLCNP.UI
             playableDirector = GetComponent<PlayableDirector>();
         }
 
-        public void Show(string areaName = null)
+        public void Show(string areaName = "")
         {
-            if (areaName != null)
+            if (areaName != "")
             {
                 Text text = GetComponentInChildren<Text>();
                 text.text = areaName;
