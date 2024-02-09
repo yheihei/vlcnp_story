@@ -15,25 +15,15 @@ namespace VLCNP.UI
             playableDirector = GetComponent<PlayableDirector>();
         }
 
-        public void Show(string areaName = null)
+        public void Show(string areaName = "")
         {
-            if (areaName != null)
+            if (areaName != "")
             {
                 Text text = GetComponentInChildren<Text>();
                 text.text = areaName;
             }
             playableDirector.Play();
-            // StartCoroutine(ShowAreaNameCoroutine());
         }
-
-        // IEnumerator ShowAreaNameCoroutine()
-        // {
-        //     jingle.PlayOneShot(jingle.clip);
-        //     Fader fader = GetComponent<Fader>();
-        //     yield return fader.FadeIn(1f);
-        //     yield return new WaitForSeconds(3f);
-        //     yield return fader.FadeOut(1f);
-        // }
 
     }
 }
