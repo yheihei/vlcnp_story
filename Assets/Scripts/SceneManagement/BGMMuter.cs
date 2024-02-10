@@ -12,6 +12,7 @@ namespace VLCNP.SceneManagement
         BGMWrapper bgmWrapper;
         StartBGM bgm;
         float originalVolume = -1f;
+        bool isMute = false;
 
         void Awake()
         {
@@ -27,14 +28,15 @@ namespace VLCNP.SceneManagement
             originalVolume = bgm.GetAudioVolume();
             // BGMの音量を下げる
             bgmWrapper.ChangeVolume(originalVolume * volumeScale);
+            isMute = true;
         }
 
         public void RemoveMute()
         {
-            if (bgm == null) return;
-            if (originalVolume == -1f) return;
+            if (!isMute) return;
             // BGMの音量を元に戻す
             bgmWrapper.ChangeVolume(originalVolume);
+            isMute = false;
         }
 
     }
