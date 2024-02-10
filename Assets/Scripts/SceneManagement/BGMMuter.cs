@@ -11,7 +11,7 @@ namespace VLCNP.SceneManagement
         [SerializeField] float volumeScale = 0.1f;
         BGMWrapper bgmWrapper;
         StartBGM bgm;
-        float originalVolume = -1f;
+        float originalVolume;
         bool isMute = false;
 
         void Awake()
