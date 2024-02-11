@@ -99,7 +99,10 @@ namespace VLCNP.Control
 
             // 前のキャラクターのRigitbodyの速度を引き継ぐ
             Rigidbody2D currentRigitBody = currentPlayer.GetComponent<Rigidbody2D>();
-            currentRigitBody.velocity = previousVelocity;
+            if (currentRigitBody != null)
+            {
+                currentRigitBody.velocity = previousVelocity;
+            }
 
             // キャラクターを止めていたら動かす
             IStoppable stoppable = currentPlayer.GetComponent<IStoppable>();
