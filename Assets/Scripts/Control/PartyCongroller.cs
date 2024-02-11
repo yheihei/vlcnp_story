@@ -7,6 +7,7 @@ using VLCNP.Core;
 using VLCNP.Saving;
 using Newtonsoft.Json.Linq;
 using System;
+using Fungus;
 
 namespace VLCNP.Control
 {
@@ -84,6 +85,7 @@ namespace VLCNP.Control
             if (nextPlayer == currentPlayer) return;
 
             GameObject previousPlayer = currentPlayer;
+            Vector2 previousVelocity = previousPlayer.GetComponent<Rigidbody2D>()?.velocity ?? Vector2.zero;
             SetNextPlayerPosition(nextPlayer);
             currentPlayer = nextPlayer;
             SetCurrentPlayerActive();
@@ -94,6 +96,10 @@ namespace VLCNP.Control
             // 前のキャラクターのExperienceを次のキャラクターに引き継ぐ
             currentPlayer.GetComponent<Experience>().SetExperiencePoints(previousPlayer.GetComponent<Experience>().GetExperiencePoints());
             ChangeDisplay();
+
+            // 前のキャラクターのRigitbodyの速度を引き継ぐ
+            Rigidbody2D currentRigitBody = currentPlayer.GetComponent<Rigidbody2D>();
+            currentRigitBody.velocity = previousVelocity;
 
             // キャラクターを止めていたら動かす
             IStoppable stoppable = currentPlayer.GetComponent<IStoppable>();
