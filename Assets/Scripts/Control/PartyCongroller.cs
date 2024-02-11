@@ -7,7 +7,6 @@ using VLCNP.Core;
 using VLCNP.Saving;
 using Newtonsoft.Json.Linq;
 using System;
-using Fungus;
 
 namespace VLCNP.Control
 {
