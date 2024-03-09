@@ -12,16 +12,17 @@ namespace VLCNP.Movement
         [SerializeField] float jumpPower = 7;
         bool isLeft = true;
         // isLeftのgetterを定義
-        public bool IsLeft { get => isLeft;  set => isLeft = value;}
+        public bool IsLeft { get => isLeft; set => isLeft = value; }
         bool isGround = true;
-        bool isJumping= false;
+        bool isJumping = false;
         bool isPushing = false;
         float vx = 0;
         Rigidbody2D rbody;
         Animator animator;
         PlayerStun playerStun;
 
-        private void Awake() {
+        private void Awake()
+        {
             rbody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
             playerStun = GetComponent<PlayerStun>();
@@ -92,7 +93,7 @@ namespace VLCNP.Movement
         private bool CanJump()
         {
             // 地面についていて、ジャンプボタン押しっぱなしでない、かつ、上向きの速度が0.1以下
-            return  isGround && !isPushing && rbody.velocity.y < 0.1f;
+            return isGround && !isPushing && rbody.velocity.y < 0.1f;
         }
 
         private void UpdateAnimator()
@@ -106,7 +107,7 @@ namespace VLCNP.Movement
             // Stun状態の場合は移動不可
             if (isStunned()) return;
             UpdateMoveSpeed();
-            UpdateJumpState();
+            // UpdateJumpState();
             UpdateCharacterDirection();
         }
 
@@ -158,5 +159,5 @@ namespace VLCNP.Movement
         {
             rbody.AddForce(new Vector2(0, _jumpPower), ForceMode2D.Impulse);
         }
-    }    
+    }
 }
