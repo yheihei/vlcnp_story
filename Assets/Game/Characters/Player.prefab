@@ -257,7 +257,7 @@ PrefabInstance:
       objectReference: {fileID: 6200000, guid: 898c69a6bf67c45a1add6b56271c659e, type: 2}
     - target: {fileID: -2641368885610136209, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: m_GravityScale
-      value: 1.75
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -1001761984920063403, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: audioClip
@@ -407,6 +407,64 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uniqueIdentifier: player
+--- !u!114 &2277831187227911215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699767717115717140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b31ea3ccb2494e3f9e7c767e392784e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leg: {fileID: 3487292076679122934}
+  jumpPower: 7
+  minJumpPower: 2
+  maxJumpTime: 0.3
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.009858742
+      value: 0.1711325
+      inSlope: 11.356025
+      outSlope: 11.356025
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.053472184
+      value: 0.48838308
+      inSlope: 1.9050717
+      outSlope: 1.9050717
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.8217394
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &2904360697236049413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,64 +541,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   experiencePoints: 0
   loseExperienceModifier: 2
---- !u!114 &2277831187227911215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699767717115717140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b31ea3ccb2494e3f9e7c767e392784e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leg: {fileID: 3487292076679122934}
-  jumpPower: 7.5
-  minJumpPower: 2
-  maxJumpTime: 0.3
-  jumpCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.022845753
-      value: 0.16876544
-      inSlope: 3.9440067
-      outSlope: 3.9440067
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.09243322
-      value: 0.5025854
-      inSlope: 1.9050717
-      outSlope: 1.9050717
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.8217394
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!4 &6362254506045297432 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3223142059203919296, guid: b53f7de505ed44dce9641241aeeba081, type: 3}

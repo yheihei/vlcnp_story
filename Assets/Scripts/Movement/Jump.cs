@@ -8,22 +8,34 @@ namespace VLCNP.Movement
     {
         [SerializeField] Leg leg;
         Rigidbody2D rBody;
-        // 一度ジャンプ押してからまだジャンプボタンを離していない
         bool isJumping = false;
+        // ジャンプボタンが押しっぱなしかどうか。押しっぱなしで連続ジャンプはしない
+        bool isJumpButtonKeep = false;
 
-        [SerializeField, Min(0)] float jumpPower = 7;
-        [SerializeField, Min(0)] float minJumpPower = 2;
+        [SerializeField, Min(0)] float jumpPower = 7.5f;
+        [SerializeField, Min(0)] float minJumpPower = 2f;
         float jumpTime = 0;
-        [SerializeField, Min(0)] float maxJumpTime = 1f;
+        [SerializeField, Min(0)] float maxJumpTime = 0.3f;
         [SerializeField] AnimationCurve jumpCurve = new();
 
         private void Awake()
         {
             rBody = GetComponent<Rigidbody2D>();
+            leg.OnLanded += OnLanded;
         }
 
         void Update()
         {
+            // ジャンプボタン押しっぱなしの場合は一度離さないとジャンプできない
+            if (Input.GetKeyUp("space"))
+            {
+                isJumpButtonKeep = false;
+            }
+            if (isJumpButtonKeep)
+            {
+                return;
+            }
+
             // ジャンプの開始判定
             if (leg.IsGround && Input.GetKey("space"))
             {
@@ -41,6 +53,15 @@ namespace VLCNP.Movement
                 {
                     jumpTime += Time.deltaTime;
                 }
+            }
+        }
+
+        private void OnLanded()
+        {
+            // 着地時にジャンプボタン押しっぱなしの場合はジャンプボタン押しっぱなしと判定
+            if (Input.GetKey("space"))
+            {
+                isJumpButtonKeep = true;
             }
         }
 
