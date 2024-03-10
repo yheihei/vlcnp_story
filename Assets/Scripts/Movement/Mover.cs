@@ -17,12 +17,14 @@ namespace VLCNP.Movement
         Rigidbody2D rbody;
         Animator animator;
         PlayerStun playerStun;
+        Dash dash;
 
         private void Awake()
         {
             rbody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
             playerStun = GetComponent<PlayerStun>();
+            dash = GetComponent<Dash>();
         }
 
         public void Move()
@@ -87,6 +89,8 @@ namespace VLCNP.Movement
         {
             // Stun状態の場合は移動不可
             if (isStunned()) return;
+            // ダッシュ中は移動不可
+            if (dash != null && dash.IsDashing) return;
             UpdateMoveSpeed();
             UpdateCharacterDirection();
         }
