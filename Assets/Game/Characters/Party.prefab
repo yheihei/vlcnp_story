@@ -55,7 +55,6 @@ MonoBehaviour:
   hpBar: {fileID: 0}
   experienceBar: {fileID: 0}
   levelDisplay: {fileID: 0}
-  gameOver: {fileID: 0}
   flagManager: {fileID: 0}
   virtualCamera: {fileID: 0}
 --- !u!114 &7366152789054923333
@@ -85,6 +84,10 @@ PrefabInstance:
     - target: {fileID: 1699767717115717140, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: m_Name
       value: Akim
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433531399435260855, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+      propertyPath: m_GravityScale
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6362254506045297432, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: m_RootOrder
@@ -196,6 +199,10 @@ PrefabInstance:
     - target: {fileID: 2904360697236049413, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: animationsPerLevels.Array.data[0].colliderPerLevel.capsuleCollider2DYSize
       value: 2.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3433531399435260855, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+      propertyPath: m_GravityScale
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3552741078913666834, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: m_Offset.x
