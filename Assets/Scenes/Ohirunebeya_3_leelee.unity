@@ -3116,7 +3116,6 @@ GameObject:
   - component: {fileID: 468763068}
   - component: {fileID: 468763067}
   - component: {fileID: 468763070}
-  - component: {fileID: 468763071}
   - component: {fileID: 468763081}
   - component: {fileID: 468763086}
   - component: {fileID: 468763082}
@@ -3174,9 +3173,9 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 468763063}
+  - {fileID: 468763066}
   selectedCommands:
-  - {fileID: 468763059}
+  - {fileID: 468763067}
   variables: []
   description: 
   stepPause: 0
@@ -3669,7 +3668,6 @@ MonoBehaviour:
   - {fileID: 468763090}
   - {fileID: 468763068}
   - {fileID: 468763070}
-  - {fileID: 468763071}
   - {fileID: 468763067}
   - {fileID: 468763086}
   - {fileID: 468763085}
@@ -3822,51 +3820,6 @@ MonoBehaviour:
   stringEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &468763071
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468763047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 22
-  indentLevel: 0
-  description: 
-  targetObject: {fileID: 413597105}
-  targetComponentAssemblyName: VLCNP.Movement.Mover, Assembly-CSharp, Version=0.0.0.0,
-    Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
-  targetComponentText: Mover
-  targetMethod: Jump
-  targetMethodText: 'Jump (Single): Void'
-  methodParameters:
-  - objValue:
-      typeAssemblyname: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      typeFullname: System.Single
-      intValue: 0
-      boolValue: 0
-      floatValue: 2
-      stringValue: 
-      colorValue: {r: 0, g: 0, b: 0, a: 0}
-      gameObjectValue: {fileID: 0}
-      materialValue: {fileID: 0}
-      objectValue: {fileID: 0}
-      spriteValue: {fileID: 0}
-      textureValue: {fileID: 0}
-      vector2Value: {x: 0, y: 0}
-      vector3Value: {x: 0, y: 0, z: 0}
-    variableKey: 
-  saveReturnValue: 0
-  returnValueVariableKey: 
-  returnValueType: System.Void
-  showInherited: 0
-  callMode: 0
 --- !u!114 &468763072
 MonoBehaviour:
   m_ObjectHideFlags: 2

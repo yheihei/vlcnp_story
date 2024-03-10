@@ -22,7 +22,7 @@ namespace VLCNP.Movement
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.X) && !isDashing)
+            if (Input.GetKeyDown(KeyCode.X) && !isDashing && leg.IsGround)
             {
                 StartDash();
             }
