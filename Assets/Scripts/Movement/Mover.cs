@@ -107,7 +107,6 @@ namespace VLCNP.Movement
             // Stun状態の場合は移動不可
             if (isStunned()) return;
             UpdateMoveSpeed();
-            // UpdateJumpState();
             UpdateCharacterDirection();
         }
 
@@ -144,20 +143,6 @@ namespace VLCNP.Movement
             {
                 transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
-        }
-
-        private void UpdateJumpState()
-        {
-            if (isJumping)
-            {
-                isJumping = false;
-                Jump(jumpPower);
-            }
-        }
-
-        public void Jump(float _jumpPower = 2)
-        {
-            rbody.AddForce(new Vector2(0, _jumpPower), ForceMode2D.Impulse);
         }
     }
 }
