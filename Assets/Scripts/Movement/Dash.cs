@@ -1,3 +1,5 @@
+using System.Drawing.Drawing2D;
+using Fungus;
 using UnityEngine;
 
 namespace VLCNP.Movement
@@ -13,11 +15,19 @@ namespace VLCNP.Movement
         private float dashTimeLeft;
         [SerializeField] Leg leg;
         Mover mover;
+        // 山荘
+        GameObject dashObject;
 
         void Awake()
         {
             rBody = GetComponent<Rigidbody2D>();
             mover = GetComponent<Mover>();
+            // 残像を用意
+            dashObject = new GameObject("DashSprite");
+            SpriteRenderer playerSprite = GetComponent<SpriteRenderer>();
+            dashObject.AddComponent<SpriteRenderer>().sprite = playerSprite.sprite;
+            // 非表示にしておく
+            dashObject.SetActive(false);
         }
 
         void Update()
@@ -32,6 +42,21 @@ namespace VLCNP.Movement
                 if (dashTimeLeft > 0)
                 {
                     dashTimeLeft -= Time.deltaTime;
+                    // 一定間隔で残像を生成
+                    if (Time.frameCount % 40 == 0)
+                    {
+                        // 残像をつける
+                        SpriteRenderer playerSprite = GetComponent<SpriteRenderer>();
+                        dashObject.GetComponent<SpriteRenderer>().sprite = playerSprite.sprite;
+                        dashObject.transform.localScale = transform.localScale;
+                        // 透明にする
+                        Color color = dashObject.GetComponent<SpriteRenderer>().color;
+                        color.a = 0.4f;
+                        dashObject.GetComponent<SpriteRenderer>().color = color;
+                        GameObject dashSprite = Instantiate(dashObject, transform.position, transform.rotation);
+                        dashSprite.SetActive(true);
+                        Destroy(dashSprite, 0.3f);
+                    }
                 }
                 // ダッシュ時間が0かつ、接地していればダッシュ終了
                 else if (leg.IsGround)
