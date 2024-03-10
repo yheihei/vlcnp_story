@@ -9,11 +9,9 @@ namespace VLCNP.Movement
     public class Mover : MonoBehaviour
     {
         [SerializeField] float speed = 4;
-        [SerializeField] float jumpPower = 7;
         bool isLeft = true;
         // isLeftのgetterを定義
         public bool IsLeft { get => isLeft; set => isLeft = value; }
-        bool isGround = true;
         [SerializeField] Leg leg;
         float vx = 0;
         Rigidbody2D rbody;
@@ -82,7 +80,7 @@ namespace VLCNP.Movement
         private void UpdateAnimator()
         {
             animator.SetFloat("vx", Mathf.Abs(vx));
-            animator.SetBool("isGround", isGround);
+            animator.SetBool("isGround", leg.IsGround);
         }
 
         private void FixedUpdate()
@@ -91,24 +89,6 @@ namespace VLCNP.Movement
             if (isStunned()) return;
             UpdateMoveSpeed();
             UpdateCharacterDirection();
-        }
-
-        private void OnTriggerStay2D(Collider2D collision)
-        {
-            if (!collision.tag.Equals("Ground") && !collision.tag.Equals("Enemy"))
-            {
-                return;
-            }
-            isGround = true;
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            if (!collision.tag.Equals("Ground") && !collision.tag.Equals("Enemy"))
-            {
-                return;
-            }
-            isGround = false;
         }
 
         private void UpdateMoveSpeed()
