@@ -1,5 +1,3 @@
-using System.Drawing.Drawing2D;
-using Fungus;
 using UnityEngine;
 
 namespace VLCNP.Movement
@@ -7,70 +5,86 @@ namespace VLCNP.Movement
     public class Dash : MonoBehaviour
     {
         [SerializeField] private float dashPower = 10f;
-        [SerializeField] private float dashDuration = 0.5f;
+        [SerializeField] private float dashDuration = 0.3f;
         private Rigidbody2D rBody;
         private bool isDashing;
-
         public bool IsDashing { get => isDashing; }
         private float dashTimeLeft;
-        [SerializeField] Leg leg;
-        Mover mover;
-        // 山荘
-        GameObject dashObject;
+        private SpriteRenderer playerSprite;
+        private GameObject dashObject;
+
+        [SerializeField] private Leg leg;
+        private Mover mover;
 
         void Awake()
         {
-            rBody = GetComponent<Rigidbody2D>();
-            mover = GetComponent<Mover>();
-            // 残像を用意
-            dashObject = new GameObject("DashSprite");
-            SpriteRenderer playerSprite = GetComponent<SpriteRenderer>();
-            dashObject.AddComponent<SpriteRenderer>().sprite = playerSprite.sprite;
-            // 非表示にしておく
-            dashObject.SetActive(false);
+            InitializeComponents();
+            PrepareDashEffect();
         }
 
         void Update()
+        {
+            HandleInput();
+            HandleDashEffect();
+            CheckDashEndCondition();
+        }
+
+        void FixedUpdate()
+        {
+            ApplyDashMovement();
+        }
+
+        private void InitializeComponents()
+        {
+            rBody = GetComponent<Rigidbody2D>();
+            mover = GetComponent<Mover>();
+            playerSprite = GetComponent<SpriteRenderer>();
+        }
+
+        private void PrepareDashEffect()
+        {
+            dashObject = new GameObject("DashSprite");
+            SpriteRenderer dashSpriteRenderer = dashObject.AddComponent<SpriteRenderer>();
+            dashSpriteRenderer.sprite = playerSprite.sprite;
+            dashSpriteRenderer.sortingLayerName = "Player";
+            // sorting orderを-1にする
+            dashSpriteRenderer.sortingOrder = -1;
+            dashObject.SetActive(false);
+        }
+
+        private void HandleInput()
         {
             if (Input.GetKeyDown(KeyCode.X) && !isDashing && leg.IsGround)
             {
                 StartDash();
             }
+        }
 
-            if (isDashing)
+        private void HandleDashEffect()
+        {
+            if (isDashing && dashTimeLeft > 0)
             {
-                if (dashTimeLeft > 0)
+                dashTimeLeft -= Time.deltaTime;
+                if (Time.frameCount % 40 == 0)
                 {
-                    dashTimeLeft -= Time.deltaTime;
-                    // 一定間隔で残像を生成
-                    if (Time.frameCount % 40 == 0)
-                    {
-                        // 残像をつける
-                        SpriteRenderer playerSprite = GetComponent<SpriteRenderer>();
-                        dashObject.GetComponent<SpriteRenderer>().sprite = playerSprite.sprite;
-                        dashObject.transform.localScale = transform.localScale;
-                        // 透明にする
-                        Color color = dashObject.GetComponent<SpriteRenderer>().color;
-                        color.a = 0.4f;
-                        dashObject.GetComponent<SpriteRenderer>().color = color;
-                        GameObject dashSprite = Instantiate(dashObject, transform.position, transform.rotation);
-                        dashSprite.SetActive(true);
-                        Destroy(dashSprite, 0.3f);
-                    }
-                }
-                // ダッシュ時間が0かつ、接地していればダッシュ終了
-                else if (leg.IsGround)
-                {
-                    isDashing = false;
+                    CreateDashEffect();
                 }
             }
         }
 
-        void FixedUpdate()
+        private void CheckDashEndCondition()
+        {
+            if (isDashing && dashTimeLeft <= 0 && leg.IsGround)
+            {
+                isDashing = false;
+            }
+        }
+
+        private void ApplyDashMovement()
         {
             if (isDashing)
             {
-                float vx = mover.IsLeft ? -1 * dashPower : 1 * dashPower;
+                float vx = mover.IsLeft ? -dashPower : dashPower;
                 rBody.velocity = new Vector2(vx, rBody.velocity.y);
             }
         }
@@ -79,6 +93,23 @@ namespace VLCNP.Movement
         {
             isDashing = true;
             dashTimeLeft = dashDuration;
+        }
+
+        private void CreateDashEffect()
+        {
+            dashObject.GetComponent<SpriteRenderer>().sprite = playerSprite.sprite;
+            dashObject.transform.localScale = transform.localScale;
+
+            Color color = dashObject.GetComponent<SpriteRenderer>().color;
+            color.a = 0.6f;
+            // 少し青みを帯びた色にする
+            color.r = 0.5f;
+            color.g = 0.5f;
+            dashObject.GetComponent<SpriteRenderer>().color = color;
+
+            GameObject dashSprite = Instantiate(dashObject, transform.position, transform.rotation);
+            dashSprite.SetActive(true);
+            Destroy(dashSprite, 0.3f);
         }
     }
 }
