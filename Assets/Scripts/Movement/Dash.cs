@@ -15,6 +15,7 @@ namespace VLCNP.Movement
 
         [SerializeField] private Leg leg;
         private Mover mover;
+        Animator animator;
 
         void Awake()
         {
@@ -39,6 +40,7 @@ namespace VLCNP.Movement
             rBody = GetComponent<Rigidbody2D>();
             mover = GetComponent<Mover>();
             playerSprite = GetComponent<SpriteRenderer>();
+            animator = GetComponent<Animator>();
         }
 
         private void PrepareDashEffect()
@@ -76,7 +78,7 @@ namespace VLCNP.Movement
         {
             if (isDashing && dashTimeLeft <= 0 && leg.IsGround)
             {
-                isDashing = false;
+                SetIsDashing(false);
             }
         }
 
@@ -91,8 +93,14 @@ namespace VLCNP.Movement
 
         private void StartDash()
         {
-            isDashing = true;
+            SetIsDashing(true);
             dashTimeLeft = dashDuration;
+        }
+
+        private void SetIsDashing(bool value)
+        {
+            isDashing = value;
+            animator.SetBool("isDash", value);
         }
 
         private void CreateDashEffect()
