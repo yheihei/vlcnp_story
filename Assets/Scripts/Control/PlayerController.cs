@@ -15,7 +15,8 @@ namespace VLCNP.Control
 
         public bool IsStopped { get => isStopped; set => isStopped = value; }
 
-        private void Awake() {
+        private void Awake()
+        {
             mover = GetComponent<Mover>();
             fighter = GetComponent<Fighter>();
         }
@@ -46,7 +47,8 @@ namespace VLCNP.Control
         {
             ICollisionAction _collisionAction = other.GetComponent<ICollisionAction>();
             if (_collisionAction == null) return;
-            if (collisionAction == other.GetComponent<ICollisionAction>()) {
+            if (collisionAction == other.GetComponent<ICollisionAction>())
+            {
                 collisionAction.HideInformation();
                 collisionAction = null;
             }
@@ -66,7 +68,7 @@ namespace VLCNP.Control
             {
                 fighter.WeaponHorizontal();
             }
-            if (Input.GetKeyUp("x") || Input.GetKeyUp("z"))
+            if (Input.GetKeyUp("z"))
             {
                 fighter.Attack();
             }
@@ -79,5 +81,5 @@ namespace VLCNP.Control
                 collisionAction.Execute();
             }
         }
-    }    
+    }
 }
