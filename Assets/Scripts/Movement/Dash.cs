@@ -9,6 +9,7 @@ namespace VLCNP.Movement
         private Rigidbody2D rBody;
         private bool isDashing;
         public bool IsDashing { get => isDashing; }
+
         private float dashTimeLeft;
         private SpriteRenderer playerSprite;
         private GameObject dashObject;
@@ -64,10 +65,10 @@ namespace VLCNP.Movement
 
         private void HandleDashEffect()
         {
-            if (isDashing && dashTimeLeft > 0)
+            if (isDashing)
             {
                 dashTimeLeft -= Time.deltaTime;
-                if (Time.frameCount % 40 == 0)
+                if (Time.frameCount % 20 == 0)
                 {
                     CreateDashEffect();
                 }
