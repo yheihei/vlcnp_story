@@ -38,13 +38,13 @@ namespace VLCNP.Movie
             {
                 if (child.gameObject.activeSelf) activeChildCount++;
             }
-            // Activeな子オブジェクトの数が初期値から4つ減ったらBlockを実行
-            if (activeChildCount <= initialChildCount - 4)
+            // Activeな子オブジェクトの数が初期値から3つ減ったらBlockを実行
+            if (activeChildCount <= initialChildCount - 3)
             {
                 flowchart.ExecuteBlock(blockName);
                 isDone = true;
                 flagManager.SetFlag(isDoneFlag, true);
             }
         }
-    }    
+    }
 }
