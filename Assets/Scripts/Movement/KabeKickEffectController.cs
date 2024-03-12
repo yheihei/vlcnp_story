@@ -12,6 +12,7 @@ namespace VLCNP.Movement
         [SerializeField] GameObject effect = null;
         [SerializeField] float effectWaitTime = 0.5f;
         [SerializeField] GameObject player = null;
+        [SerializeField] Leg leg = null;
         Rigidbody2D playerRigidbody2D;
         Mover playerMover;
         Animator animator;
@@ -57,21 +58,35 @@ namespace VLCNP.Movement
         void SetColliding(bool value)
         {
             isColliding = value;
-            animator.SetBool("isKabe", value);
+        }
+
+        bool isKabekick()
+        {
+            // 地面についている間はカベキックしない
+            if (leg.IsGround)
+            {
+                return false;
+            }
+            return isColliding;
         }
 
         void FixedUpdate()
         {
             if (isStopped) return;
             GravityChange();
+            UpdateAnimation();
             if (!CheckEffecting()) return;
             InstantiateEffect();
         }
 
+        private void UpdateAnimation()
+        {
+            animator.SetBool("isKabe", isKabekick());
+        }
+
         private void GravityChange()
         {
-            // 壁に接触していなければ重力は元に戻す
-            if (!isColliding)
+            if (!isKabekick())
             {
                 playerRigidbody2D.gravityScale = originalGravity;
                 return;
@@ -89,8 +104,7 @@ namespace VLCNP.Movement
 
         bool CheckEffecting()
         {
-            // 壁に接触していなければ何もしない
-            if (!isColliding)
+            if (!isKabekick())
             {
                 effectElapsedTime = 0f;
                 return false;
