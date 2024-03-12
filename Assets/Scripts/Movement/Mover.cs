@@ -13,6 +13,7 @@ namespace VLCNP.Movement
         // isLeftのgetterを定義
         public bool IsLeft { get => isLeft; set => isLeft = value; }
         [SerializeField] Leg leg;
+        [SerializeField] KabeKickEffectController kabeKickEffectController;
         float vx = 0;
         Rigidbody2D rbody;
         Animator animator;
@@ -91,6 +92,12 @@ namespace VLCNP.Movement
             if (isStunned()) return;
             // ダッシュ中は移動不可
             if (dash != null && dash.IsDashing) return;
+            // カベキック中は移動不可
+            if (kabeKickEffectController != null && kabeKickEffectController.IsJumping)
+            {
+                print("カベキック中");
+                return;
+            }
             UpdateMoveSpeed();
             UpdateCharacterDirection();
         }

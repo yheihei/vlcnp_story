@@ -25,9 +25,15 @@ namespace VLCNP.Movement
         bool isStopped = false;
         public bool IsStopped { get => isStopped; set => isStopped = value; }
         // 壁キック時の重力の倍率
-        float gravityWhenKabeKickMagnification = 0.3f;
+        [SerializeField, Min(0)] float gravityWhenKabeKickMagnification = 0.2f;
         // 元の重力
         float originalGravity = 0f;
+        bool isJumping = false;
+        public bool IsJumping { get => isJumping; }
+        [SerializeField, Min(0)] float maxJumpTime = 0.3f;
+        [SerializeField, Min(0)] float jumpPowerX = 2.5f;
+        [SerializeField, Min(0)] float jumpPowerY = 8f;
+        float jumpTime = 0f;
 
         void Awake()
         {
@@ -60,7 +66,7 @@ namespace VLCNP.Movement
             isColliding = value;
         }
 
-        bool isKabekick()
+        public bool IsKabekick()
         {
             // 地面についている間はカベキックできない
             if (leg.IsGround)
@@ -70,35 +76,76 @@ namespace VLCNP.Movement
             return isColliding;
         }
 
+        void Update()
+        {
+            // ジャンプの開始判定
+            if (IsKabekick() && Input.GetKeyUp("space") && playerRigidbody2D.velocity.y < 0)
+            {
+                isJumping = true;
+            }
+
+            if (isJumping)
+            {
+                if (jumpTime >= maxJumpTime)
+                {
+                    isJumping = false;
+                    jumpTime = 0;
+                }
+                else
+                {
+                    jumpTime += Time.deltaTime;
+                }
+            }
+        }
+
         void FixedUpdate()
         {
             if (isStopped) return;
             GravityChange();
             UpdateAnimation();
+            DoJump();
             if (!CheckEffecting()) return;
             InstantiateEffect();
         }
 
+        private void DoJump()
+        {
+            if (!isJumping)
+            {
+                return;
+            }
+            if (playerRigidbody2D.velocity.y >= 0)
+            {
+                return;
+            }
+            // ジャンプ前に縦方向の速度を0にする
+            playerRigidbody2D.velocity = new Vector2(playerRigidbody2D.velocity.x, 0);
+            // 斜め方向にジャンプ 左向きなら右方向に、右向きなら左方向にジャンプ
+            float _jumpPowerX = playerMover.IsLeft ? jumpPowerX : -1 * jumpPowerX;
+            playerRigidbody2D.AddForce(new Vector2(_jumpPowerX, jumpPowerY), ForceMode2D.Impulse);
+        }
+
         private void UpdateAnimation()
         {
-            animator.SetBool("isKabe", isKabekick());
+            animator.SetBool("isKabe", IsKabekick());
         }
 
         private void GravityChange()
         {
             // カベキック中でないか、上昇中の場合は重力は元に戻す
-            if (!isKabekick() || playerRigidbody2D.velocity.y >= 0)
+            if (!IsKabekick() || playerRigidbody2D.velocity.y >= 0)
             {
                 playerRigidbody2D.gravityScale = originalGravity;
                 return;
             }
             // カベキック中かつ落下中であれば重力を減らす
+            playerRigidbody2D.velocity = new Vector2(0f, playerRigidbody2D.velocity.y);
             playerRigidbody2D.gravityScale = originalGravity * gravityWhenKabeKickMagnification;
         }
 
         bool CheckEffecting()
         {
-            if (!isKabekick())
+            if (!IsKabekick())
             {
                 effectElapsedTime = 0f;
                 return false;

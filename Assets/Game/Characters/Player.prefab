@@ -177,6 +177,10 @@ MonoBehaviour:
   effectWaitTime: 0.1
   player: {fileID: 1699767717115717140}
   leg: {fileID: 3487292076679122934}
+  gravityWhenKabeKickMagnification: 0.2
+  maxJumpTime: 0.3
+  jumpPowerX: 2.5
+  jumpPowerY: 8
 --- !u!1001 &8426694926020718296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -276,6 +280,10 @@ PrefabInstance:
       propertyPath: jumpPower
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 3902185951847420, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: kabeKickEffectController
+      value: 
+      objectReference: {fileID: 8320531180284266073}
     - target: {fileID: 860711057656959941, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: m_RootOrder
       value: 1
