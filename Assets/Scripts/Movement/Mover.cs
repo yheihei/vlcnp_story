@@ -93,11 +93,7 @@ namespace VLCNP.Movement
             // ダッシュ中は移動不可
             if (dash != null && dash.IsDashing) return;
             // カベキック中は移動不可
-            if (kabeKickEffectController != null && kabeKickEffectController.IsJumping)
-            {
-                print("カベキック中");
-                return;
-            }
+            if (kabeKickEffectController != null && kabeKickEffectController.IsJumping) return;
             UpdateMoveSpeed();
             UpdateCharacterDirection();
         }
