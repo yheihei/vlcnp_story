@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -22,10 +23,15 @@ namespace VLCNP.Movement
 
         bool isStopped = false;
         public bool IsStopped { get => isStopped; set => isStopped = value; }
+        // 壁キック時の重力の倍率
+        float gravityWhenKabeKickMagnification = 0.3f;
+        // 元の重力
+        float originalGravity = 0f;
 
         void Awake()
         {
             playerRigidbody2D = player.GetComponent<Rigidbody2D>();
+            originalGravity = playerRigidbody2D.gravityScale;
             playerMover = player.GetComponent<Mover>();
             animator = player.GetComponent<Animator>();
         }
@@ -57,14 +63,35 @@ namespace VLCNP.Movement
         void FixedUpdate()
         {
             if (isStopped) return;
+            GravityChange();
             if (!CheckEffecting()) return;
             InstantiateEffect();
+        }
+
+        private void GravityChange()
+        {
+            // 壁に接触していなければ重力は元に戻す
+            if (!isColliding)
+            {
+                playerRigidbody2D.gravityScale = originalGravity;
+                return;
+            }
+            // 壁に接触していて、落下中であれば重力を減らす
+            if (playerRigidbody2D.velocity.y < 0)
+            {
+                playerRigidbody2D.gravityScale = originalGravity * gravityWhenKabeKickMagnification;
+            }
+            else
+            {
+                playerRigidbody2D.gravityScale = originalGravity;
+            }
         }
 
         bool CheckEffecting()
         {
             // 壁に接触していなければ何もしない
-            if (!isColliding) {
+            if (!isColliding)
+            {
                 effectElapsedTime = 0f;
                 return false;
             }
@@ -98,5 +125,5 @@ namespace VLCNP.Movement
             );
             effectElapsedTime = 0f;
         }
-    }    
+    }
 }
