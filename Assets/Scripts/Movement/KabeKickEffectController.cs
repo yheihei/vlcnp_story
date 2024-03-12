@@ -62,7 +62,7 @@ namespace VLCNP.Movement
 
         bool isKabekick()
         {
-            // 地面についている間はカベキックしない
+            // 地面についている間はカベキックできない
             if (leg.IsGround)
             {
                 return false;
@@ -86,20 +86,14 @@ namespace VLCNP.Movement
 
         private void GravityChange()
         {
-            if (!isKabekick())
+            // カベキック中でないか、上昇中の場合は重力は元に戻す
+            if (!isKabekick() || playerRigidbody2D.velocity.y >= 0)
             {
                 playerRigidbody2D.gravityScale = originalGravity;
                 return;
             }
-            // 壁に接触していて、落下中であれば重力を減らす
-            if (playerRigidbody2D.velocity.y < 0)
-            {
-                playerRigidbody2D.gravityScale = originalGravity * gravityWhenKabeKickMagnification;
-            }
-            else
-            {
-                playerRigidbody2D.gravityScale = originalGravity;
-            }
+            // カベキック中かつ落下中であれば重力を減らす
+            playerRigidbody2D.gravityScale = originalGravity * gravityWhenKabeKickMagnification;
         }
 
         bool CheckEffecting()
