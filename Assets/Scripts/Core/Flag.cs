@@ -17,5 +17,6 @@ namespace VLCNP.Core
         OhirunebeyaBlockBroken, // お昼寝部屋の落盤をこわした
         LetsKabeKick, // かべキックを教えてもらった
         ArrivedVLFarm, // ベリーロングファームに到着した
+        PunchTutorial1, // パンチの使い方を教えてもらった
     }
 }
