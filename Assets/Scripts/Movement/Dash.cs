@@ -68,7 +68,7 @@ namespace VLCNP.Movement
             if (isDashing)
             {
                 dashTimeLeft -= Time.deltaTime;
-                if (Time.frameCount % 20 == 0)
+                if (Time.frameCount % 40 == 0)
                 {
                     CreateDashEffect();
                 }
