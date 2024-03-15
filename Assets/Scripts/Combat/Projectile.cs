@@ -54,23 +54,14 @@ namespace VLCNP.Combat
         {
             if (other.gameObject.CompareTag(targetTagName))
             {
-                if (IsPenetration)
-                {
-                    // 既にヒットしたオブジェクトにはダメージを与えない
-                    if (penetratedObjects.Contains(other.gameObject))
-                    {
-                        return;
-                    }
-                    // ヒットしたオブジェクトを記録しておく
-                    penetratedObjects.Add(other.gameObject);
-                }
+                // 既にヒットしたオブジェクトにはダメージを与えない. 二重にダメージを与えることを防ぐ
+                if (penetratedObjects.Contains(other.gameObject)) return;
+                // ヒットしたオブジェクトを記録しておく
+                penetratedObjects.Add(other.gameObject);
                 Health health = other.gameObject.GetComponent<Health>();
-                if (health != null)
-                {
-                    health.TakeDamage(damage);
-                }
+                if (health != null) health.TakeDamage(damage);
                 if (!IsPenetration) Destroy(gameObject);
             }
         }
-    }    
+    }
 }
