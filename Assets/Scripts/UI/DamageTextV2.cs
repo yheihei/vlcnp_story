@@ -9,6 +9,8 @@ namespace VLCNP.UI
 {
     public class DamageTextV2 : MonoBehaviour
     {
+        // ダメージを受けた対象のキャラクターを入れる
+        [SerializeField] Transform damagedCharacter;
         [SerializeField] Text damageText;
         [SerializeField] float showTimeDuration = 2.5f;
         float showTime = 0f;
@@ -16,6 +18,11 @@ namespace VLCNP.UI
         private void Awake()
         {
             ResetDamageText();
+        }
+
+        private bool IsCharacterDirectionLeft()
+        {
+            return damagedCharacter.localScale.x > 0;
         }
 
         public void AddDamageText(float damagePoint)
@@ -41,6 +48,23 @@ namespace VLCNP.UI
             if (showTime > showTimeDuration)
             {
                 ResetDamageText();
+            }
+        }
+
+        void Update()
+        {
+            UpdateDirection();
+        }
+
+        private void UpdateDirection()
+        {
+            if (IsCharacterDirectionLeft())
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else
+            {
+                transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
         }
     }
