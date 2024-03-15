@@ -13,6 +13,7 @@ namespace VLCNP.UI
         [SerializeField] Transform damagedCharacter;
         [SerializeField] Text damageText;
         [SerializeField] float showTimeDuration = 2.5f;
+        float damageAmount = 0f;
         float showTime = 0f;
 
         private void Awake()
@@ -27,19 +28,21 @@ namespace VLCNP.UI
 
         public void AddDamageText(float damagePoint)
         {
+            print($"AddDamageText: {damagePoint}");
             showTime = 0f;
             // Text表示
             damageText.color = new Color(damageText.color.r, damageText.color.g, damageText.color.b, 1f);
             // ダメージを合算
-            float currentDamageAmount = float.Parse(damageText.text) + damagePoint;
-            damageText.text = currentDamageAmount.ToString();
+            damageAmount += damagePoint;
+            damageText.text = damageAmount.ToString();
         }
 
         void ResetDamageText()
         {
             // Textを透明にする
             damageText.color = new Color(damageText.color.r, damageText.color.g, damageText.color.b, 0f);
-            damageText.text = "0";
+            damageAmount = 0f;
+            damageText.text = damageAmount.ToString();
         }
 
         void FixedUpdate()
