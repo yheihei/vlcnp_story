@@ -18,5 +18,6 @@ namespace VLCNP.Core
         LetsKabeKick, // かべキックを教えてもらった
         ArrivedVLFarm, // ベリーロングファームに到着した
         PunchTutorial1, // パンチの使い方を教えてもらった
+        MillcoFirstChated, // Millcoと初めて会話した
     }
 }
