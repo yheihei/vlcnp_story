@@ -19,5 +19,6 @@ namespace VLCNP.Core
         ArrivedVLFarm, // ベリーロングファームに到着した
         PunchTutorial1, // パンチの使い方を教えてもらった
         MillcoFirstChated, // Millcoと初めて会話した
+        HayatoFirstChated, // Hayatoと初めて会話した
     }
 }
