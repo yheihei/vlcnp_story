@@ -6381,7 +6381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: commandList.Array.size
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: commandList.Array.data[0]
@@ -6398,11 +6398,11 @@ PrefabInstance:
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: commandList.Array.data[3]
       value: 
-      objectReference: {fileID: 514083554}
+      objectReference: {fileID: 514083559}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: commandList.Array.data[4]
       value: 
-      objectReference: {fileID: 514083552}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
 --- !u!1 &514083551 stripped
@@ -6410,37 +6410,9 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
   m_PrefabInstance: {fileID: 514083549}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &514083552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 514083551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 2
-  indentLevel: 0
-  description: 
-  targetObject: {fileID: 1190920440}
-  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
-  targetComponentText: StoppableController
-  targetMethod: StartAll
-  targetMethodText: 'StartAll (): Void'
-  methodParameters: []
-  saveReturnValue: 0
-  returnValueVariableKey: 
-  returnValueType: System.Void
-  showInherited: 0
-  callMode: 0
 --- !u!114 &514083553
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -6466,36 +6438,9 @@ MonoBehaviour:
   returnValueType: System.Void
   showInherited: 0
   callMode: 0
---- !u!114 &514083554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 514083551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 5
-  indentLevel: 0
-  storyText: "\u898B\u305F\u76EE\u3060\u3051\u3058\u3083\u306A\u304F\n\u8996\u70B9\u304C\u30ED\u30F3\u30B0\u306A\u4EBA\u3063\u3066\u7D20\u6575\u3088\u306D"
-  description: 
-  character: {fileID: 0}
-  portrait: {fileID: 0}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
 --- !u!114 &514083555
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -6507,8 +6452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 4
   indentLevel: 0
-  storyText: "\u30A6\u30CB\u30AD\u304C\u3051\u3063\u3053\u3046\u5B88\u3063\u3066\u304F\u308C\u308B\u306E\u3088\u306D...\n\u77ED\u3044\u304B\u3089\u306A\u3093\u3060\uFF01\uFF1F
-    \u3063\u3066"
+  storyText: "\u6614\u306F\u8FEB\u5BB3\u304C\u3059\u3054\u304B\u3063\u305F\u3093\u3060\u3063\u3066\n\u305D\u308C\u3053\u305D\u77ED\u3044\u3060\u3051\u3067\u7262\u306B\u5165\u308C\u3089\u308C\u3061\u3083\u3046\u3068\u304B"
   description: 
   character: {fileID: 0}
   portrait: {fileID: 0}
@@ -6523,7 +6467,7 @@ MonoBehaviour:
   setSayDialog: {fileID: 0}
 --- !u!114 &514083556
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -6549,6 +6493,34 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
+--- !u!114 &514083559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514083551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 5
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1190920440}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1 &518196639
 GameObject:
   m_ObjectHideFlags: 0
@@ -7045,6 +7017,13 @@ GameObject:
   - component: {fileID: 558657064}
   - component: {fileID: 558657065}
   - component: {fileID: 558657062}
+  - component: {fileID: 558657068}
+  - component: {fileID: 558657072}
+  - component: {fileID: 558657071}
+  - component: {fileID: 558657070}
+  - component: {fileID: 558657069}
+  - component: {fileID: 558657074}
+  - component: {fileID: 558657073}
   m_Layer: 0
   m_Name: UniDoor
   m_TagString: Untagged
@@ -7077,9 +7056,9 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 558657063}
+  - {fileID: 558657068}
   selectedCommands:
-  - {fileID: 558657062}
+  - {fileID: 558657073}
   variables: []
   description: 
   stepPause: 0
@@ -7234,6 +7213,188 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &558657068
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558657060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3d73aef2cfc4f51abf34ac00241f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeRect:
+    serializedVersion: 2
+    x: 53
+    y: 167
+    width: 108
+    height: 40
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  useCustomTint: 0
+  itemId: 0
+  blockName: Message2
+  description: 
+  eventHandler: {fileID: 0}
+  commandList:
+  - {fileID: 558657072}
+  - {fileID: 558657071}
+  - {fileID: 558657070}
+  - {fileID: 558657074}
+  - {fileID: 558657073}
+  - {fileID: 558657069}
+  suppressAllAutoSelections: 0
+--- !u!114 &558657069
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558657060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 12
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1190920440}
+  targetComponentAssemblyName: 
+  targetComponentFullname: 
+  targetComponentText: 
+  targetMethod: 
+  targetMethodText: 
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: 
+  showInherited: 0
+  callMode: 0
+--- !u!114 &558657070
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558657060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 11
+  indentLevel: 0
+  storyText: "\u304F\u3001\u6765\u308B\u306A\uFF01\n\u8679\u306E\u7A2E\u306F\u6E21\u3055\u306A\u3044\u305E\uFF01\uFF01"
+  description: 
+  character: {fileID: 327143478}
+  portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &558657071
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558657060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d65d551a201c94bc79950076ff3eaf2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 10
+  indentLevel: 0
+  sayDialog: {fileID: 1660200730}
+--- !u!114 &558657072
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558657060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 9
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1190920440}
+  targetComponentAssemblyName: 
+  targetComponentFullname: 
+  targetComponentText: 
+  targetMethod: 
+  targetMethodText: 
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: 
+  showInherited: 0
+  callMode: 0
+--- !u!114 &558657073
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558657060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 14
+  indentLevel: 0
+  storyText: "......\u3069\u3046\u305E"
+  description: 
+  character: {fileID: 327143478}
+  portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &558657074
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558657060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 13
+  indentLevel: 0
+  storyText: "...\u3093\uFF1F\nMillco\u3055\u3093\u304C\u6012\u3063\u3066\u308B\u3063\u3066\uFF1F"
+  description: 
+  character: {fileID: 327143478}
+  portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
 --- !u!4 &573796999 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 880520027387217216, guid: de570bfbf1a49ba4c9575930f7db6bae, type: 3}
@@ -27700,6 +27861,26 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: 30, y: -9, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 17
+      m_TileSpriteIndex: 17
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 31, y: -9, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 17
+      m_TileSpriteIndex: 17
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: 32, y: -9, z: 0}
     second:
       serializedVersion: 2
@@ -41326,6 +41507,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 334c42904e466434c806626daa6b87d3, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 00f32906b6a5a5846be9878967ba535e, type: 2}
+  - m_RefCount: 2
+    m_Data: {fileID: 11400000, guid: 356e51e55dc771d43a2af1141ac0c6ae, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 8
     m_Data: {fileID: -196723265562317597, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
@@ -41361,8 +41544,10 @@ Tilemap:
     m_Data: {fileID: 1922864012054007380, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -575003177014463960, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+  - m_RefCount: 2
+    m_Data: {fileID: 21300220, guid: 261212b977f594d5dbc48631a5c1295c, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 2287
+  - m_RefCount: 2289
     m_Data:
       e00: 1
       e01: 0
@@ -41471,7 +41656,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 2301
+  - m_RefCount: 2303
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   - m_RefCount: 0
     m_Data: {r: 0.88088393, g: 0.46032405, b: 0.57844764, a: 1}
@@ -43840,7 +44025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 1795535048}
+  selectedFlowchart: {fileID: 558657061}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
@@ -45040,6 +45225,22 @@ PrefabInstance:
     - target: {fileID: 976885865057812760, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: InformationText
       value: "(\u2191) \u306F\u306A\u3059"
+      objectReference: {fileID: 0}
+    - target: {fileID: 976885865057812760, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: flagToBlockName.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 976885865057812760, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: flagToBlockName.Array.data[1].flag
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 976885865057812760, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: flagToBlockName.Array.data[0].blockName
+      value: New Block
+      objectReference: {fileID: 0}
+    - target: {fileID: 976885865057812760, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: flagToBlockName.Array.data[1].blockName
+      value: Message2
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812762, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
