@@ -58,9 +58,7 @@ namespace VLCNP.Core
 
         private void AutoStartBlock()
         {
-            print("AutoStartBlock");
             FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
-            print("FlagToBlockName: " + flagToBlockName?.BlockName);
             if (flagToBlockName == null) return;
             if (flagToBlockName.IsAutoStart)
             {
@@ -75,7 +73,7 @@ namespace VLCNP.Core
         {
             FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
             // 現在のBlockNameが即時実行なら実行しない
-            if (flagToBlockName.IsAutoStart) return;
+            if (flagToBlockName != null && flagToBlockName.IsAutoStart) return;
             StartCoroutine(EventExecute(flagToBlockName));
         }
 
@@ -83,16 +81,21 @@ namespace VLCNP.Core
         {
             FlagToBlockName flagToBlockName = GetCurrentBlockNameFromFlag();
             // 現在のBlockNameがcollisionStartでないなら実行しない
-            if (!flagToBlockName.IsCollisionStart) return;
+            if (flagToBlockName != null && !flagToBlockName.IsCollisionStart) return;
             StartCoroutine(EventExecute(flagToBlockName));
         }
 
-        IEnumerator EventExecute(FlagToBlockName flagToBlockName) {
+        IEnumerator EventExecute(FlagToBlockName flagToBlockName)
+        {
             if (!isAction) yield break;
-            if (flagToBlockName.BlockName == "") yield break;
+            yield return ExecuteBlock(flagToBlockName != null ? flagToBlockName.BlockName : defaultBlockName);
+        }
+
+        private IEnumerator ExecuteBlock(string blockName)
+        {
             if (flowChart.HasExecutingBlocks()) yield break;
             isAction = false;
-            flowChart.ExecuteBlock(flagToBlockName.BlockName);
+            flowChart.ExecuteBlock(blockName);
             yield return new WaitUntil(() => flowChart.HasExecutingBlocks() == false);
             // メニューが開いていたら閉じるまで待つ
             MenuDialog menuDialog = MenuDialog.ActiveMenuDialog;
@@ -138,5 +141,5 @@ namespace VLCNP.Core
             // 設定がなければnullを返す
             return null;
         }
-    }    
+    }
 }
