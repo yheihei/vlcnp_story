@@ -20,5 +20,6 @@ namespace VLCNP.Core
         PunchTutorial1, // パンチの使い方を教えてもらった
         MillcoFirstChated, // Millcoと初めて会話した
         HayatoFirstChated, // Hayatoと初めて会話した
+        AllowToUniHouse, // ウニの家に入れるようになった
     }
 }
