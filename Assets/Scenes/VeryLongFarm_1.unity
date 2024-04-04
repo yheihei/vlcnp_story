@@ -2875,6 +2875,14 @@ PrefabInstance:
       propertyPath: selectedBlocks.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5650616467984905310, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
+      propertyPath: selectedCommands.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5650616467984905310, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
+      propertyPath: selectedCommands.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8282728329349254608, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -2923,19 +2931,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UniDoorGameEventTransition
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4235512776270127445, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
+    - {fileID: 4874829220394967163, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
---- !u!114 &308193711 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5650616467984905310, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
-  m_PrefabInstance: {fileID: 308193710}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 308193713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &308193712 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3607630405917162472, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
@@ -2964,7 +2963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95d9ff288f3904c05ada7ac9c9a075bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 1
+  itemId: 3
   indentLevel: 0
   description: 
   delay: 0
@@ -5873,6 +5872,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: selectedBlocks.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
 --- !u!1 &446417024
@@ -7300,7 +7307,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 558657068}
   selectedCommands:
-  - {fileID: 558657075}
+  - {fileID: 558657069}
   variables: []
   description: 
   stepPause: 0
@@ -7504,15 +7511,16 @@ MonoBehaviour:
   indentLevel: 0
   description: 
   targetObject: {fileID: 1190920440}
-  targetComponentAssemblyName: 
-  targetComponentFullname: 
-  targetComponentText: 
-  targetMethod: 
-  targetMethodText: 
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
   methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 
-  returnValueType: 
+  returnValueType: System.Void
   showInherited: 0
   callMode: 0
 --- !u!114 &558657070
@@ -7573,15 +7581,16 @@ MonoBehaviour:
   indentLevel: 0
   description: 
   targetObject: {fileID: 1190920440}
-  targetComponentAssemblyName: 
-  targetComponentFullname: 
-  targetComponentText: 
-  targetMethod: 
-  targetMethodText: 
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
   methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 
-  returnValueType: 
+  returnValueType: System.Void
   showInherited: 0
   callMode: 0
 --- !u!114 &558657073
@@ -7640,7 +7649,7 @@ MonoBehaviour:
   setSayDialog: {fileID: 0}
 --- !u!114 &558657075
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -12684,7 +12693,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1161340045}
   selectedCommands:
-  - {fileID: 1161340044}
+  - {fileID: 1161340046}
   variables: []
   description: 
   stepPause: 0
@@ -13192,15 +13201,16 @@ MonoBehaviour:
   indentLevel: 0
   description: 
   targetObject: {fileID: 1190920440}
-  targetComponentAssemblyName: 
-  targetComponentFullname: 
-  targetComponentText: 
-  targetMethod: 
-  targetMethodText: 
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
   methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 
-  returnValueType: 
+  returnValueType: System.Void
   showInherited: 0
   callMode: 0
 --- !u!114 &1161340047
@@ -13246,15 +13256,16 @@ MonoBehaviour:
   indentLevel: 0
   description: 
   targetObject: {fileID: 1190920440}
-  targetComponentAssemblyName: 
-  targetComponentFullname: 
-  targetComponentText: 
-  targetMethod: 
-  targetMethodText: 
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
   methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 
-  returnValueType: 
+  returnValueType: System.Void
   showInherited: 0
   callMode: 0
 --- !u!1 &1165591266
@@ -44320,7 +44331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 308193711}
+  selectedFlowchart: {fileID: 558657061}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
