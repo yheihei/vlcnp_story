@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Nethereum.BlockchainProcessing.BlockProcessing;
 using Nethereum.ENS.EthRegistrarSubdomainRegistrar.ContractDefinition;
 using UnityEngine;
 
@@ -68,34 +69,49 @@ namespace VLCNP.Movie
             UpdateCharacterDirection();
         }
 
-
-        public void MoveToPositionEvent(Vector3 position, float timeout = 0)
+        public void SetSpeed(float _speed)
         {
-            StartCoroutine(MoveToPosition(position, timeout));
+            speed = _speed;
         }
 
-        private IEnumerator MoveToPosition(Vector3 position, float timeout = 0)
+        public void MoveToPositionEvent(Vector3 position, float timeout = 0, bool keepDirection = false)
+        {
+            StartCoroutine(MoveToPosition(position, timeout, keepDirection));
+        }
+
+        public void MoveToRelativePositionEvent(Vector3 position, float timeout = 0, bool keepDirection = false)
+        {
+            StartCoroutine(MoveToPosition(transform.position + position, timeout, keepDirection));
+        }
+
+        private IEnumerator MoveToPosition(Vector3 position, float timeout = 0, bool keepDirection = false)
         {
             // プレイヤーの位置が指定のx位置より左にある場合は左を向く
-            if (position.x < transform.position.x)
+            if (!keepDirection)
             {
-                isLeft = true;
-            }
-            else
-            {
-                isLeft = false;
+                if (position.x < transform.position.x)
+                {
+                    isLeft = true;
+                }
+                else
+                {
+                    isLeft = false;
+                }
             }
             UpdateCharacterDirection();
             // 経過時間を格納する変数
             float elapsedTime = 0;
-            // プレイヤーの位置と指定のx位置が0.05以内になるまでループ
-            while (Mathf.Abs(position.x - transform.position.x) > 0.05f)
+            // プレイヤーの位置と指定のx位置が特定の値以内になるまでループ
+            while (Mathf.Abs(position.x - transform.position.x) > 0.1f)
             {
                 // 経過時間加算
                 elapsedTime += Time.deltaTime;
                 // タイムアウト値になったらループを抜ける
                 if (timeout > 0 && elapsedTime > timeout)
                 {
+                    print("timeout");
+                    print(position.x);
+                    print(transform.position.x);
                     break;
                 }
                 // 指定の位置に向かって移動
