@@ -115,9 +115,6 @@ namespace VLCNP.Movie
                 // タイムアウト値になったらループを抜ける
                 if (timeout > 0 && elapsedTime > timeout)
                 {
-                    print("timeout");
-                    print(position.x);
-                    print(transform.position.x);
                     break;
                 }
                 // 指定の位置に向かって移動
