@@ -19,5 +19,11 @@ namespace VLCNP.Movie
             if (virtualCamera == null) return;
             virtualCamera.Follow = target.transform;
         }
+
+        public void SetPriority(int priority)
+        {
+            if (virtualCamera == null) return;
+            virtualCamera.Priority = priority;
+        }
     }
 }
