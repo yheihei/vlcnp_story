@@ -55,6 +55,12 @@ namespace VLCNP.Movie
             rbody.AddForce(new Vector2(0, _jumpPower), ForceMode2D.Impulse);
         }
 
+        public void Defeated()
+        {
+            // z軸を90度回転
+            transform.Rotate(new Vector3(0, 0, 90));
+        }
+
         public void SetDirection(Direction direction)
         {
             switch (direction)
