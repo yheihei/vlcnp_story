@@ -12,10 +12,19 @@ namespace VLCNP.Combat.EnemyAction
         public bool IsExecuting { get => isExecuting; set => isExecuting = value; }
         [SerializeField] float speed = 4;
         [SerializeField] float moveX = 0;
+        [SerializeField] bool keepDirection = false;
 
         Rigidbody2D rbody;
         Animator animator;
         float vx = 0;
+
+        public enum Direction
+        {
+            Left,
+            Right
+        }
+
+        Direction direction = Direction.Left;
 
         private void Awake() {
             rbody = GetComponent<Rigidbody2D>();
@@ -29,11 +38,23 @@ namespace VLCNP.Combat.EnemyAction
             isExecuting = true;
             Vector3 position = transform.position;
             Vector3 destinationPosition = new Vector3(position.x + moveX, position.y, position.z);
-            StartCoroutine(MoveToPosition(destinationPosition));
+            StartCoroutine(MoveToPosition(destinationPosition, 0, keepDirection));
         }
 
         private IEnumerator MoveToPosition(Vector3 position, float timeout = 0, bool keepDirection = false)
         {
+            // プレイヤーの位置が指定のx位置より左にある場合は左を向く
+            if (!keepDirection)
+            {
+                if (position.x < transform.position.x)
+                {
+                    SetDirection(Direction.Left);
+                }
+                else
+                {
+                    SetDirection(Direction.Right);
+                }
+            }
             // 経過時間を格納する変数
             float elapsedTime = 0;
             // プレイヤーの位置と指定のx位置が特定の値以内になるまでループ
@@ -59,6 +80,24 @@ namespace VLCNP.Combat.EnemyAction
             vx = _vx;
             rbody.velocity = new Vector2(vx, rbody.velocity.y);
             animator?.SetFloat("vx", Mathf.Abs(vx));
+        }
+
+        public void SetDirection(Direction _direction)
+        {
+            direction = _direction;
+            UpdateCharacterDirection();
+        }
+
+        private void UpdateCharacterDirection()
+        {
+            if (direction == Direction.Left)
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else
+            {
+                transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
         }
 
         /**
