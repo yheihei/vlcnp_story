@@ -11,6 +11,8 @@ namespace VLCNP.Combat.EnemyAction
         public bool IsDone { get => isDone; set => isDone = value; }
         public bool IsExecuting { get => isExecuting; set => isExecuting = value; }
 
+        [SerializeField] float waitTimeSecond = 3f;
+
         public void Exeute()
         {
             if (isExecuting) return;
@@ -21,9 +23,8 @@ namespace VLCNP.Combat.EnemyAction
 
         private IEnumerator Wait()
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(waitTimeSecond);
             isDone = true;
-            print("Waiting is done.");
         }
 
         /**
