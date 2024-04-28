@@ -13,7 +13,7 @@ namespace VLCNP.Combat.EnemyAction
 
         [SerializeField] float waitTimeSecond = 3f;
 
-        public void Exeute()
+        public void Execute()
         {
             if (isExecuting) return;
             if (isDone) return;

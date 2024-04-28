@@ -31,7 +31,7 @@ namespace VLCNP.Combat.EnemyAction
             animator = GetComponent<Animator>();
         }
 
-        public void Exeute()
+        public void Execute()
         {
             if (isExecuting) return;
             if (isDone) return;

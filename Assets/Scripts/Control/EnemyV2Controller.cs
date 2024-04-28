@@ -38,7 +38,7 @@ public class EnemyV2Controller : MonoBehaviour
         // 現在の行動を実行する
         if (!currentAction.IsExecuting)
         {
-            currentAction.Exeute();
+            currentAction.Execute();
         }
         // 現在の行動が完了した場合は次の行動に進む
         if (currentAction.IsDone)
