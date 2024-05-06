@@ -12,6 +12,8 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField] float speed = 4;
         [SerializeField] float moveX = 0;
         [SerializeField] bool keepDirection = false;
+        [SerializeField] public uint priority = 1;
+        public uint Priority { get => priority; }
 
         Rigidbody2D rbody;
         Animator animator;

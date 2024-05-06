@@ -11,6 +11,8 @@ public class EnemyV2Controller : MonoBehaviour
     {
         // IEnemyActionのインターフェースを持つコンポーネントを取得する
         enemyActions = GetComponents<IEnemyAction>();
+        // enemyActionsをPriorityでソートする
+        System.Array.Sort(enemyActions, (a, b) => (int)(a.Priority - b.Priority));
     }
 
     // 現在の行動を取得する
