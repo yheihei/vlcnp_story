@@ -18494,6 +18494,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1308681304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1308681305}
+  m_Layer: 0
+  m_Name: Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1308681305
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1308681304}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.52, y: -0.77, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1741018718}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1316347175
 GameObject:
   m_ObjectHideFlags: 0
@@ -46334,6 +46365,11 @@ MonoBehaviour:
   moveX: -4
   keepDirection: 0
   priority: 4
+--- !u!4 &1741018718 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2888467994159925159, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+  m_PrefabInstance: {fileID: 1806057913}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1741018719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46347,6 +46383,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponConfig: {fileID: 11400000, guid: 4cf97282cb283458bacb86a6c0c70d0d, type: 2}
+  handTransform: {fileID: 1308681305}
+  animationOffsetWaitTime: 0.417
   priority: 2
 --- !u!114 &1741018720
 MonoBehaviour:
@@ -46361,6 +46399,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponConfig: {fileID: 11400000, guid: 4cf97282cb283458bacb86a6c0c70d0d, type: 2}
+  handTransform: {fileID: 1308681305}
+  animationOffsetWaitTime: 0.417
   priority: 5
 --- !u!1001 &1741899534
 PrefabInstance:

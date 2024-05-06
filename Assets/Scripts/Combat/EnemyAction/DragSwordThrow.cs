@@ -12,8 +12,16 @@ namespace VLCNP.Combat.EnemyAction
         public bool IsExecuting { get => isExecuting; set => isExecuting = value; }
 
         [SerializeField] WeaponConfig weaponConfig = null;
+        [SerializeField] Transform handTransform = null;
+        [SerializeField] float animationOffsetWaitTime = 0.417f;
         [SerializeField] public uint priority = 1;
         public uint Priority { get => priority; }
+        private Animator animator;
+
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+        }
 
         public void Execute()
         {
@@ -30,8 +38,15 @@ namespace VLCNP.Combat.EnemyAction
                 isDone = true;
                 yield break;
             }
+            // animatorの、"throw"トリガーを発動する
+            if (animator != null)
+            {
+                animator.SetTrigger("throw");
+            }
+            // animationが完了するまで待つ調整
+            yield return new WaitForSeconds(animationOffsetWaitTime);
             bool isLeft = transform.lossyScale.x > 0;
-            weaponConfig.LaunchProjectile(transform, 1, isLeft);
+            weaponConfig.LaunchProjectile(handTransform, 1, isLeft);
             isDone = true;
         }
 
