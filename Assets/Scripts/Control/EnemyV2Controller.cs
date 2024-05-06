@@ -42,11 +42,9 @@ public class EnemyV2Controller : MonoBehaviour
         {
             currentAction.Execute();
         }
-        // 現在の行動が完了した場合は次の行動に進む
-        if (currentAction.IsDone)
-        {
-            currentAction.Reset();
-            NextAction();
-        }
+        if (!currentAction.IsDone) return;
+        // 現在の行動が終了した場合はリセットして次の行動に進む
+        currentAction.Reset();
+        NextAction();
     }
 }
