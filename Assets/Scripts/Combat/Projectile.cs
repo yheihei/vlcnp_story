@@ -19,6 +19,9 @@ namespace VLCNP.Combat
         [SerializeField] float deleteTime = 0.18f;
         [SerializeField] string targetTagName = "Enemy";
         [SerializeField] bool IsPenetration = false;
+        [Header("地面に刺さるかどうか")]
+        [SerializeField] bool isStuckInGround = false;
+        private bool isStucking = false;
         List<GameObject> penetratedObjects = new List<GameObject>();
         float damage = 0;
         private ParticleSystem particle;
@@ -52,6 +55,14 @@ namespace VLCNP.Combat
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            // 地面に刺さっている場合は何もしない
+            if (isStucking) return;
+            // 地面に触れた&地面に刺さる設定が有効の場合
+            if (isStuckInGround && other.tag.Equals("Ground"))
+            {
+                isStucking = true;
+                StartCoroutine(StuckInGround());
+            }
             if (other.gameObject.CompareTag(targetTagName))
             {
                 // 既にヒットしたオブジェクトにはダメージを与えない. 二重にダメージを与えることを防ぐ
@@ -62,6 +73,22 @@ namespace VLCNP.Combat
                 if (health != null) health.TakeDamage(damage);
                 if (!IsPenetration) Destroy(gameObject);
             }
+        }
+
+        private IEnumerator StuckInGround()
+        {
+            // Spriteのsorting layerをDefault、sorting orderを1に変更して地面に刺さったように見せる
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.sortingLayerName = "Default";
+                spriteRenderer.sortingOrder = 1;
+            }
+            // 刺さるところまでの時間を待つ
+            yield return new WaitForSeconds(0.03f);
+            isStopped = true;
+            // 10s後に削除
+            Destroy(gameObject, 10);
         }
     }
 }
