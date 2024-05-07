@@ -82,7 +82,7 @@ namespace VLCNP.Combat
             if (spriteRenderer != null)
             {
                 spriteRenderer.sortingLayerName = "Default";
-                spriteRenderer.sortingOrder = 1;
+                spriteRenderer.sortingOrder = 8;
             }
             // 刺さるところまでの時間を待つ
             yield return new WaitForSeconds(0.03f);

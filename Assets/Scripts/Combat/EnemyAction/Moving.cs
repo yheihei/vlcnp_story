@@ -13,6 +13,7 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField] float moveX = 0;
         [SerializeField] bool keepDirection = false;
         [SerializeField] public uint priority = 1;
+        [SerializeField] private bool isTowardPlayer = true;
         public uint Priority { get => priority; }
 
         Rigidbody2D rbody;
@@ -38,7 +39,17 @@ namespace VLCNP.Combat.EnemyAction
             if (isDone) return;
             isExecuting = true;
             Vector3 position = transform.position;
-            Vector3 destinationPosition = new Vector3(position.x + moveX, position.y, position.z);
+            float _moveX = moveX;
+            if (isTowardPlayer)
+            {
+                GameObject player = GameObject.FindWithTag("Player");
+                if (player != null)
+                {
+                    // プレイヤーが左にいる場合は左に移動
+                    _moveX = player.transform.position.x < position.x ? -moveX : moveX;
+                }
+            }
+            Vector3 destinationPosition = new Vector3(position.x + _moveX, position.y, position.z);
             StartCoroutine(MoveToPosition(destinationPosition, 0, keepDirection));
         }
 

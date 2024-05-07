@@ -8031,6 +8031,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DragSword
       objectReference: {fileID: 0}
+    - target: {fileID: 4894416849360853511, guid: 40c32ada7cb1c4cf78ea069d2b25bdc9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40c32ada7cb1c4cf78ea069d2b25bdc9, type: 3}
 --- !u!1 &717152514
@@ -20778,7 +20782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3354025087016139120, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.25
+      value: 1.01
       objectReference: {fileID: 0}
     - target: {fileID: 3354025087016139120, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.y
@@ -20914,7 +20918,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8104223883752621172, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.25
+      value: 1.0100002
       objectReference: {fileID: 0}
     - target: {fileID: 8104223883752621172, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.y
@@ -20958,7 +20962,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8104223884404486430, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.25
+      value: 1.0100002
       objectReference: {fileID: 0}
     - target: {fileID: 8104223884404486430, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.y
@@ -46318,22 +46322,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTimeSecond: 1.5
-  priority: 3
---- !u!114 &1741018704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1741018690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f016e061563e486ab736b24ade2933c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 4
-  moveX: 4
-  keepDirection: 0
   priority: 1
 --- !u!114 &1741018705
 MonoBehaviour:
@@ -46348,7 +46336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTimeSecond: 1.5
-  priority: 6
+  priority: 3
 --- !u!114 &1741018706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46362,15 +46350,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
-  moveX: -4
+  moveX: 2
   keepDirection: 0
   priority: 4
+  isTowardPlayer: 1
 --- !u!4 &1741018718 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2888467994159925159, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
   m_PrefabInstance: {fileID: 1806057913}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1741018719
+--- !u!114 &1741018732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46379,29 +46368,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1741018690}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26e1b7452975c4ad6a5e255122cc8515, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e75f0a3de84f48d89c3083903bafb91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponConfig: {fileID: 11400000, guid: 4cf97282cb283458bacb86a6c0c70d0d, type: 2}
   handTransform: {fileID: 1308681305}
   animationOffsetWaitTime: 0.417
   priority: 2
---- !u!114 &1741018720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1741018690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26e1b7452975c4ad6a5e255122cc8515, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponConfig: {fileID: 11400000, guid: 4cf97282cb283458bacb86a6c0c70d0d, type: 2}
-  handTransform: {fileID: 1308681305}
-  animationOffsetWaitTime: 0.417
-  priority: 5
+  jumpPowerX: 100
+  jumpPowerY: 200
 --- !u!1001 &1741899534
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46841,6 +46816,10 @@ PrefabInstance:
     - target: {fileID: 4894416849360853510, guid: 40c32ada7cb1c4cf78ea069d2b25bdc9, type: 3}
       propertyPath: m_Name
       value: DragSword (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4894416849360853511, guid: 40c32ada7cb1c4cf78ea069d2b25bdc9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40c32ada7cb1c4cf78ea069d2b25bdc9, type: 3}
@@ -49869,6 +49848,10 @@ PrefabInstance:
     - target: {fileID: 4894416849360853510, guid: 40c32ada7cb1c4cf78ea069d2b25bdc9, type: 3}
       propertyPath: m_Name
       value: DragSword (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4894416849360853511, guid: 40c32ada7cb1c4cf78ea069d2b25bdc9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40c32ada7cb1c4cf78ea069d2b25bdc9, type: 3}
