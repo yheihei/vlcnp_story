@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace VLCNP.Combat.EnemyAction
 {
-    public class DragSwordThrow : MonoBehaviour, IEnemyAction
+    public class SwordThrow : MonoBehaviour, IEnemyAction
     {
         bool isDone = false;
         bool isExecuting = false;
