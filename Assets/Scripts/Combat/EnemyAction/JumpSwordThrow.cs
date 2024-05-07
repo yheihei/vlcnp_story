@@ -18,7 +18,7 @@ namespace VLCNP.Combat.EnemyAction
         private Animator animator;
         [SerializeField] private float jumpPowerX = 100;
         [SerializeField] private float jumpPowerY = 200;
-        private Rigidbody2D rigidbody2D;
+        private Rigidbody2D rBody;
 
         public enum Direction
         {
@@ -31,7 +31,7 @@ namespace VLCNP.Combat.EnemyAction
         private void Awake()
         {
             animator = GetComponent<Animator>();
-            rigidbody2D = GetComponent<Rigidbody2D>();
+            rBody = GetComponent<Rigidbody2D>();
         }
 
         public void Execute()
@@ -50,23 +50,25 @@ namespace VLCNP.Combat.EnemyAction
                 yield break;
             }
 
-            // プレイヤーが左にいる場合は左を向く
+            // プレイヤーの方向を向く
             GameObject player = GameObject.FindWithTag("Player");
-            if (player != null)
+            if (player == null)
             {
-                if (player.transform.position.x < transform.position.x)
-                {
-                    SetDirection(Direction.Left);
-                }
-                else
-                {
-                    SetDirection(Direction.Right);
-                }
+                isDone = true;
+                yield break;
+            }
+            if (player.transform.position.x < transform.position.x)
+            {
+                SetDirection(Direction.Left);
+            }
+            else
+            {
+                SetDirection(Direction.Right);
             }
 
-            // プレイヤーの方向に飛んでくる
-            float _jumpPowerX = direction == Direction.Left ? (-1) * jumpPowerX : jumpPowerX;
-            rigidbody2D.AddForce(new Vector2(_jumpPowerX, jumpPowerY), ForceMode2D.Impulse);
+            // プレイヤーの方向に飛ぶ
+            float _jumpPowerX = this.direction == Direction.Left ? (-1) * jumpPowerX : jumpPowerX;
+            rBody.AddForce(new Vector2(_jumpPowerX, jumpPowerY), ForceMode2D.Impulse);
 
             // 空中で剣を投げる
             if (animator != null)
@@ -78,18 +80,15 @@ namespace VLCNP.Combat.EnemyAction
             bool isLeft = transform.lossyScale.x <= 0;
 
             // handTransformの方向をPlayerの方向に向ける
-            if (player != null)
+            Vector3 playerPosition = player.transform.position;
+            Vector3 direction = playerPosition - handTransform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            // プレイヤーが右にいる場合は角度を180度回転させる
+            if (playerPosition.x > handTransform.position.x)
             {
-                Vector3 playerPosition = player.transform.position;
-                Vector3 direction = playerPosition - handTransform.position;
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                // プレイヤーが右にいる場合は角度を180度回転させる
-                if (playerPosition.x > handTransform.position.x)
-                {
-                    angle += 180;
-                }
-                handTransform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+                angle += 180;
             }
+            handTransform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
             weaponConfig.LaunchProjectile(handTransform, 1, isLeft);
             // handTransformをちょっと下に回転させながらもう一発剣を投げる
@@ -105,25 +104,19 @@ namespace VLCNP.Combat.EnemyAction
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            // GroundタグであればアニメーションをisGround=Trueに
+            if (animator == null) return;
             if (other.tag == "Ground")
             {
-                if (animator != null)
-                {
-                    animator.SetBool("isGround", true);
-                }
+                animator.SetBool("isGround", true);
             }
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            // GroundタグであればアニメーションをisGround=Falseに
+            if (animator == null) return;
             if (other.tag == "Ground")
             {
-                if (animator != null)
-                {
-                    animator.SetBool("isGround", false);
-                }
+                animator.SetBool("isGround", false);
             }
         }
 

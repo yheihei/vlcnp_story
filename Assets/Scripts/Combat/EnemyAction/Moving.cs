@@ -50,7 +50,7 @@ namespace VLCNP.Combat.EnemyAction
                 }
             }
             Vector3 destinationPosition = new Vector3(position.x + _moveX, position.y, position.z);
-            StartCoroutine(MoveToPosition(destinationPosition, 0, keepDirection));
+            StartCoroutine(MoveToPosition(destinationPosition, 4, keepDirection));
         }
 
         private IEnumerator MoveToPosition(Vector3 position, float timeout = 0, bool keepDirection = false)
