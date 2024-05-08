@@ -77,11 +77,10 @@ namespace VLCNP.Combat.EnemyAction
             }
             // animationが完了するまで待つ調整
             yield return new WaitForSeconds(animationOffsetWaitTime);
-            bool isLeft = transform.lossyScale.x <= 0;
 
             // handTransformの方向をPlayerの方向に向ける
             Vector3 playerPosition = player.transform.position;
-            Vector3 direction = playerPosition - handTransform.position;
+            Vector3 direction = handTransform.position - playerPosition;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             // プレイヤーが右にいる場合は角度を180度回転させる
             if (playerPosition.x > handTransform.position.x)
@@ -90,6 +89,7 @@ namespace VLCNP.Combat.EnemyAction
             }
             handTransform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
+            bool isLeft = transform.lossyScale.x > 0;
             weaponConfig.LaunchProjectile(handTransform, 1, isLeft);
             // handTransformをちょっと下に回転させながらもう一発剣を投げる
             handTransform.Rotate(0, 0, 20);

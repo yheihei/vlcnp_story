@@ -17,6 +17,13 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField] private uint priority = 1;
         public uint Priority { get => priority; }
         private Animator animator;
+        public enum Direction
+        {
+            Left,
+            Right
+        }
+
+        Direction direction = Direction.Left;
 
         private void Awake()
         {
@@ -38,6 +45,21 @@ namespace VLCNP.Combat.EnemyAction
                 isDone = true;
                 yield break;
             }
+            // プレイヤーの方向を向く
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player == null)
+            {
+                isDone = true;
+                yield break;
+            }
+            if (player.transform.position.x < transform.position.x)
+            {
+                SetDirection(Direction.Left);
+            }
+            else
+            {
+                SetDirection(Direction.Right);
+            }
             // animatorの、"throw"トリガーを発動する
             if (animator != null)
             {
@@ -48,6 +70,24 @@ namespace VLCNP.Combat.EnemyAction
             bool isLeft = transform.lossyScale.x > 0;
             weaponConfig.LaunchProjectile(handTransform, 1, isLeft);
             isDone = true;
+        }
+
+        public void SetDirection(Direction _direction)
+        {
+            direction = _direction;
+            UpdateCharacterDirection();
+        }
+
+        private void UpdateCharacterDirection()
+        {
+            if (direction == Direction.Left)
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else
+            {
+                transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
         }
 
         /**
