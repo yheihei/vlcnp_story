@@ -43,9 +43,12 @@ namespace VLCNP.Combat.EnemyAction
             float _moveX = moveX;
             if (isTowardPlayer)
             {
-                GameObject player = GameObject.FindWithTag("Player") ?? throw new InvalidOperationException("Player object must exist when 'isTowardPlayer' is true.");
+                GameObject player = GameObject.FindWithTag("Player");
                 // プレイヤーが左にいる場合は左に移動
-                _moveX = player.transform.position.x < position.x ? -moveX : moveX;
+                if (player != null)
+                {
+                    _moveX = player.transform.position.x < position.x ? -moveX : moveX;
+                }
             }
             Vector3 destinationPosition = new Vector3(position.x + _moveX, position.y, position.z);
             StartCoroutine(MoveToPosition(destinationPosition, 4, keepDirection));
