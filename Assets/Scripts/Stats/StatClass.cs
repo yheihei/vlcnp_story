@@ -7,5 +7,6 @@ namespace VLCNP.Stats
         VeryLongGun,
         SoftBlock,
         ShortFacedCreatureStrong,
+        InfiniteHealth,
     }
 }
