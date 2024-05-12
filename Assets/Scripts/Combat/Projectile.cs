@@ -28,6 +28,7 @@ namespace VLCNP.Combat
 
         private void Start()
         {
+            if (deleteTime < 0) return;
             Destroy(gameObject, deleteTime);
         }
 
