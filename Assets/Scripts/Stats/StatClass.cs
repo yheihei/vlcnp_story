@@ -8,5 +8,6 @@ namespace VLCNP.Stats
         SoftBlock,
         ShortFacedCreatureStrong,
         InfiniteHealth,
+        VeryLongDragQueens,
     }
 }

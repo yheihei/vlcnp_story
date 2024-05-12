@@ -5751,7 +5751,7 @@ PrefabInstance:
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: commandList.Array.data[3]
       value: 
-      objectReference: {fileID: 542368205}
+      objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: commandList.Array.data[4]
       value: 
@@ -6242,34 +6242,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &542368205
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 542368199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 10
-  indentLevel: 0
-  description: 
-  targetObject: {fileID: 1190920440}
-  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
-  targetComponentText: StoppableController
-  targetMethod: StartAll
-  targetMethodText: 'StartAll (): Void'
-  methodParameters: []
-  saveReturnValue: 0
-  returnValueVariableKey: 
-  returnValueType: System.Void
-  showInherited: 0
-  callMode: 0
 --- !u!114 &542368207
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -12375,11 +12347,6 @@ RectTransform:
   m_AnchoredPosition: {x: 8, y: 294}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1190920440 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4788655833701329706, guid: 011494565755b490386e78a113e3c871, type: 3}
-  m_PrefabInstance: {fileID: 1520025446}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1193406075
 GameObject:
   m_ObjectHideFlags: 0
@@ -20709,6 +20676,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2991888673552193157, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: m_Text
+      value: Very Long DragQueen
+      objectReference: {fileID: 0}
     - target: {fileID: 3268793722463153629, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -20732,6 +20703,10 @@ PrefabInstance:
     - target: {fileID: 4294922419682920388, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078490707200769914, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: m_Text
+      value: "\u30EF\u30BF\u30B7\u306F\u30B7\u30E2\u30FC\u30CC"
       objectReference: {fileID: 0}
     - target: {fileID: 5294167256247283844, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_FlipX
@@ -20757,6 +20732,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5830259894396933142, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5978221137929179768, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -20777,8 +20756,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7182011150244250990, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: targetCharacter
+      value: 
+      objectReference: {fileID: 1741018690}
     - target: {fileID: 7485322418744765921, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7704193000785598026, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7825771934129244278, guid: 011494565755b490386e78a113e3c871, type: 3}
@@ -21107,6 +21094,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8887748787924953009, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939489904054647222, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -46901,6 +46892,10 @@ PrefabInstance:
     - target: {fileID: 2888467994159925159, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4692607461443922713, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: statClass
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7478345028051563179, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: m_Name
