@@ -51,20 +51,7 @@ namespace VLCNP.Combat.EnemyAction
             }
 
             // プレイヤーの方向を向く
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player == null)
-            {
-                isDone = true;
-                yield break;
-            }
-            if (player.transform.position.x < transform.position.x)
-            {
-                SetDirection(Direction.Left);
-            }
-            else
-            {
-                SetDirection(Direction.Right);
-            }
+            SetDirectionToPlayer();
 
             // プレイヤーの方向に飛ぶ
             float _jumpPowerX = this.direction == Direction.Left ? (-1) * jumpPowerX : jumpPowerX;
@@ -79,6 +66,8 @@ namespace VLCNP.Combat.EnemyAction
             yield return new WaitForSeconds(animationOffsetWaitTime);
 
             // handTransformの方向をPlayerの方向に向ける
+            SetDirectionToPlayer();
+            GameObject player = GameObject.FindWithTag("Player");
             Vector3 playerPosition = player.transform.position;
             Vector3 direction = handTransform.position - playerPosition;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -100,6 +89,21 @@ namespace VLCNP.Combat.EnemyAction
             // handTransformの回転をリセット
             handTransform.rotation = Quaternion.identity;
             isDone = true;
+        }
+
+        private void SetDirectionToPlayer()
+        {
+            // プレイヤーの方向を向く
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player == null) return;
+            if (player.transform.position.x < transform.position.x)
+            {
+                SetDirection(Direction.Left);
+            }
+            else
+            {
+                SetDirection(Direction.Right);
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D other)
