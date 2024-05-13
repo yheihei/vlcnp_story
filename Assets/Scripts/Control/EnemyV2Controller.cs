@@ -6,6 +6,7 @@ public class EnemyV2Controller : MonoBehaviour
     IEnemyAction[] enemyActions;
     // 現在の行動のインデックス
     int currentActionIndex = 0;
+    Animator animator;
 
     private void Awake()
     {
@@ -13,6 +14,7 @@ public class EnemyV2Controller : MonoBehaviour
         enemyActions = GetComponents<IEnemyAction>();
         // enemyActionsをPriorityでソートする
         System.Array.Sort(enemyActions, (a, b) => (int)(a.Priority - b.Priority));
+        animator = GetComponent<Animator>();
     }
 
     // 現在の行動を取得する
@@ -47,4 +49,21 @@ public class EnemyV2Controller : MonoBehaviour
         currentAction.Reset();
         NextAction();
     }
+
+    private void OnTriggerStay2D(Collider2D other)
+        {
+            if (animator.GetBool("isGround")) return;
+            if (other.gameObject.CompareTag("Ground"))
+            {
+                animator.SetBool("isGround", true);
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.gameObject.CompareTag("Ground"))
+            {
+                animator.SetBool("isGround", false);
+            }
+        }
 }
