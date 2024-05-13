@@ -84,7 +84,7 @@ namespace VLCNP.Combat.EnemyAction
             }
             // 突撃
             Vector3 position = transform.position;
-            float _moveX = moveX;
+            float _moveX = player.transform.position.x < position.x ? (-1) * moveX : moveX;
             Vector3 destinationPosition = new Vector3(position.x + _moveX, position.y, position.z);
             yield return MoveToPosition(destinationPosition, animationOffsetWaitTime);
             // 武器を非表示
