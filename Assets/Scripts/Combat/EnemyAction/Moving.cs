@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using VLCNP.Movement;
 
 namespace VLCNP.Combat.EnemyAction
 {
@@ -15,6 +16,7 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField] bool keepDirection = false;
         [SerializeField] public uint priority = 1;
         [SerializeField] private bool isTowardPlayer = true;
+        [SerializeField] private FrontCollisionDetector frontCollisionDetector = null;
         public uint Priority { get => priority; }
 
         Rigidbody2D rbody;
@@ -77,6 +79,11 @@ namespace VLCNP.Combat.EnemyAction
                 elapsedTime += Time.deltaTime;
                 // タイムアウト値になったらループを抜ける
                 if (timeout > 0 && elapsedTime > timeout)
+                {
+                    break;
+                }
+                // 前方に障害物がある場合はループを抜ける
+                if (frontCollisionDetector != null && frontCollisionDetector.IsColliding)
                 {
                     break;
                 }

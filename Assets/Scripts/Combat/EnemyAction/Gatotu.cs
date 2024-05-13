@@ -82,8 +82,6 @@ namespace VLCNP.Combat.EnemyAction
             {
                 animator.SetTrigger("special1");
             }
-            // animationが完了するまで待つ調整
-            // yield return new WaitForSeconds(animationOffsetWaitTime);
             // 突撃
             Vector3 position = transform.position;
             float _moveX = moveX;
