@@ -37,5 +37,10 @@ namespace VLCNP.Combat.EnemyAction
             isDone = false;
             isExecuting = false;
         }
+
+        public void Stop()
+        {
+            // 何もしない
+        }
     }
 }

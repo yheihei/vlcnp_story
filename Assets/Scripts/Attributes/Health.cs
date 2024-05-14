@@ -5,21 +5,25 @@ using VLCNP.Saving;
 using VLCNP.Combat;
 using Newtonsoft.Json.Linq;
 using System;
+using VLCNP.Core;
 
 namespace VLCNP.Attributes
 {
-    public class Health : MonoBehaviour, IJsonSaveable
+    public class Health : MonoBehaviour, IJsonSaveable, IStoppable
     {
         float healthPoints = -1f;
         // 無敵時間
         [SerializeField] float invincibleTime = 3f;
         [SerializeField] GameObject deadEffect = null;
         [SerializeField] public UnityEvent<float> takeDamage;
+        [SerializeField] public UnityEvent<GameObject> dieEvent;
         public event Action onDie;
 
         bool isDead = false;
 
         public bool IsDead { get => isDead; }
+        private bool isStopped = false;
+        public bool IsStopped { get => isStopped; set => isStopped = value; }
 
         float timeSinceLastHit = Mathf.Infinity;
         SpriteRenderer playerSprite;
@@ -39,6 +43,7 @@ namespace VLCNP.Attributes
 
         public void TakeDamage(float damage)
         {
+            if (isStopped) return;
             if (isDead) return;
             if (IsInvincible()) return;
             timeSinceLastHit = 0f;
@@ -81,11 +86,22 @@ namespace VLCNP.Attributes
         private void Die()
         {
             if (isDead) return;
+            if (dieEvent.GetPersistentEventCount() > 0)
+            {
+                isDead = true;
+                dieEvent.Invoke(gameObject);
+                return;
+            }
+            DeadEffectAndDestroy();
+        }
+
+        public void DeadEffectAndDestroy()
+        {
             GameObject _deadEffect = Instantiate(deadEffect, transform.position, Quaternion.identity);
             Destroy(_deadEffect, 2f);
             isDead = true;
             onDie?.Invoke();
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
 
         public float GetHealthPoints()

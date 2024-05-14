@@ -75,6 +75,7 @@ namespace VLCNP.Combat.EnemyAction
             // プレイヤーの位置と指定のx位置が特定の値以内になるまでループ
             while (Mathf.Abs(position.x - transform.position.x) > 0.05f)
             {
+                if (isDone) break;
                 // 経過時間加算
                 elapsedTime += Time.deltaTime;
                 // タイムアウト値になったらループを抜ける
@@ -127,6 +128,11 @@ namespace VLCNP.Combat.EnemyAction
         {
             isDone = false;
             isExecuting = false;
+        }
+
+        public void Stop()
+        {
+            isDone = true;
         }
     }
 }
