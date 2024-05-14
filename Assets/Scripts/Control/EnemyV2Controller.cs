@@ -1,12 +1,16 @@
 using UnityEngine;
 using VLCNP.Combat.EnemyAction;
+using VLCNP.Core;
 
-public class EnemyV2Controller : MonoBehaviour
+public class EnemyV2Controller : MonoBehaviour, IStoppable
 {
     IEnemyAction[] enemyActions;
     // 現在の行動のインデックス
     int currentActionIndex = 0;
     Animator animator;
+
+    private bool isStopped;
+    public bool IsStopped { get => isStopped; set => isStopped = value; }
 
     private void Awake()
     {
@@ -36,8 +40,13 @@ public class EnemyV2Controller : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isStopped)
+        {
+            GetCurrentAction()?.Stop();
+            return;
+        }
         // 現在の行動を取得する
-        IEnemyAction? currentAction = GetCurrentAction();
+        IEnemyAction currentAction = GetCurrentAction();
         if (currentAction == null) return;
         // 現在の行動を実行する
         if (!currentAction.IsExecuting)
@@ -51,19 +60,19 @@ public class EnemyV2Controller : MonoBehaviour
     }
 
     private void OnTriggerStay2D(Collider2D other)
+    {
+        if (animator.GetBool("isGround")) return;
+        if (other.gameObject.CompareTag("Ground"))
         {
-            if (animator.GetBool("isGround")) return;
-            if (other.gameObject.CompareTag("Ground"))
-            {
-                animator.SetBool("isGround", true);
-            }
+            animator.SetBool("isGround", true);
         }
+    }
 
-        private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
         {
-            if (other.gameObject.CompareTag("Ground"))
-            {
-                animator.SetBool("isGround", false);
-            }
+            animator.SetBool("isGround", false);
         }
+    }
 }
