@@ -43114,6 +43114,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2888467994159925159, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
   m_PrefabInstance: {fileID: 1806057913}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1741018730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741018690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46169f07d0e254f7187cb5c24d5c2b5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 2
+  jumpPowerX: 100
+  jumpPowerY: 600
 --- !u!1 &1758944741
 GameObject:
   m_ObjectHideFlags: 0
@@ -43433,7 +43448,7 @@ PrefabInstance:
     - target: {fileID: 4496237459372193336, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 22100000, guid: 75fb8e90462c4430cab4b8dbfedb7d65, type: 2}
     - target: {fileID: 4692607461443922713, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: statClass
       value: 6
@@ -43445,6 +43460,10 @@ PrefabInstance:
     - target: {fileID: 5971951041953186551, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: m_Size.y
       value: 14.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6915549942278031112, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: m_Mass
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7478345028051563179, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: m_Name
@@ -44158,7 +44177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 542368200}
+  selectedFlowchart: {fileID: 2051503805}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
@@ -45872,7 +45891,7 @@ MonoBehaviour:
   setSayDialog: {fileID: 0}
 --- !u!114 &2051503808
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}

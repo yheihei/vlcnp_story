@@ -15,5 +15,10 @@ namespace VLCNP.UI
         {
             brain.m_DefaultBlend.m_Time = speed;
         }
+
+        public void SetDefaultBlendMode(CinemachineBlendDefinition.Style style)
+        {
+            brain.m_DefaultBlend.m_Style = style;
+        }
     }
 }
