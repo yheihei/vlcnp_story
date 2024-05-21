@@ -55,10 +55,10 @@ namespace VLCNP.Movie
             rbody.AddForce(new Vector2(0, _jumpPower), ForceMode2D.Impulse);
         }
 
-        public void Defeated()
+        public void Defeated(float rotation = 90)
         {
-            // z軸を90度回転
-            transform.Rotate(new Vector3(0, 0, 90));
+            // デフォルトはうつ伏せ
+            transform.Rotate(new Vector3(0, 0, rotation));
         }
 
         public void SetDirection(Direction direction)
@@ -125,6 +125,24 @@ namespace VLCNP.Movie
             UpdateMoveSpeed(0);
         }
 
+        // 震える
+        public void Shake(float duration = 1, float magnitude = 0.1f)
+        {
+            StartCoroutine(ShakeCoroutine(duration, magnitude));
+        }
+
+        private IEnumerator ShakeCoroutine(float duration, float magnitude)
+        {
+            Vector3 originalPosition = transform.position;
+            float elapsedTime = 0;
+            while (elapsedTime < duration)
+            {
+                transform.position = originalPosition + new Vector3(UnityEngine.Random.Range(-1f, 1f) * magnitude, UnityEngine.Random.Range(-1f, 1f) * magnitude, 0);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            transform.position = originalPosition;
+        }
         private void UpdateMoveSpeed(float _vx)
         {
             vx = _vx;
