@@ -28,8 +28,10 @@ namespace VLCNP.Attributes
         float timeSinceLastHit = Mathf.Infinity;
         SpriteRenderer playerSprite;
         TakeDamageSe takeDamageSe;
+        [SerializeField] AudioClip zeroDamageSe = null;
         // ダメージを受けたときにふっとばすかどうか
         [SerializeField] bool isBlowAway = false;
+        [SerializeField] float guardPower = 0f;
 
         private void Awake() {
             healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
@@ -47,9 +49,18 @@ namespace VLCNP.Attributes
             if (isDead) return;
             if (IsInvincible()) return;
             timeSinceLastHit = 0f;
-            healthPoints = Mathf.Max(healthPoints - damage, 0);
+            float _damage = damage - guardPower;
+            if (_damage <= 0)
+            {
+                AudioSource audioSource = GetComponent<AudioSource>();
+                audioSource.clip = zeroDamageSe;
+                audioSource.Play();
+                takeDamage?.Invoke(_damage);
+                return;
+            }
+            healthPoints = Mathf.Max(healthPoints - _damage, 0);
             takeDamageSe?.Play();
-            takeDamage.Invoke(damage);
+            takeDamage.Invoke(_damage);
             if (healthPoints == 0) {
                 Die();
             } else {
