@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VLCNP.Combat;
 using VLCNP.Stats;
 
 namespace VLCNP.Core
@@ -28,6 +29,9 @@ namespace VLCNP.Core
             public float boxCollider2DYOffset;
             public float handTransformY;
             public float legTransformY;
+            public Vector3 positionWhenHorizontal = new(-0.903f, -0.365f, 0f);
+            public Vector3 positionWhenUp = new(-0.7f, 0.1f, 0f);
+            public Vector3 positionWhenDown = new(-0.7f, -0.515f, 0f);
         }
 
         Animator animator;
@@ -67,7 +71,16 @@ namespace VLCNP.Core
             Transform hand = transform.Find("Hand");
             if (hand != null)
             {
-                hand.localPosition = new Vector3(hand.localPosition.x, colliderPerLevel.handTransformY, hand.localPosition.z);
+                Fighter fighter = GetComponent<Fighter>();
+                if (fighter != null && fighter.CanVerticalShot)
+                {
+                    fighter.positionWhenHorizontal = colliderPerLevel.positionWhenHorizontal;
+                    fighter.positionWhenUp = colliderPerLevel.positionWhenUp;
+                    fighter.positionWhenDown = colliderPerLevel.positionWhenDown;
+                } else
+                {
+                    hand.localPosition = new Vector3(hand.localPosition.x, colliderPerLevel.handTransformY, hand.localPosition.z);
+                }
             }
             Transform leg = transform.Find("Leg");
             if (leg != null)
