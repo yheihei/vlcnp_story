@@ -54,6 +54,7 @@ namespace VLCNP.Attributes
             {
                 AudioSource audioSource = GetComponent<AudioSource>();
                 audioSource.clip = zeroDamageSe;
+                audioSource.volume = 2.5f;
                 audioSource.Play();
                 takeDamage?.Invoke(_damage);
                 return;
