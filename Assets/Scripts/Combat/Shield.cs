@@ -21,13 +21,18 @@ namespace VLCNP.Combat
             if (other.CompareTag("Projectile"))
             {
                 Projectile projectile = other.GetComponent<Projectile>();
-                if (projectile != null && projectile.IsStucking) return;
+                if (ShouldIgnoreProjectile(projectile)) return;
                 if (blockSe != null && audioSource != null)
                 {
                     audioSource.PlayOneShot(blockSe, 2.0f);
                 }
                 Destroy(other.gameObject);
             }
+        }
+
+        private bool ShouldIgnoreProjectile(Projectile projectile)
+        {
+            return projectile != null && projectile.IsStucking;
         }
     }
 }
