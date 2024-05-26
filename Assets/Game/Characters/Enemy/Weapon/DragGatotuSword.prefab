@@ -14,13 +14,13 @@ GameObject:
   - component: {fileID: 6712739649862518249}
   - component: {fileID: 6681721375802533251}
   - component: {fileID: 8416096458542660136}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DragGatotuSword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1180218100251120259
 Transform:
   m_ObjectHideFlags: 0
@@ -32,7 +32,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.45, y: 1.45, z: 1.45}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 1601702290}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
@@ -254,3 +255,65 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!1001 &4061005686845863416
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1180218100251120259}
+    m_Modifications:
+    - target: {fileID: 4061005685653109865, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_Name
+      value: Shield
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+--- !u!4 &1601702290 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4061005685653109866, guid: 66e43fb79bc5a4cc589cf17efcf13821, type: 3}
+  m_PrefabInstance: {fileID: 4061005686845863416}
+  m_PrefabAsset: {fileID: 0}

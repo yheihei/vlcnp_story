@@ -22,6 +22,7 @@ namespace VLCNP.Combat
         [Header("地面に刺さるかどうか")]
         [SerializeField] bool isStuckInGround = false;
         private bool isStucking = false;
+        public bool IsStucking { get => isStucking; }
         List<GameObject> penetratedObjects = new List<GameObject>();
         float damage = 0;
         private ParticleSystem particle;

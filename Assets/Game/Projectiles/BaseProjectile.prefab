@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -7971230929530673329}
   m_Layer: 0
   m_Name: BaseProjectile
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,6 +154,7 @@ MonoBehaviour:
   deleteTime: 0.18
   targetTagName: Enemy
   IsPenetration: 0
+  isStuckInGround: 0
 --- !u!198 &6153180613368391677
 ParticleSystem:
   m_ObjectHideFlags: 0
