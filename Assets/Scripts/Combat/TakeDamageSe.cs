@@ -20,11 +20,11 @@ namespace VLCNP.Combat
 
         public void Play()
         {
+            if (audioSource == null) return;
+            if (audioClip == null) return;
             audioSource.clip = audioClip;
             audioSource.volume = volume;
             audioSource.pitch = pitch;
-            if (audioSource == null) return;
-            if (audioClip == null) return;
             audioSource.Play();
         }
     }    
