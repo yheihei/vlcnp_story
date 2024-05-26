@@ -16,15 +16,15 @@ namespace VLCNP.Combat
         void Awake()
         {
             audioSource = GetComponent<AudioSource>();
-            audioSource.clip = audioClip;
-            audioSource.volume = volume;
-            audioSource.pitch = pitch;
         }
 
         public void Play()
         {
             if (audioSource == null) return;
             if (audioClip == null) return;
+            audioSource.clip = audioClip;
+            audioSource.volume = volume;
+            audioSource.pitch = pitch;
             audioSource.Play();
         }
     }    

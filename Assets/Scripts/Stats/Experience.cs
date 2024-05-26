@@ -9,6 +9,8 @@ namespace VLCNP.Stats
     {
         [SerializeField] float experiencePoints = 0;
         [SerializeField] float loseExperienceModifier = 2f;
+        AudioSource audioSource;
+        [SerializeField] AudioClip getSeSound = null;
         // public delegate void ExperienceGainedDelegate();
         public event Action onExperienceGained;
         public event Action onExperienceLost;
@@ -16,6 +18,7 @@ namespace VLCNP.Stats
 
         private void Awake() {
             baseStats = GetComponent<BaseStats>();
+            audioSource = GetComponent<AudioSource>();
         }
 
         public float GetExperiencePoints()
@@ -27,6 +30,10 @@ namespace VLCNP.Stats
         {
             if (baseStats.isReachedMaxLevel()) return;
             experiencePoints += experience;
+            if (audioSource != null && getSeSound != null)
+            {
+                audioSource.PlayOneShot(getSeSound);
+            }
             onExperienceGained();
         }
 
@@ -40,7 +47,6 @@ namespace VLCNP.Stats
         public void SetExperiencePoints(float experience)
         {
             experiencePoints = experience;
-            // onExperienceGained();  // レベルの再計算
             // 通知対象があれば通知する
             if (onExperienceGained != null) onExperienceGained();
         }

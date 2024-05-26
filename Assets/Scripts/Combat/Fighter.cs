@@ -14,12 +14,13 @@ namespace VLCNP.Combat
         [SerializeField] WeaponConfig directAttackWeaponConfig = null;
         [SerializeField] Transform handTransform = null;
         [SerializeField] bool canVerticalShot = true;
+        public bool CanVerticalShot { get => canVerticalShot; }
 
         WeaponConfig currentWeaponConfig;
         BaseStats baseStats;
-        Vector3 positionWhenHorizontal = new(-0.903f, -0.365f, 0f);
-        Vector3 positionWhenUp = new(-0.7f, 0.1f, 0f);
-        Vector3 positionWhenDown = new(-0.7f, -0.515f, 0f);
+        public Vector3 positionWhenHorizontal = new(-0.903f, -0.365f, 0f);
+        public Vector3 positionWhenUp = new(-0.7f, 0.1f, 0f);
+        public Vector3 positionWhenDown = new(-0.7f, -0.515f, 0f);
 
         protected void Awake() {
             EquipWeapon(defaultWeaponConfig);
