@@ -174,6 +174,12 @@ namespace VLCNP.Control
             currentPlayer.transform.Find("Hand").gameObject.SetActive(isVisible);
         }
 
+        public void SetTempInvincible(bool value)
+        {
+            Health health = currentPlayer.GetComponent<Health>();
+            if (health != null) health.IsTempInvincible = value;
+        }
+
         [System.Serializable]
         struct StatusSaveData
         {
