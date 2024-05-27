@@ -73,8 +73,20 @@ namespace VLCNP.Combat
                 penetratedObjects.Add(other.gameObject);
                 Health health = other.gameObject.GetComponent<Health>();
                 if (health != null) health.TakeDamage(damage);
-                if (!IsPenetration) Destroy(gameObject);
+                if (!IsPenetration) ImpactAndDestory();
             }
+        }
+
+        public void ImpactAndDestory()
+        {
+            if (hitEffect != null)
+            {
+                // 90度回転させてからちょっと横にずらしてエフェクトを生成
+                Vector3 _position = new(transform.position.x + (isLeft? -0.2f: 0.2f), transform.position.y, transform.position.z);
+                GameObject effect = Instantiate(hitEffect, _position, Quaternion.Euler(0, 0, isLeft ? -90: 90));
+                Destroy(effect, 1);
+            }
+            Destroy(gameObject);
         }
 
         private IEnumerator StuckInGround()

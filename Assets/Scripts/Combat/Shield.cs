@@ -26,7 +26,7 @@ namespace VLCNP.Combat
                 {
                     audioSource.PlayOneShot(blockSe, 2.0f);
                 }
-                Destroy(other.gameObject);
+                projectile.ImpactAndDestory();
             }
         }
 
