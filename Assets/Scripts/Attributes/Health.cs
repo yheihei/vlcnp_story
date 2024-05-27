@@ -19,6 +19,10 @@ namespace VLCNP.Attributes
         [SerializeField] public UnityEvent<GameObject> dieEvent;
         public event Action onDie;
 
+        // 一時的な無敵状態かどうか
+        private bool isTempInvincible = false;
+        public bool IsTempInvincible { get => isTempInvincible; set => isTempInvincible = value; }
+
         bool isDead = false;
 
         public bool IsDead { get => isDead; }
@@ -45,6 +49,7 @@ namespace VLCNP.Attributes
 
         public void TakeDamage(float damage)
         {
+            if (isTempInvincible) return;
             if (isStopped) return;
             if (isDead) return;
             if (IsInvincible()) return;

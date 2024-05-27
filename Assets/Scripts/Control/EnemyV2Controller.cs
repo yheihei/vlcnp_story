@@ -75,4 +75,14 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
             animator.SetBool("isGround", false);
         }
     }
+
+    public void Stop()
+    {
+        isStopped = true;
+    }
+
+    public void Resume()
+    {
+        isStopped = false;
+    }
 }

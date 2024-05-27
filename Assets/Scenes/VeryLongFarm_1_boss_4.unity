@@ -37390,9 +37390,9 @@ GameObject:
   - component: {fileID: 2051503809}
   - component: {fileID: 2051503808}
   - component: {fileID: 2051503810}
-  - component: {fileID: 2051503812}
   - component: {fileID: 2051503811}
   - component: {fileID: 2051503813}
+  - component: {fileID: 2051503814}
   m_Layer: 0
   m_Name: DragDefeated
   m_TagString: Untagged
@@ -37415,14 +37415,31 @@ MonoBehaviour:
   itemId: 1
   indentLevel: 0
   description: 
-  targetObject: {fileID: 1184132074}
-  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetObject: {fileID: 1057294262}
+  targetComponentAssemblyName: VLCNP.Control.PartyCongroller, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
-  targetComponentText: StoppableController
-  targetMethod: StopAll
-  targetMethodText: 'StopAll (): Void'
-  methodParameters: []
+  targetComponentText: PartyCongroller
+  targetMethod: SetTempInvincible
+  targetMethodText: 'SetTempInvincible (Boolean): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Boolean
+      intValue: 0
+      boolValue: 1
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
   saveReturnValue: 0
   returnValueVariableKey: 
   returnValueType: System.Void
@@ -37443,7 +37460,7 @@ MonoBehaviour:
   nodeRect:
     serializedVersion: 2
     x: 66
-    y: 70
+    y: 71
     width: 88
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
@@ -37453,12 +37470,12 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 2051503814}
+  - {fileID: 2051503803}
   - {fileID: 2051503810}
   - {fileID: 2051503808}
-  - {fileID: 2051503803}
   - {fileID: 2051503809}
   - {fileID: 2051503807}
-  - {fileID: 2051503812}
   - {fileID: 2051503811}
   - {fileID: 2051503813}
   suppressAllAutoSelections: 0
@@ -37489,7 +37506,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 2051503804}
   selectedCommands:
-  - {fileID: 2051503813}
+  - {fileID: 2051503814}
   variables: []
   description: 
   stepPause: 0
@@ -37688,27 +37705,9 @@ MonoBehaviour:
   returnValueType: System.Void
   showInherited: 0
   callMode: 0
---- !u!114 &2051503812
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2051503802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3315ad2ebb85443909a1203d56d9344e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 6
-  indentLevel: 0
-  _duration:
-    floatRef: {fileID: 0}
-    floatVal: 1.5
-  durationOLD: 0
 --- !u!114 &2051503813
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -37728,6 +37727,34 @@ MonoBehaviour:
   targetComponentText: TransitionEvent
   targetMethod: ExecuteTransition
   targetMethodText: 'ExecuteTransition (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &2051503814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051503802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 9
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1741018690}
+  targetComponentAssemblyName: EnemyV2Controller, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: EnemyV2Controller
+  targetMethod: Stop
+  targetMethodText: 'Stop (): Void'
   methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 
