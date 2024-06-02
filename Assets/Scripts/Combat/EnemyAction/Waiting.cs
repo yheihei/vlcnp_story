@@ -14,6 +14,12 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField] float waitTimeSecond = 3f;
         [SerializeField] public uint priority = 1;
         public uint Priority { get => priority; }
+        DamageStun damageStun;
+
+        private void Awake()
+        {
+            damageStun = GetComponent<DamageStun>();
+        }
 
         public void Execute()
         {
@@ -25,6 +31,7 @@ namespace VLCNP.Combat.EnemyAction
 
         private IEnumerator Wait()
         {
+            damageStun.ValidStan();
             yield return new WaitForSeconds(waitTimeSecond);
             isDone = true;
         }

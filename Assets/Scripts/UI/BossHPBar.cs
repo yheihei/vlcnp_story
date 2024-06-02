@@ -21,7 +21,11 @@ namespace VLCNP.UI
 
         void LateUpdate()
         {
-            if (targetCharacter == null) return;
+            if (targetCharacter == null)
+            {
+                slider.value = 0;
+                return;
+            }
             float hitPoints = targetCharacter.GetComponent<Health>().GetHealthPoints();
             slider.value = (float) hitPoints / (float) baseStats.GetStat(Stat.Health);
         }

@@ -26,6 +26,8 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField] GameObject weaponPrefab = null;
         float vx = 0;
 
+        DamageStun damageStun;
+
         public enum Direction
         {
             Left,
@@ -38,6 +40,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             rbody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
+            damageStun = GetComponent<DamageStun>();
         }
 
         public void Execute()
@@ -82,14 +85,21 @@ namespace VLCNP.Combat.EnemyAction
             {
                 animator.SetTrigger("special1");
             }
+            damageStun.InvalidStan();
             // 突撃
             Vector3 position = transform.position;
+            if (player == null)
+            {
+                isDone = true;
+                yield break;
+            }
             float _moveX = player.transform.position.x < position.x ? (-1) * moveX : moveX;
             Vector3 destinationPosition = new Vector3(position.x + _moveX, position.y, position.z);
             yield return MoveToPosition(destinationPosition, animationOffsetWaitTime);
             // 武器を非表示
             weaponPrefab.SetActive(false);
             isDone = true;
+            damageStun.ValidStan();
         }
 
         private IEnumerator MoveToPosition(Vector3 position, float timeout = 0)

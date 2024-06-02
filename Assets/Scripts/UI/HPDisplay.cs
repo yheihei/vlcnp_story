@@ -17,6 +17,11 @@ namespace VLCNP.UI
 
         void LateUpdate()
         {
+            if (player == null)
+            {
+                text.text = "0";
+                return;
+            }
             float currentHP = player.GetComponent<Health>().GetHealthPoints();
             text.text = $"{currentHP}";
         }
