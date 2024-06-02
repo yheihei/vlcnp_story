@@ -21,6 +21,8 @@ namespace VLCNP.SceneManagement
         [SerializeField] float fadeInTime = 1f;
         [SerializeField] string autoSaveFileName = "autoSave";
         [SerializeField] bool isAutoSave = true;
+        [Header("移動先のシーンでリトライするか")]
+        [SerializeField] bool isRetryOnDestination = false;
 
         private AudioSource BGM;
         private AreaBGM areaBGM;
@@ -76,6 +78,12 @@ namespace VLCNP.SceneManagement
             print("fade in start");
             yield return fader.FadeIn(fadeInTime);
             print("fade in end");
+
+            if (isRetryOnDestination)
+            {
+                // 遷移先でリトライする場合は遷移後のシーンでオートセーブ
+                savingWrapper.AutoSave();
+            }
 
             Destroy(gameObject);
         }
