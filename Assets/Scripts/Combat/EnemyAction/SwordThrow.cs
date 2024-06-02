@@ -17,6 +17,7 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField] private uint priority = 1;
         public uint Priority { get => priority; }
         private Animator animator;
+        DamageStun damageStun;
         public enum Direction
         {
             Left,
@@ -28,6 +29,7 @@ namespace VLCNP.Combat.EnemyAction
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            damageStun = GetComponent<DamageStun>();
         }
 
         public void Execute()
@@ -45,6 +47,7 @@ namespace VLCNP.Combat.EnemyAction
                 isDone = true;
                 yield break;
             }
+            damageStun.InvalidStan();
             // プレイヤーの方向を向く
             GameObject player = GameObject.FindWithTag("Player");
             if (player == null)
@@ -70,6 +73,7 @@ namespace VLCNP.Combat.EnemyAction
             bool isLeft = transform.lossyScale.x > 0;
             weaponConfig.LaunchProjectile(handTransform, 1, isLeft);
             isDone = true;
+            damageStun.ValidStan();
         }
 
         public void SetDirection(Direction _direction)

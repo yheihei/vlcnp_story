@@ -7,12 +7,23 @@ namespace VLCNP.Combat
     public class DamageStun : MonoBehaviour
     {
         // Stunの持続時間や強さなどのパラメータを設定可能に
-        public float stunDuration = 0.2f;
-        public float shakeAmount = 0.1f;
+        public float stunDuration = 0.025f;
+        public float shakeAmount = 0.2f;
 
         private bool isStunned = false;
         private bool invalidStun = false;
         private float stunTimer;
+        private Rigidbody2D rb;
+        private Vector3 originalVelocity;
+
+        private void Start()
+        {
+            rb = GetComponent<Rigidbody2D>();
+            if (rb == null)
+            {
+                Debug.LogError("Rigidbodyが見つかりません");
+            }
+        }
 
         // Stun関数を外部からコールできるように公開
         public void Stun()
@@ -21,6 +32,7 @@ namespace VLCNP.Combat
             {
                 isStunned = true;
                 stunTimer = stunDuration;
+                originalVelocity = rb.velocity; // 現在の速度を保存
                 StartCoroutine(Shake()); // ブルブル効果開始
             }
         }
@@ -43,12 +55,12 @@ namespace VLCNP.Combat
             while (stunTimer > 0 && !invalidStun)
             {
                 transform.position = originalPosition + Random.insideUnitSphere * shakeAmount;
-
                 stunTimer -= Time.deltaTime;
                 yield return null; // 1フレーム待つ
             }
 
-            // transform.position = originalPosition; // 元の位置に戻す
+            transform.position = originalPosition; // 元の位置に戻す
+            rb.velocity = originalVelocity; // 保存した速度を復元
             isStunned = false;
         }
     }

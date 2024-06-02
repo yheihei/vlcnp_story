@@ -19,6 +19,7 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField] private float jumpPowerX = 100;
         [SerializeField] private float jumpPowerY = 200;
         private Rigidbody2D rBody;
+        DamageStun damageStun;
 
         public enum Direction
         {
@@ -32,6 +33,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             animator = GetComponent<Animator>();
             rBody = GetComponent<Rigidbody2D>();
+            damageStun = GetComponent<DamageStun>();
         }
 
         public void Execute()
@@ -49,6 +51,8 @@ namespace VLCNP.Combat.EnemyAction
                 isDone = true;
                 yield break;
             }
+
+            damageStun.InvalidStan();
 
             // プレイヤーの方向を向く
             SetDirectionToPlayer();
@@ -68,6 +72,11 @@ namespace VLCNP.Combat.EnemyAction
             // handTransformの方向をPlayerの方向に向ける
             SetDirectionToPlayer();
             GameObject player = GameObject.FindWithTag("Player");
+            if (player == null)
+            {
+                isDone = true;
+                yield break;
+            }
             Vector3 playerPosition = player.transform.position;
             Vector3 direction = handTransform.position - playerPosition;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -89,6 +98,7 @@ namespace VLCNP.Combat.EnemyAction
             // handTransformの回転をリセット
             handTransform.rotation = Quaternion.identity;
             isDone = true;
+            damageStun.ValidStan();
         }
 
         private void SetDirectionToPlayer()

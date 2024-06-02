@@ -36,11 +36,13 @@ namespace VLCNP.Attributes
         // ダメージを受けたときにふっとばすかどうか
         [SerializeField] bool isBlowAway = false;
         [SerializeField] float guardPower = 0f;
+        private DamageStun damageStun = null;
 
         private void Awake() {
             healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
             playerSprite = GetComponent<SpriteRenderer>();
             takeDamageSe = GetComponent<TakeDamageSe>();
+            damageStun = GetComponent<DamageStun>();
         }
 
         private void Update() {
@@ -65,6 +67,7 @@ namespace VLCNP.Attributes
             healthPoints = Mathf.Max(healthPoints - _damage, 0);
             takeDamageSe?.Play();
             takeDamage.Invoke(_damage);
+            if (damageStun != null) damageStun.Stun();
             if (healthPoints == 0) {
                 Die();
             } else {
