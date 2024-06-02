@@ -15,6 +15,11 @@ namespace VLCNP.SceneManagement
             GetComponent<JsonSavingSystem>().Save(fileName);
         }
 
+        public void AutoSave()
+        {
+            GetComponent<JsonSavingSystem>().Save(JsonSavingSystem.AUTO_SAVE_FILE_NAME);
+        }
+
         public void LoadOnlyState(string fileName = defaultSaveFile)
         {
             print($"Loading: {fileName}");

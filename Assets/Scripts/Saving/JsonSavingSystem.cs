@@ -10,6 +10,7 @@ namespace VLCNP.Saving
 {
     public class JsonSavingSystem : MonoBehaviour
     {
+        static public string AUTO_SAVE_FILE_NAME = "autoSave";
         private const string extension = ".json";
         
         /// <summary>
