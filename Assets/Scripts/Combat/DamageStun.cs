@@ -53,7 +53,7 @@ namespace VLCNP.Combat
 
             // stanFrameフレームだけブルブルさせる
             float _stanFrame = stanFrame;
-            for (int i = 0; i <= _stanFrame; i++)
+            for (int i = 0; i <= _stanFrame && !invalidStun; i++)
             {
                 // _stanFrameが奇数のときは-1x * shakeAmount、偶数のときは1x * shakeAmount
                 transform.position = new Vector3(originalPosition.x + (i % 2 == 0 ? 1 : -1) * shakeAmount, originalPosition.y, originalPosition.z);
