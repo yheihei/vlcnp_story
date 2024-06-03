@@ -7,7 +7,7 @@ namespace VLCNP.Combat
     public class DamageStun : MonoBehaviour
     {
         // Stunの持続時間や強さなどのパラメータを設定可能に
-        public float stanFrame = 3f;
+        public int stanFrame = 4;
         public float shakeAmount = 0.15f;
 
         private bool isStunned = false;
@@ -52,8 +52,8 @@ namespace VLCNP.Combat
             Vector3 originalPosition = transform.position;
 
             // stanFrameフレームだけブルブルさせる
-            float _stanFrame = stanFrame;
-            for (int i = 0; i <= _stanFrame && !invalidStun; i++)
+            int _stanFrame = stanFrame;
+            for (int i = 0; i < _stanFrame && !invalidStun; i++)
             {
                 // _stanFrameが奇数のときは-1x * shakeAmount、偶数のときは1x * shakeAmount
                 transform.position = new Vector3(originalPosition.x + (i % 2 == 0 ? 1 : -1) * shakeAmount, originalPosition.y, originalPosition.z);
