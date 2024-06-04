@@ -17,6 +17,7 @@ namespace VLCNP.Movement
         [SerializeField] private Leg leg;
         private Mover mover;
         Animator animator;
+        KabeKickEffectController kabeKickEffectController;
 
         void Awake()
         {
@@ -42,6 +43,9 @@ namespace VLCNP.Movement
             mover = GetComponent<Mover>();
             playerSprite = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+            // 子コンポーネントからKabekiKickEffectControllerを取得
+            kabeKickEffectController = GetComponentInChildren<KabeKickEffectController>();
+            print(kabeKickEffectController);
         }
 
         private void PrepareDashEffect()
@@ -77,7 +81,7 @@ namespace VLCNP.Movement
 
         private void CheckDashEndCondition()
         {
-            if (isDashing && dashTimeLeft <= 0 && leg.IsGround)
+            if ((isDashing && dashTimeLeft <= 0 && leg.IsGround) || kabeKickEffectController.IsKabekick())
             {
                 SetIsDashing(false);
             }
