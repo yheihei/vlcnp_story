@@ -4,15 +4,8 @@ using UnityEngine;
 
 namespace VLCNP.Combat.EnemyAction
 {
-    public class Gatotu : MonoBehaviour, IEnemyAction
+    public class Gatotu : EnemyAction
     {
-        bool isDone = false;
-        bool isExecuting = false;
-        public bool IsDone { get => isDone; set => isDone = value; }
-        public bool IsExecuting { get => isExecuting; set => isExecuting = value; }
-
-        [SerializeField] WeaponConfig weaponConfig = null;
-        [SerializeField] Transform handTransform = null;
         [SerializeField] Transform legTransform = null;
         [SerializeField] float animationOffsetWaitTime = 0.917f;
         [SerializeField] private uint priority = 1;
@@ -43,11 +36,11 @@ namespace VLCNP.Combat.EnemyAction
             damageStun = GetComponent<DamageStun>();
         }
 
-        public void Execute()
+        public override void Execute()
         {
-            if (isExecuting) return;
-            if (isDone) return;
-            isExecuting = true;
+            if (IsExecuting) return;
+            if (IsDone) return;
+            IsExecuting = true;
             StartCoroutine(Throw());
         }
 
@@ -57,7 +50,7 @@ namespace VLCNP.Combat.EnemyAction
             GameObject player = GameObject.FindWithTag("Player");
             if (player == null)
             {
-                isDone = true;
+                IsDone = true;
                 yield break;
             }
             if (player.transform.position.x < transform.position.x)
@@ -87,10 +80,11 @@ namespace VLCNP.Combat.EnemyAction
             }
             damageStun.InvalidStan();
             // 突撃
+            player = GameObject.FindWithTag("Player");
             Vector3 position = transform.position;
             if (player == null)
             {
-                isDone = true;
+                IsDone = true;
                 yield break;
             }
             float _moveX = player.transform.position.x < position.x ? (-1) * moveX : moveX;
@@ -98,7 +92,7 @@ namespace VLCNP.Combat.EnemyAction
             yield return MoveToPosition(destinationPosition, animationOffsetWaitTime);
             // 武器を非表示
             weaponPrefab.SetActive(false);
-            isDone = true;
+            IsDone = true;
             damageStun.ValidStan();
         }
 
@@ -118,7 +112,7 @@ namespace VLCNP.Combat.EnemyAction
             // プレイヤーの位置と指定のx位置が特定の値以内になるまでループ
             while (Mathf.Abs(position.x - transform.position.x) > 0.05f)
             {
-                if (isDone)
+                if (IsDone)
                 {
                     weaponPrefab.SetActive(false);
                     animator.ResetTrigger("special1");
@@ -160,20 +154,6 @@ namespace VLCNP.Combat.EnemyAction
             {
                 transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
-        }
-
-        /**
-         * 行動実行後 再度実行可能にする
-         */
-        public void Reset()
-        {
-            isDone = false;
-            isExecuting = false;
-        }
-
-        public void Stop()
-        {
-            isDone = true;
         }
     }    
 }

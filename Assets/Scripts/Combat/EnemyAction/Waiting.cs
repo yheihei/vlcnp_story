@@ -4,16 +4,9 @@ using UnityEngine;
 
 namespace VLCNP.Combat.EnemyAction
 {
-    public class Waiting : MonoBehaviour, IEnemyAction
+    public class Waiting : EnemyAction
     {
-        bool isDone = false;
-        bool isExecuting = false;
-        public bool IsDone { get => isDone; set => isDone = value; }
-        public bool IsExecuting { get => isExecuting; set => isExecuting = value; }
-
         [SerializeField] float waitTimeSecond = 3f;
-        [SerializeField] public uint priority = 1;
-        public uint Priority { get => priority; }
         DamageStun damageStun;
 
         private void Awake()
@@ -21,11 +14,11 @@ namespace VLCNP.Combat.EnemyAction
             damageStun = GetComponent<DamageStun>();
         }
 
-        public void Execute()
+        public override void Execute()
         {
-            if (isExecuting) return;
-            if (isDone) return;
-            isExecuting = true;
+            if (IsExecuting) return;
+            if (IsDone) return;
+            IsExecuting = true;
             StartCoroutine(Wait());
         }
 
@@ -33,21 +26,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             damageStun.ValidStan();
             yield return new WaitForSeconds(waitTimeSecond);
-            isDone = true;
-        }
-
-        /**
-         * 行動実行後 再度実行可能にする
-         */
-        public void Reset()
-        {
-            isDone = false;
-            isExecuting = false;
-        }
-
-        public void Stop()
-        {
-            // 何もしない
+            IsDone = true;
         }
     }
 }

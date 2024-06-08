@@ -3,12 +3,8 @@ using UnityEngine;
 
 namespace VLCNP.Combat.EnemyAction
 {
-    public class JumpSwordThrow : MonoBehaviour, IEnemyAction
+    public class JumpSwordThrow : EnemyAction
     {
-        bool isDone = false;
-        bool isExecuting = false;
-        public bool IsDone { get => isDone; set => isDone = value; }
-        public bool IsExecuting { get => isExecuting; set => isExecuting = value; }
 
         [SerializeField] WeaponConfig weaponConfig = null;
         [SerializeField] Transform handTransform = null;
@@ -36,11 +32,11 @@ namespace VLCNP.Combat.EnemyAction
             damageStun = GetComponent<DamageStun>();
         }
 
-        public void Execute()
+        public override void Execute()
         {
-            if (isExecuting) return;
-            if (isDone) return;
-            isExecuting = true;
+            if (IsExecuting) return;
+            if (IsDone) return;
+            IsExecuting = true;
             StartCoroutine(Throw());
         }
 
@@ -48,7 +44,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             if (!weaponConfig.HasProjectile())
             {
-                isDone = true;
+                IsDone = true;
                 yield break;
             }
 
@@ -74,7 +70,7 @@ namespace VLCNP.Combat.EnemyAction
             GameObject player = GameObject.FindWithTag("Player");
             if (player == null)
             {
-                isDone = true;
+                IsDone = true;
                 yield break;
             }
             Vector3 playerPosition = player.transform.position;
@@ -97,7 +93,7 @@ namespace VLCNP.Combat.EnemyAction
             weaponConfig.LaunchProjectile(handTransform, 1, isLeft);
             // handTransformの回転をリセット
             handTransform.rotation = Quaternion.identity;
-            isDone = true;
+            IsDone = true;
             damageStun.ValidStan();
         }
 
@@ -150,20 +146,6 @@ namespace VLCNP.Combat.EnemyAction
             {
                 transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
-        }
-
-        /**
-         * 行動実行後 再度実行可能にする
-         */
-        public void Reset()
-        {
-            isDone = false;
-            isExecuting = false;
-        }
-
-        public void Stop()
-        {
-            // 何もしない
         }
     }    
 }

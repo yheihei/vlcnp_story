@@ -1,12 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Combat.EnemyAction;
 using VLCNP.Core;
 
 public class EnemyV2Controller : MonoBehaviour, IStoppable
 {
-    IEnemyAction[] enemyActions;
     // 現在の行動のインデックス
     int currentActionIndex = 0;
+    [SerializeField] public List<EnemyAction> enemyActions;
     Animator animator;
 
     private bool isStopped;
@@ -14,18 +15,14 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
 
     private void Awake()
     {
-        // IEnemyActionのインターフェースを持つコンポーネントを取得する
-        enemyActions = GetComponents<IEnemyAction>();
-        // enemyActionsをPriorityでソートする
-        System.Array.Sort(enemyActions, (a, b) => (int)(a.Priority - b.Priority));
         animator = GetComponent<Animator>();
     }
 
     // 現在の行動を取得する
-    public IEnemyAction? GetCurrentAction()
+    public EnemyAction GetCurrentAction()
     {
         // 現在の行動の配列の長さが0の場合はnullを返す
-        if (enemyActions.Length == 0) return null;
+        if (enemyActions.Count == 0) return null;
         return enemyActions[currentActionIndex];
     }
 
@@ -35,7 +32,7 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
         // 現在の行動のインデックスをインクリメントする
         currentActionIndex++;
         // 現在の行動のインデックスが行動の配列の長さ以上の場合は0に戻す
-        if (currentActionIndex >= enemyActions.Length) currentActionIndex = 0;
+        if (currentActionIndex >= enemyActions.Count) currentActionIndex = 0;
     }
 
     void FixedUpdate()

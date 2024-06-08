@@ -5,7 +5,6 @@ namespace VLCNP.Combat.EnemyAction
         public void Execute();
         public bool IsExecuting { get; set; }
         public bool IsDone { get; set; }
-        public uint Priority { get; }
         public void Stop();
         public void Reset();
     }
