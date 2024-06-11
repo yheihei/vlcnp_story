@@ -43798,7 +43798,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTimeSecond: 2
-  priority: 3
 --- !u!114 &1741018706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43811,12 +43810,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f016e061563e486ab736b24ade2933c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
-  moveX: 2
-  keepDirection: 0
-  priority: 4
+  speed: 6
+  moveX: -3
+  keepDirection: 1
   isTowardPlayer: 1
-  frontCollisionDetector: {fileID: 0}
+  frontCollisionDetector: {fileID: 1419519888}
+  moveTimeout: 2
 --- !u!4 &1741018718 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2888467994159925159, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
@@ -43837,7 +43836,6 @@ MonoBehaviour:
   weaponConfig: {fileID: 11400000, guid: 4cf97282cb283458bacb86a6c0c70d0d, type: 2}
   handTransform: {fileID: 1308681305}
   animationOffsetWaitTime: 0.417
-  priority: 2
   jumpPowerX: 140
   jumpPowerY: 180
 --- !u!114 &1741018733
@@ -43855,7 +43853,6 @@ MonoBehaviour:
   weaponConfig: {fileID: 11400000, guid: 4cf97282cb283458bacb86a6c0c70d0d, type: 2}
   handTransform: {fileID: 1308681305}
   animationOffsetWaitTime: 0.417
-  priority: 5
 --- !u!114 &1741018734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43868,11 +43865,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9717c947c0afa442a8ce0800dd50ffda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponConfig: {fileID: 0}
-  handTransform: {fileID: 1308681305}
   legTransform: {fileID: 38411677}
   animationOffsetWaitTime: 0.917
-  priority: 7
   auraEffect: {fileID: 6635891042781509351, guid: 6ebcc229d34e948359fba69a25acb870, type: 3}
   speed: 16
   moveX: 12
@@ -43889,8 +43883,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e74da9be6302743139ca0cd47f553703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTimeSecond: 1
-  priority: 3
+  waitTimeSecond: 0.7
+--- !u!114 &1741018760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741018690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c22f4d1c4e37477cbf35124059958f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  afterWaitTimeSecond: 0
 --- !u!1 &1758944741
 GameObject:
   m_ObjectHideFlags: 0
@@ -44073,7 +44079,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: enemyActions.Array.size
-      value: 2
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: enemyActions.Array.data[0]
@@ -44083,6 +44089,70 @@ PrefabInstance:
       propertyPath: enemyActions.Array.data[1]
       value: 
       objectReference: {fileID: 1741018733}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[2]
+      value: 
+      objectReference: {fileID: 1741018747}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[3]
+      value: 
+      objectReference: {fileID: 1741018733}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[4]
+      value: 
+      objectReference: {fileID: 1741018747}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[5]
+      value: 
+      objectReference: {fileID: 1741018732}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[6]
+      value: 
+      objectReference: {fileID: 1741018705}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[7]
+      value: 
+      objectReference: {fileID: 1741018734}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[8]
+      value: 
+      objectReference: {fileID: 1741018705}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[9]
+      value: 
+      objectReference: {fileID: 1741018760}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[10]
+      value: 
+      objectReference: {fileID: 1741018706}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[11]
+      value: 
+      objectReference: {fileID: 1741018733}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[12]
+      value: 
+      objectReference: {fileID: 1741018747}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[13]
+      value: 
+      objectReference: {fileID: 1741018733}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[14]
+      value: 
+      objectReference: {fileID: 1741018747}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[15]
+      value: 
+      objectReference: {fileID: 1741018733}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[16]
+      value: 
+      objectReference: {fileID: 1741018705}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[17]
+      value: 
+      objectReference: {fileID: 1741018732}
     - target: {fileID: 1841613990219188544, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: m_Layer
       value: 7

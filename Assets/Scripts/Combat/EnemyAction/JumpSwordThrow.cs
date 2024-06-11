@@ -9,8 +9,6 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField] WeaponConfig weaponConfig = null;
         [SerializeField] Transform handTransform = null;
         [SerializeField] float animationOffsetWaitTime = 0.417f;
-        [SerializeField] private uint priority = 1;
-        public uint Priority { get => priority; }
         private Animator animator;
         [SerializeField] private float jumpPowerX = 100;
         [SerializeField] private float jumpPowerY = 200;

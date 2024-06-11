@@ -5,19 +5,14 @@ using VLCNP.Movement;
 
 namespace VLCNP.Combat.EnemyAction
 {
-    public class Moving : MonoBehaviour, IEnemyAction
+    public class Moving : EnemyAction
     {
-        bool isDone = false;
-        bool isExecuting = false;
-        public bool IsDone { get => isDone; set => isDone = value; }
-        public bool IsExecuting { get => isExecuting; set => isExecuting = value; }
         [SerializeField] float speed = 4;
         [SerializeField] float moveX = 0;
         [SerializeField] bool keepDirection = false;
-        [SerializeField] public uint priority = 1;
         [SerializeField] private bool isTowardPlayer = true;
         [SerializeField] private FrontCollisionDetector frontCollisionDetector = null;
-        public uint Priority { get => priority; }
+        [SerializeField] private float moveTimeout = 4f;
 
         Rigidbody2D rbody;
         Animator animator;
@@ -36,11 +31,11 @@ namespace VLCNP.Combat.EnemyAction
             animator = GetComponent<Animator>();
         }
 
-        public void Execute()
+        public override void Execute()
         {
-            if (isExecuting) return;
-            if (isDone) return;
-            isExecuting = true;
+            if (IsExecuting) return;
+            if (IsDone) return;
+            IsExecuting = true;
             Vector3 position = transform.position;
             float _moveX = moveX;
             if (isTowardPlayer)
@@ -53,7 +48,7 @@ namespace VLCNP.Combat.EnemyAction
                 }
             }
             Vector3 destinationPosition = new Vector3(position.x + _moveX, position.y, position.z);
-            StartCoroutine(MoveToPosition(destinationPosition, 4, keepDirection));
+            StartCoroutine(MoveToPosition(destinationPosition, moveTimeout, keepDirection));
         }
 
         private IEnumerator MoveToPosition(Vector3 position, float timeout = 0, bool keepDirection = false)
@@ -75,7 +70,7 @@ namespace VLCNP.Combat.EnemyAction
             // プレイヤーの位置と指定のx位置が特定の値以内になるまでループ
             while (Mathf.Abs(position.x - transform.position.x) > 0.05f)
             {
-                if (isDone) break;
+                if (IsDone) break;
                 // 経過時間加算
                 elapsedTime += Time.deltaTime;
                 // タイムアウト値になったらループを抜ける
@@ -93,7 +88,7 @@ namespace VLCNP.Combat.EnemyAction
                 yield return null;
             }
             UpdateMoveSpeed(0);
-            isDone = true;
+            IsDone = true;
         }
 
         private void UpdateMoveSpeed(float _vx)
@@ -119,20 +114,6 @@ namespace VLCNP.Combat.EnemyAction
             {
                 transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
-        }
-
-        /**
-         * 行動実行後 再度実行可能にする
-         */
-        public void Reset()
-        {
-            isDone = false;
-            isExecuting = false;
-        }
-
-        public void Stop()
-        {
-            isDone = true;
         }
     }
 }

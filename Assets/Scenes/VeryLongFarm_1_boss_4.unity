@@ -36601,7 +36601,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTimeSecond: 1.5
-  priority: 1
 --- !u!4 &1741018718 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2888467994159925159, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
@@ -36619,7 +36618,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46169f07d0e254f7187cb5c24d5c2b5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priority: 2
   jumpPowerX: 100
   jumpPowerY: 600
 --- !u!1001 &1751367828
@@ -36711,6 +36709,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[0]
+      value: 
+      objectReference: {fileID: 1741018691}
+    - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: enemyActions.Array.data[1]
+      value: 
+      objectReference: {fileID: 1741018730}
     - target: {fileID: 1539643153073874212, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: m_Size.y
       value: 0.3

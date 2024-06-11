@@ -8,8 +8,6 @@ namespace VLCNP.Combat.EnemyAction
     {
         [SerializeField] Transform legTransform = null;
         [SerializeField] float animationOffsetWaitTime = 0.917f;
-        [SerializeField] private uint priority = 1;
-        public uint Priority { get => priority; }
         private Animator animator;
         [SerializeField] GameObject auraEffect;
         GameObject aura;
