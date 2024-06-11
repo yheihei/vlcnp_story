@@ -3,14 +3,8 @@ using UnityEngine;
 
 namespace VLCNP.Combat.EnemyAction
 {
-    public class JumpAction : MonoBehaviour, IEnemyAction
+    public class JumpAction : EnemyAction
     {
-        bool isDone = false;
-        bool isExecuting = false;
-        public bool IsDone { get => isDone; set => isDone = value; }
-        public bool IsExecuting { get => isExecuting; set => isExecuting = value; }
-        [SerializeField] private uint priority = 1;
-        public uint Priority { get => priority; }
         private Animator animator;
         [SerializeField] private float jumpPowerX = 100;
         [SerializeField] private float jumpPowerY = 200;
@@ -30,11 +24,11 @@ namespace VLCNP.Combat.EnemyAction
             rBody = GetComponent<Rigidbody2D>();
         }
 
-        public void Execute()
+        public override void Execute()
         {
-            if (isExecuting) return;
-            if (isDone) return;
-            isExecuting = true;
+            if (IsExecuting) return;
+            if (IsDone) return;
+            IsExecuting = true;
             StartCoroutine(Throw());
         }
 
@@ -51,7 +45,7 @@ namespace VLCNP.Combat.EnemyAction
             yield return new WaitForSeconds(1f);
             // 着地するまで待つ
             yield return new WaitUntil(() => animator.GetBool("isGround"));
-            isDone = true;
+            IsDone = true;
         }
 
         private void SetDirectionToPlayer()
@@ -103,20 +97,6 @@ namespace VLCNP.Combat.EnemyAction
             {
                 transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
-        }
-
-        /**
-         * 行動実行後 再度実行可能にする
-         */
-        public void Reset()
-        {
-            isDone = false;
-            isExecuting = false;
-        }
-
-        public void Stop()
-        {
-            // 何もしない
         }
     }    
 }

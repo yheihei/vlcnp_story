@@ -1,16 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace VLCNP.Combat.EnemyAction
 {
-    public class SwordThrow : EnemyAction
+    public class LookAtPlayer : EnemyAction
     {
-
-        [SerializeField] WeaponConfig weaponConfig = null;
-        [SerializeField] Transform handTransform = null;
-        [SerializeField] float animationOffsetWaitTime = 0.417f;
-        private Animator animator;
+        [SerializeField] float afterWaitTimeSecond = 1f;
         DamageStun damageStun;
         public enum Direction
         {
@@ -22,7 +18,6 @@ namespace VLCNP.Combat.EnemyAction
 
         private void Awake()
         {
-            animator = GetComponent<Animator>();
             damageStun = GetComponent<DamageStun>();
         }
 
@@ -31,17 +26,12 @@ namespace VLCNP.Combat.EnemyAction
             if (IsExecuting) return;
             if (IsDone) return;
             IsExecuting = true;
-            StartCoroutine(Throw());
+            StartCoroutine(Look());
         }
 
-        private IEnumerator Throw()
+        private IEnumerator Look()
         {
-            if (!weaponConfig.HasProjectile())
-            {
-                IsDone = true;
-                yield break;
-            }
-            damageStun.InvalidStan();
+            damageStun.ValidStan();
             // プレイヤーの方向を向く
             GameObject player = GameObject.FindWithTag("Player");
             if (player == null)
@@ -57,17 +47,8 @@ namespace VLCNP.Combat.EnemyAction
             {
                 SetDirection(Direction.Right);
             }
-            // animatorの、"throw"トリガーを発動する
-            if (animator != null)
-            {
-                animator.SetTrigger("throw");
-            }
-            // animationが完了するまで待つ調整
-            yield return new WaitForSeconds(animationOffsetWaitTime);
-            bool isLeft = transform.lossyScale.x > 0;
-            weaponConfig.LaunchProjectile(handTransform, 1, isLeft);
+            yield return new WaitForSeconds(afterWaitTimeSecond);
             IsDone = true;
-            damageStun.ValidStan();
         }
 
         public void SetDirection(Direction _direction)
@@ -87,5 +68,5 @@ namespace VLCNP.Combat.EnemyAction
                 transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
         }
-    }    
+    }
 }
