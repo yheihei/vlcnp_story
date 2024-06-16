@@ -119,7 +119,7 @@ namespace VLCNP.Attributes
             GameObject _deadEffect = Instantiate(deadEffect, transform.position, Quaternion.identity);
             Destroy(_deadEffect, 2f);
             isDead = true;
-            // onDie?.Invoke();
+            onDie?.Invoke();
             ExecuteGameOverEvent();
             Destroy(gameObject);
         }

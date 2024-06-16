@@ -122,14 +122,6 @@ namespace VLCNP.Control
             // Experience表示のプレイヤーの切り替え
             experienceBar.SetPlayerExperience(currentPlayer);
             levelDisplay.SetBaseStats(currentPlayer.GetComponent<BaseStats>());
-
-            // // キャラクターの死亡判定を今のキャラクターに引き継ぐ
-            // Health health = currentPlayer.GetComponent<Health>();
-            // gameOver = GameObject.FindWithTag("GameOver")?.GetComponent<GameOver>();
-            // if (health != null && gameOver != null)
-            // {
-            //     gameOver.SetPlayerHealth(health);
-            // }
         }
 
         private GameObject GetNextPlayer()
