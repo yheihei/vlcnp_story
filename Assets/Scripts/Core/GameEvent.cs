@@ -95,6 +95,7 @@ namespace VLCNP.Core
         {
             if (flowChart.HasExecutingBlocks()) yield break;
             isAction = false;
+            print("ExecuteBlock: " + this + ": " + blockName);
             flowChart.ExecuteBlock(blockName);
             yield return new WaitUntil(() => flowChart.HasExecutingBlocks() == false);
             // メニューが開いていたら閉じるまで待つ

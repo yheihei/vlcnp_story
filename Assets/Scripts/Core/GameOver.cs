@@ -21,10 +21,14 @@ namespace VLCNP.Core
         private AudioSource BGM;
         private AreaBGM areaBGM;
 
-        void Awake()
+        void Start()
         {
             // プレイヤーのHealthを取得する
-            playerHealth = GameObject.FindWithTag("Player").GetComponent<Health>();
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                playerHealth = player.GetComponent<Health>();
+            }
         }
 
         private void OnEnable()
@@ -90,6 +94,7 @@ namespace VLCNP.Core
 
         public void SetPlayerHealth(Health newPlayerHealth)
         {
+            if (playerHealth == null) return;
             playerHealth.onDie -= PlayerDie;
             playerHealth = newPlayerHealth;
             playerHealth.onDie += PlayerDie;

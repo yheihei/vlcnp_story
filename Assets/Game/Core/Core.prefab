@@ -42,6 +42,7 @@ Transform:
   - {fileID: 8887748787932144633}
   - {fileID: 6437678967219526246}
   - {fileID: 1081006661191094299}
+  - {fileID: 6648833863308594426}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2912,6 +2913,79 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8753753384382928815, guid: 2d9c0732d92c842fc8eeb59e7de8278a, type: 3}
   m_PrefabInstance: {fileID: 318906742877355371}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &902453670940418241
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7825771934129244278}
+    m_Modifications:
+    - target: {fileID: 5819583099654007865, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_Name
+      value: GameOver
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.3599987
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8.465
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+--- !u!114 &6648833863308594425 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5819583099654007864, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+  m_PrefabInstance: {fileID: 902453670940418241}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c00536ce1a7a940389cb3855e431470a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &6648833863308594426 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5819583099654007867, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+  m_PrefabInstance: {fileID: 902453670940418241}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1288919162676182248
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3467,6 +3541,62 @@ PrefabInstance:
     - target: {fileID: 3348034037061684999, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
       propertyPath: animationsPerLevels.Array.data[2].colliderPerLevel.positionWhenHorizontal.y
       value: -0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530063525740596824, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530063525740596824, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530063525740596824, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6648833863308594425}
+    - target: {fileID: 5530063525740596824, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530063525740596824, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Retry
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530063525740596824, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: VLCNP.Core.GameOver, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530063525740596824, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6076760948779552533, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6076760948779552533, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6076760948779552533, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6648833863308594425}
+    - target: {fileID: 6076760948779552533, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6076760948779552533, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Retry
+      objectReference: {fileID: 0}
+    - target: {fileID: 6076760948779552533, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: VLCNP.Core.GameOver, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6076760948779552533, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 9182260420820135669, guid: 9fc760469983144b28639d5bcbd0ad78, type: 3}
       propertyPath: m_Name
