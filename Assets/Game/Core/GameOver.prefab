@@ -115,12 +115,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6513501814618206521, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: selectedCommands.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6513501814618206521, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: selectedBlocks.Array.data[0]
       value: 
-      objectReference: {fileID: 5819583098943776368}
+      objectReference: {fileID: 3316237532687467464}
     - target: {fileID: 6513501814618206521, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: selectedCommands.Array.data[0]
       value: 
@@ -179,11 +179,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3316237532687467464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9135247871445395932, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
+  m_PrefabInstance: {fileID: 5819583099692050964}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243221859575530451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3d73aef2cfc4f51abf34ac00241f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4243221859575530451 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7647600566749555143, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
   m_PrefabInstance: {fileID: 5819583099692050964}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4166532167893590805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243221859575530451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 8
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 5819583099654007865}
+  targetComponentAssemblyName: VLCNP.Core.GameOver, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: GameOver
+  targetMethod: BackToTitle
+  targetMethodText: 'BackToTitle (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!114 &5819583098943776368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,34 +398,6 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
---- !u!114 &4166532167893590805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4243221859575530451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 8
-  indentLevel: 0
-  description: 
-  targetObject: {fileID: 5819583099654007865}
-  targetComponentAssemblyName: VLCNP.Core.GameOver, Assembly-CSharp, Version=0.0.0.0,
-    Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
-  targetComponentText: GameOver
-  targetMethod: BackToTitle
-  targetMethodText: 'BackToTitle (): Void'
-  methodParameters: []
-  saveReturnValue: 0
-  returnValueVariableKey: 
-  returnValueType: System.Void
-  showInherited: 0
-  callMode: 0
 --- !u!4 &7959362377202371281 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4518827965383139525, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
