@@ -422,18 +422,18 @@ namespace Fungus
                 }
 
                 // Clamp story text to left or right depending on relative position of the character image
-                if (StoryTextRectTrans.position.x < characterImage.rectTransform.position.x)
-                {
-                    StoryTextRectTrans.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 
-                        startStoryTextInset, 
-                        startStoryTextWidth - characterImage.rectTransform.rect.width);
-                }
-                else
-                {
-                    StoryTextRectTrans.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Right, 
-                        startStoryTextInset, 
-                        startStoryTextWidth - characterImage.rectTransform.rect.width);
-                }
+                // if (StoryTextRectTrans.position.x < characterImage.rectTransform.position.x)
+                // {
+                //     StoryTextRectTrans.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 
+                //         startStoryTextInset, 
+                //         startStoryTextWidth - characterImage.rectTransform.rect.width);
+                // }
+                // else
+                // {
+                //     StoryTextRectTrans.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Right, 
+                //         startStoryTextInset, 
+                //         startStoryTextWidth - characterImage.rectTransform.rect.width);
+                // }
             }
         }
 

@@ -21,31 +21,18 @@ namespace VLCNP.Core
         private AudioSource BGM;
         private AreaBGM areaBGM;
 
-        void Awake()
+        void Start()
         {
             // プレイヤーのHealthを取得する
-            playerHealth = GameObject.FindWithTag("Player").GetComponent<Health>();
-        }
-
-        private void OnEnable()
-        {
-            if (playerHealth != null)
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player != null)
             {
-                // プレイヤーの死亡Actionを監視する
-                playerHealth.onDie += PlayerDie;
+                playerHealth = player.GetComponent<Health>();
             }
         }
 
-        private void OnDisable() {
-            if (playerHealth != null)
-            {
-                playerHealth.onDie -= PlayerDie;
-            }
-        }
-
-        void PlayerDie()
+        public void Execute()
         {
-            print("GameOver");
             flowChart.ExecuteBlock("GameOver");
         }
 
@@ -88,12 +75,13 @@ namespace VLCNP.Core
             Destroy(gameObject);
         }
 
-        public void SetPlayerHealth(Health newPlayerHealth)
-        {
-            playerHealth.onDie -= PlayerDie;
-            playerHealth = newPlayerHealth;
-            playerHealth.onDie += PlayerDie;
-        }
+        // public void SetPlayerHealth(Health newPlayerHealth)
+        // {
+        //     if (playerHealth == null) return;
+        //     playerHealth.onDie -= PlayerDie;
+        //     playerHealth = newPlayerHealth;
+        //     playerHealth.onDie += PlayerDie;
+        // }
 
         private IEnumerator ChangeBGM()
         {
@@ -101,7 +89,6 @@ namespace VLCNP.Core
             BGM = GameObject.FindWithTag("BGM").GetComponent<AudioSource>();
             // エリアのBGMを取得
             areaBGM = GameObject.FindWithTag("AreaBGM").GetComponent<AreaBGM>();
-            print($"BGM: {BGM.clip.name}, areaBGM: {areaBGM.GetAudioClip().name}");
             // areaBGMがなければBGMをStop
             if (areaBGM.GetAudioClip() == null)
             {

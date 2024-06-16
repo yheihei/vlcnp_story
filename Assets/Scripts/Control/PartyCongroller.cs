@@ -31,8 +31,6 @@ namespace VLCNP.Control
         private void Awake()
         {
             SetCurrentPlayerActive();
-            // GameOverタグからGameOverを取得
-            gameOver = GameObject.FindWithTag("GameOver")?.GetComponent<GameOver>();
         }
 
         private void SetCurrentPlayerActive()
@@ -124,9 +122,6 @@ namespace VLCNP.Control
             // Experience表示のプレイヤーの切り替え
             experienceBar.SetPlayerExperience(currentPlayer);
             levelDisplay.SetBaseStats(currentPlayer.GetComponent<BaseStats>());
-
-            // キャラクターの死亡判定を今のキャラクターに引き継ぐ
-            gameOver?.SetPlayerHealth(currentPlayer.GetComponent<Health>());
         }
 
         private GameObject GetNextPlayer()

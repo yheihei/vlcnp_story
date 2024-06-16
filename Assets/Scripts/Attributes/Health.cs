@@ -18,6 +18,7 @@ namespace VLCNP.Attributes
         [SerializeField] public UnityEvent<float> takeDamage;
         [SerializeField] public UnityEvent<GameObject> dieEvent;
         public event Action onDie;
+        [SerializeField] public bool IsGameOverEventExecute = false;
 
         // 一時的な無敵状態かどうか
         private bool isTempInvincible = false;
@@ -119,7 +120,16 @@ namespace VLCNP.Attributes
             Destroy(_deadEffect, 2f);
             isDead = true;
             onDie?.Invoke();
+            ExecuteGameOverEvent();
             Destroy(gameObject);
+        }
+
+        public void ExecuteGameOverEvent()
+        {
+            if (IsGameOverEventExecute)
+            {
+                FindObjectOfType<GameOver>()?.Execute();
+            }
         }
 
         public float GetHealthPoints()
