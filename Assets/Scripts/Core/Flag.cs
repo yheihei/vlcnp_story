@@ -21,5 +21,6 @@ namespace VLCNP.Core
         MillcoFirstChated, // Millcoと初めて会話した
         HayatoFirstChated, // Hayatoと初めて会話した
         AllowToUniHouse, // ウニの家に入れるようになった
+        DragDefeated, // ドラァグクイーンを倒した
     }
 }
