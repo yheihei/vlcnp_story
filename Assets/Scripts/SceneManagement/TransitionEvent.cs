@@ -58,7 +58,7 @@ namespace VLCNP.SceneManagement
                 savingWrapper.Save(autoSaveFileName);
             }
 
-            yield return new WaitForSeconds(fadeWaitTime);
+            yield return new WaitForSeconds(fadeWaitTime/2);
 
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
             print("scene load end: " + sceneToLoad);
@@ -73,6 +73,8 @@ namespace VLCNP.SceneManagement
             TransitionSpawnPoint transitionSpawnPoint = GetTransitionSpawnPoint() ?? throw new System.Exception("Transition spawn point not found");
             print("transition spawn point found");
             UpdatePlayerPosition(transitionSpawnPoint);
+
+            yield return new WaitForSeconds(fadeWaitTime/2);
 
             fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
             print("fade in start");
