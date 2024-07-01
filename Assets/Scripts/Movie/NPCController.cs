@@ -113,7 +113,7 @@ namespace VLCNP.Movie
                 // 経過時間加算
                 elapsedTime += Time.deltaTime;
                 // タイムアウト値になったらループを抜ける
-                if (timeout > 0 && elapsedTime > timeout)
+                if (timeout != 0 && timeout > 0 && elapsedTime > timeout)
                 {
                     break;
                 }
