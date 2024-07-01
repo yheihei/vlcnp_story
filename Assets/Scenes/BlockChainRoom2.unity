@@ -22086,7 +22086,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3607630405917162472, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
       propertyPath: sceneToLoad
-      value: 17
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3607630405917162472, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
+      propertyPath: fadeWaitTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3607630405917162472, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
+      propertyPath: destinationSpawnPointName
+      value: B
       objectReference: {fileID: 0}
     - target: {fileID: 8282728329349254608, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
       propertyPath: m_RootOrder
@@ -22333,7 +22341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8608520201518773763, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_Offset.y
-      value: -0.15
+      value: -0.12
       objectReference: {fileID: 0}
     - target: {fileID: 8608520201518773763, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -22692,7 +22700,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: selectedBlocks.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: nodeRect.y
@@ -28808,6 +28816,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281108694}
   m_CullTransparentMesh: 1
+--- !u!1 &1317081770 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1564656777239395355, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 1520025446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1322568064
 GameObject:
   m_ObjectHideFlags: 0
@@ -29979,6 +29992,11 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1467589839 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8282728329349254619, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
+  m_PrefabInstance: {fileID: 781162229}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1472790132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7825771934129244278, guid: 011494565755b490386e78a113e3c871, type: 3}
@@ -36569,7 +36587,6 @@ GameObject:
   - component: {fileID: 1713043071}
   - component: {fileID: 1713043073}
   - component: {fileID: 1713043074}
-  - component: {fileID: 1713043075}
   - component: {fileID: 1713043076}
   - component: {fileID: 1713043077}
   - component: {fileID: 1713043080}
@@ -36628,6 +36645,11 @@ GameObject:
   - component: {fileID: 1713043135}
   - component: {fileID: 1713043136}
   - component: {fileID: 1713043137}
+  - component: {fileID: 1713043138}
+  - component: {fileID: 1713043139}
+  - component: {fileID: 1713043140}
+  - component: {fileID: 1713043141}
+  - component: {fileID: 1713043142}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -36662,7 +36684,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1713042973}
   selectedCommands:
-  - {fileID: 1713043136}
+  - {fileID: 1713043142}
   variables: []
   description: 
   stepPause: 0
@@ -36822,7 +36844,7 @@ MonoBehaviour:
   - {fileID: 1713043070}
   - {fileID: 1713043071}
   - {fileID: 1713043072}
-  - {fileID: 1713043075}
+  - {fileID: 1713043140}
   - {fileID: 1713043074}
   - {fileID: 1713043073}
   - {fileID: 1713043076}
@@ -36865,6 +36887,7 @@ MonoBehaviour:
   - {fileID: 1713043113}
   - {fileID: 1713043114}
   - {fileID: 1713043123}
+  - {fileID: 1713043141}
   - {fileID: 1713043116}
   - {fileID: 1713043122}
   - {fileID: 1713043118}
@@ -36873,6 +36896,7 @@ MonoBehaviour:
   - {fileID: 1713043120}
   - {fileID: 1713043119}
   - {fileID: 1713043124}
+  - {fileID: 1713043142}
   - {fileID: 1713043125}
   - {fileID: 1713043131}
   - {fileID: 1713043130}
@@ -36880,9 +36904,11 @@ MonoBehaviour:
   - {fileID: 1713043135}
   - {fileID: 1713043127}
   - {fileID: 1713043126}
+  - {fileID: 1713043138}
   - {fileID: 1713043132}
   - {fileID: 1713043136}
   - {fileID: 1713043137}
+  - {fileID: 1713043139}
   suppressAllAutoSelections: 0
 --- !u!114 &1713042974
 MonoBehaviour:
@@ -37710,7 +37736,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 32
   indentLevel: 0
-  storyText: "\u30D9\u30EA\u30FC\u30ED\u30F3\u30B0\u738B\u56FD\u306E\n\u5171\u540C\u5275\u8A2D\u8005\u3067\u3059\u304B\u3089\u306D\u301C"
+  storyText: "\u30D9\u30EA\u30FC\u30ED\u30F3\u30B0\u738B\u56FD\u306E\n\u5171\u540C\u5275\u8A2D\u8005\u3058\u3083\u306A\u3044\u3067\u3059\u304B\u301C"
   description: 
   character: {fileID: 1899817988}
   portrait: {fileID: 21300000, guid: d3e8b16ee7a0b42f89ce74bf74c67e83, type: 3}
@@ -37737,7 +37763,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 31
   indentLevel: 0
-  storyText: "\u3048\u3048 \u77E5\u3063\u3066\u308B\u3082\u4F55\u3082\n\u3042\u306A\u305F\u304C\u305F\u306F"
+  storyText: "\u3048\u3048 \u305D\u308A\u3083\u305D\u3046\u3067\u3059\u3088\n\u77E5\u3063\u3066\u308B\u3082\u4F55\u3082
+    \u3042\u306A\u305F\u304C\u305F\u306F"
   description: 
   character: {fileID: 1899817988}
   portrait: {fileID: 21300000, guid: d3e8b16ee7a0b42f89ce74bf74c67e83, type: 3}
@@ -37937,7 +37964,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 39
   indentLevel: 0
-  storyText: "\u3044\u3084\u3042 \u65B0\u3057\u3044\u30D6\u30ED\u30C3\u30AF\u3092\u898B\u3066\u304F\u3060\u3055\u3044\u3088\u301C\n\u3061\u3087\u3046\u3069\u3042\u306A\u305F\u9054\u306E\u3053\u3068\u304C\u66F8\u304B\u308C\u3066\u3044\u308B\u3093\u3067\u3059\u3088\u301C"
+  storyText: "\u307B\u3089\u307B\u3089 \u65B0\u3057\u3044\u30D6\u30ED\u30C3\u30AF\u3092\u898B\u3066\u304F\u3060\u3055\u3044\u3088\u301C\n\u3061\u3087\u3046\u3069
+    \u3042\u306A\u305F\u304C\u305F\u306E\u3053\u3068\u304C\u66F8\u304B\u308C\u3066\u3044\u308B\u3093\u3067\u3059\u3088\u301C"
   description: 
   character: {fileID: 1899817988}
   portrait: {fileID: 21300000, guid: d3e8b16ee7a0b42f89ce74bf74c67e83, type: 3}
@@ -38279,8 +38307,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 48
   indentLevel: 0
-  storyText: "\u30D6\u30ED\u30C3\u30AF\u30C1\u30A7\u30FC\u30F3\u306E\u6B74\u53F2\u306B\n\u523B\u307E\u308C\u305F\u3042\u306A\u305F\u305F\u3061\u304C
-    \n\u4ECA \u76EE\u306E\u524D\u306B\u3044\u308B..."
+  storyText: "\u30D6\u30ED\u30C3\u30AF\u30C1\u30A7\u30FC\u30F3\u306E\u6B74\u53F2\u306B\n\u523B\u307E\u308C\u305F\u4EBA\u7269\u304C
+    \u76EE\u306E\u524D\u306B\u3044\u308B..."
   description: 
   character: {fileID: 1899817988}
   portrait: {fileID: 21300000, guid: d3e8b16ee7a0b42f89ce74bf74c67e83, type: 3}
@@ -38307,7 +38335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 51
   indentLevel: 0
-  storyText: "\u30A4\u30B1\u30CF\u30E4\u3055\u3093...\u6559\u3048\u3066\u304F\u308C\n\u4E00\u4E07\u5E74\u524D\u306B
+  storyText: "\u30A4\u30B1\u30CF\u30E4\u3055\u3093...\u6559\u3048\u3066\u304F\u308C\n1\u4E07\u5E74\u524D\u306B
     \u30EF\u30B7\u3089\u306B\n\u306A\u306B\u304C\u3042\u3063\u305F\u3093\u3084\uFF1F"
   description: 
   character: {fileID: 1606274869}
@@ -38999,7 +39027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 73
   indentLevel: 0
-  storyText: "\u8B00\u53CD\u306B\u3088\u308A\nVL\u30EA\u30FC\u30EA\u30FC\u3068Akim\u304C\u5931\u811A"
+  storyText: "\u8B00\u53CD(\u3080\u307B\u3093)\u306B\u3088\u308A\nVL\u30EA\u30FC\u30EA\u30FC\u3068Akim\u304C\u5931\u811A"
   description: 
   character: {fileID: 0}
   portrait: {fileID: 0}
@@ -39162,7 +39190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 79
   indentLevel: 0
-  storyText: "\u307E\u3042\u4E00\u4E07\u5E74\u8133\u304C\u7720\u3063\u3066\u305F\u3088\u3046\u306A\u3082\u3093\u3067\u3059\u304B\u3089\u306D\u301C\n\u3044\u304F\u3089\u4F1D\u8AAC\u306ECNP\u3068\u3044\u3048\u3069\n\u8133\u306E\u30B7\u30EF\u306F\u306A\u304F\u306A\u3063\u3061\u3083\u3044\u307E\u3059\u3088\u306D\u301Cwww"
+  storyText: "\u307E\u3042 1\u4E07\u5E74\u8133\u304C \u7720\u3063\u3066\u305F\u3088\u3046\u306A\u3082\u3093\u3067\u3059\u304B\u3089\u306D\u301C\n\u3044\u304F\u3089\u4F1D\u8AAC\u306ECNP\u3068\u3044\u3048\u3069\n\u8133\u306E\u30B7\u30EF\u306F\u306A\u304F\u306A\u3063\u3061\u3083\u3044\u307E\u3059\u3088\u306D\u301Cwww"
   description: 
   character: {fileID: 1899817988}
   portrait: {fileID: 21300000, guid: d3e8b16ee7a0b42f89ce74bf74c67e83, type: 3}
@@ -39360,7 +39388,7 @@ MonoBehaviour:
   storyText: "\u5411\u3053\u3046\u306B\u3082 \u5FA9\u6D3B\u3057\u305F\u3053\u3068\u304C\n\u30D0\u30EC\u3066\u308B\u3063\u3066\u3053\u3068\u3055"
   description: 
   character: {fileID: 0}
-  portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
+  portrait: {fileID: 0}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
@@ -39458,7 +39486,7 @@ MonoBehaviour:
   indentLevel: 0
   frameCount:
     integerRef: {fileID: 0}
-    integerVal: 240
+    integerVal: 280
 --- !u!114 &1713043062
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -39717,7 +39745,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 97
   indentLevel: 0
-  storyText: "\u305D\u3057\u305F\u3089...\u3082\u3046\u304A\u3057\u307E\u3044\u3060...\n\u541B\u305F\u3061\u306B\u52A0\u62C5\u3057\u305F\u7F6A\u3067\n\u7686\u6BBA\u3057\u306B\u3055\u308C...\u3061\u3083\u3046...\uFF1F"
+  storyText: "\u305D\u3057\u305F\u3089...\u3082\u3046\u304A\u3057\u307E\u3044\u3060...\n\u541B\u305F\u3061\u306B\u52A0\u62C5\u3057\u305F\u7F6A\u3067\n\u7686\u6BBA\u3057\u306B\u3055\u308C\u3061\u3083\u3046...\uFF1F"
   description: 
   character: {fileID: 566706869}
   portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
@@ -39761,7 +39789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 98
   indentLevel: 0
-  storyText: "\u3042\u301C\u301C\u301C\u301C\u301C\u301C\u3093\u3082\u301C\u301C\u301C\u301C\u301C\n\u306A\u3093\u3067\u3053\u3046\u306A\u308B\u304B\u306A\u301C\u301C\u301C\u301C\n\u8679\u306E\u7A2E\u4F7F\u3046\u3093\u3058\u3083\u306A\u304B\u3063\u305F\u301C\u301C\u301C\u301C\u301C"
+  storyText: "\u3042\u301C\u301C\u301C\u301C\u301C\u301C\n\u306A\u3093\u3067\u3053\u3046\u306A\u308B\u304B\u306A\u301C\u301C\u301C\u301C\n\u8679\u306E\u7A2E\u306A\u3093\u304B\u4F7F\u3046\u3093\u3058\u3083\u306A\u304B\u3063\u305F\u301C\u301C\u301C\u301C\u301C"
   description: 
   character: {fileID: 566706869}
   portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
@@ -39788,7 +39816,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 100
   indentLevel: 0
-  storyText: "\u304A \u843D\u3061\u7740\u3053\u3046\u3084\n\u3044\u3056\u3068\u306A\u3063\u305F\u3089
+  storyText: "\u304A...\u843D\u3061\u7740\u3053\u3046\u3084\n\u3044\u3056\u3068\u306A\u3063\u305F\u3089
     \u30EF\u30B7\u304C"
   description: 
   character: {fileID: 1606274869}
@@ -39818,34 +39846,7 @@ MonoBehaviour:
   indentLevel: 0
   frameCount:
     integerRef: {fileID: 0}
-    integerVal: 60
---- !u!114 &1713043075
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1713042970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 102
-  indentLevel: 0
-  storyText: "\u304B\u3063\u3053\u3064\u3051\u308B\u3093\u3058\u3083\u306A\u304B\u3063\u305F\u301C\u301C\u301C\n\u3093\u3082\u301C\u301C\u301C\u301C\u301C\u301C\u301C\u301C\u301C"
-  description: 
-  character: {fileID: 566706869}
-  portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
+    integerVal: 120
 --- !u!114 &1713043076
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -40043,7 +40044,7 @@ MonoBehaviour:
   indentLevel: 0
   frameCount:
     integerRef: {fileID: 0}
-    integerVal: 60
+    integerVal: 180
 --- !u!114 &1713043084
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -40159,7 +40160,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 116
   indentLevel: 0
-  storyText: "\u3067\u3082 Akim\u304F\u3093\u3084\u30EA\u30FC\u30EA\u30FC\u3055\u3093\u306E\u5FA9\u6D3B\u3092\n\u8A00\u3044\u5F53\u3066\u3066\u308B\u306E\u3082\u4E8B\u5B9F\u3060\n\u305D\u3093\u306A\u3053\u3068\u8AB0\u3082\u77E5\u3089\u306A\u3044\u306F\u305A\u306A\u306E\u306B..."
+  storyText: "\u3067\u3082 Akim\u304F\u3093\u3084\u30EA\u30FC\u30EA\u30FC\u3055\u3093\u306E\u5FA9\u6D3B\u3092\n\u8A00\u3044\u5F53\u3066\u3066\u308B\u306E\u3082\u4E8B\u5B9F\u3060\n\u305D\u3093\u306A\u3053\u3068
+    \u307E\u3060 \u8AB0\u3082\u77E5\u3089\u306A\u3044\u306F\u305A\u306A\u306E\u306B..."
   description: 
   character: {fileID: 566706869}
   portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
@@ -40186,7 +40188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 113
   indentLevel: 0
-  storyText: "\u805E\u3044\u3066\uFF1F\n\u57FA\u672C\u7684\u306B\u50D5\u306F \u3053\u3093\u306A\u3082\u3093\u4FE1\u3058\u3061\u3083\u3044\u306A\u3044\u3093\u3060\u3051\u3069\u306D"
+  storyText: "\u805E\u3044\u3066\uFF1F\n\u57FA\u672C\u7684\u306B\u50D5\u306F \u3053\u3093\u306A\u3082\u3093\u4FE1\u3058\u3061\u3083\u3044\u306A\u3044"
   description: 
   character: {fileID: 566706869}
   portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
@@ -40448,7 +40450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 130
   indentLevel: 0
-  storyText: "\u8B00\u53CD\u306B\u3088\u308A\nVL\u30EA\u30FC\u30EA\u30FC\u3068Akim\u304C\u5931\u811A"
+  storyText: "\u8B00\u53CD(\u3080\u307B\u3093)\u306B\u3088\u308A\nVL\u30EA\u30FC\u30EA\u30FC\u3068Akim\u304C\u5931\u811A"
   description: 
   character: {fileID: 0}
   portrait: {fileID: 0}
@@ -40718,7 +40720,7 @@ MonoBehaviour:
   indentLevel: 0
   frameCount:
     integerRef: {fileID: 0}
-    integerVal: 120
+    integerVal: 180
 --- !u!114 &1713043110
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -40971,7 +40973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 147
   indentLevel: 0
-  storyText: "\u5F37\u3055\u306F\u8A18\u61B6\u3084\n\u8A18\u61B6\u304C\u53D6\u308A\u623B\u305B\u308C\u3070\n\u30EF\u30B7\u3060\u3063\u3066\u307E\u3042\u307E\u3042\u6226\u3048\u308B\u306F\u305A..."
+  storyText: "\u5F37\u3055\u306F\u8A18\u61B6\u3084 \u7D4C\u9A13\u3068\u8A00\u3063\u3066\u3082\u3048\u3048\n\u8A18\u61B6\u304C\u53D6\u308A\u623B\u305B\u308C\u3070\n\u30EF\u30B7\u3060\u3063\u3066\u307E\u3042\u307E\u3042\u6226\u3048\u308B\u306F\u305A..."
   description: 
   character: {fileID: 1606274869}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -41040,7 +41042,7 @@ MonoBehaviour:
       typeFullname: System.Single
       intValue: 0
       boolValue: 0
-      floatValue: 2
+      floatValue: 5
       stringValue: 
       colorValue: {r: 0, g: 0, b: 0, a: 0}
       gameObjectValue: {fileID: 0}
@@ -41269,7 +41271,7 @@ MonoBehaviour:
   targetGameObjectOLD: {fileID: 0}
 --- !u!114 &1713043135
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41290,7 +41292,7 @@ MonoBehaviour:
   targetGameObjectOLD: {fileID: 0}
 --- !u!114 &1713043136
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41317,7 +41319,7 @@ MonoBehaviour:
   setSayDialog: {fileID: 0}
 --- !u!114 &1713043137
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -41342,6 +41344,247 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
+--- !u!114 &1713043138
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713042970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 164
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1317081770}
+  targetComponentAssemblyName: VLCNP.Core.FlagManager, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: FlagManager
+  targetMethod: SetFlag
+  targetMethodText: 'SetFlag (Flag, Boolean): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: VLCNP.Core.Flag, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      typeFullname: VLCNP.Core.Flag
+      intValue: 20
+      boolValue: 0
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  - objValue:
+      typeAssemblyname: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Boolean
+      intValue: 0
+      boolValue: 1
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1713043139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713042970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 165
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1467589839}
+  targetComponentAssemblyName: VLCNP.SceneManagement.TransitionEvent, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: TransitionEvent
+  targetMethod: ExecuteTransition
+  targetMethodText: 'ExecuteTransition (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1713043140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713042970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 166
+  indentLevel: 0
+  storyText: "\u7121\u99C4\u306B\u304B\u3063\u3053\u3064\u3051\u305F\u308F\u301C\u301C\u301C\n\u3093\u3082\u301C\u301C\u301C\u301C\u301C\u301C\u301C\u301C"
+  description: 
+  character: {fileID: 566706869}
+  portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &1713043141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713042970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 167
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1381051591}
+  targetComponentAssemblyName: VLCNP.Movie.NPCController, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: NPCController
+  targetMethod: MoveToRelativePositionEvent
+  targetMethodText: 'MoveToRelativePositionEvent (Vector3, Single, Boolean): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      typeFullname: UnityEngine.Vector3
+      intValue: 0
+      boolValue: 0
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: -3.5, y: 0, z: 0}
+    variableKey: 
+  - objValue:
+      typeAssemblyname: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Single
+      intValue: 0
+      boolValue: 0
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  - objValue:
+      typeAssemblyname: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Boolean
+      intValue: 0
+      boolValue: 0
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1713043142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713042970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 168
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1381051591}
+  targetComponentAssemblyName: VLCNP.Movie.NPCController, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: NPCController
+  targetMethod: SetDirection
+  targetMethodText: 'SetDirection (Direction): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: VLCNP.Movie.NPCController+Direction, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      typeFullname: VLCNP.Movie.NPCController+Direction
+      intValue: 1
+      boolValue: 0
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1 &1719852333
 GameObject:
   m_ObjectHideFlags: 0
@@ -55683,8 +55926,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8608520201518773763, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 8608520201518773763, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 2.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 8608520201518773764, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
+      propertyPath: m_Offset.y
+      value: -1.28
       objectReference: {fileID: 0}
     - target: {fileID: 8608520201518773764, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -60791,7 +61042,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8608520201518773763, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_Offset.y
-      value: 0.06
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 8608520201518773763, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -60803,7 +61054,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8608520201518773764, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_Offset.y
-      value: -1.28
+      value: -1.19
       objectReference: {fileID: 0}
     - target: {fileID: 8608520201518773764, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
