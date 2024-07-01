@@ -2400,6 +2400,10 @@ GameObject:
   - component: {fileID: 1430527670}
   - component: {fileID: 1430527673}
   - component: {fileID: 1430527672}
+  - component: {fileID: 1430527674}
+  - component: {fileID: 1430527676}
+  - component: {fileID: 1430527675}
+  - component: {fileID: 1430527677}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -2434,7 +2438,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1430527644}
   selectedCommands:
-  - {fileID: 1430527661}
+  - {fileID: 1430527660}
   variables: []
   description: 
   stepPause: 0
@@ -2511,6 +2515,7 @@ MonoBehaviour:
   - {fileID: 1430527652}
   - {fileID: 1430527662}
   - {fileID: 1430527661}
+  - {fileID: 1430527677}
   - {fileID: 1430527660}
   - {fileID: 1430527659}
   - {fileID: 1430527658}
@@ -2522,6 +2527,9 @@ MonoBehaviour:
   - {fileID: 1430527665}
   - {fileID: 1430527667}
   - {fileID: 1430527666}
+  - {fileID: 1430527676}
+  - {fileID: 1430527675}
+  - {fileID: 1430527674}
   - {fileID: 1430527671}
   - {fileID: 1430527670}
   - {fileID: 1430527673}
@@ -2714,7 +2722,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 11
   indentLevel: 0
-  storyText: "\u30C9\u30E9\u30A1\u30B0\u30AF\u30A4\u30FC\u30F3\u306F\u3042\u308C\u3067\u3082\u4E00\u4E07\u5E74\u4EE5\u4E0A\u306F\n\u935B\u3048\u3066\u304D\u305F\u30EC\u30B8\u30A7\u30F3\u30C9\u7D1A\u306E\u30A2\u30CB\u30DE\u30EB"
+  storyText: "\u30C9\u30E9\u30A1\u30B0\u30AF\u30A4\u30FC\u30F3\u306F\u3042\u308C\u3067\u3082\u4E00\u4E07\u5E74\u4EE5\u4E0A\n\u751F\u304D\u3066\u304D\u305F\u30EC\u30B8\u30A7\u30F3\u30C9\u7D1A\u306E\u30A2\u30CB\u30DE\u30EB"
   description: 
   character: {fileID: 1953749611}
   portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
@@ -2968,7 +2976,7 @@ MonoBehaviour:
   indentLevel: 0
   frameCount:
     integerRef: {fileID: 0}
-    integerVal: 90
+    integerVal: 120
 --- !u!114 &1430527661
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -3120,7 +3128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 24
   indentLevel: 0
-  storyText: "\u541B\u305F\u3061\u304C1\u4E07\u5E74\u524D\u306E\u4E16\u754C\u306E\u4EBA\u3060\u3063\u3066\u306E\u306F\n\u8A8D\u3081\u3056\u308B\u3092\u5F97\u306A\u3044\u6C17\u304C\u3057\u3066\u304D\u305F"
+  storyText: "\u3042\u308C \u6012\u3089\u306A\u3044\uFF1F"
   description: 
   character: {fileID: 1953749611}
   portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
@@ -3147,7 +3155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 23
   indentLevel: 0
-  storyText: "\u306A\u3093\u3084\u3066\u30B3\u30E9\uFF1F"
+  storyText: ......
   description: 
   character: {fileID: 2025787970}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -3218,7 +3226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 26
   indentLevel: 0
-  storyText: "\u3042\u306E\u4EBA\u306A\u3089 \u541B\u305F\u3061\u306E\u3053\u3068\u304C\n\u5206\u304B\u308B\u304B\u3082\u3057\u308C\u306A\u3044"
+  storyText: "\u3042\u306E\u4EBA\u306A\u3089 \u541B\u305F\u3061\u306E\u3053\u3068\n\u4F55\u304B\u77E5\u3063\u3066\u308B\u304B\u3082\u3057\u308C\u306A\u3044"
   description: 
   character: {fileID: 1953749611}
   portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
@@ -3245,7 +3253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 25
   indentLevel: 0
-  storyText: "\u3068\u306B\u304B\u304F\u30D6\u30ED\u30C3\u30AF\u30C1\u30A7\u30FC\u30F3\u90E8\u5C4B\u306E\n\u30A4\u30B1\u30CF\u30E4\u3055\u3093\u306B\u4F1A\u3063\u3066\u307F\u3066\u304F\u308C\u308B\uFF1F"
+  storyText: "\u3068\u3044\u3046\u3053\u3068\u3067 \u30D6\u30ED\u30C3\u30AF\u30C1\u30A7\u30FC\u30F3\u90E8\u5C4B\u306E\n\u30A4\u30B1\u30CF\u30E4\u3055\u3093\u306B\u4F1A\u3063\u3066\u307F\u3066\u304F\u308C\u308B\uFF1F"
   description: 
   character: {fileID: 1953749611}
   portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
@@ -3361,6 +3369,133 @@ MonoBehaviour:
       intValue: 0
       boolValue: 1
       floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1430527674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430527641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 29
+  indentLevel: 0
+  storyText: "\u3068\u306B\u304B\u304F\n\u541B\u305F\u3061\u304C1\u4E07\u5E74\u524D\u306E\u4E16\u754C\u306E\u4EBA\u3060\u3063\u3066\u306E\u306F\n\u8A8D\u3081\u3056\u308B\u3092\u5F97\u306A\u3044\u6C17\u304C\u3057\u3066\u304D\u305F"
+  description: 
+  character: {fileID: 1953749611}
+  portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &1430527675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430527641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 31
+  indentLevel: 0
+  storyText: "(\u3084...\u300C\u5B88\u308B\u300D\u3063\u3066...\u8AB0\u3092\u3084\uFF1F\uFF1F)"
+  description: 
+  character: {fileID: 2025787970}
+  portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &1430527676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430527641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 30
+  indentLevel: 0
+  storyText: "(\u30A6\u30CB\u306E\u8A00\u3046\u901A\u308A\u3084\n\u30EF\u30B7 \u3053\u306E1\u4E07\u5E74\u306E\u9593\u306B\u304B\u306A\u308A\u5F31\u304F\u306A\u3063\u3068\u308B...\n\u3053\u3093\u306A\u3093\u3058\u3083
+    \u8AB0\u3082\u5B88\u308C\u3078\u3093\u3067...\uFF09"
+  description: 
+  character: {fileID: 2025787970}
+  portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &1430527677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430527641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 32
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1937205874}
+  targetComponentAssemblyName: VLCNP.Movie.Emotion, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: Emotion
+  targetMethod: Bikkuri
+  targetMethodText: 'Bikkuri (Single): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Single
+      intValue: 0
+      boolValue: 0
+      floatValue: 90
       stringValue: 
       colorValue: {r: 0, g: 0, b: 0, a: 0}
       gameObjectValue: {fileID: 0}
@@ -5746,6 +5881,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1937205874 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1111501092868480800, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
+  m_PrefabInstance: {fileID: 1363415568}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1953749610
 PrefabInstance:
   m_ObjectHideFlags: 0
