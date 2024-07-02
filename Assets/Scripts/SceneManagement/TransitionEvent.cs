@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using VLCNP.Control;
 using VLCNP.Core;
+using VLCNP.UI;
 
 namespace VLCNP.SceneManagement
 {
@@ -23,6 +24,8 @@ namespace VLCNP.SceneManagement
         [SerializeField] bool isAutoSave = true;
         [Header("移動先のシーンでリトライするか")]
         [SerializeField] bool isRetryOnDestination = false;
+        [Header("移動先のシーンでエリア名を表示するか")]
+        [SerializeField] bool isShowAreaName = false;
 
         private AudioSource BGM;
         private AreaBGM areaBGM;
@@ -85,6 +88,13 @@ namespace VLCNP.SceneManagement
             {
                 // 遷移先でリトライする場合は遷移後のシーンでオートセーブ
                 savingWrapper.AutoSave();
+            }
+
+            if (isShowAreaName)
+            {
+                // 遷移先でエリア名を表示する場合は遷移後のシーンでエリア名表示
+                AreaNameShow areaNameShow = GameObject.FindWithTag("AreaName").GetComponent<AreaNameShow>();
+                if (areaNameShow) areaNameShow.Show();
             }
 
             Destroy(gameObject);

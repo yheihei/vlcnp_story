@@ -22,5 +22,6 @@ namespace VLCNP.Core
         HayatoFirstChated, // Hayatoと初めて会話した
         AllowToUniHouse, // ウニの家に入れるようになった
         DragDefeated, // ドラァグクイーンを倒した
+        IkehayaBlockChainChated, // イケハヤからブロックチェーンの話を聞いた
     }
 }
