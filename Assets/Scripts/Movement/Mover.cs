@@ -74,6 +74,11 @@ namespace VLCNP.Movement
             }
         }
 
+        public IEnumerator MoveToRelativePosition(Vector3 position, float timeout = 0)
+        {
+            yield return MoveToPosition(transform.position + position, timeout);
+        }
+
         public void Stop()
         {
             vx = 0;
