@@ -7,6 +7,8 @@ using VLCNP.Core;
 using VLCNP.Saving;
 using Newtonsoft.Json.Linq;
 using System;
+using VLCNP.Movement;
+using System.Collections;
 
 namespace VLCNP.Control
 {
@@ -173,6 +175,16 @@ namespace VLCNP.Control
         {
             Health health = currentPlayer.GetComponent<Health>();
             if (health != null) health.IsTempInvincible = value;
+        }
+
+        public void MoveToRelativePosition(Vector3 position, float timeout = 0)
+        {
+            if (currentPlayer == null) return;
+            Mover mover = currentPlayer.GetComponent<Mover>();
+            if (mover != null)
+            {
+                StartCoroutine(mover.MoveToRelativePosition(position, timeout));
+            }
         }
 
         [System.Serializable]
