@@ -31,6 +31,7 @@ namespace VLCNP.Attributes
         public bool IsStopped { get => isStopped; set => isStopped = value; }
 
         float timeSinceLastHit = Mathf.Infinity;
+        public float TimeSinceLastHit { get => timeSinceLastHit; }
         SpriteRenderer playerSprite;
         TakeDamageSe takeDamageSe;
         [SerializeField] AudioClip zeroDamageSe = null;
@@ -100,6 +101,11 @@ namespace VLCNP.Attributes
         private bool IsInvincible()
         {
             return timeSinceLastHit < invincibleTime;
+        }
+
+        public void InheritInvincible(Health health)
+        {
+            timeSinceLastHit = health.TimeSinceLastHit;
         }
 
         private void Die()
