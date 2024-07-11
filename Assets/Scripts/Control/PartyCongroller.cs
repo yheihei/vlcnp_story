@@ -86,6 +86,9 @@ namespace VLCNP.Control
             GameObject previousPlayer = currentPlayer;
             Vector2 previousVelocity = previousPlayer.GetComponent<Rigidbody2D>()?.velocity ?? Vector2.zero;
             SetNextPlayerPosition(nextPlayer);
+            // 次のキャラクターに前のキャラクターの無敵状態を引き継ぐ
+            nextPlayer.GetComponent<Health>().InheritInvincible(previousPlayer.GetComponent<Health>());
+
             currentPlayer = nextPlayer;
             SetCurrentPlayerActive();
 
