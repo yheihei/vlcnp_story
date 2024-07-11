@@ -75,7 +75,7 @@ namespace VLCNP.Movement
         void Update()
         {
             // ジャンプの開始判定
-            if (IsKabekick() && Input.GetKeyUp("space") && playerRigidbody2D.velocity.y < 0)
+            if (IsKabekick() && Input.GetKeyUp("space") && playerRigidbody2D.velocity.y < -0.1)
             {
                 isJumping = true;
             }
