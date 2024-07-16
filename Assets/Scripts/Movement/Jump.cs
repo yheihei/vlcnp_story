@@ -47,8 +47,7 @@ namespace VLCNP.Movement
             {
                 if (Input.GetKeyUp("space") || jumpTime >= maxJumpTime)
                 {
-                    isJumping = false;
-                    jumpTime = 0;
+                    EndJump();
                 }
                 else if (Input.GetKey("space"))
                 {
@@ -57,8 +56,15 @@ namespace VLCNP.Movement
             }
         }
 
+        private void EndJump()
+        {
+            isJumping = false;
+            jumpTime = 0;
+        }
+
         private void OnLanded()
         {
+            EndJump();
             // 着地時にジャンプボタン押しっぱなしの場合はジャンプボタン押しっぱなしと判定
             if (Input.GetKey("space"))
             {
@@ -85,13 +91,11 @@ namespace VLCNP.Movement
             float power = jumpPower * jumpCurve.Evaluate(t);
             // 最低ジャンプ力を保証
             power = Mathf.Max(power, minJumpPower);
+            rBody.AddForce(power * Vector2.up, ForceMode2D.Impulse);
             if (t >= 1)
             {
-                isJumping = false;
-                jumpTime = 0;
+                EndJump();
             }
-
-            rBody.AddForce(power * Vector2.up, ForceMode2D.Impulse);
         }
     }
 }

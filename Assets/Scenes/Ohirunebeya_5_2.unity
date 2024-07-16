@@ -19881,19 +19881,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.34
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.34
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.34
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 17.88
+      value: 18.24
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalPosition.y
@@ -21105,6 +21105,8 @@ MonoBehaviour:
   fadeInTime: 1
   autoSaveFileName: autoSave
   isAutoSave: 1
+  isRetryOnDestination: 0
+  isShowAreaName: 0
 --- !u!1001 &495098958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22922,19 +22924,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.34
+      value: 1.16
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.34
+      value: 1.16
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.34
+      value: 1.16
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 17.88
+      value: 18.36
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalPosition.y
@@ -24192,6 +24194,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &974712889 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+  m_PrefabInstance: {fileID: 342678621}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &978350123 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1377421654631744253, guid: 1bceeb90aa135407d810bbc853af1298, type: 3}
@@ -50902,7 +50915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 296661666}
+  selectedFlowchart: {fileID: 974712889}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1

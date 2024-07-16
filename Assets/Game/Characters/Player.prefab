@@ -179,8 +179,8 @@ MonoBehaviour:
   leg: {fileID: 3487292076679122934}
   gravityWhenKabeKickMagnification: 0.2
   maxJumpTime: 0.1
-  jumpPowerX: 6
-  jumpPowerY: 8
+  jumpPowerX: 3
+  jumpPowerY: 4
 --- !u!1001 &8426694926020718296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -277,12 +277,16 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: -2641368885610136209, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: m_Mass
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -2641368885610136209, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: f988124d2532b417488b26a84a885edd, type: 2}
     - target: {fileID: -2641368885610136209, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: m_GravityScale
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1001761984920063403, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: audioClip
@@ -294,7 +298,7 @@ PrefabInstance:
       objectReference: {fileID: 3487292076679122934}
     - target: {fileID: 3902185951847420, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: speed
-      value: 6
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 3902185951847420, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: jumpPower
@@ -469,8 +473,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leg: {fileID: 3487292076679122934}
-  jumpPower: 7
-  minJumpPower: 2
+  jumpPower: 4
+  minJumpPower: 0.8
   maxJumpTime: 0.3
   jumpCurve:
     serializedVersion: 2
@@ -494,13 +498,31 @@ MonoBehaviour:
       inWeight: 1
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.053472184
-      value: 0.48838308
-      inSlope: 1.9050717
-      outSlope: 1.9050717
+      time: 0.038625382
+      value: 0.49549368
+      inSlope: 11.492857
+      outSlope: 11.492857
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.8217394
+      outWeight: 0.21093088
+    - serializedVersion: 3
+      time: 0.067497656
+      value: 0.68501043
+      inSlope: 1.9133118
+      outSlope: 1.9133118
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.7144963
+    - serializedVersion: 3
+      time: 0.12623036
+      value: 0.7692157
+      inSlope: 0.77328205
+      outSlope: 0.77328205
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
@@ -572,7 +594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a5ea89800ec54eb6b733a84647dd8da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stunDuration: 0.3
+  stunDuration: 0.2
 --- !u!114 &3981693041705620213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,7 +634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1c7208ed48d8419987408fa414a50b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashPower: 9
+  dashPower: 12
   dashDuration: 0.3
   leg: {fileID: 3487292076679122934}
 --- !u!4 &6362254506045297432 stripped

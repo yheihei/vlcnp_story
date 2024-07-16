@@ -2385,8 +2385,6 @@ GameObject:
   - component: {fileID: 1430527662}
   - component: {fileID: 1430527661}
   - component: {fileID: 1430527659}
-  - component: {fileID: 1430527658}
-  - component: {fileID: 1430527657}
   - component: {fileID: 1430527664}
   - component: {fileID: 1430527663}
   - component: {fileID: 1430527669}
@@ -2405,6 +2403,9 @@ GameObject:
   - component: {fileID: 1430527678}
   - component: {fileID: 1430527679}
   - component: {fileID: 1430527680}
+  - component: {fileID: 1430527682}
+  - component: {fileID: 1430527681}
+  - component: {fileID: 1430527683}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -2439,7 +2440,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1430527644}
   selectedCommands:
-  - {fileID: 1430527680}
+  - {fileID: 1430527683}
   variables: []
   description: 
   stepPause: 0
@@ -2519,8 +2520,9 @@ MonoBehaviour:
   - {fileID: 1430527677}
   - {fileID: 1430527679}
   - {fileID: 1430527659}
-  - {fileID: 1430527658}
-  - {fileID: 1430527657}
+  - {fileID: 1430527682}
+  - {fileID: 1430527681}
+  - {fileID: 1430527683}
   - {fileID: 1430527664}
   - {fileID: 1430527663}
   - {fileID: 1430527669}
@@ -2864,60 +2866,6 @@ MonoBehaviour:
   returnValueType: System.Void
   showInherited: 0
   callMode: 0
---- !u!114 &1430527657
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1430527641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 17
-  indentLevel: 0
-  storyText: "\uFF01\uFF1F"
-  description: 
-  character: {fileID: 691815660}
-  portrait: {fileID: 21300000, guid: 372e980baedeb428ebcacf96ca093a2d, type: 3}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
---- !u!114 &1430527658
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1430527641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 16
-  indentLevel: 0
-  storyText: "\uFF01\uFF1F"
-  description: 
-  character: {fileID: 1953749611}
-  portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
 --- !u!114 &1430527659
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -3544,7 +3492,7 @@ MonoBehaviour:
   durationOLD: 0
 --- !u!114 &1430527680
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -3559,6 +3507,80 @@ MonoBehaviour:
   _duration:
     floatRef: {fileID: 0}
     floatVal: 2
+  durationOLD: 0
+--- !u!114 &1430527681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430527641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 37
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 2008405814}
+  targetComponentAssemblyName: VLCNP.Movie.Emotion, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: Emotion
+  targetMethod: Bikkuri
+  targetMethodText: 'Bikkuri (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1430527682
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430527641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 36
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 2067067020}
+  targetComponentAssemblyName: VLCNP.Movie.Emotion, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: Emotion
+  targetMethod: Bikkuri
+  targetMethodText: 'Bikkuri (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1430527683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430527641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3315ad2ebb85443909a1203d56d9344e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 38
+  indentLevel: 0
+  _duration:
+    floatRef: {fileID: 0}
+    floatVal: 1.5
   durationOLD: 0
 --- !u!1001 &1451244154
 PrefabInstance:
@@ -6003,6 +6025,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25fb867d2049d41f597aefdd6b19f598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2008405814 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1111501092868480800, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
+  m_PrefabInstance: {fileID: 541081693}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2025787969
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6367,6 +6394,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+--- !u!1 &2067067020 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1111501092868480800, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
+  m_PrefabInstance: {fileID: 684175914}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2085749647
 PrefabInstance:
   m_ObjectHideFlags: 0
