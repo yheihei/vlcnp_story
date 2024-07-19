@@ -95,7 +95,7 @@ namespace VLCNP.Core
             if (auraEffect != null && aura == null)
             {
                 Transform leg = transform.Find("Leg");
-                aura = Instantiate(auraEffect, leg.position, Quaternion.identity, leg);
+                aura = Instantiate(auraEffect, leg.position + new Vector3(0, 0.3f, 0), Quaternion.identity, leg);
             }
             else if (auraEffect == null && aura != null)
             {

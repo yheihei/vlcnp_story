@@ -167,11 +167,11 @@ namespace VLCNP.Control
 
         public void SetVisibility(bool isVisible)
         {
-            // 今有効なmemberのSpriteRendereを表示、非表示する
-            // currentPlayer.SetActive(isVisible);
             currentPlayer.GetComponent<SpriteRenderer>().enabled = isVisible;
             // 現在のplayerのHandの状態も変えて武器も表示、非表示する
             currentPlayer.transform.Find("Hand").gameObject.SetActive(isVisible);
+            // Legも表示、非表示する
+            currentPlayer.transform.Find("Leg").gameObject.SetActive(isVisible);
         }
 
         public void SetTempInvincible(bool value)

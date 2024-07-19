@@ -30895,6 +30895,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6581716286571642637, guid: 011494565755b490386e78a113e3c871, type: 3}
   m_PrefabInstance: {fileID: 1520025446}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1520025448 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5598845851302252394, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 1520025446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1523200715
 GameObject:
   m_ObjectHideFlags: 0
@@ -36650,6 +36655,7 @@ GameObject:
   - component: {fileID: 1713043140}
   - component: {fileID: 1713043141}
   - component: {fileID: 1713043142}
+  - component: {fileID: 1713043143}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -36684,7 +36690,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1713042973}
   selectedCommands:
-  - {fileID: 1713043142}
+  - {fileID: 1713042989}
   variables: []
   description: 
   stepPause: 0
@@ -36748,6 +36754,7 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 1713042974}
   commandList:
+  - {fileID: 1713043143}
   - {fileID: 1713042989}
   - {fileID: 1713042972}
   - {fileID: 1713042977}
@@ -37283,7 +37290,7 @@ MonoBehaviour:
   indentLevel: 0
   _duration:
     floatRef: {fileID: 0}
-    floatVal: 1
+    floatVal: 3
   durationOLD: 0
 --- !u!114 &1713042990
 MonoBehaviour:
@@ -41568,6 +41575,51 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       typeFullname: VLCNP.Movie.NPCController+Direction
       intValue: 1
+      boolValue: 0
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1713043143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713042970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 169
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1520025448}
+  targetComponentAssemblyName: VLCNP.Control.PartyCongroller, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: PartyCongroller
+  targetMethod: SetVisibility
+  targetMethodText: 'SetVisibility (Boolean): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Boolean
+      intValue: 0
       boolValue: 0
       floatValue: 0
       stringValue: 
