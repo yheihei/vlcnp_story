@@ -6100,17 +6100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0bbe22c246e4c78ad8e9816cbae9d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &950787658 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 767816032636951341, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
-  m_PrefabInstance: {fileID: 1686599530}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1101510462
 GameObject:
   m_ObjectHideFlags: 0
@@ -6636,7 +6625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 950787658}
+  selectedFlowchart: {fileID: 205488427927681391}
 --- !u!4 &1571082382
 Transform:
   m_ObjectHideFlags: 1
@@ -6770,6 +6759,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edadb4021f4c844c9871fb7ca32451d2, type: 3}
+--- !u!1 &1730634793 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5598845851302252394, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 8104223883927387380}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1741152103
 GameObject:
   m_ObjectHideFlags: 0
@@ -7675,7 +7669,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 6448916648448277121}
   selectedCommands:
-  - {fileID: 6448916648448277120}
+  - {fileID: 6448916648448277122}
   variables:
   - {fileID: 2481217347253268558}
   description: 
@@ -7837,6 +7831,7 @@ GameObject:
   - component: {fileID: 6448916648448277118}
   - component: {fileID: 6448916648448277121}
   - component: {fileID: 6448916648448277120}
+  - component: {fileID: 6448916648448277122}
   m_Layer: 0
   m_Name: UniGreeting
   m_TagString: Untagged
@@ -8009,7 +8004,7 @@ MonoBehaviour:
   suppressAllAutoSelections: 0
 --- !u!114 &6448916648448277120
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -8036,7 +8031,7 @@ MonoBehaviour:
   setSayDialog: {fileID: 0}
 --- !u!114 &6448916648448277121
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -8060,7 +8055,53 @@ MonoBehaviour:
   eventHandler: {fileID: 0}
   commandList:
   - {fileID: 6448916648448277120}
+  - {fileID: 6448916648448277122}
   suppressAllAutoSelections: 0
+--- !u!114 &6448916648448277122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4880943424496289759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 22
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1730634793}
+  targetComponentAssemblyName: VLCNP.Control.PartyCongroller, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: PartyCongroller
+  targetMethod: SetVisibility
+  targetMethodText: 'SetVisibility (Boolean): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Boolean
+      intValue: 0
+      boolValue: 0
+      floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1001 &8104223883927387380
 PrefabInstance:
   m_ObjectHideFlags: 0
