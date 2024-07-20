@@ -70,6 +70,11 @@ namespace VLCNP.Movement
             {
                 isJumpButtonKeep = true;
             }
+            // 落下速度がマイナスで着地の際は落下速度を0にしてバウンドを回避
+            if (rBody.velocity.y < 0)
+            {
+                rBody.velocity = new Vector2(rBody.velocity.x, 0);
+            }
         }
 
         private void FixedUpdate()
