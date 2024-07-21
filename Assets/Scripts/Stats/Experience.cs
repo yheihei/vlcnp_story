@@ -46,9 +46,16 @@ namespace VLCNP.Stats
 
         public void SetExperiencePoints(float experience)
         {
+            float beforeExperience = experiencePoints;
             experiencePoints = experience;
-            // 通知対象があれば通知する
-            if (onExperienceGained != null) onExperienceGained();
+            if (beforeExperience < experiencePoints)
+            {
+                onExperienceGained?.Invoke();
+            }
+            else if (beforeExperience > experiencePoints)
+            {
+                onExperienceLost?.Invoke();
+            }
         }
 
         public JToken CaptureAsJToken()

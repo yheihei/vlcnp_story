@@ -30980,6 +30980,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5598845851302252394, guid: 011494565755b490386e78a113e3c871, type: 3}
   m_PrefabInstance: {fileID: 1520025446}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1520025449 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2553795758778975881, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 1520025446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1523200715
 GameObject:
   m_ObjectHideFlags: 0
@@ -36736,6 +36741,7 @@ GameObject:
   - component: {fileID: 1713043141}
   - component: {fileID: 1713043142}
   - component: {fileID: 1713043143}
+  - component: {fileID: 1713043144}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -36770,7 +36776,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1713042973}
   selectedCommands:
-  - {fileID: 1713043062}
+  - {fileID: 1713043144}
   variables: []
   description: 
   stepPause: 0
@@ -36986,6 +36992,7 @@ MonoBehaviour:
   - {fileID: 1713043142}
   - {fileID: 1713043125}
   - {fileID: 1713043131}
+  - {fileID: 1713043144}
   - {fileID: 1713043130}
   - {fileID: 1713043134}
   - {fileID: 1713043135}
@@ -41702,6 +41709,51 @@ MonoBehaviour:
       intValue: 0
       boolValue: 0
       floatValue: 0
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1713043144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713042970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 170
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1520025449}
+  targetComponentAssemblyName: VLCNP.Stats.Experience, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: Experience
+  targetMethod: SetExperiencePoints
+  targetMethodText: 'SetExperiencePoints (Single): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Single
+      intValue: 0
+      boolValue: 0
+      floatValue: 5
       stringValue: 
       colorValue: {r: 0, g: 0, b: 0, a: 0}
       gameObjectValue: {fileID: 0}
