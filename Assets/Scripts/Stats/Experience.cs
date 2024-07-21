@@ -50,11 +50,11 @@ namespace VLCNP.Stats
             experiencePoints = experience;
             if (beforeExperience < experiencePoints)
             {
-                onExperienceGained();
+                onExperienceGained?.Invoke();
             }
             else if (beforeExperience > experiencePoints)
             {
-                onExperienceLost();
+                onExperienceLost?.Invoke();
             }
         }
 
