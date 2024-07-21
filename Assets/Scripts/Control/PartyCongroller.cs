@@ -45,6 +45,12 @@ namespace VLCNP.Control
                     continue;
                 }
                 member.gameObject.SetActive(true);
+                // playerのIStoppableをすべて取得して停止状態を解除する
+                IStoppable[] stoppables = member.GetComponents<IStoppable>();
+                foreach (IStoppable stoppable in stoppables)
+                {
+                    stoppable.IsStopped = false;
+                }
             }
         }
 

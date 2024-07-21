@@ -4856,9 +4856,6 @@ MonoBehaviour:
   BlockName: Message
   flagToBlockName:
   - key: 0
-    value: Message
-    afterChatSetFlag: 0
-  - key: 4
     value: Message2
     afterChatSetFlag: 0
   TargetTag: Player
@@ -4890,7 +4887,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 2}
+  m_Size: {x: 2.62, y: 2}
   m_EdgeRadius: 0
 --- !u!114 &493445128
 MonoBehaviour:
@@ -8422,7 +8419,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7221854999727932481, guid: 88a125effb1a84db0990f6b057088a34, type: 3}
       propertyPath: m_Size.y
-      value: 5
+      value: 7.01
       objectReference: {fileID: 0}
     - target: {fileID: 7221854999727932481, guid: 88a125effb1a84db0990f6b057088a34, type: 3}
       propertyPath: m_Offset.y
@@ -8931,9 +8928,8 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 1718230621}
-  selectedCommands:
-  - {fileID: 1718230628}
+  - {fileID: 1718230624}
+  selectedCommands: []
   variables:
   - {fileID: 1718230631}
   description: 
@@ -20307,6 +20303,14 @@ PrefabInstance:
       propertyPath: InformationText
       value: "(A) \u30AD\u30E3\u30E9\u5207\u308A\u66FF\u3048"
       objectReference: {fileID: 0}
+    - target: {fileID: 976885865057812762, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: m_Size.x
+      value: 5.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 976885865057812762, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: m_Size.y
+      value: 8.44
+      objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -20325,7 +20329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.62
+      value: 0.22
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812764, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_LocalPosition.z
@@ -20481,7 +20485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 468763048}
+  selectedFlowchart: {fileID: 1718230627}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
@@ -20733,6 +20737,10 @@ PrefabInstance:
     - target: {fileID: 4530448943611155951, guid: b8548fdfaab164f03ac8dfe88baad183, type: 3}
       propertyPath: SpawnOffsetY
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4546304224683325447, guid: b8548fdfaab164f03ac8dfe88baad183, type: 3}
+      propertyPath: m_Size.y
+      value: 1.42
       objectReference: {fileID: 0}
     - target: {fileID: 7760567091349314552, guid: b8548fdfaab164f03ac8dfe88baad183, type: 3}
       propertyPath: m_Pivot.x
