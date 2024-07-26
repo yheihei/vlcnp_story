@@ -6625,7 +6625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 1814207937}
+  selectedFlowchart: {fileID: 205488427927681391}
 --- !u!4 &1571082382
 Transform:
   m_ObjectHideFlags: 1
@@ -7096,17 +7096,6 @@ PrefabInstance:
       objectReference: {fileID: 1814207939}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
---- !u!114 &1814207937 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-  m_PrefabInstance: {fileID: 1814207936}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1814207938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1814207938 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
@@ -7821,7 +7810,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 6448916648448277121}
   selectedCommands:
-  - {fileID: 6448916648448277122}
+  - {fileID: 6448916648448277120}
   variables:
   - {fileID: 2481217347253268558}
   description: 
@@ -7983,7 +7972,6 @@ GameObject:
   - component: {fileID: 6448916648448277118}
   - component: {fileID: 6448916648448277121}
   - component: {fileID: 6448916648448277120}
-  - component: {fileID: 6448916648448277122}
   m_Layer: 0
   m_Name: UniGreeting
   m_TagString: Untagged
@@ -8207,53 +8195,7 @@ MonoBehaviour:
   eventHandler: {fileID: 0}
   commandList:
   - {fileID: 6448916648448277120}
-  - {fileID: 6448916648448277122}
   suppressAllAutoSelections: 0
---- !u!114 &6448916648448277122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4880943424496289759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 22
-  indentLevel: 0
-  description: 
-  targetObject: {fileID: 1730634793}
-  targetComponentAssemblyName: VLCNP.Control.PartyCongroller, Assembly-CSharp, Version=0.0.0.0,
-    Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
-  targetComponentText: PartyCongroller
-  targetMethod: SetVisibility
-  targetMethodText: 'SetVisibility (Boolean): Void'
-  methodParameters:
-  - objValue:
-      typeAssemblyname: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      typeFullname: System.Boolean
-      intValue: 0
-      boolValue: 0
-      floatValue: 0
-      stringValue: 
-      colorValue: {r: 0, g: 0, b: 0, a: 0}
-      gameObjectValue: {fileID: 0}
-      materialValue: {fileID: 0}
-      objectValue: {fileID: 0}
-      spriteValue: {fileID: 0}
-      textureValue: {fileID: 0}
-      vector2Value: {x: 0, y: 0}
-      vector3Value: {x: 0, y: 0, z: 0}
-    variableKey: 
-  saveReturnValue: 0
-  returnValueVariableKey: 
-  returnValueType: System.Void
-  showInherited: 0
-  callMode: 0
 --- !u!1001 &8104223883927387380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8265,6 +8207,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Core
       objectReference: {fileID: 0}
+    - target: {fileID: 264078544339546727, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: m_GravityScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 441911624703048684, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: selectedCommands.Array.size
       value: 0
@@ -8275,6 +8221,10 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 496de09ec5cf641f3a755fc1e02904d2, type: 3}
     - target: {fileID: 1821389125760860029, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_IgnoreLayout
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1963697600864285482, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: m_GravityScale
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2899395037045594349, guid: 011494565755b490386e78a113e3c871, type: 3}
