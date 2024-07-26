@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VLCNP.Attributes;
 
 namespace VLCNP.Stats
 {
@@ -13,9 +14,11 @@ namespace VLCNP.Stats
         int currentHealthLevel = 1;
         Experience experience;
         public event Action<int> OnChangeLevel;
+        Health health;
 
         private void Awake() {
             experience = GetComponent<Experience>();
+            health = GetComponent<Health>();
         }
 
         private void OnEnable()
@@ -57,6 +60,12 @@ namespace VLCNP.Stats
             }
 
             return penultimateLevel + 1;
+        }
+
+        public void IncrementHealthLevel()
+        {
+            currentHealthLevel++;
+            health.SetHealthPoints(GetStat(Stat.Health));
         }
 
         public int GetMaxLevel()

@@ -171,6 +171,12 @@ namespace VLCNP.Control
             return currentPlayer;
         }
 
+        public void IncrementHealthLevel()
+        {
+            currentPlayer.GetComponent<BaseStats>().IncrementHealthLevel();
+            hpBar.SetPlayer(currentPlayer);
+        }
+
         public void SetVisibility(bool isVisible)
         {
             currentPlayer.GetComponent<SpriteRenderer>().enabled = isVisible;
