@@ -100,6 +100,8 @@ namespace VLCNP.Control
 
             // 前のキャラクターのHPを次のキャラクターに引き継ぐ
             currentPlayer.GetComponent<Health>().SetHealthPoints(previousPlayer.GetComponent<Health>().GetHealthPoints());
+            // 前のキャラクターのHealthLevelを次のキャラクターに引き継ぐ
+            currentPlayer.GetComponent<BaseStats>().SetCurrentHealthLevel(previousPlayer.GetComponent<BaseStats>().GetCurrentHealthLevel());
 
             // 前のキャラクターのExperienceを次のキャラクターに引き継ぐ
             currentPlayer.GetComponent<Experience>().SetExperiencePoints(previousPlayer.GetComponent<Experience>().GetExperiencePoints());
@@ -169,6 +171,17 @@ namespace VLCNP.Control
         public GameObject GetCurrentPlayer()
         {
             return currentPlayer;
+        }
+
+        public void IncrementHealthLevel()
+        {
+            BaseStats baseStats = currentPlayer.GetComponent<BaseStats>();
+            if (baseStats == null)
+            {
+                throw new InvalidOperationException($"BaseStats component is missing on the current player. {currentPlayer.name}");
+            }
+            baseStats.IncrementHealthLevel();
+            ChangeDisplay();
         }
 
         public void SetVisibility(bool isVisible)

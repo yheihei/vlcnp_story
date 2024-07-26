@@ -85,9 +85,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Akim
       objectReference: {fileID: 0}
+    - target: {fileID: 2277831187227911215, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+      propertyPath: jumpPower
+      value: 4.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3433531399435260855, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: m_GravityScale
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6362254506045297432, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: m_RootOrder
@@ -164,6 +168,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Leelee
       objectReference: {fileID: 0}
+    - target: {fileID: 2277831187227911215, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+      propertyPath: jumpPower
+      value: 4.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2503442020776629832, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: m_Size.x
       value: 0.7
@@ -202,7 +210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3433531399435260855, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: m_GravityScale
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3552741078913666834, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: m_Offset.x
@@ -236,6 +244,26 @@ PrefabInstance:
       propertyPath: defaultWeaponConfig
       value: 
       objectReference: {fileID: 11400000, guid: 6e0ca563693f24e31adbf49a2fd30efa, type: 2}
+    - target: {fileID: 5370116939374530394, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5370116939374530394, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5370116939374530394, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 3689157948975734859}
+    - target: {fileID: 5370116939374530394, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Stun
+      objectReference: {fileID: 0}
+    - target: {fileID: 5370116939374530394, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: VLCNP.Combat.PlayerStun, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 5760476965117826515, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.003
@@ -343,6 +371,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1699767717115717140, guid: 305b768f10cad4098b6aad1149350872, type: 3}
   m_PrefabInstance: {fileID: 2220979422394220623}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3689157948975734859 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3305647210527678468, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+  m_PrefabInstance: {fileID: 2220979422394220623}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667738633525618267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a5ea89800ec54eb6b733a84647dd8da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5087314716040614743 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6362254506045297432, guid: 305b768f10cad4098b6aad1149350872, type: 3}
