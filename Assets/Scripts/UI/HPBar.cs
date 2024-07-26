@@ -34,6 +34,8 @@ namespace VLCNP.UI
         {
             player = newPlayer;
             baseStats = player.GetComponent<BaseStats>();
+            print("newPlayer: " + newPlayer);
+            print((float) baseStats.GetStat(Stat.Health));
         }
     }
 }

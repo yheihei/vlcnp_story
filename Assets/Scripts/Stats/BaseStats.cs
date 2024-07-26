@@ -68,6 +68,16 @@ namespace VLCNP.Stats
             health.SetHealthPoints(GetStat(Stat.Health));
         }
 
+        public int GetCurrentHealthLevel()
+        {
+            return currentHealthLevel;
+        }
+
+        public void SetCurrentHealthLevel(int level)
+        {
+            currentHealthLevel = level;
+        }
+
         public int GetMaxLevel()
         {
             return progression.GetLevels(Stat.ExperienceToLevelUp, statClass) + 1;
