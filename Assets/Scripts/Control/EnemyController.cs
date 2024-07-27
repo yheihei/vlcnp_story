@@ -40,5 +40,15 @@ namespace VLCNP.Control
             if (other.gameObject.tag != attackTargetTagName) return;
             fighter.DirectAttack(other.gameObject);
         }
+
+        public void Stop()
+        {
+            isStopped = true;
+        }
+
+        public void Resume()
+        {
+            isStopped = false;
+        }
     }
 }
