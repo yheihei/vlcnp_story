@@ -18,7 +18,6 @@ namespace VLCNP.Control
         void FixedUpdate()
         {
             // y方向の落下速度がterminalAbsoluteVelocityを超えないようにする
-            if (rb.velocity.y > 0) return;
             if (rb.velocity.y < -terminalAbsoluteVelocity)
             {
                 rb.velocity = new Vector2(rb.velocity.x, -terminalAbsoluteVelocity);
