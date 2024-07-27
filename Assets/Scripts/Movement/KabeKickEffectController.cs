@@ -28,8 +28,11 @@ namespace VLCNP.Movement
         public bool IsJumping { get => isJumping; }
         [SerializeField, Min(0)] float maxJumpTime = 0.3f;
         [SerializeField, Min(0)] float jumpPowerX = 2.5f;
-        [SerializeField, Min(0)] float jumpPowerY = 8f;
+        [SerializeField, Min(0)] float jumpPowerY = 6f;
         float jumpTime = 0f;
+
+        // 壁につかまっているときのMaxのY方向の速度の絶対値 これ以上は落下速度が変わらない
+        [SerializeField, Min(0)] float maxAbsoluteVelocityY = 2f;
 
         void Awake()
         {
@@ -137,6 +140,12 @@ namespace VLCNP.Movement
             // カベキック中かつ落下中であれば重力を減らす
             playerRigidbody2D.velocity = new Vector2(0f, playerRigidbody2D.velocity.y);
             playerRigidbody2D.gravityScale = originalGravity * gravityWhenKabeKickMagnification;
+
+            // Y方向の速度はmaxAbsoluteVelocityYを超えないようにする
+            if (Mathf.Abs(playerRigidbody2D.velocity.y) > maxAbsoluteVelocityY)
+            {
+                playerRigidbody2D.velocity = new Vector2(playerRigidbody2D.velocity.x, maxAbsoluteVelocityY * Mathf.Sign(playerRigidbody2D.velocity.y));
+            }
         }
 
         bool CheckEffecting()

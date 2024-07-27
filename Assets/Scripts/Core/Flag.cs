@@ -1,5 +1,7 @@
 namespace VLCNP.Core
 {
+    // ゲームの進行状況を管理するフラグ
+    // 絶対に順番を変えないこと 既存のセーブデータが壊れる
     public enum Flag
     {
         None, // なし
