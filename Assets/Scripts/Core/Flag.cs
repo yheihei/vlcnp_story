@@ -1,5 +1,7 @@
 namespace VLCNP.Core
 {
+    // ゲームの進行状況を管理するフラグ
+    // 絶対に順番を変えないこと 既存のセーブデータが壊れる
     public enum Flag
     {
         None, // なし
@@ -23,5 +25,6 @@ namespace VLCNP.Core
         AllowToUniHouse, // ウニの家に入れるようになった
         DragDefeated, // ドラァグクイーンを倒した
         IkehayaBlockChainChated, // イケハヤからブロックチェーンの話を聞いた
+        HPUpOhirunebeyaBoss,  // お昼寝部屋のボスを倒した際のHPアップ
     }
 }
