@@ -26,5 +26,6 @@ namespace VLCNP.Core
         DragDefeated, // ドラァグクイーンを倒した
         IkehayaBlockChainChated, // イケハヤからブロックチェーンの話を聞いた
         HPUpOhirunebeyaBoss,  // お昼寝部屋のボスを倒した際のHPアップ
+        HPUpDragDefeated,  // ドラァグクイーンを倒した際のHPアップ
     }
 }
