@@ -23,5 +23,6 @@ namespace VLCNP.Core
         AllowToUniHouse, // ウニの家に入れるようになった
         DragDefeated, // ドラァグクイーンを倒した
         IkehayaBlockChainChated, // イケハヤからブロックチェーンの話を聞いた
+        HPUpOhirunebeyaBoss,  // お昼寝部屋のボスを倒した際のHPアップ
     }
 }

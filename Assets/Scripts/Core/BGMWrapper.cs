@@ -8,6 +8,9 @@ namespace VLCNP.Core
     public class BGMWrapper : MonoBehaviour
     {
         StartBGM bgm = null;
+        // 現在の音量の値からSEの音量に変換するための係数
+        float SEVolumeMultiplier = 0.2f;
+
         void Start()
         {
             // BGMのtagを持つオブジェクトを探して、そのStartBGMを取得する
@@ -46,6 +49,17 @@ namespace VLCNP.Core
         public void ChangeVolume(float volume)
         {
             bgm?.SetAudioVolume(volume);
+        }
+
+        // BGMの音量をSEを鳴らすように小さくする
+        public void MuteForSE()
+        {
+            bgm?.SetAudioVolume(bgm.GetAudioVolume() * SEVolumeMultiplier);
+        }
+
+        public void UnmuteForSE()
+        {
+            bgm?.SetAudioVolume(bgm.GetAudioVolume() / SEVolumeMultiplier);
         }
     }
 }
