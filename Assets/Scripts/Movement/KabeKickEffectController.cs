@@ -75,6 +75,13 @@ namespace VLCNP.Movement
             return isColliding;
         }
 
+        // 壁をつかんでいるかどうか
+        public bool IsGrabbing()
+        {
+            // 地面についておらず、壁に衝突し、かつ下降中であれば壁をつかんでいると判定
+            return !leg.IsGround && isColliding && playerRigidbody2D.velocity.y < 0;
+        }
+
         void Update()
         {
             // ジャンプの開始判定
