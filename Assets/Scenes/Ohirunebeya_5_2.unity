@@ -1666,6 +1666,7 @@ GameObject:
   - component: {fileID: 296661690}
   - component: {fileID: 296661693}
   - component: {fileID: 296661692}
+  - component: {fileID: 296661694}
   m_Layer: 0
   m_Name: Start
   m_TagString: Untagged
@@ -1742,6 +1743,7 @@ MonoBehaviour:
   commandList:
   - {fileID: 296661674}
   - {fileID: 296661688}
+  - {fileID: 296661694}
   - {fileID: 296661689}
   - {fileID: 296661683}
   - {fileID: 296661664}
@@ -1788,7 +1790,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 296661665}
   selectedCommands:
-  - {fileID: 296661671}
+  - {fileID: 296661694}
   variables: []
   description: 
   stepPause: 0
@@ -2642,6 +2644,26 @@ MonoBehaviour:
   returnValueType: System.Void
   showInherited: 0
   callMode: 0
+--- !u!114 &296661694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296661662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 207aecf668a0345388087ccf522f9957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 45
+  indentLevel: 0
+  duration: 1
+  targetAlpha: 0
+  waitUntilFinished: 1
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+  fadeTexture: {fileID: 0}
+  fadeTweenType: 4
 --- !u!4 &303057920 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3564026850829729314, guid: 406ae01b7bf025d478da7b57dfe1715c, type: 3}
@@ -23839,17 +23861,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2636973373209380923, guid: eea0827fa6aa34d508465f9f0e09be6d, type: 3}
   m_PrefabInstance: {fileID: 1046477418}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &884581732 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3707127513669414357, guid: eea0827fa6aa34d508465f9f0e09be6d, type: 3}
-  m_PrefabInstance: {fileID: 1046477418}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 884581731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &884581735
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -23862,7 +23873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 7
+  itemId: 12
   indentLevel: 0
   description: 
   targetObject: {fileID: 1496368074}
@@ -24579,6 +24590,10 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5774776140378079503, guid: eea0827fa6aa34d508465f9f0e09be6d, type: 3}
     - {fileID: 8435467872677940388, guid: eea0827fa6aa34d508465f9f0e09be6d, type: 3}
+    - {fileID: 35451473510383967, guid: eea0827fa6aa34d508465f9f0e09be6d, type: 3}
+    - {fileID: 65457455096503565, guid: eea0827fa6aa34d508465f9f0e09be6d, type: 3}
+    - {fileID: 1162880939234374857, guid: eea0827fa6aa34d508465f9f0e09be6d, type: 3}
+    - {fileID: 3024664525168090532, guid: eea0827fa6aa34d508465f9f0e09be6d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: eea0827fa6aa34d508465f9f0e09be6d, type: 3}
 --- !u!114 &1046477419 stripped
 MonoBehaviour:
@@ -24625,7 +24640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 5
+  itemId: 13
   indentLevel: 0
   description: 
   targetObject: {fileID: 1496368074}
@@ -24653,7 +24668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 6
+  itemId: 14
   indentLevel: 0
   description: 
   targetObject: {fileID: 1520025447}
@@ -24709,7 +24724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd2f6be51b3d7490ba5633ee095d0391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 8
+  itemId: 15
   indentLevel: 0
   soundClip: {fileID: 8300000, guid: 496de09ec5cf641f3a755fc1e02904d2, type: 3}
   volume: 1
@@ -51081,7 +51096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 884581732}
+  selectedFlowchart: {fileID: 296661666}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
