@@ -62,12 +62,6 @@ namespace VLCNP.Stats
             return penultimateLevel + 1;
         }
 
-        public void IncrementHealthLevel()
-        {
-            currentHealthLevel++;
-            health.SetHealthPoints(GetStat(Stat.Health));
-        }
-
         public int GetCurrentHealthLevel()
         {
             return currentHealthLevel;
