@@ -16395,6 +16395,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Leelee
       objectReference: {fileID: 0}
+    - target: {fileID: 8608520201518773773, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8608520201518773775, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_Material
       value: 
@@ -19475,6 +19479,10 @@ PrefabInstance:
     - target: {fileID: 8608520201518773773, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_Name
       value: Akim
+      objectReference: {fileID: 0}
+    - target: {fileID: 8608520201518773773, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8608520201518773775, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_Material
@@ -46017,6 +46025,9 @@ GameObject:
   - component: {fileID: 1795535080}
   - component: {fileID: 1795535082}
   - component: {fileID: 1795535083}
+  - component: {fileID: 1795535085}
+  - component: {fileID: 1795535084}
+  - component: {fileID: 1795535086}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -46053,6 +46064,9 @@ MonoBehaviour:
   - {fileID: 1795535058}
   - {fileID: 1795535057}
   - {fileID: 1795535052}
+  - {fileID: 1795535085}
+  - {fileID: 1795535084}
+  - {fileID: 1795535086}
   - {fileID: 1795535051}
   - {fileID: 1795535050}
   - {fileID: 1795535083}
@@ -46110,7 +46124,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1795535047}
   selectedCommands:
-  - {fileID: 1795535082}
+  - {fileID: 1795535086}
   variables: []
   description: 
   stepPause: 0
@@ -47308,6 +47322,66 @@ MonoBehaviour:
   _duration:
     floatRef: {fileID: 0}
     floatVal: 1.5
+  durationOLD: 0
+--- !u!114 &1795535084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795535046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd8c931f22994b9d90e2037fffaa770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 36
+  indentLevel: 0
+  _targetGameObject:
+    gameObjectRef: {fileID: 0}
+    gameObjectVal: {fileID: 849791836}
+  activeState:
+    booleanRef: {fileID: 0}
+    booleanVal: 1
+  targetGameObjectOLD: {fileID: 0}
+--- !u!114 &1795535085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795535046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd8c931f22994b9d90e2037fffaa770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 35
+  indentLevel: 0
+  _targetGameObject:
+    gameObjectRef: {fileID: 0}
+    gameObjectVal: {fileID: 1345163305}
+  activeState:
+    booleanRef: {fileID: 0}
+    booleanVal: 1
+  targetGameObjectOLD: {fileID: 0}
+--- !u!114 &1795535086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795535046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3315ad2ebb85443909a1203d56d9344e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 37
+  indentLevel: 0
+  _duration:
+    floatRef: {fileID: 0}
+    floatVal: 1.8
   durationOLD: 0
 --- !u!1 &1799820188
 GameObject:
