@@ -54,26 +54,6 @@ namespace VLCNP.Control
             }
         }
 
-        public void SetCurrentPlayerByName(string name = "Akim")
-        {
-
-            GameObject nextPlayer = Array.Find(members, member => member.name == name);
-            if (nextPlayer == null) return;
-            GameObject previousPlayer = currentPlayer;
-            SetNextPlayerPosition(nextPlayer);
-            currentPlayer = nextPlayer;
-            SetCurrentPlayerActive();
-
-            // 前のキャラクターのHPを次のキャラクターに引き継ぐ
-            currentPlayer.GetComponent<Health>().SetHealthPoints(previousPlayer.GetComponent<Health>().GetHealthPoints());
-
-            // 前のキャラクターのExperienceを次のキャラクターに引き継ぐ
-            currentPlayer.GetComponent<Experience>().SetExperiencePoints(previousPlayer.GetComponent<Experience>().GetExperiencePoints());
-            ChangeDisplay();
-            // キャラクターの変更イベントを発火
-            OnChangeCharacter?.Invoke(currentPlayer);
-        }
-
         private void Update()
         {
             if (isStopped) return;
@@ -83,46 +63,66 @@ namespace VLCNP.Control
             }
         }
 
+        public void SetCurrentPlayerByName(string name = "Akim")
+        {
+            GameObject player = Array.Find(members, member => member.name == name);
+            if (player == null || player == currentPlayer) return;
+            if (!IsJoined(player.name)) return;
+            SwitchToPlayer(player);
+        }
+
         private void SwitchNextPlayer()
         {
             GameObject nextPlayer = GetNextPlayer();
             // 現在のキャラクターと同じであれば何もしない
             if (nextPlayer == currentPlayer) return;
 
+            SwitchToPlayer(nextPlayer);
+        }
+
+        private void SwitchToPlayer(GameObject nextPlayer)
+        {
             GameObject previousPlayer = currentPlayer;
             Vector2 previousVelocity = previousPlayer.GetComponent<Rigidbody2D>()?.velocity ?? Vector2.zero;
+
             SetNextPlayerPosition(nextPlayer);
-            // 次のキャラクターに前のキャラクターの無敵状態を引き継ぐ
             nextPlayer.GetComponent<Health>().InheritInvincible(previousPlayer.GetComponent<Health>());
 
             currentPlayer = nextPlayer;
             SetCurrentPlayerActive();
 
-            // 前のキャラクターのHPを次のキャラクターに引き継ぐ
-            currentPlayer.GetComponent<Health>().SetHealthPoints(previousPlayer.GetComponent<Health>().GetHealthPoints());
-            // 前のキャラクターのHealthLevelを次のキャラクターに引き継ぐ
-            currentPlayer.GetComponent<HealthLevel>().SetLevel(previousPlayer.GetComponent<HealthLevel>().GetCurrentLevel());
-
-            // 前のキャラクターのExperienceを次のキャラクターに引き継ぐ
-            currentPlayer.GetComponent<Experience>().SetExperiencePoints(previousPlayer.GetComponent<Experience>().GetExperiencePoints());
+            TransferPlayerStats(previousPlayer, currentPlayer);
             ChangeDisplay();
 
-            // 前のキャラクターのRigitbodyの速度を引き継ぐ
+            ApplyVelocityToCurrentPlayer(previousVelocity);
+            UnstopCurrentPlayer();
+
+            OnChangeCharacter?.Invoke(currentPlayer);
+        }
+
+        private void TransferPlayerStats(GameObject from, GameObject to)
+        {
+            to.GetComponent<Health>().SetHealthPoints(from.GetComponent<Health>().GetHealthPoints());
+            to.GetComponent<HealthLevel>().SetLevel(from.GetComponent<HealthLevel>().GetCurrentLevel());
+            to.GetComponent<Experience>().SetExperiencePoints(from.GetComponent<Experience>().GetExperiencePoints());
+        }
+
+        private void ApplyVelocityToCurrentPlayer(Vector2 velocity)
+        {
             Rigidbody2D currentRigitBody = currentPlayer.GetComponent<Rigidbody2D>();
             if (currentRigitBody != null)
             {
-                currentRigitBody.velocity = previousVelocity;
+                currentRigitBody.velocity = velocity;
             }
+        }
 
-            // キャラクターを止めていたら動かす
+        private void UnstopCurrentPlayer()
+        {
             IStoppable stoppable = currentPlayer.GetComponent<IStoppable>();
             if (stoppable != null)
             {
                 stoppable.IsStopped = false;
             }
-
-            // キャラクターの変更イベントを発火
-            OnChangeCharacter?.Invoke(currentPlayer);
         }
 
         private void ChangeDisplay()
@@ -146,14 +146,22 @@ namespace VLCNP.Control
             {
                 // 次のキャラクター取得
                 nextPlayer = members[index];
-                // 名前がAkimであれば既に仲間なのでループを抜ける
-                if (nextPlayer.name == "Akim") break;
-                // 名前がLeeleeであれば、JoinedLeeleeフラグが立っていれば仲間なのでループを抜ける
-                if (nextPlayer.name == "Leelee" && flagManager.GetFlag(Flag.JoinedLeelee)) break;
+                if (IsJoined(nextPlayer.name)) break;
                 // 見つからなければ次のキャラクターを選択
                 index = (index + 1) % members.Length;
             }
             return nextPlayer;
+        }
+
+        // 指定のキャラクターが仲間になっているかどうか
+        public bool IsJoined(string name)
+        {
+            // Akimであれば常に仲間
+            if (name == "Akim") return true;
+            // LeeleeであればJoinedLeeleeフラグが立っていれば仲間
+            if (name == "Leelee") return flagManager.GetFlag(Flag.JoinedLeelee);
+            // それ以外は仲間でない
+            return false;
         }
 
         private void SetNextPlayerPosition(GameObject nextPlayer)
