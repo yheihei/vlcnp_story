@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Attributes;
+using VLCNP.Core;
 
 namespace VLCNP.Stats
 {

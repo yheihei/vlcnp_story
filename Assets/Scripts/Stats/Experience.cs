@@ -58,6 +58,15 @@ namespace VLCNP.Stats
             }
         }
 
+        // 経験値を指定の値にセットするが すでにその経験値を超えている場合は何もしない
+        public void SetExperiencePointsIfGreater(float experience)
+        {
+            if (experiencePoints < experience)
+            {
+                SetExperiencePoints(experience);
+            }
+        }
+
         public JToken CaptureAsJToken()
         {
             return JToken.FromObject(experiencePoints);
