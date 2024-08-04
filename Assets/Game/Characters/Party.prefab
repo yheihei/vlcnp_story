@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 2041552967237032175}
   - component: {fileID: 150293511388430531}
   - component: {fileID: 7366152789054923333}
+  - component: {fileID: 5643826132543263013}
+  - component: {fileID: 2426104943825795249}
   m_Layer: 0
   m_Name: Party
   m_TagString: Party
@@ -70,6 +72,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uniqueIdentifier: Party
+--- !u!114 &5643826132543263013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9182260420820135669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9229ce76ea1448a28d48753d2cbe267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  akimBaseStats: {fileID: 3997253181264969380}
+--- !u!114 &2426104943825795249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9182260420820135669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c0c6715576dc40778c9917ade2000c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentLevel: 1
 --- !u!1001 &448327641534480642
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -144,6 +172,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1699767717115717140, guid: 305b768f10cad4098b6aad1149350872, type: 3}
   m_PrefabInstance: {fileID: 448327641534480642}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3997253181264969380 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3549363216767254438, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+  m_PrefabInstance: {fileID: 448327641534480642}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273971305191646998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf1ae46a9efb4cd6b0546447925f8b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6805927905459409434 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6362254506045297432, guid: 305b768f10cad4098b6aad1149350872, type: 3}

@@ -1,30 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using VLCNP.Saving;
 
 namespace VLCNP.Stats
 {
-    public class HealthLevel : MonoBehaviour, IJsonSaveable
+    public class PartyHealthLevel : MonoBehaviour, IJsonSaveable
     {
         [SerializeField, Min(1)] int currentLevel = 1;
-        BaseStats baseStats;
-
-        void Awake()
-        {
-            baseStats = GetComponent<BaseStats>();
-        }
 
         public int GetCurrentLevel()
         {
             return currentLevel;
         }
 
-        public void SetLevel(int level)
+        public void SetLevel(int level, BaseStats currentPlayerBaseStats)
         {
             currentLevel = level;
-            baseStats.SetCurrentHealthLevel(level);
+            currentPlayerBaseStats.SetCurrentHealthLevel(level);
         }
  
         public JToken CaptureAsJToken()
@@ -36,7 +28,6 @@ namespace VLCNP.Stats
         {
             // BaseStatsのLevelに引き継ぎ
             currentLevel = state.ToObject<int>();
-            baseStats.SetCurrentHealthLevel(currentLevel);
         }
     }
 }

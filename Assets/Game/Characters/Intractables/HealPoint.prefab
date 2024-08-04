@@ -24,6 +24,9 @@ GameObject:
   - component: {fileID: 4417183929196794052}
   - component: {fileID: 6124401683962748827}
   - component: {fileID: 1959400830002136246}
+  - component: {fileID: 272208394095211813}
+  - component: {fileID: 208781570631491205}
+  - component: {fileID: 5692940224966919433}
   m_Layer: 0
   m_Name: HealPoint
   m_TagString: Untagged
@@ -71,8 +74,9 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 583330108914289112}
-  selectedCommands: []
+  - {fileID: 8336182027186234221}
+  selectedCommands:
+  - {fileID: 5692940224966919433}
   variables: []
   description: 
   stepPause: 0
@@ -109,6 +113,7 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 272208394095211813}
   - {fileID: 583330108914288934}
   - {fileID: 583330108914288935}
   - {fileID: 583330108914289113}
@@ -218,6 +223,7 @@ MonoBehaviour:
   - {fileID: 1959400830002136246}
   - {fileID: 3661117029359543859}
   - {fileID: 6124401683962748827}
+  - {fileID: 208781570631491205}
   suppressAllAutoSelections: 0
 --- !u!114 &7973415428306446195
 MonoBehaviour:
@@ -320,7 +326,8 @@ MonoBehaviour:
   blockName: None
   description: 
   eventHandler: {fileID: 0}
-  commandList: []
+  commandList:
+  - {fileID: 5692940224966919433}
   suppressAllAutoSelections: 0
 --- !u!114 &3661117029359543859
 MonoBehaviour:
@@ -458,6 +465,90 @@ MonoBehaviour:
     floatRef: {fileID: 0}
     floatVal: 1
   durationOLD: 0
+--- !u!114 &272208394095211813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583330108914288933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 14
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 5971537910500001914}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &208781570631491205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583330108914288933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 15
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 5971537910500001914}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &5692940224966919433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583330108914288933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 16
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 5971537910500001914}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1 &583330109123350172
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,6 +789,7 @@ Transform:
   - {fileID: 8413681053921586202}
   - {fileID: 3023731442345942308}
   - {fileID: 3806381862777273106}
+  - {fileID: 2278318093408386835}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1269,6 +1361,73 @@ MonoBehaviour:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7200546662338734171, guid: 92c8f1bbd670748979fd99cfe214805d, type: 3}
   m_PrefabInstance: {fileID: 5339871352237503871}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5901743704650175561
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6884836960361539434}
+    m_Modifications:
+    - target: {fileID: 231969148399508531, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_Name
+      value: StoppableController
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 28.408625
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.270514
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.010273173
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+--- !u!4 &2278318093408386835 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+  m_PrefabInstance: {fileID: 5901743704650175561}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5971537910500001914 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 231969148399508531, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+  m_PrefabInstance: {fileID: 5901743704650175561}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6606519369298219586
 PrefabInstance:

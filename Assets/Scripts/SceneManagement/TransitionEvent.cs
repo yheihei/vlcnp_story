@@ -106,9 +106,17 @@ namespace VLCNP.SceneManagement
             BGM = GameObject.FindWithTag("BGM").GetComponent<AudioSource>();
             // エリアのBGMを取得
             areaBGM = GameObject.FindWithTag("AreaBGM").GetComponent<AreaBGM>();
-            print("BGM.clip.name: " + BGM.clip.name);
-            print("areaBGM.GetAudioClip().name: " + areaBGM.GetAudioClip().name);
-            if (BGM.clip.name == areaBGM.GetAudioClip().name)
+            if (areaBGM.GetAudioClip() == null)
+            {
+                print("エリアBGMが設定されていません");
+                BGM.Stop();
+                BGM.clip = areaBGM.GetAudioClip();
+                BGM.volume = areaBGM.GetVolume();
+                BGM.pitch = areaBGM.GetPitch();
+                BGM.Play();
+                yield break;
+            }
+            if (BGM.clip != null && areaBGM.GetAudioClip() != null && BGM.clip.name == areaBGM.GetAudioClip().name)
             {
                 print("クリップの変更なし");
                 yield break;
@@ -120,9 +128,6 @@ namespace VLCNP.SceneManagement
             BGM.clip = areaBGM.GetAudioClip();
             BGM.volume = areaBGM.GetVolume();
             BGM.pitch = areaBGM.GetPitch();
-            print("BGM.clip.name: " + BGM.clip.name);
-            print("BGM.volume: " + BGM.volume);
-            print("BGM.pitch: " + BGM.pitch);
             BGM.Play();
         }
 

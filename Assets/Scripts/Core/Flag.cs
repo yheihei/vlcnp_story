@@ -27,5 +27,6 @@ namespace VLCNP.Core
         IkehayaBlockChainChated, // イケハヤからブロックチェーンの話を聞いた
         HPUpOhirunebeyaBoss,  // お昼寝部屋のボスを倒した際のHPアップ
         HPUpDragDefeated,  // ドラァグクイーンを倒した際のHPアップ
+        AkimVeryLong,  // Akimがベリーロングになった
     }
 }

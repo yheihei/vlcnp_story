@@ -22224,7 +22224,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameEventTransition (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5447868505670414266, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
+    - {fileID: 7750689854746369712, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
 --- !u!1 &786051466
 GameObject:
@@ -22802,7 +22804,9 @@ PrefabInstance:
       propertyPath: commandList.Array.data[1]
       value: 
       objectReference: {fileID: 952536539}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3811741307927765878, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+    - {fileID: 1509632038583652988, guid: fbb78368ef33c44faa030963b129d648, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
 --- !u!1 &952536538 stripped
 GameObject:
@@ -22821,7 +22825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 2
+  itemId: 3
   indentLevel: 0
   storyText: "\u30D9\u30EA\u30FC\u30ED\u30F3\u30B0\u738B\u56FD\u304C\u52C3\u8208\u3059\u308B"
   description: 
@@ -22848,7 +22852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 1
+  itemId: 4
   indentLevel: 0
   storyText: "\u30D9\u30EA\u30ED\u30F3\u6B74 1\u5E74"
   description: 
@@ -30784,6 +30788,10 @@ PrefabInstance:
       propertyPath: m_SceneBindings.Array.data[1].key
       value: 
       objectReference: {fileID: -1432464236071268937, guid: c98f7e3c58bc94648b32b732c3dda819, type: 2}
+    - target: {fileID: 8377389002471163741, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: uniqueIdentifier
+      value: e3120837-1977-4184-bea7-e204a75e8014
+      objectReference: {fileID: 0}
     - target: {fileID: 8816239465786579579, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -30983,6 +30991,11 @@ GameObject:
 --- !u!1 &1520025449 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2553795758778975881, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 1520025446}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1520025450 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4788655833701329706, guid: 011494565755b490386e78a113e3c871, type: 3}
   m_PrefabInstance: {fileID: 1520025446}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1523200715
@@ -36742,6 +36755,8 @@ GameObject:
   - component: {fileID: 1713043142}
   - component: {fileID: 1713043143}
   - component: {fileID: 1713043144}
+  - component: {fileID: 1713043146}
+  - component: {fileID: 1713043145}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -36776,7 +36791,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1713042973}
   selectedCommands:
-  - {fileID: 1713043144}
+  - {fileID: 1713043145}
   variables: []
   description: 
   stepPause: 0
@@ -36840,6 +36855,7 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 1713042974}
   commandList:
+  - {fileID: 1713043146}
   - {fileID: 1713043143}
   - {fileID: 1713042989}
   - {fileID: 1713042972}
@@ -37002,6 +37018,7 @@ MonoBehaviour:
   - {fileID: 1713043132}
   - {fileID: 1713043136}
   - {fileID: 1713043137}
+  - {fileID: 1713043145}
   - {fileID: 1713043139}
   suppressAllAutoSelections: 0
 --- !u!114 &1713042974
@@ -41764,6 +41781,62 @@ MonoBehaviour:
       vector2Value: {x: 0, y: 0}
       vector3Value: {x: 0, y: 0, z: 0}
     variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1713043145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713042970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 172
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1520025450}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1713043146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713042970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 171
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1520025450}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
+  methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 
   returnValueType: System.Void

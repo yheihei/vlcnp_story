@@ -72,7 +72,6 @@ namespace VLCNP.Actions
 
         void Start()
         {
-            // flagManager.OnChangeFlag += OnChangeFlag;
             FlagAwakeStart();
         }
 

@@ -10,7 +10,7 @@ namespace VLCNP.Core
     {
         [SerializeField]
         private Dictionary<Flag, bool> flagDictionary = new();
-        public event Action<Flag> OnChangeFlag;
+        public event Action<Flag, bool> OnChangeFlag;
 
         public bool GetFlag(Flag flag)
         {
@@ -30,11 +30,11 @@ namespace VLCNP.Core
             if (!flagDictionary.ContainsKey(flag))
             {
                 flagDictionary.Add(flag, value);
-                OnChangeFlag?.Invoke(flag);
+                OnChangeFlag?.Invoke(flag, value);
                 return;
             }
             flagDictionary[flag] = value;
-            OnChangeFlag?.Invoke(flag);
+            OnChangeFlag?.Invoke(flag, value);
         }
 
         public JToken CaptureAsJToken()
@@ -50,7 +50,7 @@ namespace VLCNP.Core
             // 全フラグOnChangeFlagを発火
             foreach (KeyValuePair<Flag, bool> pair in flagDictionary)
             {
-                OnChangeFlag?.Invoke(pair.Key);
+                OnChangeFlag?.Invoke(pair.Key, pair.Value);
             }
         }
     }
