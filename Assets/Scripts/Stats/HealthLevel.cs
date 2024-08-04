@@ -6,7 +6,7 @@ using VLCNP.Saving;
 
 namespace VLCNP.Stats
 {
-    public class HealthLevel : MonoBehaviour, IJsonSaveable
+    public class HealthLevel : MonoBehaviour
     {
         [SerializeField, Min(1)] int currentLevel = 1;
         BaseStats baseStats;
@@ -25,18 +25,6 @@ namespace VLCNP.Stats
         {
             currentLevel = level;
             baseStats.SetCurrentHealthLevel(level);
-        }
- 
-        public JToken CaptureAsJToken()
-        {
-            return JToken.FromObject(currentLevel);
-        }
-
-        public void RestoreFromJToken(JToken state)
-        {
-            // BaseStatsのLevelに引き継ぎ
-            currentLevel = state.ToObject<int>();
-            baseStats.SetCurrentHealthLevel(currentLevel);
         }
     }
 }

@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using VLCNP.Movement;
 using System.Collections;
+using System.Runtime.Serialization.Json;
 
 namespace VLCNP.Control
 {
@@ -103,7 +104,12 @@ namespace VLCNP.Control
         private void TransferPlayerStats(GameObject from, GameObject to)
         {
             to.GetComponent<Health>().SetHealthPoints(from.GetComponent<Health>().GetHealthPoints());
-            to.GetComponent<HealthLevel>().SetLevel(from.GetComponent<HealthLevel>().GetCurrentLevel());
+            // to.GetComponent<HealthLevel>().SetLevel(from.GetComponent<HealthLevel>().GetCurrentLevel());
+            BaseStats toBaseStats = to.GetComponent<BaseStats>();
+            PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
+            if (toBaseStats != null && partyHealthLevel != null) {
+                partyHealthLevel.SetLevel(partyHealthLevel.GetCurrentLevel(), toBaseStats);
+            }
             to.GetComponent<Experience>().SetExperiencePoints(from.GetComponent<Experience>().GetExperiencePoints());
         }
 
@@ -183,14 +189,16 @@ namespace VLCNP.Control
 
         public void IncrementHealthLevel()
         {
+            // PartyHealthLevelを1あげる
+            PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
+            if (partyHealthLevel == null) return;
+            int nextLevel = partyHealthLevel.GetCurrentLevel() + 1;
             // member全員のHealthLevelを1あげる
             foreach (GameObject member in members)
             {
-                HealthLevel healthLevel = member.GetComponent<HealthLevel>();
-                if (healthLevel != null)
-                {
-                    healthLevel.SetLevel(healthLevel.GetCurrentLevel() + 1);
-                }
+                BaseStats memberBaseStats = member.GetComponent<BaseStats>();
+                if (memberBaseStats == null) continue;
+                partyHealthLevel.SetLevel(nextLevel, memberBaseStats);
             }
             // 全回復させる
             RestoreHealth();
@@ -234,6 +242,8 @@ namespace VLCNP.Control
             public float experiencePoints;
             public string currentPlayerName;
             public JToken currentPlayerPosition;
+            public int partyHealthLevel;
+            public float partyExperiencePoints;
         }
 
         public JToken CaptureAsJToken()
@@ -244,6 +254,12 @@ namespace VLCNP.Control
             statusSaveData.experiencePoints = currentPlayer.GetComponent<Experience>().GetExperiencePoints();
             statusSaveData.currentPlayerName = currentPlayer.name;
             statusSaveData.currentPlayerPosition = currentPlayer.transform.position.ToToken();
+            // PartyHealthLevelを保存
+            PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
+            if (partyHealthLevel != null)
+            {
+                statusSaveData.partyHealthLevel = partyHealthLevel.GetCurrentLevel();
+            }
             return JToken.FromObject(statusSaveData);
         }
 
@@ -260,6 +276,9 @@ namespace VLCNP.Control
             currentPlayer.GetComponent<Experience>().SetExperiencePoints(statusSaveData.experiencePoints);
             currentPlayer.transform.position = statusSaveData.currentPlayerPosition.ToVector3();
             SetCurrentPlayerActive();
+            // PartyHealthLevelを復元
+            PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
+            partyHealthLevel.SetLevel(statusSaveData.partyHealthLevel, currentPlayer.GetComponent<BaseStats>());
             ChangeDisplay();
             // キャラクターの変更イベントを発火
             OnChangeCharacter?.Invoke(currentPlayer);
