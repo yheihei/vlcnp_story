@@ -51,8 +51,10 @@ namespace VLCNP.Core
         }
 
         // Flagの変更通知時、自動実行のBlockNameが設定されていたら即時実行
-        void OnChangeFlag(Flag flag)
+        void OnChangeFlag(Flag flag, bool value)
         {
+            if (!value) return;
+            if (flag != GetCurrentValidFlag()) return;
             AutoStartBlock();
         }
 
@@ -141,6 +143,19 @@ namespace VLCNP.Core
             }
             // 設定がなければnullを返す
             return null;
+        }
+
+        public Flag GetCurrentValidFlag()
+        {
+            // flagToBlockName を後ろから見ていって、現在有効なフラグのFlagを返す
+            for (int i = flagToBlockName.Length - 1; i >= 0; i--)
+            {
+                if (flagManager.GetFlag(flagToBlockName[i].Flag))
+                {
+                    return flagToBlockName[i].Flag;
+                }
+            }
+            return Flag.None;
         }
     }
 }

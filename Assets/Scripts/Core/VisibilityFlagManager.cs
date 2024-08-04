@@ -42,8 +42,10 @@ namespace VLCNP.Core
             }
         }
 
-        void OnChangeFlag(Flag flag)
+        void OnChangeFlag(Flag flag, bool value)
         {
+            // 変化のあったflagがvisibilityFlagsに含まれていなければ何もしない 配列のfindで探す
+            if (System.Array.Find(visibilityFlags, x => x.flag == flag) == null) return;
             CheckVisibility();
         }
     }
