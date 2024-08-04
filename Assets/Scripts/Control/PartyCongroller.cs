@@ -104,7 +104,6 @@ namespace VLCNP.Control
         private void TransferPlayerStats(GameObject from, GameObject to)
         {
             to.GetComponent<Health>().SetHealthPoints(from.GetComponent<Health>().GetHealthPoints());
-            // to.GetComponent<HealthLevel>().SetLevel(from.GetComponent<HealthLevel>().GetCurrentLevel());
             BaseStats toBaseStats = to.GetComponent<BaseStats>();
             PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
             if (toBaseStats != null && partyHealthLevel != null) {

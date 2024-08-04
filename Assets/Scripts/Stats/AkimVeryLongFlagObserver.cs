@@ -13,7 +13,6 @@ namespace VLCNP.Stats
         private void Start()
         {
             flagManager = GameObject.FindWithTag("FlagManager").GetComponent<FlagManager>();
-            print(flagManager);
         }
 
         private void OnEnable()
@@ -29,14 +28,7 @@ namespace VLCNP.Stats
         private void ChangeAkimVeryLongFlag(int level)
         {
             if (flagManager == null) return;
-            if (level > 1)
-            {
-                flagManager.SetFlag(Flag.AkimVeryLong, true);
-            }
-            else
-            {
-                flagManager.SetFlag(Flag.AkimVeryLong, false);
-            }
+            flagManager.SetFlag(Flag.AkimVeryLong, level > 1);
         }
     }    
 }
