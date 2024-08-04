@@ -374,6 +374,8 @@ GameObject:
   - component: {fileID: 58739885}
   - component: {fileID: 58739884}
   - component: {fileID: 58739887}
+  - component: {fileID: 58739889}
+  - component: {fileID: 58739888}
   m_Layer: 0
   m_Name: PlantLeelee
   m_TagString: Untagged
@@ -448,8 +450,10 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 58739889}
   - {fileID: 58739884}
   - {fileID: 58739887}
+  - {fileID: 58739888}
   suppressAllAutoSelections: 0
 --- !u!114 &58739886
 MonoBehaviour:
@@ -478,7 +482,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 58739885}
   selectedCommands:
-  - {fileID: 58739887}
+  - {fileID: 58739889}
   variables: []
   description: 
   stepPause: 0
@@ -492,7 +496,7 @@ MonoBehaviour:
   luaBindingName: flowchart
 --- !u!114 &58739887
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -517,6 +521,62 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
+--- !u!114 &58739888
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58739882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 4
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1190920440}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &58739889
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58739882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 3
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1190920440}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1 &59355381
 GameObject:
   m_ObjectHideFlags: 0
@@ -3414,6 +3474,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4235512776270127445, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
     - {fileID: 4874829220394967163, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
+    - {fileID: 5447868505670414266, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
+    - {fileID: 7750689854746369712, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
 --- !u!114 &308193712 stripped
 MonoBehaviour:
@@ -7269,7 +7331,9 @@ PrefabInstance:
       propertyPath: commandList.Array.data[4]
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3811741307927765878, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+    - {fileID: 1509632038583652988, guid: fbb78368ef33c44faa030963b129d648, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
 --- !u!1 &514083551 stripped
 GameObject:
@@ -7288,7 +7352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 1
+  itemId: 13
   indentLevel: 0
   description: 
   targetObject: {fileID: 1190920440}
@@ -10523,6 +10587,8 @@ GameObject:
   - component: {fileID: 788105673}
   - component: {fileID: 788105672}
   - component: {fileID: 788105671}
+  - component: {fileID: 788105674}
+  - component: {fileID: 788105675}
   m_Layer: 0
   m_Name: PlantOrochi
   m_TagString: Untagged
@@ -10597,7 +10663,9 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 788105674}
   - {fileID: 788105671}
+  - {fileID: 788105675}
   suppressAllAutoSelections: 0
 --- !u!114 &788105673
 MonoBehaviour:
@@ -10626,7 +10694,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 788105672}
   selectedCommands:
-  - {fileID: 788105671}
+  - {fileID: 788105674}
   variables: []
   description: 
   stepPause: 0
@@ -10638,6 +10706,62 @@ MonoBehaviour:
   hideCommands: []
   luaEnvironment: {fileID: 0}
   luaBindingName: flowchart
+--- !u!114 &788105674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788105669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 3
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1190920440}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &788105675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788105669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 4
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1190920440}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1 &797375392
 GameObject:
   m_ObjectHideFlags: 0
@@ -13043,6 +13167,8 @@ GameObject:
   - component: {fileID: 1052373570}
   - component: {fileID: 1052373571}
   - component: {fileID: 1052373573}
+  - component: {fileID: 1052373575}
+  - component: {fileID: 1052373574}
   m_Layer: 0
   m_Name: PlantMitama
   m_TagString: Untagged
@@ -13077,7 +13203,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1052373571}
   selectedCommands:
-  - {fileID: 1052373573}
+  - {fileID: 1052373575}
   variables: []
   description: 
   stepPause: 0
@@ -13103,7 +13229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: 68
+    x: 69
     y: 70
     width: 101
     height: 40
@@ -13114,7 +13240,9 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 1052373575}
   - {fileID: 1052373573}
+  - {fileID: 1052373574}
   suppressAllAutoSelections: 0
 --- !u!4 &1052373572
 Transform:
@@ -13158,6 +13286,62 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
+--- !u!114 &1052373574
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052373569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 3
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1190920440}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1052373575
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052373569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 2
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1190920440}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1 &1057294262 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5598845851302252394, guid: 011494565755b490386e78a113e3c871, type: 3}
@@ -16027,7 +16211,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameEventTransition
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5447868505670414266, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
+    - {fileID: 7750689854746369712, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
 --- !u!1 &1235641971 stripped
 GameObject:
@@ -16285,7 +16471,9 @@ PrefabInstance:
       propertyPath: commandList.Array.data[2]
       value: 
       objectReference: {fileID: 1258601353}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3811741307927765878, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+    - {fileID: 1509632038583652988, guid: fbb78368ef33c44faa030963b129d648, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
 --- !u!1 &1258601348 stripped
 GameObject:
@@ -16304,7 +16492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 2
+  itemId: 4
   indentLevel: 0
   storyText: "\u30D9\u30EA\u30FC\u30ED\u30F3\u30B0CNP\u30D5\u30A1\u30FC\u30E0\u306B\u3088\u3046\u3053\u305D\n\u307F\u3058\u304B\u304D\u3082\u306E\u3082
     \u306A\u304C\u304D\u3082\u306E\u3082\n\u307F\u306A\u3055\u3093\u304A\u3044\u3067"
@@ -16332,7 +16520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 1
+  itemId: 5
   indentLevel: 0
   description: 
   targetObject: {fileID: 1190920440}
@@ -48574,7 +48762,9 @@ PrefabInstance:
       propertyPath: commandList.Array.data[4]
       value: 
       objectReference: {fileID: 1813366306}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3811741307927765878, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+    - {fileID: 1509632038583652988, guid: fbb78368ef33c44faa030963b129d648, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
 --- !u!1 &1813366304 stripped
 GameObject:
@@ -48593,7 +48783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 2
+  itemId: 26
   indentLevel: 0
   storyText: "\u3082\u3046\u5C11\u3057 \u6751\u3092\u63A2\u7D22\u3057\u3088\u304B"
   description: 
@@ -48648,7 +48838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 1
+  itemId: 27
   indentLevel: 0
   description: 
   targetObject: {fileID: 1190920440}
@@ -49766,7 +49956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 1161340028}
+  selectedFlowchart: {fileID: 1052373570}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
@@ -49794,6 +49984,8 @@ GameObject:
   - component: {fileID: 1904947119}
   - component: {fileID: 1904947118}
   - component: {fileID: 1904947117}
+  - component: {fileID: 1904947121}
+  - component: {fileID: 1904947120}
   m_Layer: 0
   m_Name: PlantNarukami
   m_TagString: Untagged
@@ -49868,7 +50060,9 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 1904947121}
   - {fileID: 1904947117}
+  - {fileID: 1904947120}
   suppressAllAutoSelections: 0
 --- !u!114 &1904947119
 MonoBehaviour:
@@ -49896,8 +50090,7 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 1904947118}
-  selectedCommands:
-  - {fileID: 1904947117}
+  selectedCommands: []
   variables: []
   description: 
   stepPause: 0
@@ -49909,6 +50102,62 @@ MonoBehaviour:
   hideCommands: []
   luaEnvironment: {fileID: 0}
   luaBindingName: flowchart
+--- !u!114 &1904947120
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904947115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 4
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1190920440}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1904947121
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904947115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 3
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1190920440}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1 &1905832036
 GameObject:
   m_ObjectHideFlags: 0
@@ -52018,7 +52267,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: BCDoorGameEventTransition
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5447868505670414266, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
+    - {fileID: 7750689854746369712, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7489d54256d784b35b3c62ecd7c83e38, type: 3}
 --- !u!1 &2071889482 stripped
 GameObject:

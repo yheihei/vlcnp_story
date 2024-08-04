@@ -33,6 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2902164358088463926}
+  - {fileID: 3924132285593909847}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -154,6 +155,8 @@ GameObject:
   - component: {fileID: 2902164358088463926}
   - component: {fileID: 3537494708198848658}
   - component: {fileID: 5307012217563610202}
+  - component: {fileID: 3811741307927765878}
+  - component: {fileID: 1509632038583652988}
   m_Layer: 0
   m_Name: Chat
   m_TagString: Untagged
@@ -200,8 +203,10 @@ MonoBehaviour:
     y: -340
     width: 1114
     height: 859
-  selectedBlocks: []
-  selectedCommands: []
+  selectedBlocks:
+  - {fileID: 5307012217563610202}
+  selectedCommands:
+  - {fileID: 1509632038583652988}
   variables: []
   description: 
   stepPause: 0
@@ -229,7 +234,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 67
     y: 70
-    width: 120
+    width: 111
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
@@ -237,5 +242,130 @@ MonoBehaviour:
   blockName: New Block
   description: 
   eventHandler: {fileID: 0}
-  commandList: []
+  commandList:
+  - {fileID: 3811741307927765878}
+  - {fileID: 1509632038583652988}
   suppressAllAutoSelections: 0
+--- !u!114 &3811741307927765878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2809543764234509692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 1
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 8877806178305133886}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1509632038583652988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2809543764234509692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 2
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 8877806178305133886}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!1001 &8650380349426536717
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 976885865057812764}
+    m_Modifications:
+    - target: {fileID: 231969148399508531, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_Name
+      value: StoppableController
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 28.408625
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.270514
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.010273173
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+--- !u!4 &3924132285593909847 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5654553681780140890, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+  m_PrefabInstance: {fileID: 8650380349426536717}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8877806178305133886 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 231969148399508531, guid: 3c6266add3d2d437f8f2714e11457239, type: 3}
+  m_PrefabInstance: {fileID: 8650380349426536717}
+  m_PrefabAsset: {fileID: 0}
