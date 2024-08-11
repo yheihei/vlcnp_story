@@ -6,6 +6,7 @@ using VLCNP.Combat;
 using Newtonsoft.Json.Linq;
 using System;
 using VLCNP.Core;
+using System.Collections;
 
 namespace VLCNP.Attributes
 {
@@ -122,20 +123,32 @@ namespace VLCNP.Attributes
 
         public void DeadEffectAndDestroy()
         {
-            GameObject _deadEffect = Instantiate(deadEffect, transform.position, Quaternion.identity);
-            Destroy(_deadEffect, 2f);
             isDead = true;
-            onDie?.Invoke();
-            ExecuteGameOverEvent();
-            Destroy(gameObject);
-        }
-
-        public void ExecuteGameOverEvent()
-        {
             if (IsGameOverEventExecute)
             {
-                FindObjectOfType<GameOver>()?.Execute();
+                StartCoroutine(ExecuteGameOverEvent());
             }
+            else
+            {
+                GameObject _deadEffect = Instantiate(deadEffect, transform.position, Quaternion.identity);
+                Destroy(_deadEffect, 2f);
+                onDie?.Invoke();
+                Destroy(gameObject);
+            }
+        }
+
+        public IEnumerator ExecuteGameOverEvent()
+        {
+            // ヒットストップ
+            Time.timeScale = 0.001f;
+            yield return new WaitForSecondsRealtime(1f);
+            Time.timeScale = 1;
+
+            GameObject _deadEffect = Instantiate(deadEffect, transform.position, Quaternion.identity);
+            Destroy(_deadEffect, 2f);
+            onDie?.Invoke();
+            FindObjectOfType<GameOver>()?.Execute();
+            gameObject.SetActive(false);
         }
 
         public float GetHealthPoints()
