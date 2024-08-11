@@ -124,17 +124,6 @@ namespace VLCNP.Attributes
         public void DeadEffectAndDestroy()
         {
             isDead = true;
-            // if (IsGameOverEventExecute)
-            // {
-            //     StartCoroutine(ExecuteGameOverEvent());
-            // }
-            // else
-            // {
-            //     GameObject _deadEffect = Instantiate(deadEffect, transform.position, Quaternion.identity);
-            //     Destroy(_deadEffect, 2f);
-            //     onDie?.Invoke();
-            //     Destroy(gameObject);
-            // }
             StartCoroutine(ExecuteGameOverEvent());
         }
 
