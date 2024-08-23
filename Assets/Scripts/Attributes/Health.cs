@@ -10,7 +10,7 @@ using System.Collections;
 
 namespace VLCNP.Attributes
 {
-    public class Health : MonoBehaviour, IJsonSaveable, IStoppable
+    public class Health : MonoBehaviour, IStoppable
     {
         float healthPoints = -1f;
         // 無敵時間
@@ -164,20 +164,6 @@ namespace VLCNP.Attributes
         {
             healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
             SetHealthPoints(healthPoints);
-        }
-
-        public JToken CaptureAsJToken()
-        {
-            return JToken.FromObject(healthPoints);
-        }
-
-        public void RestoreFromJToken(JToken state)
-        {
-            healthPoints = state.ToObject<float>();
-            if (healthPoints == 0)
-            {
-                Die();
-            }
         }
     }    
 }
