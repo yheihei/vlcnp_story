@@ -5,7 +5,7 @@ using VLCNP.Core;
 
 namespace VLCNP.Movement
 {
-    public class Jump : MonoBehaviour
+    public class Jump : MonoBehaviour, IStoppable
     {
         [SerializeField] Leg leg;
         Rigidbody2D rBody;
@@ -19,6 +19,9 @@ namespace VLCNP.Movement
         [SerializeField, Min(0)] float maxJumpTime = 0.3f;
         [SerializeField] AnimationCurve jumpCurve = new();
 
+        private bool isStopped = false;
+        public bool IsStopped { get => isStopped; set => isStopped = value; }
+
         private void Awake()
         {
             rBody = GetComponent<Rigidbody2D>();
@@ -27,6 +30,11 @@ namespace VLCNP.Movement
 
         void Update()
         {
+            if (isStopped)
+            {
+                EndJump();
+                return;
+            }
             // ジャンプボタン押しっぱなしの場合は一度離さないとジャンプできない
             if (Input.GetKeyUp("space"))
             {

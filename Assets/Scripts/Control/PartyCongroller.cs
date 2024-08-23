@@ -267,20 +267,17 @@ namespace VLCNP.Control
             // セーブ時のキャラクターをcurrentPlayerとして復元
             StatusSaveData statusSaveData = state.ToObject<StatusSaveData>();
             string currentPlayerName = statusSaveData.currentPlayerName;
-            if (currentPlayerName != null)
-            {
-                currentPlayer = Array.Find(members, member => member.name == currentPlayerName);
-            }
-            currentPlayer.GetComponent<Health>().SetHealthPoints(statusSaveData.healthPoints);
-            currentPlayer.GetComponent<Experience>().SetExperiencePoints(statusSaveData.experiencePoints);
-            currentPlayer.transform.position = statusSaveData.currentPlayerPosition.ToVector3();
-            SetCurrentPlayerActive();
+            if (currentPlayerName == null) return;
+
+            currentPlayer = Array.Find(members, member => member.name == currentPlayerName);
             // PartyHealthLevelを復元
             PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
             partyHealthLevel.SetLevel(statusSaveData.partyHealthLevel, currentPlayer.GetComponent<BaseStats>());
-            ChangeDisplay();
-            // キャラクターの変更イベントを発火
-            OnChangeCharacter?.Invoke(currentPlayer);
+            // HP, Experienceを復元
+            currentPlayer.GetComponent<Health>().SetHealthPoints(statusSaveData.healthPoints);
+            currentPlayer.GetComponent<Experience>().SetExperiencePoints(statusSaveData.experiencePoints);
+            currentPlayer.transform.position = statusSaveData.currentPlayerPosition.ToVector3();
+            SwitchToPlayer(currentPlayer);
         }
     }
 }
