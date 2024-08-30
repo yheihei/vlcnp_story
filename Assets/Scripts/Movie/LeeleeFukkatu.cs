@@ -92,7 +92,6 @@ namespace VLCNP.Movie
 
         private IEnumerator ExecuteAsync()
         {
-            yield return fader.FadeOut(0.5f);
             partyCongroller.SetVisibility(false);
             playerNPC.SetActive(true);
             yield return fader.FadeIn(0.5f);
