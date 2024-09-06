@@ -49,7 +49,6 @@ namespace VLCNP.UI
                     break;
                 case Select.Load:
                     currentSelect = Select.Load;
-                    // 元の位置のY座標から-1.5fした位置に移動
                     selectButton.transform.position = new Vector3(selectButtonOriginalPosition.x, selectButtonOriginalPosition.y - 0.9f, selectButtonOriginalPosition.z);
                     break;
             }
