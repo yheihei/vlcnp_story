@@ -16,6 +16,7 @@ namespace VLCNP.Movie
         Rigidbody2D rbody;
         Animator animator;
         float vx = 0;
+        float autoJumpPower = 0f;
         bool isLeft = true;
         public enum Direction
         {
@@ -55,6 +56,24 @@ namespace VLCNP.Movie
             rbody.AddForce(new Vector2(0, _jumpPower), ForceMode2D.Impulse);
         }
 
+        public void AutoJump(float _jumpPower = 2)
+        {
+            autoJumpPower = _jumpPower;
+        }
+
+        public void StopAutoJump()
+        {
+            autoJumpPower = 0;
+        }
+
+        private void FixedUpdate()
+        {
+            if (animator.GetBool("isGround") && autoJumpPower > 0)
+            {
+                Jump(autoJumpPower);
+            }
+        }
+
         public void Defeated(float rotation = 90)
         {
             // デフォルトはうつ伏せ
@@ -78,6 +97,11 @@ namespace VLCNP.Movie
         public void SetSpeed(float _speed)
         {
             speed = _speed;
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            transform.position = position;
         }
 
         public void MoveToPositionEvent(Vector3 position, float timeout = 0, bool keepDirection = false)
