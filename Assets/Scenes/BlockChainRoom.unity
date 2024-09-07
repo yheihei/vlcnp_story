@@ -26282,6 +26282,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6581716286571642637, guid: 011494565755b490386e78a113e3c871, type: 3}
   m_PrefabInstance: {fileID: 1520025446}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1520025448 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5598845851302252394, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 1520025446}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1520025449 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3984008366571946232, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 1520025446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1580530138
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45133,7 +45143,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: commandList.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: commandList.Array.data[0]
@@ -45145,6 +45155,18 @@ PrefabInstance:
       objectReference: {fileID: 1760758572}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: commandList.Array.data[2]
+      value: 
+      objectReference: {fileID: 1760758589}
+    - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: commandList.Array.data[3]
+      value: 
+      objectReference: {fileID: 1760758588}
+    - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: commandList.Array.data[4]
+      value: 
+      objectReference: {fileID: 1760758587}
+    - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: commandList.Array.data[5]
       value: 
       objectReference: {fileID: 1760758573}
     m_RemovedComponents:
@@ -45448,6 +45470,114 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
+--- !u!114 &1760758587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660215069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 16
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1520025448}
+  targetComponentAssemblyName: VLCNP.Control.PartyCongroller, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: PartyCongroller
+  targetMethod: SetCurrentPlayerByName
+  targetMethodText: 'SetCurrentPlayerByName (String): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: System.String, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.String
+      intValue: 0
+      boolValue: 0
+      floatValue: 0
+      stringValue: Akim
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1760758588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660215069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3315ad2ebb85443909a1203d56d9344e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 15
+  indentLevel: 0
+  _duration:
+    floatRef: {fileID: 0}
+    floatVal: 0.6
+  durationOLD: 0
+--- !u!114 &1760758589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660215069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 14
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1520025449}
+  targetComponentAssemblyName: VLCNP.Core.FaderWrapper, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: FaderWrapper
+  targetMethod: FadeOut
+  targetMethodText: 'FadeOut (Single): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Single
+      intValue: 0
+      boolValue: 0
+      floatValue: 0.5
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1001 &1882992492
 PrefabInstance:
   m_ObjectHideFlags: 0

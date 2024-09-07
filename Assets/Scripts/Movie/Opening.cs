@@ -1,4 +1,5 @@
 using System.Collections;
+using Cinemachine;
 using Fungus;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
@@ -63,6 +64,8 @@ namespace VLCNP.Movie
             player.GetComponent<PlayerController>().enabled = true;
             // プレイヤーを開始位置に移動
             player.transform.position = startPoint.position;
+            // CMCameraを取得して、プレイヤーを追従させる
+            GameObject.FindWithTag("CMCamera").GetComponent<CinemachineVirtualCamera>().Follow = player.transform;
             // AreaNameをタグで取得し、表示
             AreaNameShow areaNameShow = GameObject.FindWithTag("AreaName").GetComponent<AreaNameShow>();
             areaNameShow.Show();
