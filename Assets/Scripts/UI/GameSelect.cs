@@ -16,7 +16,12 @@ namespace VLCNP.UI
 
         Select currentSelect = Select.Start;
         Vector3 selectButtonOriginalPosition;
+        bool canSelect = false;
 
+        public void EnableSelect()
+        {
+            canSelect = true;
+        }
 
         private void Awake()
         {
@@ -25,6 +30,7 @@ namespace VLCNP.UI
 
         public void FixedUpdate()
         {
+            if (!canSelect) return;
             if (Input.GetKey("down"))
             {
                 ChangeSelect(Select.Load);
