@@ -10,6 +10,7 @@ using System;
 using VLCNP.Movement;
 using System.Collections;
 using System.Runtime.Serialization.Json;
+using VLCNP.Combat;
 
 namespace VLCNP.Control
 {
@@ -95,10 +96,21 @@ namespace VLCNP.Control
             TransferPlayerStats(previousPlayer, currentPlayer);
             ChangeDisplay();
 
+            EquipWeapon();
+
             ApplyVelocityToCurrentPlayer(previousVelocity);
             UnstopCurrentPlayer();
 
             OnChangeCharacter?.Invoke(currentPlayer);
+        }
+
+        private void EquipWeapon()
+        {
+            if (currentPlayer.name != "Akim") return;
+            if (flagManager.GetFlag(Flag.VeryLongGunEquipped))
+            {
+                currentPlayer.GetComponent<Fighter>().EquipWeapon(Resources.Load<WeaponConfig>("VeryLongGunConfig"));
+            }
         }
 
         private void TransferPlayerStats(GameObject from, GameObject to)
