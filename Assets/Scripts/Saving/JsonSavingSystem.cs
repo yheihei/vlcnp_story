@@ -42,6 +42,9 @@ namespace VLCNP.Saving
             JObject state = LoadJsonFromFile(saveFile);
             CaptureAsToken(state);
             SaveFileAsJSon(saveFile, state);
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                Application.ExternalEval("FS.syncfs(false,function(err){console.log('Synced')});");
+            #endif
         }
 
         /// <summary>
