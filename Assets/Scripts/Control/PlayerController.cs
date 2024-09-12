@@ -15,6 +15,8 @@ namespace VLCNP.Control
 
         public bool IsStopped { get => isStopped; set => isStopped = value; }
 
+        public string attackButton = "x";
+
         private void Awake()
         {
             mover = GetComponent<Mover>();
@@ -68,7 +70,7 @@ namespace VLCNP.Control
             {
                 fighter.WeaponHorizontal();
             }
-            if (Input.GetKeyUp("z"))
+            if (Input.GetKeyUp(attackButton))
             {
                 fighter.Attack();
             }

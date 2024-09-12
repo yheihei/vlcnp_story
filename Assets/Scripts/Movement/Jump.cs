@@ -21,6 +21,7 @@ namespace VLCNP.Movement
 
         private bool isStopped = false;
         public bool IsStopped { get => isStopped; set => isStopped = value; }
+        public string jumpButton = "space";
 
         private void Awake()
         {
@@ -36,7 +37,7 @@ namespace VLCNP.Movement
                 return;
             }
             // ジャンプボタン押しっぱなしの場合は一度離さないとジャンプできない
-            if (Input.GetKeyUp("space"))
+            if (Input.GetKeyUp(jumpButton))
             {
                 isJumpButtonKeep = false;
             }
@@ -46,18 +47,18 @@ namespace VLCNP.Movement
             }
 
             // ジャンプの開始判定
-            if (leg.IsGround && Input.GetKey("space"))
+            if (leg.IsGround && Input.GetKey(jumpButton))
             {
                 isJumping = true;
             }
             // ジャンプ中の処理
             if (isJumping)
             {
-                if (Input.GetKeyUp("space") || jumpTime >= maxJumpTime)
+                if (Input.GetKeyUp(jumpButton) || jumpTime >= maxJumpTime)
                 {
                     EndJump();
                 }
-                else if (Input.GetKey("space"))
+                else if (Input.GetKey(jumpButton))
                 {
                     jumpTime += Time.deltaTime;
                 }
@@ -74,7 +75,7 @@ namespace VLCNP.Movement
         {
             EndJump();
             // 着地時にジャンプボタン押しっぱなしの場合はジャンプボタン押しっぱなしと判定
-            if (Input.GetKey("space"))
+            if (Input.GetKey(jumpButton))
             {
                 isJumpButtonKeep = true;
             }
