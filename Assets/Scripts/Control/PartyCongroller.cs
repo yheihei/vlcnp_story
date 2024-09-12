@@ -32,6 +32,8 @@ namespace VLCNP.Control
 
         public event Action<GameObject> OnChangeCharacter;
 
+        KeyCode swithCharacterButton = KeyCode.Z;
+
         private void Awake()
         {
             SetCurrentPlayerActive();
@@ -59,7 +61,7 @@ namespace VLCNP.Control
         private void Update()
         {
             if (isStopped) return;
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(swithCharacterButton))
             {
                 SwitchNextPlayer();
             }
