@@ -15,6 +15,7 @@ namespace VLCNP.UI
         [SerializeField] float showTimeDuration = 2.5f;
         float damageAmount = 0f;
         float showTime = 0f;
+        bool isDestroy = false;
 
         private void Awake()
         {
@@ -28,13 +29,23 @@ namespace VLCNP.UI
 
         public void AddDamageText(float damagePoint)
         {
-            print($"AddDamageText: {damagePoint}");
             showTime = 0f;
             // Text表示
             damageText.color = new Color(damageText.color.r, damageText.color.g, damageText.color.b, 1f);
             // ダメージを合算
             damageAmount += damagePoint;
             damageText.text = damageAmount.ToString();
+        }
+
+        // 死んだときダメージキャラクターの子オブジェクトから離脱し、その座標にとどまるようにする
+        public void WithDrawlFromCharacterAndDestroy()
+        {
+            Vector3 currentPos = transform.position;
+            transform.SetParent(null);
+            transform.position = currentPos;
+            isDestroy = true;
+            // 一定時間後に消滅
+            Destroy(gameObject, showTimeDuration);
         }
 
         void ResetDamageText()
@@ -47,6 +58,7 @@ namespace VLCNP.UI
 
         void FixedUpdate()
         {
+            if (isDestroy) return;
             showTime += Time.deltaTime;
             if (showTime > showTimeDuration)
             {
@@ -61,6 +73,7 @@ namespace VLCNP.UI
 
         private void UpdateDirection()
         {
+            if (isDestroy) return;
             if (IsCharacterDirectionLeft())
             {
                 transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
