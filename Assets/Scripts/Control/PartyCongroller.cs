@@ -94,6 +94,10 @@ namespace VLCNP.Control
             SetNextPlayerPosition(nextPlayer);
             nextPlayer.GetComponent<Health>().InheritInvincible(previousPlayer.GetComponent<Health>());
 
+            // 現在のプレイヤーのジャンプ状態を解除
+            Jump jump = previousPlayer.GetComponent<Jump>();
+            if (jump != null) jump.EndJump();
+
             currentPlayer = nextPlayer;
             SetCurrentPlayerActive();
 

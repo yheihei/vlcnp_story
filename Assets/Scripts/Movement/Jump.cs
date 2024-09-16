@@ -65,7 +65,7 @@ namespace VLCNP.Movement
             }
         }
 
-        private void EndJump()
+        public void EndJump()
         {
             isJumping = false;
             jumpTime = 0;
