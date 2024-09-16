@@ -14,9 +14,19 @@ namespace VLCNP.Combat.EnemyWeapon
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.gameObject.CompareTag(targetTagName)) return;
-            Health health = other.gameObject.GetComponent<Health>();
+            Attack(other.gameObject.GetComponent<Health>());
+        }
+
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            if (!other.gameObject.CompareTag(targetTagName)) return;
+            Attack(other.gameObject.GetComponent<Health>());
+        }
+
+        private void Attack(Health health)
+        {
             if (health == null) return;
             health.TakeDamage(weaponConfig.GetDamage());
-        }
+        }  
     }
 }

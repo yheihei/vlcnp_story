@@ -187,6 +187,8 @@ namespace VLCNP.Control
         {
             // 位置を前のキャラに合わせる
             nextPlayer.transform.position = currentPlayer.transform.position;
+            // 向きを前のキャラに合わせる
+            nextPlayer.GetComponent<Mover>().IsLeft = currentPlayer.GetComponent<Mover>().IsLeft;
             // 前のキャラの足の位置の高さ取得
             float previousFootPositionY = currentPlayer.transform.Find("Leg").localPosition.y;
             // 次のキャラの足の位置の高さ取得
