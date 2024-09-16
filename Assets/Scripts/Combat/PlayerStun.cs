@@ -7,6 +7,8 @@ namespace VLCNP.Combat
     public class PlayerStun : MonoBehaviour
     {
         public float stunDuration = 0.5f;
+        public float stunFrame = 120f;
+        private float stunRecoveryFrame = 0;
 
         private bool isStunned = false;
 
@@ -24,9 +26,27 @@ namespace VLCNP.Combat
             return isStunned;
         }
 
+        public void Set(PlayerStun playerStun)
+        {
+            stunDuration = playerStun.stunDuration;
+            stunFrame = playerStun.stunFrame;
+            stunRecoveryFrame = playerStun.stunRecoveryFrame;
+            isStunned = playerStun.isStunned;
+            if (isStunned)
+            {
+                StartCoroutine(StunRecovery());
+            }
+        }
+
         private IEnumerator StunRecovery()
         {
-            yield return new WaitForSeconds(stunDuration);
+            // yield return new WaitForSeconds(stunDuration);
+            // isStunned = false;
+            while (stunRecoveryFrame < stunFrame)
+            {
+                stunRecoveryFrame++;
+                yield return null;
+            }
             isStunned = false;
         }
     }    

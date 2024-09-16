@@ -39,5 +39,14 @@ namespace VLCNP.Movement
                 OnLanded?.Invoke();
             }
         }
+
+        public void NotifiedLanded(bool _isGround)
+        {
+            IsGround = _isGround;
+            if (IsGround)
+            {
+                OnLanded?.Invoke();
+            }
+        }
     }
 }
