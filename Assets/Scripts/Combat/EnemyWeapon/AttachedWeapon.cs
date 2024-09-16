@@ -26,7 +26,9 @@ namespace VLCNP.Combat.EnemyWeapon
         private void Attack(Health health)
         {
             if (health == null) return;
-            health.TakeDamage(weaponConfig.GetDamage());
+            // transformのlossyscaleが マイナスの場合は左向き
+            bool isLeft = transform.lossyScale.x < 0;
+            health.TakeDamage(weaponConfig.GetDamage(), isLeft);
         }  
     }
 }

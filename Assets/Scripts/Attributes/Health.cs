@@ -7,6 +7,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using VLCNP.Core;
 using System.Collections;
+using Fungus;
+using MoonSharp.VsCodeDebugger.SDK;
 
 namespace VLCNP.Attributes
 {
@@ -52,7 +54,7 @@ namespace VLCNP.Attributes
             timeSinceLastHit += Time.deltaTime;
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, bool isBlowAwayDirectionLeft = false)
         {
             if (isTempInvincible) return;
             if (isStopped) return;
@@ -76,7 +78,12 @@ namespace VLCNP.Attributes
             } else {
                 // 吹っ飛ばす
                 Rigidbody2D rBody = GetComponent<Rigidbody2D>();
-                rBody.AddForce(new Vector2(rBody.velocity.x, 3), ForceMode2D.Impulse);
+                if (isBlowAway)
+                {
+                    rBody.AddForce(new Vector2(isBlowAwayDirectionLeft ? -3 : 3, 3), ForceMode2D.Impulse);
+                } else {
+                    rBody.AddForce(new Vector2(0, 3), ForceMode2D.Impulse);
+                }
             }
         }
 

@@ -68,7 +68,7 @@ namespace VLCNP.Combat
         {
             if (directAttackWeaponConfig == null) return;
             int level = baseStats ? baseStats.GetLevel() : 1;
-            target.GetComponent<Health>().TakeDamage(directAttackWeaponConfig.GetDamage(level));
+            target.GetComponent<Health>().TakeDamage(directAttackWeaponConfig.GetDamage(level), transform.lossyScale.x < 0);
         }
 
         private bool GetIsLeft()
