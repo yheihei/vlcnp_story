@@ -7,7 +7,7 @@ namespace VLCNP.Combat
     public class PlayerStun : MonoBehaviour
     {
         public float stunDuration = 0.5f;
-        public float stunFrame = 120f;
+        public float stunFrame = 30f;
         private float stunRecoveryFrame = 0;
 
         private bool isStunned = false;
