@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VLCNP.Combat;
 using VLCNP.Combat.EnemyAction;
 using VLCNP.Core;
 
@@ -9,6 +10,8 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
     int currentActionIndex = 0;
     [SerializeField] public List<EnemyAction> enemyActions;
     Animator animator;
+    [SerializeField] string attackTargetTagName = "Player";
+    Fighter fighter;
 
     private bool isStopped;
     public bool IsStopped { get => isStopped; set => isStopped = value; }
@@ -16,6 +19,7 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        fighter = GetComponent<Fighter>();
     }
 
     // 現在の行動を取得する
@@ -81,5 +85,16 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
     public void Resume()
     {
         isStopped = false;
+    }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        AttackBehavior(other);
+    }
+
+    private void AttackBehavior(Collision2D other)
+    {
+        if (other.gameObject.tag != attackTargetTagName) return;
+        fighter.DirectAttack(other.gameObject);
     }
 }

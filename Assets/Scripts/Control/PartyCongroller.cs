@@ -61,6 +61,8 @@ namespace VLCNP.Control
         private void Update()
         {
             if (isStopped) return;
+            // 現在のキャラが死んでいれば受け付けない
+            if (currentPlayer.GetComponent<Health>().IsDead) return;
             if (Input.GetKeyDown(swithCharacterButton))
             {
                 SwitchNextPlayer();
@@ -102,6 +104,27 @@ namespace VLCNP.Control
 
             ApplyVelocityToCurrentPlayer(previousVelocity);
             UnstopCurrentPlayer();
+
+            // プレイヤーのStun状態を引き継ぐ
+            PlayerStun previousPlayerStun = previousPlayer.GetComponent<PlayerStun>();
+            if (previousPlayerStun != null)
+            {
+                PlayerStun currentPlayerStun = currentPlayer.GetComponent<PlayerStun>();
+                if (currentPlayerStun != null)
+                {
+                    currentPlayerStun.Set(previousPlayerStun);
+                }
+            }
+
+            // legの接地状態を切り替え前のプレイヤーから引き継ぐ
+            Leg leg = currentPlayer.GetComponent<Leg>();
+            if (leg != null) {
+                leg.NotifiedLanded(previousPlayer.GetComponent<Leg>().IsGround);
+            }
+
+            // 切り替え前のプレイヤーのジャンプ状態を解除
+            Jump jump = previousPlayer.GetComponent<Jump>();
+            if (jump != null) jump.EndJump();
 
             OnChangeCharacter?.Invoke(currentPlayer);
         }
