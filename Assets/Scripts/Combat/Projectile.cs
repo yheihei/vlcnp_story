@@ -72,7 +72,7 @@ namespace VLCNP.Combat
                 // ヒットしたオブジェクトを記録しておく
                 penetratedObjects.Add(other.gameObject);
                 Health health = other.gameObject.GetComponent<Health>();
-                if (health != null) health.TakeDamage(damage);
+                if (health != null) health.TakeDamage(damage, isLeft);
                 if (!IsPenetration) ImpactAndDestory();
             }
         }
