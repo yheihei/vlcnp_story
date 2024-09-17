@@ -15,6 +15,8 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
 
     private bool isStopped;
     public bool IsStopped { get => isStopped; set => isStopped = value; }
+    // 暗転あけ後の待ち時間
+    [SerializeField] float StartWaitTime = 1.0f;
 
     private void Awake()
     {
@@ -46,6 +48,8 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
             GetCurrentAction()?.Stop();
             return;
         }
+        StartWaitTime -= Time.deltaTime;
+        if (StartWaitTime > 0f) return;
         // 現在の行動を取得する
         IEnemyAction currentAction = GetCurrentAction();
         if (currentAction == null) return;
