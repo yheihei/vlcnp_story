@@ -36,38 +36,41 @@ namespace VLCNP.Combat.EnemyAction
 
         private IEnumerator Throw()
         {
-            if (!weaponConfig.HasProjectile())
+            if (weaponConfig == null || !weaponConfig.HasProjectile())
             {
                 IsDone = true;
                 yield break;
             }
-            damageStun.InvalidStan();
-            // プレイヤーの方向を向く
+            if (damageStun != null) damageStun.InvalidStan();
+            
             GameObject player = GameObject.FindWithTag("Player");
-            if (player == null)
+            if (player != null)
             {
-                IsDone = true;
-                yield break;
+                if (player.transform.position.x < transform.position.x)
+                {
+                    SetDirection(Direction.Left);
+                }
+                else
+                {
+                    SetDirection(Direction.Right);
+                }
             }
-            if (player.transform.position.x < transform.position.x)
-            {
-                SetDirection(Direction.Left);
-            }
-            else
-            {
-                SetDirection(Direction.Right);
-            }
-            // animatorの、"throw"トリガーを発動する
+            
             if (animator != null)
             {
                 animator.SetTrigger("throw");
             }
-            // animationが完了するまで待つ調整
+            
             yield return new WaitForSeconds(animationOffsetWaitTime);
-            bool isLeft = transform.lossyScale.x > 0;
-            weaponConfig.LaunchProjectile(handTransform, 1, isLeft);
+            
+            if (handTransform != null)
+            {
+                bool isLeft = transform.lossyScale.x > 0;
+                weaponConfig.LaunchProjectile(handTransform, 1, isLeft);
+            }
+            
             IsDone = true;
-            damageStun.ValidStan();
+            if (damageStun != null) damageStun.ValidStan();
         }
 
         public void SetDirection(Direction _direction)
