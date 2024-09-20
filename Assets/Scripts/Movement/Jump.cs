@@ -10,8 +10,6 @@ namespace VLCNP.Movement
         [SerializeField] Leg leg;
         Rigidbody2D rBody;
         bool isJumping = false;
-        // ジャンプボタンが押しっぱなしかどうか。押しっぱなしで連続ジャンプはしない
-        bool isJumpButtonKeep = false;
 
         [SerializeField, Min(0)] float jumpPower = 7.5f;
         [SerializeField, Min(0)] float minJumpPower = 2f;
@@ -36,18 +34,8 @@ namespace VLCNP.Movement
                 EndJump();
                 return;
             }
-            // ジャンプボタン押しっぱなしの場合は一度離さないとジャンプできない
-            if (Input.GetKeyUp(jumpButton))
-            {
-                isJumpButtonKeep = false;
-            }
-            if (isJumpButtonKeep)
-            {
-                return;
-            }
-
             // ジャンプの開始判定
-            if (leg.IsGround && Input.GetKey(jumpButton))
+            if (leg.IsGround && Input.GetKeyDown(jumpButton))
             {
                 isJumping = true;
             }
@@ -74,11 +62,6 @@ namespace VLCNP.Movement
         private void OnLanded()
         {
             EndJump();
-            // 着地時にジャンプボタン押しっぱなしの場合はジャンプボタン押しっぱなしと判定
-            if (Input.GetKey(jumpButton))
-            {
-                isJumpButtonKeep = true;
-            }
             // 落下速度がマイナスで着地の際は落下速度を0にしてバウンドを回避
             if (rBody.velocity.y < 0)
             {
