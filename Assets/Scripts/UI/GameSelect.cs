@@ -39,7 +39,7 @@ namespace VLCNP.UI
             {
                 ChangeSelect(Select.Start);
             }
-            else if (Input.GetKey("return"))
+            else if (Input.GetKeyDown("return") || Input.GetKeyDown("space"))
             {
                 SelectGameMode();
             }
