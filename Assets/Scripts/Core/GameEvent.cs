@@ -95,6 +95,7 @@ namespace VLCNP.Core
 
         private IEnumerator ExecuteBlock(string blockName)
         {
+            if (flowChart == null) yield break;
             if (flowChart.HasExecutingBlocks()) yield break;
             isAction = false;
             print("ExecuteBlock: " + this + ": " + blockName);
