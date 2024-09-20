@@ -70,7 +70,7 @@ namespace VLCNP.Control
             {
                 fighter.WeaponHorizontal();
             }
-            if (Input.GetKeyUp(attackButton))
+            if (Input.GetKeyDown(attackButton))
             {
                 fighter.Attack();
             }
