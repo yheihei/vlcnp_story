@@ -28,18 +28,18 @@ namespace VLCNP.UI
             selectButtonOriginalPosition = selectButton.transform.position;
         }
 
-        public void FixedUpdate()
+        public void Update()
         {
             if (!canSelect) return;
-            if (Input.GetKey("down"))
+            if (Input.GetKeyDown("down"))
             {
                 ChangeSelect(Select.Load);
             }
-            else if (Input.GetKey("up"))
+            else if (Input.GetKeyDown("up"))
             {
                 ChangeSelect(Select.Start);
             }
-            else if (Input.GetKey("return"))
+            else if (Input.GetKeyDown("return") || Input.GetKeyDown("space"))
             {
                 SelectGameMode();
             }
