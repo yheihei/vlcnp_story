@@ -2060,6 +2060,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 7c0538d828df24c769d5cf27974adc47, type: 3}
+    - target: {fileID: 8608520201518773760, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8608520201518773761, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -2406,6 +2410,7 @@ GameObject:
   - component: {fileID: 1430527682}
   - component: {fileID: 1430527681}
   - component: {fileID: 1430527683}
+  - component: {fileID: 1430527684}
   m_Layer: 0
   m_Name: Flowchart
   m_TagString: Untagged
@@ -2440,7 +2445,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1430527644}
   selectedCommands:
-  - {fileID: 1430527683}
+  - {fileID: 1430527678}
   variables: []
   description: 
   stepPause: 0
@@ -2504,8 +2509,9 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 1430527648}
   commandList:
-  - {fileID: 1430527680}
+  - {fileID: 1430527684}
   - {fileID: 1430527647}
+  - {fileID: 1430527680}
   - {fileID: 1430527645}
   - {fileID: 1430527643}
   - {fileID: 1430527650}
@@ -2625,7 +2631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentBlock: {fileID: 1430527644}
   suppressBlockAutoSelect: 0
-  waitForFrames: 1
+  waitForFrames: 0
 --- !u!4 &1430527649
 Transform:
   m_ObjectHideFlags: 0
@@ -3582,6 +3588,34 @@ MonoBehaviour:
     floatRef: {fileID: 0}
     floatVal: 1.5
   durationOLD: 0
+--- !u!114 &1430527684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430527641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 39
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1643430778}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1001 &1451244154
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4412,6 +4446,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2903528767563645245, guid: 282d10bd840f2244d993130a17f23515, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 282d10bd840f2244d993130a17f23515, type: 3}
+--- !u!1 &1643430778 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4788655833701329706, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 1520025446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1647550590
 GameObject:
   m_ObjectHideFlags: 0
