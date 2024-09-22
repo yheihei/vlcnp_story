@@ -25,6 +25,7 @@ namespace VLCNP.Control
 
         void Update()
         {
+            if (LoadCompleteManager.Instance != null && !LoadCompleteManager.Instance.IsLoaded) return;
             if (isStopped)
             {
                 mover.Stop();

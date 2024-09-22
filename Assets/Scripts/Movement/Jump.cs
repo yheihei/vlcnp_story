@@ -29,6 +29,7 @@ namespace VLCNP.Movement
 
         void Update()
         {
+            if (LoadCompleteManager.Instance != null && !LoadCompleteManager.Instance.IsLoaded) return;
             if (isStopped)
             {
                 EndJump();
