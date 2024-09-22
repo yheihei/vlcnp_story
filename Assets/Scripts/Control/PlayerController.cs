@@ -78,7 +78,7 @@ namespace VLCNP.Control
 
         private void InteractWithCollisionActions()
         {
-            if (Input.GetKey("up") && collisionAction != null && collisionAction.IsAction)
+            if (Input.GetKeyDown("up") && collisionAction != null && collisionAction.IsAction)
             {
                 collisionAction.Execute();
             }
