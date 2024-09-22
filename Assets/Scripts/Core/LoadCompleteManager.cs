@@ -8,7 +8,6 @@ namespace VLCNP.Core
     {
         public static LoadCompleteManager Instance { get; private set; }
 
-        [SerializeField] private List<MonoBehaviour> objectsToInitialize;
         [SerializeField] private int initializeFrame = 2;
         public bool IsLoaded { get; private set; } = false;
 
