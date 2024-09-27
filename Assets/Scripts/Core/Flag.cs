@@ -28,5 +28,6 @@ namespace VLCNP.Core
         HPUpOhirunebeyaBoss,  // お昼寝部屋のボスを倒した際のHPアップ
         HPUpDragDefeated,  // ドラァグクイーンを倒した際のHPアップ
         AkimVeryLong,  // Akimがベリーロングになった
+        KabeKickTutorial,  // かべキックの使い方を教えてもらった
     }
 }
