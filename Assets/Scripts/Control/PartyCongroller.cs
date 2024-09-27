@@ -160,10 +160,20 @@ namespace VLCNP.Control
 
         private void UnstopCurrentPlayer()
         {
-            IStoppable stoppable = currentPlayer.GetComponent<IStoppable>();
-            if (stoppable != null)
+            // currentPlayer配下のすべてのIStoppableを取得して停止状態を解除する
+            IStoppable[] stoppables = currentPlayer.GetComponents<IStoppable>();
+            foreach (IStoppable stoppable in stoppables)
             {
                 stoppable.IsStopped = false;
+            }
+            // currentPlayerの子要素にも適用
+            foreach (Transform child in currentPlayer.transform)
+            {
+                IStoppable[] childStoppables = child.GetComponents<IStoppable>();
+                foreach (IStoppable stoppable in childStoppables)
+                {
+                    stoppable.IsStopped = false;
+                }
             }
         }
 
