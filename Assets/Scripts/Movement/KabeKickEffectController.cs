@@ -106,16 +106,6 @@ namespace VLCNP.Movement
 
         void FixedUpdate()
         {
-            // playerがAkimのときだけログを出力
-            if (player.name == "Akim")
-            {
-                Debug.Log("isJumping: " + isJumping);
-                Debug.Log("jumpTime: " + jumpTime);
-                Debug.Log("isStopped: " + isStopped);
-                Debug.Log("isColliding: " + isColliding);
-                Debug.Log("IsKabekick: " + IsKabekick());
-                Debug.Log("IsGrabbing: " + IsGrabbing());
-            }
             if (isStopped) return;
             GravityChange();
             UpdateAnimation();
