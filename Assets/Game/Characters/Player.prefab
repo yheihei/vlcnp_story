@@ -179,9 +179,9 @@ MonoBehaviour:
   leg: {fileID: 3487292076679122934}
   gravityWhenKabeKickMagnification: 0.1
   maxJumpTime: 0.1
-  jumpPowerX: 3.5
+  jumpPowerX: 2
   jumpPowerY: 6
-  maxAbsoluteVelocityY: 3
+  maxAbsoluteVelocityY: 1.5
 --- !u!1001 &8426694926020718296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -585,6 +585,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  jumpButton: space
 --- !u!114 &2904360697236049413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -644,6 +645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stunDuration: 0.2
+  stunFrame: 40
 --- !u!114 &3981693041705620213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -656,6 +658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1721d70e7cc49bda25dd53fae27dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackButton: x
 --- !u!114 &4373353058723386108
 MonoBehaviour:
   m_ObjectHideFlags: 0
