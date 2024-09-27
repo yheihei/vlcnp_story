@@ -50,7 +50,7 @@ namespace VLCNP.Control
                 }
                 member.gameObject.SetActive(true);
                 // playerのIStoppableをすべて取得して停止状態を解除する
-                IStoppable[] stoppables = member.GetComponents<IStoppable>();
+                IStoppable[] stoppables = member.GetComponentsInChildren<IStoppable>();
                 foreach (IStoppable stoppable in stoppables)
                 {
                     stoppable.IsStopped = false;
@@ -103,7 +103,6 @@ namespace VLCNP.Control
             EquipWeapon();
 
             ApplyVelocityToCurrentPlayer(previousVelocity);
-            UnstopCurrentPlayer();
 
             // プレイヤーのStun状態を引き継ぐ
             PlayerStun previousPlayerStun = previousPlayer.GetComponent<PlayerStun>();
@@ -155,25 +154,6 @@ namespace VLCNP.Control
             if (currentRigitBody != null)
             {
                 currentRigitBody.velocity = velocity;
-            }
-        }
-
-        private void UnstopCurrentPlayer()
-        {
-            // currentPlayer配下のすべてのIStoppableを取得して停止状態を解除する
-            IStoppable[] stoppables = currentPlayer.GetComponents<IStoppable>();
-            foreach (IStoppable stoppable in stoppables)
-            {
-                stoppable.IsStopped = false;
-            }
-            // currentPlayerの子要素にも適用
-            foreach (Transform child in currentPlayer.transform)
-            {
-                IStoppable[] childStoppables = child.GetComponents<IStoppable>();
-                foreach (IStoppable stoppable in childStoppables)
-                {
-                    stoppable.IsStopped = false;
-                }
             }
         }
 
