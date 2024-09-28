@@ -80,7 +80,7 @@ namespace VLCNP.Attributes
                 Rigidbody2D rBody = GetComponent<Rigidbody2D>();
                 if (isBlowAway)
                 {
-                    rBody.AddForce(new Vector2(isBlowAwayDirectionLeft ? -3 : 3, 3), ForceMode2D.Impulse);
+                    rBody.AddForce(new Vector2(isBlowAwayDirectionLeft ? -6 : 6, 3), ForceMode2D.Impulse);
                 } else {
                     rBody.AddForce(new Vector2(0, 3), ForceMode2D.Impulse);
                 }
