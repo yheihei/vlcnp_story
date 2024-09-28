@@ -62,8 +62,19 @@ namespace VLCNP.Core
 
         private void ChangeCollider(int levelIndex)
         {
-            CapsuleCollider2D playerCollider = GetComponent<CapsuleCollider2D>();
-            BoxCollider2D playerGroundCollider = GetComponent<BoxCollider2D>();
+            BoxCollider2D playerCollider = null;
+            BoxCollider2D playerGroundCollider = null;
+            foreach (BoxCollider2D collider in GetComponents<BoxCollider2D>())
+            {
+                if (collider.isTrigger)
+                {
+                    playerGroundCollider = collider;
+                }
+                else
+                {
+                    playerCollider = collider;
+                }
+            }
             ColliderPerLevel colliderPerLevel = animationsPerLevels[levelIndex].colliderPerLevel;
             playerCollider.size = new Vector2(playerCollider.size.x, colliderPerLevel.capsuleCollider2DYSize);
             playerCollider.offset = new Vector2(playerCollider.offset.x, colliderPerLevel.capsuleCollider2DYOffset);

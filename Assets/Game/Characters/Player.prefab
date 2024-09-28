@@ -88,7 +88,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.47, y: 0.12}
+  m_Size: {x: 0.53, y: 0.12}
   m_EdgeRadius: 0
 --- !u!114 &3487292076679122934
 MonoBehaviour:
@@ -322,6 +322,10 @@ PrefabInstance:
       value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 1293353037348216643, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: f988124d2532b417488b26a84a885edd, type: 2}
+    - target: {fileID: 1293353037348216643, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       propertyPath: m_Offset.x
       value: 0
       objectReference: {fileID: 0}
@@ -479,6 +483,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1971176698279101890, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+    - {fileID: 6219366780173842576, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
 --- !u!114 &191257858950457016 stripped
 MonoBehaviour:
@@ -496,6 +501,32 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7162812308406061260, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
   m_PrefabInstance: {fileID: 8426694926020718296}
   m_PrefabAsset: {fileID: 0}
+--- !u!61 &3746417124268025254
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699767717115717140}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: b6f46401233d8411b8076bd97c507ae4, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.04, y: -0.51}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 1.62, y: 1.49}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.89, y: 1.42}
+  m_EdgeRadius: 0.01
 --- !u!114 &72677200839032358
 MonoBehaviour:
   m_ObjectHideFlags: 0
