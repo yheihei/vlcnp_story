@@ -29,6 +29,16 @@ namespace VLCNP.Core
             bgm.Play();
         }
 
+        public void PlayOneShot(AudioClip clip, float volume, float pitch)
+        {
+            if (bgm == null) return;
+            bgm.Stop();
+            bgm.SetAudioClip(clip);
+            bgm.SetAudioVolume(volume);
+            bgm.SetAudioPitch(pitch);
+            bgm.PlayOneShot(clip, volume);
+        }
+
         // BGMをフェードアウトさせる
         public void FadeOut(float duration)
         {

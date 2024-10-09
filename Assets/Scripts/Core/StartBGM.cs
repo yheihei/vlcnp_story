@@ -59,4 +59,9 @@ public class StartBGM : MonoBehaviour
         }
         audioSource.Play();
     }
+
+    public void PlayOneShot(AudioClip clip, float volume)
+    {
+        audioSource.PlayOneShot(clip, volume);
+    }
 }
