@@ -126,7 +126,7 @@ PrefabInstance:
     - target: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: selectedCommands.Array.data[0]
       value: 
-      objectReference: {fileID: 65457455096503565}
+      objectReference: {fileID: 8435467872677940388}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: nodeRect.y
       value: 70
@@ -175,7 +175,9 @@ PrefabInstance:
       propertyPath: commandList.Array.data[7]
       value: 
       objectReference: {fileID: 65457455096503565}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3811741307927765878, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+    - {fileID: 1509632038583652988, guid: fbb78368ef33c44faa030963b129d648, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
 --- !u!1 &1147134639426278480 stripped
 GameObject:
@@ -251,6 +253,33 @@ MonoBehaviour:
   returnValueType: 
   showInherited: 0
   callMode: 0
+--- !u!114 &65457455096503565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2636973373209380923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 8
+  indentLevel: 0
+  description: "FlagON\u306B\u3059\u308B"
+  targetObject: {fileID: 0}
+  targetComponentAssemblyName: 
+  targetComponentFullname: 
+  targetComponentText: 
+  targetMethod: 
+  targetMethodText: 
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: 
+  showInherited: 0
+  callMode: 0
 --- !u!114 &1162880939234374857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 1
+  itemId: 9
   indentLevel: 0
   storyText: "Akim\u305F\u3061\u306F\u5C11\u3057\u3060\u3051\u8A18\u61B6\u3092\u53D6\u308A\u623B\u3057\u305F\uFF01"
   description: 
@@ -344,10 +373,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd2f6be51b3d7490ba5633ee095d0391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 2
+  itemId: 10
   indentLevel: 0
   soundClip: {fileID: 8300000, guid: a979785ec5f794f23b352560d0a3c338, type: 3}
-  volume: 1
+  volume: 0.7
   waitUntilFinished: 0
 --- !u!114 &7132647884786966606
 MonoBehaviour:
@@ -382,35 +411,8 @@ MonoBehaviour:
   itemId: 4
   indentLevel: 0
   soundClip: {fileID: 8300000, guid: 496de09ec5cf641f3a755fc1e02904d2, type: 3}
-  volume: 1
+  volume: 0.5
   waitUntilFinished: 0
---- !u!114 &65457455096503565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2636973373209380923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 8
-  indentLevel: 0
-  description: "FlagON\u306B\u3059\u308B"
-  targetObject: {fileID: 0}
-  targetComponentAssemblyName: 
-  targetComponentFullname: 
-  targetComponentText: 
-  targetMethod: 
-  targetMethodText: 
-  methodParameters: []
-  saveReturnValue: 0
-  returnValueVariableKey: 
-  returnValueType: 
-  showInherited: 0
-  callMode: 0
 --- !u!114 &5459386508435450141 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}

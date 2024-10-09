@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Fungus;
 using Nethereum.ENS.PublicResolver.ContractDefinition;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace VLCNP.Core
         {
             // BGMのtagを持つオブジェクトを探して、そのStartBGMを取得する
             bgm = GameObject.FindWithTag("BGM")?.GetComponent<StartBGM>();
+            Debug.Log(bgm);
         }
 
         public void Play(AudioClip clip, float volume, float pitch)
@@ -25,6 +27,16 @@ namespace VLCNP.Core
             bgm.SetAudioVolume(volume);
             bgm.SetAudioPitch(pitch);
             bgm.Play();
+        }
+
+        public void PlayOneShot(AudioClip clip, float volume, float pitch)
+        {
+            if (bgm == null) return;
+            bgm.Stop();
+            bgm.SetAudioClip(clip);
+            bgm.SetAudioVolume(volume);
+            bgm.SetAudioPitch(pitch);
+            bgm.PlayOneShot(clip, volume);
         }
 
         // BGMをフェードアウトさせる

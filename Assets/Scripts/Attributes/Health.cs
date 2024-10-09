@@ -65,7 +65,7 @@ namespace VLCNP.Attributes
             if (_damage <= 0)
             {
                 AudioSource audioSource = GetComponent<AudioSource>();
-                if (audioSource) audioSource.PlayOneShot(zeroDamageSe, 2.5f);
+                if (audioSource) audioSource.PlayOneShot(zeroDamageSe, 0.5f);
                 takeDamage?.Invoke(_damage);
                 return;
             }

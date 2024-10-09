@@ -8,6 +8,7 @@ namespace VLCNP.Movie
     {
         // SEを設定
         [SerializeField] AudioClip se = null;
+        [SerializeField] float BikkuriVolume = 0.4f;
         // 何フレーム後に削除するか
         int waitFrame = 90;
 
@@ -18,7 +19,7 @@ namespace VLCNP.Movie
 
         public void Bikkuri()
         {
-            AudioSource.PlayClipAtPoint(se, transform.position);
+            AudioSource.PlayClipAtPoint(se, transform.position, BikkuriVolume);
             // 子にBikkuriを生成する
             GameObject obj = Instantiate(Resources.Load<GameObject>("Emotion/Bikkuri"), transform);
             // waitFrameフレーム後に削除

@@ -90,6 +90,8 @@ namespace VLCNP.Core
         IEnumerator EventExecute(FlagToBlockName flagToBlockName)
         {
             if (!isAction) yield break;
+            // 現在のフラグに対するブロック名が空文字のときは実行しない
+            if (flagToBlockName != null && string.IsNullOrEmpty(flagToBlockName.BlockName)) yield break;
             yield return ExecuteBlock(flagToBlockName != null ? flagToBlockName.BlockName : defaultBlockName);
         }
 

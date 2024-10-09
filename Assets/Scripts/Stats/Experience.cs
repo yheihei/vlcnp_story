@@ -9,6 +9,7 @@ namespace VLCNP.Stats
     {
         [SerializeField] float experiencePoints = 0;
         [SerializeField] float loseExperienceModifier = 2f;
+        [SerializeField] float SEVolume = 0.3f;
         AudioSource audioSource;
         [SerializeField] AudioClip getSeSound = null;
         // public delegate void ExperienceGainedDelegate();
@@ -32,7 +33,7 @@ namespace VLCNP.Stats
             experiencePoints += experience;
             if (audioSource != null && getSeSound != null)
             {
-                audioSource.PlayOneShot(getSeSound);
+                audioSource.PlayOneShot(getSeSound, SEVolume);
             }
             onExperienceGained();
         }
