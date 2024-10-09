@@ -30,6 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7959362377202371281}
+  - {fileID: 3671844085259238500}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -115,16 +116,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6513501814618206521, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: selectedCommands.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6513501814618206521, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: selectedBlocks.Array.data[0]
       value: 
-      objectReference: {fileID: 3316237532687467464}
+      objectReference: {fileID: 5819583098943776368}
     - target: {fileID: 6513501814618206521, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: selectedCommands.Array.data[0]
       value: 
-      objectReference: {fileID: 4166532167893590805}
+      objectReference: {fileID: 4659182711888108616}
     - target: {fileID: 7647600566749555143, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: m_Name
       value: GameOverChat
@@ -147,22 +148,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9135247871445395932, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: commandList.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9135247871445395932, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: commandList.Array.data[0]
       value: 
-      objectReference: {fileID: 5819583098943776383}
+      objectReference: {fileID: 8996832592374692537}
     - target: {fileID: 9135247871445395932, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: commandList.Array.data[1]
       value: 
-      objectReference: {fileID: 5819583098943776369}
+      objectReference: {fileID: 5819583098943776383}
     - target: {fileID: 9135247871445395932, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: commandList.Array.data[2]
       value: 
-      objectReference: {fileID: 5819583098943776380}
+      objectReference: {fileID: 5819583098943776369}
     - target: {fileID: 9135247871445395932, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
       propertyPath: commandList.Array.data[3]
+      value: 
+      objectReference: {fileID: 5819583098943776380}
+    - target: {fileID: 9135247871445395932, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
+      propertyPath: commandList.Array.data[4]
       value: 
       objectReference: {fileID: 5819583098943776382}
     m_RemovedComponents:
@@ -179,22 +184,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3316237532687467464 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9135247871445395932, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
-  m_PrefabInstance: {fileID: 5819583099692050964}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4243221859575530451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d3d73aef2cfc4f51abf34ac00241f60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4243221859575530451 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7647600566749555143, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
   m_PrefabInstance: {fileID: 5819583099692050964}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1509031265828313364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243221859575530451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 10
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1078001735897277375}
+  targetComponentAssemblyName: VLCNP.Core.BGMWrapper, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: BGMWrapper
+  targetMethod: UnmuteForSE
+  targetMethodText: 'UnmuteForSE (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!114 &4166532167893590805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,6 +270,7 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 4659182711888108616}
   - {fileID: 4166532167893590805}
   suppressAllAutoSelections: 0
 --- !u!114 &5819583098943776369
@@ -302,6 +325,7 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 1509031265828313364}
   - {fileID: 5819583098943776381}
   suppressAllAutoSelections: 0
 --- !u!114 &5819583098943776380
@@ -398,8 +422,131 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
+--- !u!114 &8996832592374692537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243221859575530451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 9
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1078001735897277375}
+  targetComponentAssemblyName: VLCNP.Core.BGMWrapper, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: BGMWrapper
+  targetMethod: MuteForSE
+  targetMethodText: 'MuteForSE (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &4659182711888108616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243221859575530451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 11
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1078001735897277375}
+  targetComponentAssemblyName: VLCNP.Core.BGMWrapper, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: BGMWrapper
+  targetMethod: UnmuteForSE
+  targetMethodText: 'UnmuteForSE (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!4 &7959362377202371281 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4518827965383139525, guid: d3dbd6a9a02bd45f099d2c9949c0ca93, type: 3}
   m_PrefabInstance: {fileID: 5819583099692050964}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7784925682340382134
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5819583099654007867}
+    m_Modifications:
+    - target: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 483.63223
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 274.5148
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7132655587629704713, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+      propertyPath: m_Name
+      value: BGMMuter
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+--- !u!1 &1078001735897277375 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7132655587629704713, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+  m_PrefabInstance: {fileID: 7784925682340382134}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3671844085259238500 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6844519345365203410, guid: 490ca496d2d37451c9ad8428f7f93c7b, type: 3}
+  m_PrefabInstance: {fileID: 7784925682340382134}
   m_PrefabAsset: {fileID: 0}
