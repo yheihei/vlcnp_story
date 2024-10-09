@@ -620,6 +620,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  jumpAudioSource: {fileID: 5442026635392498819}
+  jumpSe: {fileID: 8300000, guid: 1c2e15c7e6e8248c1aef6dafa646fec5, type: 3}
   jumpButton: space
 --- !u!114 &2904360697236049413
 MonoBehaviour:
@@ -708,6 +710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   experiencePoints: 0
   loseExperienceModifier: 2
+  SEVolume: 0.3
   getSeSound: {fileID: 8300000, guid: 496de09ec5cf641f3a755fc1e02904d2, type: 3}
 --- !u!114 &4765583433972377789
 MonoBehaviour:
@@ -722,6 +725,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terminalAbsoluteVelocity: 12
+--- !u!82 &5442026635392498819 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: -4651000122689875365, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+  m_PrefabInstance: {fileID: 8426694926020718296}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6362254506045297432 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3223142059203919296, guid: b53f7de505ed44dce9641241aeeba081, type: 3}

@@ -16,6 +16,8 @@ namespace VLCNP.Movement
         float jumpTime = 0;
         [SerializeField, Min(0)] float maxJumpTime = 0.3f;
         [SerializeField] AnimationCurve jumpCurve = new();
+        [SerializeField] private AudioSource jumpAudioSource;
+        [SerializeField] private AudioClip jumpSe = null;
 
         private bool isStopped = false;
         public bool IsStopped { get => isStopped; set => isStopped = value; }
@@ -39,6 +41,7 @@ namespace VLCNP.Movement
             if (leg.IsGround && Input.GetKeyDown(jumpButton))
             {
                 isJumping = true;
+                PlayJumpSound();
             }
             // ジャンプ中の処理
             if (isJumping)
@@ -93,6 +96,14 @@ namespace VLCNP.Movement
             if (t >= 1)
             {
                 EndJump();
+            }
+        }
+        private void PlayJumpSound()
+        {
+            if (jumpAudioSource != null && jumpSe != null)
+            {
+                jumpAudioSource.pitch = 1f;
+                jumpAudioSource.PlayOneShot(jumpSe, 0.2f);
             }
         }
     }
