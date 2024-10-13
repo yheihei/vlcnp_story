@@ -181,6 +181,8 @@ MonoBehaviour:
   maxJumpTime: 0.1
   jumpPowerX: 2
   jumpPowerY: 6
+  jumpAudioSource: {fileID: 5442026635392498819}
+  jumpSe: {fileID: 8300000, guid: 1c2e15c7e6e8248c1aef6dafa646fec5, type: 3}
   maxAbsoluteVelocityY: 1.5
 --- !u!1001 &8426694926020718296
 PrefabInstance:
@@ -529,8 +531,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.89, y: 1.42}
-  m_EdgeRadius: 0.01
+  m_Size: {x: 0.65, y: 1.24}
+  m_EdgeRadius: 0.05
 --- !u!114 &72677200839032358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -620,6 +622,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  jumpAudioSource: {fileID: 5442026635392498819}
+  jumpSe: {fileID: 8300000, guid: 1c2e15c7e6e8248c1aef6dafa646fec5, type: 3}
   jumpButton: space
 --- !u!114 &2904360697236049413
 MonoBehaviour:
@@ -636,7 +640,7 @@ MonoBehaviour:
   animationsPerLevels:
   - animatorOverrideController: {fileID: 22100000, guid: 5d4832c01660e4481a9b753dc9c56a1c, type: 2}
     colliderPerLevel:
-      capsuleCollider2DYSize: 1.42
+      capsuleCollider2DYSize: 1.24
       capsuleCollider2DYOffset: -0.51
       boxCollider2DYOffset: -1.2
       handTransformY: -0.66
@@ -647,7 +651,7 @@ MonoBehaviour:
     auraEffect: {fileID: 0}
   - animatorOverrideController: {fileID: 22100000, guid: 1f1783e8aee6547dca2f1677567bc3a1, type: 2}
     colliderPerLevel:
-      capsuleCollider2DYSize: 2.2
+      capsuleCollider2DYSize: 2
       capsuleCollider2DYOffset: -0.12
       boxCollider2DYOffset: -1.2
       handTransformY: -0.66
@@ -658,7 +662,7 @@ MonoBehaviour:
     auraEffect: {fileID: 0}
   - animatorOverrideController: {fileID: 22100000, guid: 1f1783e8aee6547dca2f1677567bc3a1, type: 2}
     colliderPerLevel:
-      capsuleCollider2DYSize: 2.2
+      capsuleCollider2DYSize: 2
       capsuleCollider2DYOffset: -0.12
       boxCollider2DYOffset: -1.2
       handTransformY: -0.66
@@ -708,6 +712,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   experiencePoints: 0
   loseExperienceModifier: 2
+  SEVolume: 0.3
   getSeSound: {fileID: 8300000, guid: 496de09ec5cf641f3a755fc1e02904d2, type: 3}
 --- !u!114 &4765583433972377789
 MonoBehaviour:
@@ -722,6 +727,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terminalAbsoluteVelocity: 12
+--- !u!82 &5442026635392498819 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: -4651000122689875365, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+  m_PrefabInstance: {fileID: 8426694926020718296}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6362254506045297432 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3223142059203919296, guid: b53f7de505ed44dce9641241aeeba081, type: 3}

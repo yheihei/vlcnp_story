@@ -12,3 +12,5 @@
 * https://musmus.main.jp/music_game_03.html
   * MusMus-BGM-076
 
+* https://soundeffect-lab.info/sound/button/
+  * tyakuti
