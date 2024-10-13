@@ -31,6 +31,9 @@ namespace VLCNP.Movement
         [SerializeField, Min(0)] float jumpPowerY = 6f;
         float jumpTime = 0f;
 
+        [SerializeField] private AudioSource jumpAudioSource;
+        [SerializeField] private AudioClip jumpSe = null;
+
         // 壁につかまっているときのMaxのY方向の速度の絶対値 これ以上は落下速度が変わらない
         [SerializeField, Min(0)] float maxAbsoluteVelocityY = 2f;
 
@@ -88,6 +91,7 @@ namespace VLCNP.Movement
             if (IsKabekick() && Input.GetKeyDown("space") && playerRigidbody2D.velocity.y < -0.1)
             {
                 isJumping = true;
+                PlayJumpSound();
             }
 
             if (isJumping)
@@ -191,6 +195,15 @@ namespace VLCNP.Movement
                 playerMover.transform.lossyScale.x > 0 ? Quaternion.Euler(10, 90, 0) : Quaternion.Euler(10, -90, 0)
             );
             effectElapsedTime = 0f;
+        }
+
+        private void PlayJumpSound()
+        {
+            if (jumpAudioSource != null && jumpSe != null)
+            {
+                jumpAudioSource.pitch = 1f;
+                jumpAudioSource.PlayOneShot(jumpSe, 0.2f);
+            }
         }
     }
 }
