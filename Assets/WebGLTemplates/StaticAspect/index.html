@@ -6,10 +6,54 @@
     <title>VLCNP Story</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <style>
+      #progress-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        width: 80%;
+        max-width: 600px;
+        text-align: center;
+      }
+      #progress_bar {
+        width: 100%;
+        height: 20px;
+      }
+      #loading-text {
+        color: white;
+        margin-bottom: 10px;
+        font-family: Arial, sans-serif;
+      }
+      #loading-gif {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 30px; /* GIFとプログレスバーの間隔 */
+      }
+      progress {
+        -webkit-appearance: none; /* プログレスバーのスタイルをリセット */
+        -moz-appearance: none; /* プログレスバーのスタイルをリセット */
+        background-color: #fff; /* プログレスバーの背景色/-moz- 用 */
+      }
+      ::-webkit-progress-bar {
+        background-color: #fff; /* プログレスバーの背景色/-webkit- 用 */
+      }
+      ::-webkit-progress-value {
+        background-color: blueviolet; /* プログレスバーの進捗部分色/-webkit- 用 */
+      }
+      ::-moz-progress-bar {
+        background-color: blueviolet; /* プログレスバーの進捗部分色/-moz- 用 */
+      }
+    </style>
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}}></canvas>
+      <div id="progress-container">
+        <img id="loading-gif" src="TemplateData/leelee.gif" alt="Loading...">
+        <progress id="progress_bar" value="0" max="1"></progress>
+      </div>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -26,7 +70,9 @@
     <script>
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
+      // var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressContainer = document.getElementById("progress-container");
+      var loadingBar = document.getElementById("progress_bar")
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
       // var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var warningBanner = document.querySelector("#unity-warning");
@@ -140,15 +186,18 @@
 #if BACKGROUND_FILENAME
       canvas.style.background = "url('" + buildUrl + "/{{{ BACKGROUND_FILENAME.replace(/'/g, '%27') }}}') center / cover";
 #endif
-      loadingBar.style.display = "block";
+      progressContainer.style.display = "block";
 
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
+          // progressBarFull.style.width = 100 * progress + "%";
+          console.log(progress);
+          loadingBar.value = progress;
         }).then((unityInstance) => {
-          loadingBar.style.display = "none";
+          console.log("loaded!!");
+          progressContainer.style.display = "none";
           // fullscreenButton.onclick = () => {
           //   unityInstance.SetFullscreen(1);
           // };
