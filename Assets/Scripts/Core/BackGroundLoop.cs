@@ -17,7 +17,7 @@ namespace VLCNP.Core
             length = GetComponent<SpriteRenderer>().bounds.size.x;
         }
 
-        void FixedUpdate()
+        void Update()
         {
             Parallax();
         }
