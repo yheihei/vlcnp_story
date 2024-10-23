@@ -8,10 +8,7 @@ using VLCNP.Saving;
 using Newtonsoft.Json.Linq;
 using System;
 using VLCNP.Movement;
-using System.Collections;
-using System.Runtime.Serialization.Json;
 using VLCNP.Combat;
-using Nethereum.Optimism.Lib_AddressManager.ContractDefinition;
 
 namespace VLCNP.Control
 {
