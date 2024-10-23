@@ -11,6 +11,7 @@ using VLCNP.Movement;
 using System.Collections;
 using System.Runtime.Serialization.Json;
 using VLCNP.Combat;
+using Nethereum.Optimism.Lib_AddressManager.ContractDefinition;
 
 namespace VLCNP.Control
 {
@@ -229,13 +230,19 @@ namespace VLCNP.Control
                 partyHealthLevel.SetLevel(nextLevel, memberBaseStats);
             }
             // 全回復させる
-            RestoreHealth();
+            AllMemberRestoreHealth();
             ChangeHud();
         }
 
-        public void RestoreHealth()
+        public void AllMemberRestoreHealth()
         {
-            currentPlayer.GetComponent<Health>().RestoreHealth();
+            foreach (GameObject member in members)
+            {
+                BaseStats memberBaseStats = member.GetComponent<BaseStats>();
+                if (memberBaseStats == null) continue;
+                // 全回復
+                member.GetComponent<Health>().RestoreHealth();
+            }
         }
 
         public void SetVisibility(bool isVisible)
