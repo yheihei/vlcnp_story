@@ -98,7 +98,6 @@ namespace VLCNP.Control
             currentPlayer = nextPlayer;
             SetCurrentPlayerActive();
 
-            // TransferPlayerStats(previousPlayer, currentPlayer);
             ChangeHud();
 
             EquipWeapon();
