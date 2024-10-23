@@ -158,6 +158,18 @@ namespace VLCNP.Control
             }
         }
 
+        private void TransferPartyHealthLevelToAllPlayers()
+        {
+            PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
+            if (partyHealthLevel == null) return;
+            foreach (GameObject member in members)
+            {
+                BaseStats memberBaseStats = member.GetComponent<BaseStats>();
+                if (memberBaseStats == null) continue;
+                partyHealthLevel.SetLevel(partyHealthLevel.GetCurrentLevel(), memberBaseStats);
+            }
+        }
+
         private void ChangeHud()
         {
             virtualCamera.Follow = currentPlayer.transform;
@@ -309,6 +321,8 @@ namespace VLCNP.Control
             // PartyHealthLevelを復元
             PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
             partyHealthLevel.SetLevel(statusSaveData.partyHealthLevel, currentPlayer.GetComponent<BaseStats>());
+            // キャラごとにステータスを持たなかった時代のセーブデータ対応
+            TransferPartyHealthLevelToAllPlayers();
             // HP, Experienceを復元
             currentPlayer.GetComponent<Health>().SetHealthPoints(statusSaveData.healthPoints);
             currentPlayer.GetComponent<Experience>().SetExperiencePoints(statusSaveData.experiencePoints);
