@@ -157,14 +157,21 @@ namespace VLCNP.Control
             }
         }
 
-        private void TransferPartyHealthLevelToAllPlayers()
+        private void SynchronizePartyMembersHealthLevel()
         {
             PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
-            if (partyHealthLevel == null) return;
+            if (partyHealthLevel == null)
+            {
+                Debug.LogWarning("PartyHealthLevel component not found");
+                return;
+            }
             foreach (GameObject member in members)
             {
                 BaseStats memberBaseStats = member.GetComponent<BaseStats>();
-                if (memberBaseStats == null) continue;
+                if (memberBaseStats == null) {
+                    Debug.LogWarning($"BaseStats component not found on member: {member.name}");
+                    continue;
+                }
                 partyHealthLevel.SetLevel(partyHealthLevel.GetCurrentLevel(), memberBaseStats);
             }
         }
@@ -321,7 +328,7 @@ namespace VLCNP.Control
             PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
             partyHealthLevel.SetLevel(statusSaveData.partyHealthLevel, currentPlayer.GetComponent<BaseStats>());
             // キャラごとにステータスを持たなかった時代のセーブデータ対応
-            TransferPartyHealthLevelToAllPlayers();
+            SynchronizePartyMembersHealthLevel();
             // HP, Experienceを復元
             currentPlayer.GetComponent<Health>().SetHealthPoints(statusSaveData.healthPoints);
             currentPlayer.GetComponent<Experience>().SetExperiencePoints(statusSaveData.experiencePoints);
