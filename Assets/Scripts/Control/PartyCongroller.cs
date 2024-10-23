@@ -97,8 +97,8 @@ namespace VLCNP.Control
             currentPlayer = nextPlayer;
             SetCurrentPlayerActive();
 
-            TransferPlayerStats(previousPlayer, currentPlayer);
-            ChangeDisplay();
+            // TransferPlayerStats(previousPlayer, currentPlayer);
+            ChangeHud();
 
             EquipWeapon();
 
@@ -157,7 +157,7 @@ namespace VLCNP.Control
             }
         }
 
-        private void ChangeDisplay()
+        private void ChangeHud()
         {
             virtualCamera.Follow = currentPlayer.transform;
 
@@ -230,7 +230,7 @@ namespace VLCNP.Control
             }
             // 全回復させる
             RestoreHealth();
-            ChangeDisplay();
+            ChangeHud();
         }
 
         public void RestoreHealth()
