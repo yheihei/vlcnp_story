@@ -50,7 +50,7 @@ namespace VLCNP.Control
 
         KeyCode swithCharacterButton = KeyCode.Z;
 
-        private void Awake()
+        private void Start()
         {
             SetCurrentPlayerActive();
         }
