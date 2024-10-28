@@ -20,6 +20,9 @@ namespace VLCNP.UI
         [SerializeField]
         Sprite inactiveSprite;
 
+        [SerializeField]
+        GameObject selectIcon;
+
         PartyCongroller partyCongroller;
 
         [SerializeField]
@@ -44,6 +47,19 @@ namespace VLCNP.UI
         {
             CheckFlagAndIconShow();
             SetIcon(partyCongroller.GetCurrentPlayer());
+            UpdateSelectIcon();
+        }
+
+        void UpdateSelectIcon()
+        {
+            if (partyCongroller.GetCurrentPlayer() == playerObject)
+            {
+                selectIcon.SetActive(true);
+            }
+            else
+            {
+                selectIcon.SetActive(false);
+            }
         }
 
         void CheckFlagAndIconShow()
@@ -71,25 +87,21 @@ namespace VLCNP.UI
         void HiddenIcon()
         {
             GetComponent<SpriteRenderer>().enabled = false;
+            selectIcon.SetActive(false);
         }
 
         void OnChangeCharacter(GameObject character)
         {
             SetIcon(character);
+            UpdateSelectIcon();
         }
 
         void OnChangeFlag(Flag flag, bool value)
         {
             if (flag != activeFlag)
                 return;
-            if (value)
-            {
-                ShowIcon();
-            }
-            else
-            {
-                HiddenIcon();
-            }
+            CheckFlagAndIconShow();
+            UpdateSelectIcon();
         }
 
         private void SetIcon(GameObject character)
