@@ -29,8 +29,16 @@ namespace VLCNP.UI
         Flag activeFlag;
         FlagManager flagManager;
 
+        private SpriteRenderer spriteRenderer;
+
         void Awake()
         {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null)
+            {
+                Debug.LogError($"SpriteRenderer not found on {gameObject.name}");
+                return;
+            }
             // PartyタグからPartyCongrollerを取得
             partyCongroller = GameObject
                 .FindGameObjectWithTag("Party")
@@ -81,12 +89,12 @@ namespace VLCNP.UI
 
         void ShowIcon()
         {
-            GetComponent<SpriteRenderer>().enabled = true;
+            spriteRenderer.enabled = true;
         }
 
         void HiddenIcon()
         {
-            GetComponent<SpriteRenderer>().enabled = false;
+            spriteRenderer.enabled = false;
             selectIcon.SetActive(false);
         }
 
@@ -109,11 +117,11 @@ namespace VLCNP.UI
             // プレイヤーオブジェクトが変更されたら、スプライトを変更する
             if (character == playerObject)
             {
-                GetComponent<SpriteRenderer>().sprite = activeSprite;
+                spriteRenderer.sprite = activeSprite;
             }
             else
             {
-                GetComponent<SpriteRenderer>().sprite = inactiveSprite;
+                spriteRenderer.sprite = inactiveSprite;
             }
         }
     }
