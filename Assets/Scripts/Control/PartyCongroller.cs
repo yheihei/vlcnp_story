@@ -96,7 +96,8 @@ namespace VLCNP.Control
                 return;
             if (Input.GetKeyDown(swithCharacterButton))
             {
-                SwitchNextPlayer();
+                if (SwitchNextPlayer())
+                    playChangeSe();
             }
         }
 
@@ -110,15 +111,15 @@ namespace VLCNP.Control
             SwitchToPlayer(player);
         }
 
-        private void SwitchNextPlayer()
+        private bool SwitchNextPlayer()
         {
             GameObject nextPlayer = GetNextPlayer();
             // 現在のキャラクターと同じであれば何もしない
             if (nextPlayer == currentPlayer)
-                return;
+                return false;
 
             SwitchToPlayer(nextPlayer);
-            playChangeSe();
+            return true;
         }
 
         private void SwitchToPlayer(GameObject nextPlayer)
