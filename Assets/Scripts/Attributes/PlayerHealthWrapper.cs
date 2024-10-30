@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VLCNP.Control;
 
 namespace VLCNP.Attributes
 {
@@ -8,10 +9,9 @@ namespace VLCNP.Attributes
     {
         public void RestoreHealth()
         {
-            // Playerをタグから取得する
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player == null) return;
-            player.GetComponent<Health>()?.RestoreHealth();
+            PartyCongroller partyCongroller = GameObject.FindGameObjectWithTag("Party")?.GetComponent<PartyCongroller>();
+            if (partyCongroller == null) return;
+            partyCongroller.AllMemberRestoreHealth();
         }
     }
 }

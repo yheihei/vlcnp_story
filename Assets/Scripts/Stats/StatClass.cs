@@ -9,5 +9,6 @@ namespace VLCNP.Stats
         ShortFacedCreatureStrong,
         InfiniteHealth,
         VeryLongDragQueens,
+        Leelee,
     }
 }

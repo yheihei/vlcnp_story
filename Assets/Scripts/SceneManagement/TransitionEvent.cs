@@ -1,6 +1,6 @@
 using System.Collections;
-using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VLCNP.Control;
 using VLCNP.Core;
 using VLCNP.UI;
@@ -12,20 +12,35 @@ namespace VLCNP.SceneManagement
      */
     public class TransitionEvent : MonoBehaviour
     {
-        [SerializeField] int sceneToLoad = -1;
+        [SerializeField]
+        int sceneToLoad = -1;
 
         // シーン遷移後に出現するTransitionSpawnPointの名前
-        [SerializeField] string destinationSpawnPointName = "A";
+        [SerializeField]
+        string destinationSpawnPointName = "A";
 
-        [SerializeField] float fadeOutTime = 1f;
-        [SerializeField] float fadeWaitTime = 0.2f;
-        [SerializeField] float fadeInTime = 1f;
-        [SerializeField] string autoSaveFileName = "autoSave";
-        [SerializeField] bool isAutoSave = true;
+        [SerializeField]
+        float fadeOutTime = 1f;
+
+        [SerializeField]
+        float fadeWaitTime = 0.2f;
+
+        [SerializeField]
+        float fadeInTime = 1f;
+
+        [SerializeField]
+        string autoSaveFileName = "autoSave";
+
+        [SerializeField]
+        bool isAutoSave = true;
+
         [Header("移動先のシーンでリトライするか")]
-        [SerializeField] bool isRetryOnDestination = false;
+        [SerializeField]
+        bool isRetryOnDestination = false;
+
         [Header("移動先のシーンでエリア名を表示するか")]
-        [SerializeField] bool isShowAreaName = false;
+        [SerializeField]
+        bool isShowAreaName = false;
 
         private AudioSource BGM;
         private AreaBGM areaBGM;
@@ -47,7 +62,9 @@ namespace VLCNP.SceneManagement
             DontDestroyOnLoad(gameObject);
 
             // StoppableControllerをタグから取得
-            StoppableController stoppableController = GameObject.FindWithTag("StoppableController").GetComponent<StoppableController>();
+            StoppableController stoppableController = GameObject
+                .FindWithTag("StoppableController")
+                .GetComponent<StoppableController>();
             stoppableController?.StopAll();
 
             // SceneFaderタグでFaderを取得
@@ -61,7 +78,7 @@ namespace VLCNP.SceneManagement
                 savingWrapper.Save(autoSaveFileName);
             }
 
-            yield return new WaitForSeconds(fadeWaitTime/2);
+            yield return new WaitForSeconds(fadeWaitTime / 2);
 
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
             print("scene load end: " + sceneToLoad);
@@ -73,11 +90,13 @@ namespace VLCNP.SceneManagement
             // BGMの変更があれば変更
             yield return ChangeBGM();
 
-            TransitionSpawnPoint transitionSpawnPoint = GetTransitionSpawnPoint() ?? throw new System.Exception("Transition spawn point not found");
+            TransitionSpawnPoint transitionSpawnPoint =
+                GetTransitionSpawnPoint()
+                ?? throw new System.Exception("Transition spawn point not found");
             print("transition spawn point found");
             UpdatePlayerPosition(transitionSpawnPoint);
 
-            yield return new WaitForSeconds(fadeWaitTime/2);
+            yield return new WaitForSeconds(fadeWaitTime / 2);
 
             fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
             print("fade in start");
@@ -93,8 +112,11 @@ namespace VLCNP.SceneManagement
             if (isShowAreaName)
             {
                 // 遷移先でエリア名を表示する場合は遷移後のシーンでエリア名表示
-                AreaNameShow areaNameShow = GameObject.FindWithTag("AreaName").GetComponent<AreaNameShow>();
-                if (areaNameShow) areaNameShow.Show();
+                AreaNameShow areaNameShow = GameObject
+                    .FindWithTag("AreaName")
+                    .GetComponent<AreaNameShow>();
+                if (areaNameShow)
+                    areaNameShow.Show();
             }
 
             Destroy(gameObject);
@@ -116,7 +138,11 @@ namespace VLCNP.SceneManagement
                 BGM.Play();
                 yield break;
             }
-            if (BGM.clip != null && areaBGM.GetAudioClip() != null && BGM.clip.name == areaBGM.GetAudioClip().name)
+            if (
+                BGM.clip != null
+                && areaBGM.GetAudioClip() != null
+                && BGM.clip.name == areaBGM.GetAudioClip().name
+            )
             {
                 print("クリップの変更なし");
                 yield break;
@@ -149,7 +175,8 @@ namespace VLCNP.SceneManagement
             {
                 player.transform.position = transitionSpawnPoint.transform.position;
                 // 向きを変える
-                player.GetComponent<Movement.Mover>().IsLeft = transitionSpawnPoint.isPlayerDirectionLeft;
+                player.GetComponent<Movement.Mover>().IsLeft =
+                    transitionSpawnPoint.isPlayerDirectionLeft;
             }
         }
 
@@ -157,10 +184,11 @@ namespace VLCNP.SceneManagement
         {
             foreach (TransitionSpawnPoint spawnPoint in FindObjectsOfType<TransitionSpawnPoint>())
             {
-                if (spawnPoint.spawnPointName != destinationSpawnPointName) continue;
+                if (spawnPoint.spawnPointName != destinationSpawnPointName)
+                    continue;
                 return spawnPoint;
             }
             return null;
         }
-    }    
+    }
 }

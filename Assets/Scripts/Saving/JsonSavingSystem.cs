@@ -10,9 +10,9 @@ namespace VLCNP.Saving
 {
     public class JsonSavingSystem : MonoBehaviour
     {
-        static public string AUTO_SAVE_FILE_NAME = "autoSave";
+        public static string AUTO_SAVE_FILE_NAME = "autoSave";
         private const string extension = ".json";
-        
+
         /// <summary>
         /// Will load the last scene that was saved and restore the state. This
         /// must be run as a coroutine.
@@ -22,7 +22,7 @@ namespace VLCNP.Saving
         {
             print("LoadLastScene: " + saveFile);
             JObject state = LoadJsonFromFile(saveFile);
-            IDictionary<string, JToken> stateDict = state; 
+            IDictionary<string, JToken> stateDict = state;
             int buildIndex = SceneManager.GetActiveScene().buildIndex;
             if (stateDict.ContainsKey("lastSceneBuildIndex"))
             {
@@ -42,9 +42,9 @@ namespace VLCNP.Saving
             JObject state = LoadJsonFromFile(saveFile);
             CaptureAsToken(state);
             SaveFileAsJSon(saveFile, state);
-            #if UNITY_WEBGL && !UNITY_EDITOR
-                Application.ExternalEval("FS.syncfs(false,function(err){console.log('Synced')});");
-            #endif
+#if UNITY_WEBGL && !UNITY_EDITOR
+            Application.ExternalEval("FS.syncfs(false,function(err){console.log('Synced')});");
+#endif
         }
 
         /// <summary>
@@ -59,7 +59,6 @@ namespace VLCNP.Saving
         {
             RestoreFromToken(LoadJsonFromFile(saveFile));
         }
-
 
         public IEnumerable<string> ListSaves()
         {
@@ -81,7 +80,7 @@ namespace VLCNP.Saving
             {
                 return new JObject();
             }
-            
+
             using (var textReader = File.OpenText(path))
             {
                 using (var reader = new JsonTextReader(textReader))
@@ -91,7 +90,6 @@ namespace VLCNP.Saving
                     return JObject.Load(reader);
                 }
             }
-
         }
 
         private void SaveFileAsJSon(string saveFile, JObject state)
@@ -108,11 +106,10 @@ namespace VLCNP.Saving
             }
         }
 
-
         private void CaptureAsToken(JObject state)
         {
             IDictionary<string, JToken> stateDict = state;
-            foreach (JsonSaveableEntity saveable in FindObjectsOfType<JsonSaveableEntity>())
+            foreach (JsonSaveableEntity saveable in FindObjectsOfType<JsonSaveableEntity>(true))
             {
                 stateDict[saveable.GetUniqueIdentifier()] = saveable.CaptureAsJtoken();
             }
@@ -121,11 +118,10 @@ namespace VLCNP.Saving
             print("CaptureAsToken: " + stateDict["lastSceneBuildIndex"]);
         }
 
-
         private void RestoreFromToken(JObject state)
         {
             IDictionary<string, JToken> stateDict = state;
-            foreach (JsonSaveableEntity saveable in FindObjectsOfType<JsonSaveableEntity>())
+            foreach (JsonSaveableEntity saveable in FindObjectsOfType<JsonSaveableEntity>(true))
             {
                 string id = saveable.GetUniqueIdentifier();
                 if (stateDict.ContainsKey(id))
@@ -134,7 +130,6 @@ namespace VLCNP.Saving
                 }
             }
         }
-
 
         private string GetPathFromSaveFile(string saveFile)
         {
