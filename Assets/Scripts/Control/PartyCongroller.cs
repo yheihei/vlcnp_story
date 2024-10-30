@@ -60,6 +60,7 @@ namespace VLCNP.Control
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
+            flagManager.OnChangeFlag += OnChangeFlag;
         }
 
         private void Start()
@@ -261,6 +262,16 @@ namespace VLCNP.Control
                 return flagManager.GetFlag(Flag.JoinedLeelee);
             // それ以外は仲間でない
             return false;
+        }
+
+        void OnChangeFlag(Flag flag, bool value)
+        {
+            // 離脱したキャラクターがcurrentPlayerであれば次のキャラクターに切り替える
+            // リーリー使用時にリーリーが離脱したときは次のキャラクターに切り替える
+            if (flag == Flag.JoinedLeelee && !value && currentPlayer.name == "Leelee")
+            {
+                SwitchNextPlayer();
+            }
         }
 
         private void SetNextPlayerPosition(GameObject nextPlayer)

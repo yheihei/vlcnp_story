@@ -98,7 +98,6 @@ namespace VLCNP.UI
             if (flag != activeFlag)
                 return;
             CheckFlagAndIconShow();
-            UpdateSelectIcon();
         }
 
         private void SetIcon(GameObject character)
