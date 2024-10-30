@@ -60,14 +60,7 @@ namespace VLCNP.UI
 
         void UpdateSelectIcon()
         {
-            if (partyCongroller.GetCurrentPlayer() == playerObject)
-            {
-                selectIcon.SetActive(true);
-            }
-            else
-            {
-                selectIcon.SetActive(false);
-            }
+            selectIcon.SetActive(partyCongroller.GetCurrentPlayer() == playerObject);
         }
 
         void CheckFlagAndIconShow()
