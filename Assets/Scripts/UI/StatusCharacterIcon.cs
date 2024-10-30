@@ -65,12 +65,8 @@ namespace VLCNP.UI
 
         void CheckFlagAndIconShow()
         {
-            if (activeFlag == Flag.None)
-            {
-                ShowIcon();
-                return;
-            }
-            if (flagManager.GetFlag(activeFlag))
+            bool shouldShow = activeFlag == Flag.None || flagManager.GetFlag(activeFlag);
+            if (shouldShow)
             {
                 ShowIcon();
             }
