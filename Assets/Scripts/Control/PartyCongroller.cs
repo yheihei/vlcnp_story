@@ -31,13 +31,20 @@ namespace VLCNP.Control
 
         [SerializeField]
         LevelDisplay levelDisplay;
-        GameOver gameOver;
 
         [SerializeField]
         FlagManager flagManager;
 
         [SerializeField]
         CinemachineVirtualCamera virtualCamera;
+
+        AudioSource audioSource;
+
+        [SerializeField]
+        AudioClip switchCharacterSound;
+
+        [SerializeField]
+        float switchCharacterVolume = 0.3f;
 
         bool isStopped = false;
         public bool IsStopped
@@ -49,6 +56,11 @@ namespace VLCNP.Control
         public event Action<GameObject> OnChangeCharacter;
 
         KeyCode swithCharacterButton = KeyCode.Z;
+
+        private void Awake()
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
 
         private void Start()
         {
@@ -105,6 +117,7 @@ namespace VLCNP.Control
                 return;
 
             SwitchToPlayer(nextPlayer);
+            playChangeSe();
         }
 
         private void SwitchToPlayer(GameObject nextPlayer)
@@ -330,6 +343,11 @@ namespace VLCNP.Control
             {
                 StartCoroutine(mover.MoveToRelativePosition(position, timeout));
             }
+        }
+
+        private void playChangeSe()
+        {
+            audioSource.PlayOneShot(switchCharacterSound, switchCharacterVolume);
         }
 
         [System.Serializable]
