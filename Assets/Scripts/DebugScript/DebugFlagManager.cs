@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Core;
 
-namespace VLCNP.Core
+namespace VLCNP.DebugSctipt
 {
     public class DebugFlagManager : MonoBehaviour
     {
