@@ -29,6 +29,9 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
     [SerializeField]
     float StartWaitTime = 1.0f;
 
+    [SerializeField]
+    SerializableInterface<IDetect> detect = null;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -63,6 +66,9 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
         }
         StartWaitTime -= Time.deltaTime;
         if (StartWaitTime > 0f)
+            return;
+        // プレイヤーを発見していなければ何もしない
+        if (detect != null && !detect.Value.IsDetect())
             return;
         // 現在の行動を取得する
         IEnemyAction currentAction = GetCurrentAction();

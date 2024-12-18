@@ -8,12 +8,22 @@ namespace VLCNP.Movement
 {
     public class Mover : MonoBehaviour
     {
-        [SerializeField] float speed = 4;
+        [SerializeField]
+        float speed = 4;
         bool isLeft = true;
+
         // isLeftのgetterを定義
-        public bool IsLeft { get => isLeft; set => isLeft = value; }
-        [SerializeField] Leg leg;
-        [SerializeField] KabeKickEffectController kabeKickEffectController;
+        public bool IsLeft
+        {
+            get => isLeft;
+            set => isLeft = value;
+        }
+
+        [SerializeField]
+        Leg leg;
+
+        [SerializeField]
+        KabeKickEffectController kabeKickEffectController;
         float vx = 0;
         Rigidbody2D rbody;
         Animator animator;
@@ -32,7 +42,8 @@ namespace VLCNP.Movement
         {
             vx = 0;
             // Stun状態の場合は移動不可
-            if (isStunned()) return;
+            if (isStunned())
+                return;
             if (Input.GetKey("right"))
             {
                 vx = speed;
@@ -94,13 +105,17 @@ namespace VLCNP.Movement
         private void FixedUpdate()
         {
             // Stun状態の場合は移動不可
-            if (isStunned()) return;
+            if (isStunned())
+                return;
             // ダッシュ中は移動不可
-            if (dash != null && dash.IsDashing) return;
+            if (dash != null && dash.IsDashing)
+                return;
             // カベキック中は移動不可
-            if (kabeKickEffectController != null && kabeKickEffectController.IsJumping) return;
+            if (kabeKickEffectController != null && kabeKickEffectController.IsJumping)
+                return;
             // カベをつかんでいたら移動不可
-            if (kabeKickEffectController != null && kabeKickEffectController.IsGrabbing()) return;
+            if (kabeKickEffectController != null && kabeKickEffectController.IsGrabbing())
+                return;
             UpdateMoveSpeed();
             UpdateCharacterDirection();
         }
@@ -114,11 +129,19 @@ namespace VLCNP.Movement
         {
             if (isLeft)
             {
-                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(
+                    Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y,
+                    transform.localScale.z
+                );
             }
             else
             {
-                transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(
+                    -1 * Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y,
+                    transform.localScale.z
+                );
             }
         }
     }
