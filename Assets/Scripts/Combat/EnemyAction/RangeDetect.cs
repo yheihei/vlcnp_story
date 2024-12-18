@@ -16,14 +16,11 @@ namespace VLCNP.Combat.EnemyAction
         private void Awake()
         {
             player = GameObject.FindGameObjectWithTag("Player");
+            InitializePartyController();
         }
 
         void OnEnable()
         {
-            // PartyタグのオブジェクトからPartyCongrollerを取得
-            partyCongroller = GameObject
-                .FindGameObjectWithTag("Party")
-                ?.GetComponent<PartyCongroller>();
             if (partyCongroller == null)
                 return;
             partyCongroller.OnChangeCharacter += SetPlayer;
@@ -31,12 +28,16 @@ namespace VLCNP.Combat.EnemyAction
 
         void OnDisable()
         {
-            partyCongroller = GameObject
-                .FindGameObjectWithTag("Party")
-                ?.GetComponent<PartyCongroller>();
             if (partyCongroller == null)
                 return;
             partyCongroller.OnChangeCharacter -= SetPlayer;
+        }
+
+        private void InitializePartyController()
+        {
+            partyCongroller = GameObject
+                .FindGameObjectWithTag("Party")
+                ?.GetComponent<PartyCongroller>();
         }
 
         private void SetPlayer(GameObject _player)
