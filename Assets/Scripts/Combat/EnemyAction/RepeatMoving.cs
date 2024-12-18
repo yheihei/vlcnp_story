@@ -55,16 +55,11 @@ namespace VLCNP.Combat.EnemyAction
             float elapsedTime = 0f;
             // 向いてる方向で移動
             float _speed = direction == Direction.Left ? -speed : speed;
-            while (true)
+            while (elapsedTime <= _moveTimeout)
             {
                 UpdateMoveSpeed(_speed);
                 // 経過時間加算
                 elapsedTime += Time.deltaTime;
-                // タイムアウト値になったらループを抜ける
-                if (elapsedTime > _moveTimeout)
-                {
-                    break;
-                }
 
                 // ガケに来たら方向転換
                 if (gakeCollisionDetector != null && !gakeCollisionDetector.IsColliding)
