@@ -10,5 +10,6 @@ namespace VLCNP.Stats
         InfiniteHealth,
         VeryLongDragQueens,
         Leelee,
+        VeryLongTsuchinoko,
     }
 }
