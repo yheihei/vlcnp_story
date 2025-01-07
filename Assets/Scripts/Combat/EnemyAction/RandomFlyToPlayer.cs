@@ -10,19 +10,22 @@ namespace VLCNP.Combat.EnemyAction
     public class RandomFlyToPlayer : EnemyAction
     {
         [SerializeField]
-        float speed = 5;
+        float speed = 6;
 
         [SerializeField]
         float directionMultiplier = 4;
 
+        [SerializeField]
+        Vector2 offset = new Vector2(0, 0);
+
         [SerializeField] // どの距離まで近づくか
-        float maxApproachDistance = 3f;
+        float maxApproachDistance = 2f;
 
         [SerializeField]
         private FrontCollisionDetector frontCollisionDetector = null;
 
         [SerializeField]
-        private float moveTimeout = 4f;
+        private float moveTimeout = 2f;
 
         Rigidbody2D rbody;
         Animator animator;
@@ -51,8 +54,6 @@ namespace VLCNP.Combat.EnemyAction
                 return;
             IsExecuting = true;
             Vector3 position = transform.position;
-            float _moveX = 0f;
-            float _moveY = 0f;
             GameObject player = GameObject.FindWithTag("Player");
             if (player == null)
             {
@@ -66,7 +67,7 @@ namespace VLCNP.Combat.EnemyAction
             // 到達地点を計算
             Vector3 destinationPosition = new Vector3(
                 position.x + playerDirection.x,
-                position.y + playerDirection.y,
+                position.y + playerDirection.y + offset.y,
                 position.z
             );
             // ランダムに方向を変える プレイヤーが下方向の場合上側に、上方向の場合下側にランダムに角度をつける
