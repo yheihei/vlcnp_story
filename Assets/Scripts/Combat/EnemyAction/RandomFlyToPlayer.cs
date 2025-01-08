@@ -62,6 +62,11 @@ namespace VLCNP.Combat.EnemyAction
             }
             // プレイヤーの方向のベクトルを計算
             Vector3 playerDirection = player.transform.position - position;
+            // プレイヤーと自分の距離がmaxApproachDistance 以下の場合は逆ベクトルに向かう
+            if (playerDirection.magnitude < maxApproachDistance)
+            {
+                playerDirection *= -1;
+            }
             playerDirection.Normalize();
             playerDirection *= directionMultiplier;
             // 到達地点を計算
