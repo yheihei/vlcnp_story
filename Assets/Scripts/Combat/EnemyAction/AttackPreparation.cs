@@ -22,7 +22,7 @@ namespace VLCNP.Combat.EnemyAction
             animator = GetComponent<Animator>();
             if (animator == null)
             {
-                Debug.LogError("animator is null");
+                Debug.LogError($"Animator component not found on {gameObject.name}");
             }
         }
 
