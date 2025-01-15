@@ -11,5 +11,7 @@ namespace VLCNP.Stats
         VeryLongDragQueens,
         Leelee,
         VeryLongTsuchinoko,
+        Bee,
+        HoneyComb,
     }
 }
