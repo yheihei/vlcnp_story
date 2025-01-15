@@ -97,14 +97,10 @@ namespace VLCNP.Combat.EnemyAction
 
         private bool CanSpawnRange()
         {
-            // Playerタグのtransitionを取得して距離を計算
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player == null)
                 return false;
-            float distance = Vector2.Distance(player.transform.position, transform.position);
-            if (distance < spawnMaxRange)
-                return true;
-            return false;
+            return Vector2.Distance(player.transform.position, transform.position) < spawnMaxRange;
         }
 
         private void OnDrawGizmosSelected()
