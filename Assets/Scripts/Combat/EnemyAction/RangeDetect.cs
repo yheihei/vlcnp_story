@@ -9,6 +9,13 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         float enemyDetectionRange = 12f;
 
+        // 1度発見状態になったらずっと発見状態にするか
+        [SerializeField]
+        bool isPermanentlyDiscovered = true;
+
+        // 一度発見状態になったかどうか
+        public bool isDetected = false;
+
         GameObject player;
 
         PartyCongroller partyCongroller;
@@ -47,11 +54,14 @@ namespace VLCNP.Combat.EnemyAction
 
         public bool IsDetect()
         {
-            // playerとの距離を出す
+            // 1度発見状態になったらずっと発見状態
+            if (isPermanentlyDiscovered && isDetected)
+                return true;
             if (player == null)
                 return false;
             float distance = Vector2.Distance(player.transform.position, transform.position);
-            return distance < enemyDetectionRange;
+            isDetected = distance < enemyDetectionRange;
+            return isDetected;
         }
 
         private void OnDrawGizmosSelected()
