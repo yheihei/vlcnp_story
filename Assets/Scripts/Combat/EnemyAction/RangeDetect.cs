@@ -9,12 +9,11 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         float enemyDetectionRange = 12f;
 
-        // 1度発見状態になったらずっと発見状態にするか
-        [SerializeField]
-        bool isPermanentlyDiscovered = true;
-
         // 一度発見状態になったかどうか
         public bool isDetected = false;
+
+        [SerializeField] // 一度発見状態になった後の追跡距離
+        float chaseRange = 15f;
 
         GameObject player;
 
@@ -54,12 +53,13 @@ namespace VLCNP.Combat.EnemyAction
 
         public bool IsDetect()
         {
-            // 1度発見状態になったらずっと発見状態
-            if (isPermanentlyDiscovered && isDetected)
-                return true;
             if (player == null)
                 return false;
             float distance = Vector2.Distance(player.transform.position, transform.position);
+            // 1度発見状態になったら追跡距離内にいるかどうかを返す
+            if (isDetected)
+                return distance < chaseRange;
+            // 未発見状態でプレイヤーが発見距離内にいるかどうかを返す
             isDetected = distance < enemyDetectionRange;
             return isDetected;
         }
@@ -68,6 +68,9 @@ namespace VLCNP.Combat.EnemyAction
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, enemyDetectionRange);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, chaseRange);
         }
     }
 }
