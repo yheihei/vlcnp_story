@@ -103,7 +103,7 @@ namespace VLCNP.Combat
             // 地面に触れた&地面にあたったら壊れる設定が有効の場合
             if (isBreakOnGround && other.tag.Equals(groundTagName))
             {
-                ImpactAndDestory();
+                ImpactAndDestroy();
             }
             if (other.gameObject.CompareTag(targetTagName))
             {
@@ -116,11 +116,11 @@ namespace VLCNP.Combat
                 if (health != null)
                     health.TakeDamage(damage, isLeft);
                 if (!IsPenetration)
-                    ImpactAndDestory();
+                    ImpactAndDestroy();
             }
         }
 
-        public void ImpactAndDestory()
+        public void ImpactAndDestroy()
         {
             if (hitEffect != null)
             {
