@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2072254801
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 20
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -155,6 +155,8 @@ MonoBehaviour:
   targetTagName: Enemy
   IsPenetration: 0
   isStuckInGround: 0
+  groundTagName: Ground
+  isBreakOnGround: 0
 --- !u!198 &6153180613368391677
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4945,7 +4947,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.3
   m_Pitch: 1
   Loop: 0

@@ -11,14 +11,20 @@ namespace VLCNP.Combat
     public class WeaponConfig : ScriptableObject
     {
         // [SerializeField] AnimatorOverrideController animatorOverride = null;
-        [SerializeField] Weapon equieppedPrefab = null;
-        [SerializeField] WeaponLevel[] weaponLevels = null;
+        [SerializeField]
+        Weapon equieppedPrefab = null;
+
+        [SerializeField]
+        WeaponLevel[] weaponLevels = null;
 
         [System.Serializable]
         class WeaponLevel
         {
-            [SerializeField] public float damage;
-            [SerializeField] public Projectile projectile;
+            [SerializeField]
+            public float damage;
+
+            [SerializeField]
+            public Projectile projectile;
         }
 
         const string weaponName = "Weapon";
@@ -68,14 +74,24 @@ namespace VLCNP.Combat
         public bool HasProjectile(int level = 1)
         {
             WeaponLevel _weaponLevel = GetCurrentWeapon(level);
-            if (_weaponLevel == null) return false;
+            if (_weaponLevel == null)
+                return false;
             return _weaponLevel.projectile != null;
         }
 
         public void LaunchProjectile(Transform handTransform, int level = 1, bool isLeft = false)
         {
             WeaponLevel _weaponLevel = GetCurrentWeapon(level);
-            Projectile projectileInstance = Instantiate(_weaponLevel.projectile, handTransform.position, handTransform.rotation);
+            Projectile projectileInstance = Instantiate(
+                _weaponLevel.projectile,
+                handTransform.position,
+                handTransform.rotation
+            );
+            AudioClip clip = projectileInstance.GetComponent<AudioSource>()?.clip;
+            if (clip != null)
+            {
+                AudioSource.PlayClipAtPoint(clip, handTransform.position);
+            }
             // projectileInstance.IsLeft = isLeft;
             projectileInstance.SetDirection(isLeft);
             projectileInstance.SetDamage(_weaponLevel.damage);
@@ -83,7 +99,8 @@ namespace VLCNP.Combat
 
         private WeaponLevel GetCurrentWeapon(int level = 1)
         {
-            if (weaponLevels.Length == 0) return null;
+            if (weaponLevels.Length == 0)
+                return null;
             // 武器のMaxレベル以上にはならない
             return weaponLevels[Math.Min(level, weaponLevels.Length) - 1];
         }
@@ -91,8 +108,9 @@ namespace VLCNP.Combat
         public float GetDamage(int level = 1)
         {
             WeaponLevel _weaponLevel = GetCurrentWeapon(level);
-            if (_weaponLevel == null) return 0;
+            if (_weaponLevel == null)
+                return 0;
             return _weaponLevel.damage;
         }
-    }    
+    }
 }
