@@ -1,18 +1,14 @@
 using System;
-using System.Drawing.Printing;
-using Fungus;
-using Unity.VisualScripting;
 using UnityEngine;
-using VLCNP.Stats;
+using UnityEngine.Serialization;
 
 namespace VLCNP.Combat
 {
     [CreateAssetMenu(fileName = "Weapon", menuName = "Weapons/Make New Weapon", order = 0)]
     public class WeaponConfig : ScriptableObject
     {
-        // [SerializeField] AnimatorOverrideController animatorOverride = null;
         [SerializeField]
-        Weapon equieppedPrefab = null;
+        Weapon equippedPrefab = null;
 
         [SerializeField]
         WeaponLevel[] weaponLevels = null;
@@ -34,42 +30,13 @@ namespace VLCNP.Combat
             // DestroyOldWeapon(rightHand, leftHand);
             Weapon weapon = null;
 
-            if (equieppedPrefab != null)
+            if (equippedPrefab != null)
             {
-                weapon = Instantiate(equieppedPrefab, handTransform);
+                weapon = Instantiate(equippedPrefab, handTransform);
                 weapon.gameObject.name = weaponName;
             }
-            // if (animatorOverride != null)
-            // {
-            //     animator.runtimeAnimatorController = animatorOverride;
-            // }
-            // else
-            // {
-            //     var overrideController = animator.runtimeAnimatorController as AnimatorOverrideController;
-            //     if (overrideController != null)
-            //     {
-            //         animator.runtimeAnimatorController = overrideController.runtimeAnimatorController;
-            //     }
-            // }
             return weapon;
         }
-
-        // private void DestroyOldWeapon(Transform rightHand, Transform leftHand)
-        // {
-        //     Transform oldWeapon = rightHand.Find(weaponName);
-        //     if (oldWeapon == null)
-        //     {
-        //         oldWeapon = leftHand.Find(weaponName);
-        //     }
-        //     if (oldWeapon == null) return;
-        //     oldWeapon.name = "DESTROYING";
-        //     Destroy(oldWeapon.gameObject);
-        // }
-
-        // private Transform GetTransform(Transform rightHand, Transform leftHand)
-        // {
-        //     return isRightHanded ? rightHand : leftHand;
-        // }
 
         public bool HasProjectile(int level = 1)
         {
@@ -92,7 +59,6 @@ namespace VLCNP.Combat
             {
                 AudioSource.PlayClipAtPoint(clip, handTransform.position);
             }
-            // projectileInstance.IsLeft = isLeft;
             projectileInstance.SetDirection(isLeft);
             projectileInstance.SetDamage(_weaponLevel.damage);
         }
