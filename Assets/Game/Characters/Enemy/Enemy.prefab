@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6341821145133588806}
   - component: {fileID: 7912833501887554102}
   - component: {fileID: 5230588063922204164}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GakeCollisionDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fee0171f23a14aff959b87a539cecfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTag: Ground
+  targetTags:
+  - Ground
+  - Item
+  - Enemy
 --- !u!1 &922510957543046639
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +86,7 @@ GameObject:
   - component: {fileID: 7213628660742475833}
   - component: {fileID: 5646814659876287842}
   - component: {fileID: 7056235407816223915}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FrontCollisionDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +146,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fee0171f23a14aff959b87a539cecfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTag: Ground
+  targetTags:
+  - Ground
+  - Item
+  - Enemy
 --- !u!1001 &7609002768349338833
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -162,6 +168,10 @@ PrefabInstance:
     - target: {fileID: 1031588860070424186, guid: f918822e12774495a9b170fcadc702ac, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031588860070424186, guid: f918822e12774495a9b170fcadc702ac, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2362538909993038623, guid: f918822e12774495a9b170fcadc702ac, type: 3}
       propertyPath: m_Size.y
@@ -367,6 +377,14 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 1990740eecdad4c46b261d3153f42292, type: 2}
+    - target: {fileID: 8076679947076933009, guid: f918822e12774495a9b170fcadc702ac, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341154694614206732, guid: f918822e12774495a9b170fcadc702ac, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8990718667666340341, guid: f918822e12774495a9b170fcadc702ac, type: 3}
       propertyPath: m_Offset.y
       value: -1.32
@@ -436,6 +454,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyDetectionRange: 10
+  isDetected: 0
+  chaseRange: 15
 --- !u!114 &314289703556747111
 MonoBehaviour:
   m_ObjectHideFlags: 0

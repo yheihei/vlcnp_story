@@ -9,6 +9,12 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         float enemyDetectionRange = 12f;
 
+        // 一度発見状態になったかどうか
+        public bool isDetected = false;
+
+        [SerializeField] // 一度発見状態になった後の追跡距離
+        float chaseRange = 15f;
+
         GameObject player;
 
         PartyCongroller partyCongroller;
@@ -47,17 +53,24 @@ namespace VLCNP.Combat.EnemyAction
 
         public bool IsDetect()
         {
-            // playerとの距離を出す
             if (player == null)
                 return false;
             float distance = Vector2.Distance(player.transform.position, transform.position);
-            return distance < enemyDetectionRange;
+            // 1度発見状態になったら追跡距離内にいるかどうかを返す
+            if (isDetected)
+                return distance < chaseRange;
+            // 未発見状態でプレイヤーが発見距離内にいるかどうかを返す
+            isDetected = distance < enemyDetectionRange;
+            return isDetected;
         }
 
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, enemyDetectionRange);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, chaseRange);
         }
     }
 }
