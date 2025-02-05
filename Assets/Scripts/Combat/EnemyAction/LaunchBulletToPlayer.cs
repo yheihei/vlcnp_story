@@ -68,6 +68,7 @@ namespace VLCNP.Combat.EnemyAction
                 yield break;
             }
 
+            // プレイヤーの方向に向ける
             Vector3 playerPosition = player.transform.position;
             Vector3 direction = handTransform.position - playerPosition;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -75,6 +76,8 @@ namespace VLCNP.Combat.EnemyAction
             {
                 angle += 180;
             }
+            // ランダム性をもたせる
+            angle += Random.Range(-15, 15);
             handTransform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
             bool isLeft = transform.lossyScale.x > 0;
