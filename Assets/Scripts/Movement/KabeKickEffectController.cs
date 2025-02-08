@@ -5,13 +5,21 @@ namespace VLCNP.Movement
 {
     public class KabeKickEffectController : MonoBehaviour, IStoppable
     {
-        [SerializeField] GameObject effect = null;
-        [SerializeField] float effectWaitTime = 0.5f;
-        [SerializeField] GameObject player = null;
-        [SerializeField] Leg leg = null;
+        [SerializeField]
+        GameObject effect = null;
+
+        [SerializeField]
+        float effectWaitTime = 0.5f;
+
+        [SerializeField]
+        GameObject player = null;
+
+        [SerializeField]
+        Leg leg = null;
         Rigidbody2D playerRigidbody2D;
         Mover playerMover;
         Animator animator;
+
         // エフェクトが最後に発生した後の経過時間
         float effectElapsedTime = 0f;
 
@@ -19,23 +27,43 @@ namespace VLCNP.Movement
         bool isColliding = false;
 
         bool isStopped = false;
-        public bool IsStopped { get => isStopped; set => isStopped = value; }
+        public bool IsStopped
+        {
+            get => isStopped;
+            set => isStopped = value;
+        }
+
         // 壁キック時の重力の倍率
-        [SerializeField, Min(0)] float gravityWhenKabeKickMagnification = 0.2f;
+        [SerializeField, Min(0)]
+        float gravityWhenKabeKickMagnification = 0.2f;
+
         // 元の重力
         float originalGravity = 0f;
         bool isJumping = false;
-        public bool IsJumping { get => isJumping; }
-        [SerializeField, Min(0)] float maxJumpTime = 0.3f;
-        [SerializeField, Min(0)] float jumpPowerX = 2.5f;
-        [SerializeField, Min(0)] float jumpPowerY = 6f;
+        public bool IsJumping
+        {
+            get => isJumping;
+        }
+
+        [SerializeField, Min(0)]
+        float maxJumpTime = 0.3f;
+
+        [SerializeField, Min(0)]
+        float jumpPowerX = 2.5f;
+
+        [SerializeField, Min(0)]
+        float jumpPowerY = 6f;
         float jumpTime = 0f;
 
-        [SerializeField] private AudioSource jumpAudioSource;
-        [SerializeField] private AudioClip jumpSe = null;
+        [SerializeField]
+        private AudioSource jumpAudioSource;
+
+        [SerializeField]
+        private AudioClip jumpSe = null;
 
         // 壁につかまっているときのMaxのY方向の速度の絶対値 これ以上は落下速度が変わらない
-        [SerializeField, Min(0)] float maxAbsoluteVelocityY = 2f;
+        [SerializeField, Min(0)]
+        float maxAbsoluteVelocityY = 2f;
 
         void Awake()
         {
@@ -47,7 +75,8 @@ namespace VLCNP.Movement
 
         void OnTriggerStay2D(Collider2D other)
         {
-            if (isStopped) return;
+            if (isStopped)
+                return;
             if (other.gameObject.tag == "Ground")
             {
                 SetColliding(true);
@@ -56,7 +85,8 @@ namespace VLCNP.Movement
 
         void OnTriggerExit2D(Collider2D other)
         {
-            if (isStopped) return;
+            if (isStopped)
+                return;
             if (other.gameObject.tag == "Ground")
             {
                 SetColliding(false);
@@ -110,11 +140,13 @@ namespace VLCNP.Movement
 
         void FixedUpdate()
         {
-            if (isStopped) return;
+            if (isStopped)
+                return;
             GravityChange();
             UpdateAnimation();
             DoJump();
-            if (!CheckEffecting()) return;
+            if (!CheckEffecting())
+                return;
             InstantiateEffect();
         }
 
@@ -155,7 +187,10 @@ namespace VLCNP.Movement
             // Y方向の速度はmaxAbsoluteVelocityYを超えないようにする
             if (Mathf.Abs(playerRigidbody2D.velocity.y) > maxAbsoluteVelocityY)
             {
-                playerRigidbody2D.velocity = new Vector2(playerRigidbody2D.velocity.x, maxAbsoluteVelocityY * Mathf.Sign(playerRigidbody2D.velocity.y));
+                playerRigidbody2D.velocity = new Vector2(
+                    playerRigidbody2D.velocity.x,
+                    maxAbsoluteVelocityY * Mathf.Sign(playerRigidbody2D.velocity.y)
+                );
             }
         }
 
@@ -192,7 +227,9 @@ namespace VLCNP.Movement
             GameObject _effect = Instantiate(
                 effect,
                 transform.position,
-                playerMover.transform.lossyScale.x > 0 ? Quaternion.Euler(10, 90, 0) : Quaternion.Euler(10, -90, 0)
+                playerMover.transform.lossyScale.x > 0
+                    ? Quaternion.Euler(10, 90, 0)
+                    : Quaternion.Euler(10, -90, 0)
             );
             effectElapsedTime = 0f;
         }
@@ -204,6 +241,20 @@ namespace VLCNP.Movement
                 jumpAudioSource.pitch = 1f;
                 jumpAudioSource.PlayOneShot(jumpSe, 0.2f);
             }
+        }
+
+        public void Stop()
+        {
+            isJumping = false;
+            playerRigidbody2D.gravityScale = originalGravity;
+            animator.SetBool("isKabe", false);
+            SetColliding(false);
+            isStopped = true;
+        }
+
+        public void Restart()
+        {
+            isStopped = false;
         }
     }
 }
