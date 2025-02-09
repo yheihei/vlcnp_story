@@ -3,7 +3,7 @@ using VLCNP.Core;
 
 namespace VLCNP.Movement
 {
-    public class KabeKickEffectController : MonoBehaviour, IStoppable
+    public class KabeKickEffectController : MonoBehaviour, IStoppable, IWaterEventListener
     {
         [SerializeField]
         GameObject effect = null;
@@ -256,5 +256,17 @@ namespace VLCNP.Movement
         {
             isStopped = false;
         }
+
+        public void OnWaterEnter()
+        {
+            Stop();
+        }
+
+        public void OnWaterExit()
+        {
+            Restart();
+        }
+
+        public void OnWaterStay() { }
     }
 }

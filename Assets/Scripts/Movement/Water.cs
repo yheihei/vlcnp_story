@@ -22,34 +22,38 @@ namespace VLCNP.Movement
         {
             if (other.gameObject.tag == "Player")
             {
-                // 子オブジェクトからKabeKickEffectControllerを取得して無効化
-                KabeKickEffectController kabeKickEffectController =
-                    other.GetComponentInChildren<KabeKickEffectController>();
-                if (kabeKickEffectController != null)
+                IWaterEventListener[] waterEventListeners =
+                    other.GetComponentsInChildren<IWaterEventListener>();
+                foreach (IWaterEventListener waterEventListener in waterEventListeners)
                 {
-                    kabeKickEffectController.Stop();
+                    waterEventListener.OnWaterEnter();
                 }
-                Rigidbody2D rbody = other.GetComponent<Rigidbody2D>();
-                rbody.gravityScale = waterGravityScale;
-                // プレイヤーのスピードを1/9に減速
-                rbody.velocity = rbody.velocity / 3;
             }
         }
 
-        // プレイヤーが出て行ったらプレイヤーの重力を元に戻す
         private void OnTriggerExit2D(Collider2D other)
         {
             if (other.gameObject.tag == "Player")
             {
-                // 子オブジェクトからKabeKickEffectControllerを取得して有効化
-                KabeKickEffectController kabeKickEffectController =
-                    other.GetComponentInChildren<KabeKickEffectController>();
-                if (kabeKickEffectController != null)
+                IWaterEventListener[] waterEventListeners =
+                    other.GetComponentsInChildren<IWaterEventListener>();
+                foreach (IWaterEventListener waterEventListener in waterEventListeners)
                 {
-                    kabeKickEffectController.Restart();
+                    waterEventListener.OnWaterExit();
                 }
-                Rigidbody2D rbody = other.GetComponent<Rigidbody2D>();
-                rbody.gravityScale = originalGravityScale;
+            }
+        }
+
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            if (other.gameObject.tag == "Player")
+            {
+                IWaterEventListener[] waterEventListeners =
+                    other.GetComponentsInChildren<IWaterEventListener>();
+                foreach (IWaterEventListener waterEventListener in waterEventListeners)
+                {
+                    waterEventListener.OnWaterStay();
+                }
             }
         }
     }

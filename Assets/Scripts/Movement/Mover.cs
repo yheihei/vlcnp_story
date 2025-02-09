@@ -6,7 +6,7 @@ using VLCNP.Saving;
 
 namespace VLCNP.Movement
 {
-    public class Mover : MonoBehaviour
+    public class Mover : MonoBehaviour, IWaterEventListener
     {
         [SerializeField]
         float speed = 4;
@@ -29,6 +29,8 @@ namespace VLCNP.Movement
         Animator animator;
         PlayerStun playerStun;
         Dash dash;
+        bool isInWater = false;
+        float defaultGravityScale = 0;
 
         private void Awake()
         {
@@ -36,6 +38,7 @@ namespace VLCNP.Movement
             animator = GetComponent<Animator>();
             playerStun = GetComponent<PlayerStun>();
             dash = GetComponent<Dash>();
+            defaultGravityScale = rbody.gravityScale;
         }
 
         public void Move()
@@ -143,6 +146,25 @@ namespace VLCNP.Movement
                     transform.localScale.z
                 );
             }
+        }
+
+        public void OnWaterEnter()
+        {
+            isInWater = true;
+            rbody.velocity = rbody.velocity / 9;
+        }
+
+        public void OnWaterExit()
+        {
+            isInWater = false;
+            rbody.gravityScale = defaultGravityScale;
+        }
+
+        public void OnWaterStay()
+        {
+            if (!isInWater)
+                return;
+            rbody.gravityScale = 2f / 9f;
         }
     }
 }
