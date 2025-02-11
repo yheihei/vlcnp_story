@@ -151,7 +151,7 @@ namespace VLCNP.Movement
         public void OnWaterEnter()
         {
             isInWater = true;
-            rbody.velocity = rbody.velocity / 9;
+            rbody.velocity = rbody.velocity / 2;
         }
 
         public void OnWaterExit()

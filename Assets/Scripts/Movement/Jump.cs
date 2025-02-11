@@ -31,6 +31,15 @@ namespace VLCNP.Movement
         [SerializeField]
         private AudioClip jumpSe = null;
 
+        [SerializeField]
+        float jumpPitch = 1f;
+
+        [SerializeField]
+        private AudioClip waterJumpSe = null;
+
+        [SerializeField]
+        float waterJumpPitch = 0.5f;
+
         private bool isStopped = false;
         public bool IsStopped
         {
@@ -123,11 +132,34 @@ namespace VLCNP.Movement
 
         private void PlayJumpSound()
         {
-            if (jumpAudioSource != null && jumpSe != null)
+            AudioClip _jumpSe = GetJumpSe();
+            if (jumpAudioSource != null && _jumpSe != null)
             {
-                jumpAudioSource.pitch = 1f;
-                jumpAudioSource.PlayOneShot(jumpSe, 0.2f);
+                jumpAudioSource.pitch = GetJumpPitch();
+                jumpAudioSource.PlayOneShot(_jumpSe, 0.2f);
             }
+        }
+
+        private AudioClip GetJumpSe()
+        {
+            if (isInWater && waterJumpSe != null)
+            {
+                return waterJumpSe;
+            }
+            if (!isInWater && jumpSe != null)
+            {
+                return jumpSe;
+            }
+            return null;
+        }
+
+        private float GetJumpPitch()
+        {
+            if (isInWater)
+            {
+                return waterJumpPitch;
+            }
+            return jumpPitch;
         }
 
         public bool CanJump()
