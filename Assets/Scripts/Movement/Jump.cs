@@ -5,40 +5,71 @@ using VLCNP.Core;
 
 namespace VLCNP.Movement
 {
-    public class Jump : MonoBehaviour, IStoppable
+    public class Jump : MonoBehaviour, IStoppable, IWaterEventListener
     {
-        [SerializeField] Leg leg;
+        [SerializeField]
+        Leg leg;
         Rigidbody2D rBody;
         bool isJumping = false;
 
-        [SerializeField, Min(0)] float jumpPower = 7.5f;
-        [SerializeField, Min(0)] float minJumpPower = 2f;
+        [SerializeField, Min(0)]
+        float jumpPower = 7.5f;
+
+        [SerializeField, Min(0)]
+        float minJumpPower = 2f;
         float jumpTime = 0;
-        [SerializeField, Min(0)] float maxJumpTime = 0.3f;
-        [SerializeField] AnimationCurve jumpCurve = new();
-        [SerializeField] private AudioSource jumpAudioSource;
-        [SerializeField] private AudioClip jumpSe = null;
+
+        [SerializeField, Min(0)]
+        float maxJumpTime = 0.3f;
+
+        [SerializeField]
+        AnimationCurve jumpCurve = new();
+
+        [SerializeField]
+        private AudioSource jumpAudioSource;
+
+        [SerializeField]
+        private AudioClip jumpSe = null;
+
+        [SerializeField]
+        float jumpPitch = 1f;
+
+        [SerializeField]
+        private AudioClip waterJumpSe = null;
+
+        [SerializeField]
+        float waterJumpPitch = 0.5f;
 
         private bool isStopped = false;
-        public bool IsStopped { get => isStopped; set => isStopped = value; }
+        public bool IsStopped
+        {
+            get => isStopped;
+            set => isStopped = value;
+        }
         public string jumpButton = "space";
+        float defaultJumpPower = 0;
+        float waterJumpPower = 0;
+        bool isInWater = false;
 
         private void Awake()
         {
             rBody = GetComponent<Rigidbody2D>();
             leg.OnLanded += OnLanded;
+            defaultJumpPower = jumpPower;
+            waterJumpPower = jumpPower * 2 / 9f;
         }
 
         void Update()
         {
-            if (LoadCompleteManager.Instance != null && !LoadCompleteManager.Instance.IsLoaded) return;
+            if (LoadCompleteManager.Instance != null && !LoadCompleteManager.Instance.IsLoaded)
+                return;
             if (isStopped)
             {
                 EndJump();
                 return;
             }
             // ジャンプの開始判定
-            if (leg.IsGround && Input.GetKeyDown(jumpButton))
+            if (CanJump() && Input.GetKeyDown(jumpButton))
             {
                 isJumping = true;
                 PlayJumpSound();
@@ -98,13 +129,56 @@ namespace VLCNP.Movement
                 EndJump();
             }
         }
+
         private void PlayJumpSound()
         {
-            if (jumpAudioSource != null && jumpSe != null)
+            AudioClip _jumpSe = GetJumpSe();
+            if (jumpAudioSource != null && _jumpSe != null)
             {
-                jumpAudioSource.pitch = 1f;
-                jumpAudioSource.PlayOneShot(jumpSe, 0.2f);
+                jumpAudioSource.pitch = GetJumpPitch();
+                jumpAudioSource.PlayOneShot(_jumpSe, 0.2f);
             }
+        }
+
+        private AudioClip GetJumpSe()
+        {
+            if (isInWater && waterJumpSe != null)
+            {
+                return waterJumpSe;
+            }
+            if (!isInWater && jumpSe != null)
+            {
+                return jumpSe;
+            }
+            return null;
+        }
+
+        private float GetJumpPitch()
+        {
+            if (isInWater)
+            {
+                return waterJumpPitch;
+            }
+            return jumpPitch;
+        }
+
+        public bool CanJump()
+        {
+            return isInWater || leg.IsGround;
+        }
+
+        public void OnWaterEnter() { }
+
+        public void OnWaterExit()
+        {
+            isInWater = false;
+            jumpPower = defaultJumpPower;
+        }
+
+        public void OnWaterStay()
+        {
+            isInWater = true;
+            jumpPower = waterJumpPower;
         }
     }
 }

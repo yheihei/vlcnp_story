@@ -6,10 +6,11 @@ using VLCNP.Saving;
 
 namespace VLCNP.Movement
 {
-    public class Mover : MonoBehaviour
+    public class Mover : MonoBehaviour, IWaterEventListener
     {
         [SerializeField]
         float speed = 4;
+        float speedInWater = 0;
         bool isLeft = true;
 
         // isLeftのgetterを定義
@@ -29,6 +30,8 @@ namespace VLCNP.Movement
         Animator animator;
         PlayerStun playerStun;
         Dash dash;
+        bool isInWater = false;
+        float defaultGravityScale = 0;
 
         private void Awake()
         {
@@ -36,6 +39,8 @@ namespace VLCNP.Movement
             animator = GetComponent<Animator>();
             playerStun = GetComponent<PlayerStun>();
             dash = GetComponent<Dash>();
+            defaultGravityScale = rbody.gravityScale;
+            speedInWater = speed / 2;
         }
 
         public void Move()
@@ -46,15 +51,20 @@ namespace VLCNP.Movement
                 return;
             if (Input.GetKey("right"))
             {
-                vx = speed;
+                vx = GetSpeed();
                 isLeft = false;
             }
             if (Input.GetKey("left"))
             {
-                vx = -speed;
+                vx = -GetSpeed();
                 isLeft = true;
             }
             UpdateAnimator();
+        }
+
+        private float GetSpeed()
+        {
+            return isInWater ? speedInWater : speed;
         }
 
         private bool isStunned()
@@ -143,6 +153,25 @@ namespace VLCNP.Movement
                     transform.localScale.z
                 );
             }
+        }
+
+        public void OnWaterEnter()
+        {
+            isInWater = true;
+            rbody.velocity = rbody.velocity / 2;
+        }
+
+        public void OnWaterExit()
+        {
+            isInWater = false;
+            rbody.gravityScale = defaultGravityScale;
+        }
+
+        public void OnWaterStay()
+        {
+            if (!isInWater)
+                return;
+            rbody.gravityScale = 2f / 9f;
         }
     }
 }
