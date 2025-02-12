@@ -10,6 +10,7 @@ namespace VLCNP.Movement
     {
         [SerializeField]
         float speed = 4;
+        float speedInWater = 0;
         bool isLeft = true;
 
         // isLeftのgetterを定義
@@ -39,6 +40,7 @@ namespace VLCNP.Movement
             playerStun = GetComponent<PlayerStun>();
             dash = GetComponent<Dash>();
             defaultGravityScale = rbody.gravityScale;
+            speedInWater = speed / 2;
         }
 
         public void Move()
@@ -49,15 +51,20 @@ namespace VLCNP.Movement
                 return;
             if (Input.GetKey("right"))
             {
-                vx = speed;
+                vx = GetSpeed();
                 isLeft = false;
             }
             if (Input.GetKey("left"))
             {
-                vx = -speed;
+                vx = -GetSpeed();
                 isLeft = true;
             }
             UpdateAnimator();
+        }
+
+        private float GetSpeed()
+        {
+            return isInWater ? speedInWater : speed;
         }
 
         private bool isStunned()
