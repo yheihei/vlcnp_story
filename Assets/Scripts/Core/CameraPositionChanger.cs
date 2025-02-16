@@ -13,9 +13,6 @@ namespace VLCNP.Core
         [SerializeField]
         private float moveAmount = 4f; // 上下移動量
 
-        [SerializeField]
-        private float moveSpeed = 1f; // 移動速度
-
         CameraYPosition cameraPosition = CameraYPosition.Middle;
         Vector3 startOffset;
 
@@ -47,6 +44,18 @@ namespace VLCNP.Core
                 case CameraYPosition.Lower:
                     targetY = -moveAmount;
                     break;
+                case CameraYPosition.Fixed:
+                    // wip
+                    break;
+            }
+
+            if (cameraPosition == CameraYPosition.Fixed)
+            {
+                yield return null;
+            }
+            else
+            {
+                // wip
             }
 
             targetY += startOffset.y;
