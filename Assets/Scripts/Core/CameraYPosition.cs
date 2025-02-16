@@ -5,5 +5,6 @@ namespace VLCNP.Core
         Middle,
         Upper,
         Lower,
+        Fixed,
     }
 }
