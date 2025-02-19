@@ -5,21 +5,26 @@ using VLCNP.Movement;
 
 namespace VLCNP.Combat.EnemyAction
 {
-    public class Swimming : EnemyAction, IWaterEventListener
+    /**
+    * 水中で近くにきたプレイヤーに向かって突進する
+    */
+    public class SwimmingHardTuckle : EnemyAction, IWaterEventListener
     {
         [SerializeField]
         private FrontCollisionDetector frontCollisionDetector = null;
 
         [SerializeField]
-        private float swimPower = 10000f;
+        private float swimPower = 20000f;
 
         [SerializeField]
         private float strokeInterval = 1.5f;
 
+        [SerializeField]
+        private float attackRange = 4f;
+
         Rigidbody2D rbody;
         Animator animator;
         float vx = 0;
-        bool isInWater = false;
 
         public enum Direction
         {
@@ -28,6 +33,8 @@ namespace VLCNP.Combat.EnemyAction
         }
 
         Direction direction = Direction.Left;
+        GameObject player;
+        bool isInWater = false;
 
         private void Awake()
         {
@@ -42,38 +49,41 @@ namespace VLCNP.Combat.EnemyAction
             if (IsDone)
                 return;
             IsExecuting = true;
-            StartCoroutine(Swim());
+            StartCoroutine(Tackle());
         }
 
-        private IEnumerator Swim()
+        private IEnumerator Tackle()
         {
             if (!isInWater)
             {
                 IsDone = true;
                 yield break;
             }
+            player = GameObject.FindGameObjectWithTag("Player");
+            if (!isAttackable(player))
+            {
+                IsDone = true;
+                yield break;
+            }
+            animator?.SetBool("special1", true);
+            // playerの方角に向けて力を加える
             UpdateDirectionFromCurrentTransform();
-            animator?.SetBool("throw", true);
-            yield return new WaitForSeconds(0.5f);
-            // 向いている方向にpowerを加える
-            UpdateSwimAnimation(10f);
-            rbody.AddForce(new Vector2(direction == Direction.Left ? -swimPower : swimPower, 0));
+            // プレイヤーの方角のベクトルを取得
+            Vector2 playerDirection = player.transform.position - transform.position;
+            // プレイヤーの方角に力を加える
+            rbody.AddForce(playerDirection.normalized * swimPower);
             yield return new WaitForSeconds(strokeInterval);
-            // 停止
+            // 止める
             rbody.velocity = new Vector2(0, 0);
-            UpdateSwimAnimation(0);
             IsDone = true;
         }
 
-        private void UpdateSwimAnimation(float vx)
+        private bool isAttackable(GameObject player)
         {
-            animator?.SetFloat("vx", Mathf.Abs(vx));
-        }
-
-        public void SetDirection(Direction _direction)
-        {
-            direction = _direction;
-            UpdateDirectionFromCurrentTransform();
+            // プレイヤーとの距離を取得しそれが攻撃範囲内かどうかを返す
+            if (player == null)
+                return false;
+            return Vector2.Distance(player.transform.position, transform.position) < attackRange;
         }
 
         private void UpdateDirectionFromCurrentTransform()
@@ -93,6 +103,14 @@ namespace VLCNP.Combat.EnemyAction
             // 重力を0に
             rbody.gravityScale = 0;
             isInWater = true;
+            // 着水後0.2s後にy方向の速度0に
+            StartCoroutine(StopYVelocity());
+        }
+
+        private IEnumerator StopYVelocity()
+        {
+            yield return new WaitForSeconds(0.2f);
+            rbody.velocity = new Vector2(rbody.velocity.x, 0);
         }
 
         public void OnWaterExit()
