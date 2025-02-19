@@ -32,6 +32,9 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
     [SerializeField]
     SerializableInterface<IDetect> detect = null;
 
+    [SerializeField] // 常に接地状態かどうか
+    bool isAlwaysGround = false;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -88,6 +91,12 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (isAlwaysGround)
+        {
+            animator.SetBool("isGround", true);
+            return;
+        }
+
         if (animator.GetBool("isGround"))
             return;
         if (other.gameObject.CompareTag("Ground"))
@@ -98,6 +107,12 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
 
     private void OnTriggerExit2D(Collider2D other)
     {
+        if (isAlwaysGround)
+        {
+            animator.SetBool("isGround", true);
+            return;
+        }
+
         if (other.gameObject.CompareTag("Ground"))
         {
             animator.SetBool("isGround", false);

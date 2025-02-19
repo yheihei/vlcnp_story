@@ -29,6 +29,16 @@ namespace VLCNP.Movement
                     waterEventListener.OnWaterEnter();
                 }
             }
+
+            if (other.gameObject.tag == "Enemy")
+            {
+                IWaterEventListener[] waterEventListeners =
+                    other.GetComponentsInChildren<IWaterEventListener>();
+                foreach (IWaterEventListener waterEventListener in waterEventListeners)
+                {
+                    waterEventListener.OnWaterEnter();
+                }
+            }
         }
 
         private void OnTriggerExit2D(Collider2D other)
@@ -42,11 +52,31 @@ namespace VLCNP.Movement
                     waterEventListener.OnWaterExit();
                 }
             }
+
+            if (other.gameObject.tag == "Enemy")
+            {
+                IWaterEventListener[] waterEventListeners =
+                    other.GetComponentsInChildren<IWaterEventListener>();
+                foreach (IWaterEventListener waterEventListener in waterEventListeners)
+                {
+                    waterEventListener.OnWaterExit();
+                }
+            }
         }
 
         private void OnTriggerStay2D(Collider2D other)
         {
             if (other.gameObject.tag == "Player")
+            {
+                IWaterEventListener[] waterEventListeners =
+                    other.GetComponentsInChildren<IWaterEventListener>();
+                foreach (IWaterEventListener waterEventListener in waterEventListeners)
+                {
+                    waterEventListener.OnWaterStay();
+                }
+            }
+
+            if (other.gameObject.tag == "Enemy")
             {
                 IWaterEventListener[] waterEventListeners =
                     other.GetComponentsInChildren<IWaterEventListener>();
