@@ -13,5 +13,6 @@ namespace VLCNP.Stats
         VeryLongTsuchinoko,
         Bee,
         HoneyComb,
+        Crocodile,
     }
 }
