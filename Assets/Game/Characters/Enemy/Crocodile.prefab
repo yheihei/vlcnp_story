@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1726205012, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: chaseRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1726205012, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: enemyDetectionRange
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 314289703556747111, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: stanFrame
       value: 2
@@ -287,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c22f4d1c4e37477cbf35124059958f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  afterWaitTimeSecond: 0.5
+  afterWaitTimeSecond: 0.1
 --- !u!114 &4247837132171154630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,7 +324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e74da9be6302743139ca0cd47f553703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTimeSecond: 1
+  waitTimeSecond: 0.5
 --- !u!114 &6599773195452708058
 MonoBehaviour:
   m_ObjectHideFlags: 0

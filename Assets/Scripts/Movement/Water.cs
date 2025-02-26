@@ -7,30 +7,9 @@ namespace VLCNP.Movement
     [RequireComponent(typeof(BoxCollider2D))]
     public class Water : MonoBehaviour
     {
-        float waterGravityScale = 2f / 9f;
-        float originalGravityScale = 0;
-
-        private void Start()
-        {
-            // Playerを探してoriginalGravityScaleを設定
-            GameObject player = GameObject.FindWithTag("Player");
-            originalGravityScale = player.GetComponent<Rigidbody2D>().gravityScale;
-        }
-
-        // プレイヤーが入ってきたらプレイヤーの重力を1/9にする
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.tag == "Player")
-            {
-                IWaterEventListener[] waterEventListeners =
-                    other.GetComponentsInChildren<IWaterEventListener>();
-                foreach (IWaterEventListener waterEventListener in waterEventListeners)
-                {
-                    waterEventListener.OnWaterEnter();
-                }
-            }
-
-            if (other.gameObject.tag == "Enemy")
+            if (isTarget(other))
             {
                 IWaterEventListener[] waterEventListeners =
                     other.GetComponentsInChildren<IWaterEventListener>();
@@ -43,17 +22,7 @@ namespace VLCNP.Movement
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (other.gameObject.tag == "Player")
-            {
-                IWaterEventListener[] waterEventListeners =
-                    other.GetComponentsInChildren<IWaterEventListener>();
-                foreach (IWaterEventListener waterEventListener in waterEventListeners)
-                {
-                    waterEventListener.OnWaterExit();
-                }
-            }
-
-            if (other.gameObject.tag == "Enemy")
+            if (isTarget(other))
             {
                 IWaterEventListener[] waterEventListeners =
                     other.GetComponentsInChildren<IWaterEventListener>();
@@ -66,7 +35,7 @@ namespace VLCNP.Movement
 
         private void OnTriggerStay2D(Collider2D other)
         {
-            if (other.gameObject.tag == "Player")
+            if (isTarget(other))
             {
                 IWaterEventListener[] waterEventListeners =
                     other.GetComponentsInChildren<IWaterEventListener>();
@@ -75,16 +44,13 @@ namespace VLCNP.Movement
                     waterEventListener.OnWaterStay();
                 }
             }
+        }
 
-            if (other.gameObject.tag == "Enemy")
-            {
-                IWaterEventListener[] waterEventListeners =
-                    other.GetComponentsInChildren<IWaterEventListener>();
-                foreach (IWaterEventListener waterEventListener in waterEventListeners)
-                {
-                    waterEventListener.OnWaterStay();
-                }
-            }
+        private bool isTarget(Collider2D other)
+        {
+            return other.gameObject.tag == "Player"
+                || other.gameObject.tag == "Enemy"
+                || other.gameObject.tag == "Item";
         }
     }
 }
