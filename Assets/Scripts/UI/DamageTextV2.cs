@@ -10,9 +10,14 @@ namespace VLCNP.UI
     public class DamageTextV2 : MonoBehaviour
     {
         // ダメージを受けた対象のキャラクターを入れる
-        [SerializeField] Transform damagedCharacter;
-        [SerializeField] Text damageText;
-        [SerializeField] float showTimeDuration = 2.5f;
+        [SerializeField]
+        Transform damagedCharacter;
+
+        [SerializeField]
+        Text damageText;
+
+        [SerializeField]
+        float showTimeDuration = 2.5f;
         float damageAmount = 0f;
         float showTime = 0f;
         bool isDestroy = false;
@@ -31,7 +36,12 @@ namespace VLCNP.UI
         {
             showTime = 0f;
             // Text表示
-            damageText.color = new Color(damageText.color.r, damageText.color.g, damageText.color.b, 1f);
+            damageText.color = new Color(
+                damageText.color.r,
+                damageText.color.g,
+                damageText.color.b,
+                1f
+            );
             // ダメージを合算
             damageAmount += damagePoint;
             damageText.text = damageAmount.ToString();
@@ -51,14 +61,20 @@ namespace VLCNP.UI
         void ResetDamageText()
         {
             // Textを透明にする
-            damageText.color = new Color(damageText.color.r, damageText.color.g, damageText.color.b, 0f);
+            damageText.color = new Color(
+                damageText.color.r,
+                damageText.color.g,
+                damageText.color.b,
+                0f
+            );
             damageAmount = 0f;
             damageText.text = damageAmount.ToString();
         }
 
         void FixedUpdate()
         {
-            if (isDestroy) return;
+            if (isDestroy)
+                return;
             showTime += Time.deltaTime;
             if (showTime > showTimeDuration)
             {
@@ -73,14 +89,23 @@ namespace VLCNP.UI
 
         private void UpdateDirection()
         {
-            if (isDestroy) return;
+            if (isDestroy)
+                return;
             if (IsCharacterDirectionLeft())
             {
-                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(
+                    Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y,
+                    transform.localScale.z
+                );
             }
             else
             {
-                transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(
+                    -1 * Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y,
+                    transform.localScale.z
+                );
             }
         }
     }
