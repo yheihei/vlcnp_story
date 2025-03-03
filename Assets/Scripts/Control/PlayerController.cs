@@ -25,6 +25,9 @@ namespace VLCNP.Control
 
         public string attackButton = "x";
 
+        [SerializeField]
+        Leg leg;
+
         private void Awake()
         {
             mover = GetComponent<Mover>();
@@ -92,10 +95,18 @@ namespace VLCNP.Control
 
         private void InteractWithCollisionActions()
         {
-            if (Input.GetKeyDown("up") && collisionAction != null && collisionAction.IsAction)
+            if (canInteractAction())
             {
                 collisionAction.Execute();
             }
+        }
+
+        private bool canInteractAction()
+        {
+            return Input.GetKeyDown("up")
+                && collisionAction != null
+                && collisionAction.IsAction
+                && leg.IsGround;
         }
 
         [System.Serializable]
