@@ -21,11 +21,23 @@ namespace VLCNP.Core
         void Start()
         {
             transposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            if (transposer == null)
+            {
+                Debug.LogWarning("CinemachineFramingTransposer is not found.");
+                return;
+            }
             startOffset = transposer.m_TrackedObjectOffset;
         }
 
         public void ChangeCameraPosition(CameraYPosition _cameraPosition)
         {
+            if (transposer == null)
+            {
+                Debug.LogWarning(
+                    "CinemachineFramingTransposer is not found. Can't change camera position."
+                );
+                return;
+            }
             cameraPosition = _cameraPosition;
             StartCoroutine(ChangeCameraPositionCoroutine());
         }

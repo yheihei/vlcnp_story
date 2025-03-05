@@ -6,8 +6,11 @@ namespace VLCNP.UI
 {
     public class InformationTextSpawner : MonoBehaviour
     {
-        [SerializeField] InformationText textPrefab = null;
-        [SerializeField] float SpawnOffsetY = 1.2f;
+        [SerializeField]
+        InformationText textPrefab = null;
+
+        [SerializeField]
+        float SpawnOffsetY = 1.2f;
 
         public InformationText Spawn(string text)
         {
@@ -17,6 +20,8 @@ namespace VLCNP.UI
                 transform.position + new Vector3(0, SpawnOffsetY, 0),
                 Quaternion.identity
             );
+            // レイヤーを生成元と同じにする
+            instance.gameObject.layer = gameObject.layer;
             instance.GetComponent<Canvas>().sortingLayerID = SortingLayer.NameToID("UI");
             instance.SetValue(text);
             return instance;
