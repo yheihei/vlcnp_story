@@ -25,9 +25,10 @@ namespace VLCNP.Core
         AllowToUniHouse, // ウニの家に入れるようになった
         DragDefeated, // ドラァグクイーンを倒した
         IkehayaBlockChainChated, // イケハヤからブロックチェーンの話を聞いた
-        HPUpOhirunebeyaBoss,  // お昼寝部屋のボスを倒した際のHPアップ
-        HPUpDragDefeated,  // ドラァグクイーンを倒した際のHPアップ
-        AkimVeryLong,  // Akimがベリーロングになった
-        KabeKickTutorial,  // かべキックの使い方を教えてもらった
+        HPUpOhirunebeyaBoss, // お昼寝部屋のボスを倒した際のHPアップ
+        HPUpDragDefeated, // ドラァグクイーンを倒した際のHPアップ
+        AkimVeryLong, // Akimがベリーロングになった
+        KabeKickTutorial, // かべキックの使い方を教えてもらった
+        OhiruneBeyaTutiTyukan, // お昼寝部屋土の中間地点に到達した
     }
 }
