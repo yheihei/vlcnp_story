@@ -71,7 +71,7 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
         if (StartWaitTime > 0f)
             return;
         // プレイヤーを発見していなければ何もしない
-        if (detect != null && !detect.Value.IsDetect())
+        if (detect != null && detect.Value != null && !detect.Value.IsDetect())
             return;
         // 現在の行動を取得する
         IEnemyAction currentAction = GetCurrentAction();
