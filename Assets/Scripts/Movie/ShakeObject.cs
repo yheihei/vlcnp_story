@@ -9,6 +9,7 @@ namespace VLCNP.Movie
 
         public void Shake(float magnitude = 0.1f)
         {
+            StopAllCoroutines();
             IsStopped = false;
             StartCoroutine(ShakeCoroutine(magnitude));
         }
@@ -16,7 +17,6 @@ namespace VLCNP.Movie
         private IEnumerator ShakeCoroutine(float magnitude)
         {
             Vector3 originalPosition = transform.position;
-            float elapsedTime = 0;
             while (!IsStopped)
             {
                 transform.position =
@@ -26,7 +26,6 @@ namespace VLCNP.Movie
                         UnityEngine.Random.Range(-1f, 1f) * magnitude,
                         0
                     );
-                elapsedTime += Time.deltaTime;
                 yield return null;
             }
             transform.position = originalPosition;

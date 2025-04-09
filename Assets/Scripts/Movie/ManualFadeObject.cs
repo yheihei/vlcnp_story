@@ -7,12 +7,18 @@ namespace VLCNP.Movie
     {
         public void FadeIn(float duration = 0.5f)
         {
+            StopAllCoroutines();
             StartCoroutine(FadeInCoroutine(duration));
         }
 
         private IEnumerator FadeInCoroutine(float duration)
         {
             SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null)
+            {
+                Debug.LogWarning("SpriteRenderer not found on this GameObject.");
+                yield break;
+            }
             Color color = spriteRenderer.color;
             float startAlpha = color.a;
             float endAlpha = 1f;
