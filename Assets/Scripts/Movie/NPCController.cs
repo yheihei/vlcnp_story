@@ -5,26 +5,28 @@ using Nethereum.BlockchainProcessing.BlockProcessing;
 using Nethereum.ENS.EthRegistrarSubdomainRegistrar.ContractDefinition;
 using UnityEngine;
 
-
 namespace VLCNP.Movie
 {
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
     public class NPCController : MonoBehaviour
     {
-        [SerializeField] float speed = 4;
+        [SerializeField]
+        float speed = 4;
         Rigidbody2D rbody;
         Animator animator;
         float vx = 0;
         float autoJumpPower = 0f;
         bool isLeft = true;
+
         public enum Direction
         {
             Left,
-            Right
+            Right,
         }
 
-        private void Awake() {
+        private void Awake()
+        {
             rbody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
         }
@@ -104,17 +106,29 @@ namespace VLCNP.Movie
             transform.position = position;
         }
 
-        public void MoveToPositionEvent(Vector3 position, float timeout = 0, bool keepDirection = false)
+        public void MoveToPositionEvent(
+            Vector3 position,
+            float timeout = 0,
+            bool keepDirection = false
+        )
         {
             StartCoroutine(MoveToPosition(position, timeout, keepDirection));
         }
 
-        public void MoveToRelativePositionEvent(Vector3 position, float timeout = 0, bool keepDirection = false)
+        public void MoveToRelativePositionEvent(
+            Vector3 position,
+            float timeout = 0,
+            bool keepDirection = false
+        )
         {
             StartCoroutine(MoveToPosition(transform.position + position, timeout, keepDirection));
         }
 
-        private IEnumerator MoveToPosition(Vector3 position, float timeout = 0, bool keepDirection = false)
+        private IEnumerator MoveToPosition(
+            Vector3 position,
+            float timeout = 0,
+            bool keepDirection = false
+        )
         {
             // プレイヤーの位置が指定のx位置より左にある場合は左を向く
             if (!keepDirection)
@@ -161,12 +175,19 @@ namespace VLCNP.Movie
             float elapsedTime = 0;
             while (elapsedTime < duration)
             {
-                transform.position = originalPosition + new Vector3(UnityEngine.Random.Range(-1f, 1f) * magnitude, UnityEngine.Random.Range(-1f, 1f) * magnitude, 0);
+                transform.position =
+                    originalPosition
+                    + new Vector3(
+                        UnityEngine.Random.Range(-1f, 1f) * magnitude,
+                        UnityEngine.Random.Range(-1f, 1f) * magnitude,
+                        0
+                    );
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
             transform.position = originalPosition;
         }
+
         private void UpdateMoveSpeed(float _vx)
         {
             vx = _vx;
@@ -178,12 +199,30 @@ namespace VLCNP.Movie
         {
             if (isLeft)
             {
-                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(
+                    Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y,
+                    transform.localScale.z
+                );
             }
             else
             {
-                transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(
+                    -1 * Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y,
+                    transform.localScale.z
+                );
             }
         }
-    }    
+
+        public void PlayPreMagicAnimation(bool isPreMagic)
+        {
+            animator.SetBool("isPreMagic", isPreMagic);
+        }
+
+        public void PlayMagicAnimation(bool isMagic)
+        {
+            animator.SetBool("isMagic", isMagic);
+        }
+    }
 }

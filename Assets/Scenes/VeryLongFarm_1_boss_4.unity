@@ -11921,7 +11921,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fee0171f23a14aff959b87a539cecfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTag: Ground
+  targetTags:
+  - Ground
+  - Item
+  - Enemy
 --- !u!1 &1422904075
 GameObject:
   m_ObjectHideFlags: 0
@@ -12061,6 +12064,10 @@ PrefabInstance:
     - target: {fileID: 1644512092388552081, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_RootOrder
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663993997019288303, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2065088820846262252, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_FontData.m_Font
@@ -12329,6 +12336,10 @@ PrefabInstance:
     - target: {fileID: 8104223883752621195, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_BackGroundColor.r
       value: 0.44313726
+      objectReference: {fileID: 0}
+    - target: {fileID: 8104223883808575881, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8104223883808575881, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_AnchorMax.y
@@ -37054,7 +37065,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 2051503805}
+  selectedFlowchart: {fileID: 542368200}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
@@ -37503,7 +37514,7 @@ MonoBehaviour:
   nodeRect:
     serializedVersion: 2
     x: 66
-    y: 72
+    y: 71
     width: 88
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
@@ -37548,8 +37559,7 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 2051503804}
-  selectedCommands:
-  - {fileID: 2051503808}
+  selectedCommands: []
   variables: []
   description: 
   stepPause: 0
