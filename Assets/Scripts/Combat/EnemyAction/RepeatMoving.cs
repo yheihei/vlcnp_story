@@ -25,6 +25,7 @@ namespace VLCNP.Combat.EnemyAction
         Rigidbody2D rbody;
         Animator animator;
         float vx = 0;
+        bool isGround = false;
 
         public enum Direction
         {
@@ -45,6 +46,8 @@ namespace VLCNP.Combat.EnemyAction
             if (IsExecuting)
                 return;
             if (IsDone)
+                return;
+            if (!isGround)
                 return;
             IsExecuting = true;
             StartCoroutine(Move(moveTimeout));
@@ -81,6 +84,20 @@ namespace VLCNP.Combat.EnemyAction
             }
             UpdateMoveSpeed(0);
             IsDone = true;
+        }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            if (!collision.gameObject.CompareTag("Ground"))
+                return;
+            isGround = true;
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (!collision.gameObject.CompareTag("Ground"))
+                return;
+            isGround = false;
         }
 
         private void UpdateMoveSpeed(float _vx)
