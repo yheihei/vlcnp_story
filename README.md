@@ -14,3 +14,6 @@
 
 * https://soundeffect-lab.info/sound/button/
   * tyakuti
+
+* https://dova-s.jp/se/play1334.html
+  * ゾンビ・モンスターの鳴き声
