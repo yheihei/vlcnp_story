@@ -15,5 +15,6 @@ namespace VLCNP.Stats
         HoneyComb,
         Crocodile,
         VeryLongBigTsuchinoko,
+        PoisonBall,
     }
 }
