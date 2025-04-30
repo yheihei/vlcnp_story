@@ -231,6 +231,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 6200000, guid: 8bc44aafef83443639a163b4cf8daa57, type: 2}
+    - target: {fileID: 6915549942278031112, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7213628660742475833, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.03
@@ -272,7 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  deleteTime: 5
+  deleteTime: 10
   direction: {x: 1, y: 0, z: 0}
 --- !u!114 &6250285462123256615 stripped
 MonoBehaviour:

@@ -34,7 +34,7 @@ PrefabInstance:
     - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: enemyActions.Array.data[1].unityReference
       value: 
-      objectReference: {fileID: 1222681490}
+      objectReference: {fileID: 1222681491}
     - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: enemyActions.Array.data[2].unityReference
       value: 
@@ -42,7 +42,7 @@ PrefabInstance:
     - target: {fileID: 544694468188286105, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: enemyActions.Array.data[3].unityReference
       value: 
-      objectReference: {fileID: 1222681491}
+      objectReference: {fileID: 526850818}
     - target: {fileID: 1539643153073874212, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: m_Offset.y
       value: -2.55
@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: a3e1a23538c1b471da8b700263f3496f, type: 2}
+    - target: {fileID: 4692607461443922713, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
+      propertyPath: statClass
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 5283275602143571918, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -189,6 +193,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7478345028051563179, guid: 9835f735ca5074eb2b20082132406d63, type: 3}
   m_PrefabInstance: {fileID: 1186115375609818564}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &526850818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8628200379802738543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c1ff2b1b315c40bc8003029983aba73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activateTargets:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &1222681489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,10 +234,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawns:
-  - mode: 0
-    unityReference: {fileID: 0}
-    rawReference:
-      rid: -2
   - mode: 0
     unityReference: {fileID: 0}
     rawReference:

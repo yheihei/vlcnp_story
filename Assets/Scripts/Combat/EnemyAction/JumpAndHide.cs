@@ -42,6 +42,7 @@ namespace VLCNP.Combat.EnemyAction
             transform.position = hidePosition.position;
             rBody.gravityScale = 0;
             rBody.velocity = Vector2.zero;
+            IsDone = true;
         }
     }
 }

@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VLCNP.Combat.EnemyAction;
 using VLCNP.Core;
 
 namespace VLCNP.Projectiles
 {
-    public class PoisonBall : MonoBehaviour, IStoppable
+    public class PoisonBall : MonoBehaviour, IStoppable, IFire
     {
         [SerializeField]
         float speed = 5f;
@@ -56,7 +57,15 @@ namespace VLCNP.Projectiles
         {
             direction = _direction.normalized;
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            rb.velocity = direction * speed;
+            // rb.velocity = direction * speed;
+            // 速さに10%のランダム性をもたせる
+            float randomSpeed = speed * (1 + Random.Range(-0.1f, 0.1f));
+            rb.velocity = direction * randomSpeed;
+        }
+
+        public GameObject GetGameObject()
+        {
+            return gameObject;
         }
     }
 }
