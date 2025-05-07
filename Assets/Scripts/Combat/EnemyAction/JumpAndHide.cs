@@ -34,14 +34,32 @@ namespace VLCNP.Combat.EnemyAction
         IEnumerator JumpAndHideExecute()
         {
             // 垂直に素早く飛ぶ
-            rBody.AddForce(new Vector2(0, 2400), ForceMode2D.Impulse);
-            // ちょっと待つ
-            yield return new WaitForSeconds(0.5f);
+            rBody.AddForce(new Vector2(0, 1800), ForceMode2D.Impulse);
+            // 0.5sかけてFadeOut
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                for (float t = 0; t < 0.5f; t += Time.deltaTime)
+                {
+                    float alpha = Mathf.Lerp(1, 0, t / 0.5f);
+                    Color color = spriteRenderer.color;
+                    color.a = alpha;
+                    spriteRenderer.color = color;
+                    yield return null;
+                }
+            }
 
             //hidePositionに移動し、重力加速度を0にして浮いておく
             transform.position = hidePosition.position;
             rBody.gravityScale = 0;
             rBody.velocity = Vector2.zero;
+            // 透明解除
+            if (spriteRenderer != null)
+            {
+                Color color = spriteRenderer.color;
+                color.a = 1;
+                spriteRenderer.color = color;
+            }
             IsDone = true;
         }
     }

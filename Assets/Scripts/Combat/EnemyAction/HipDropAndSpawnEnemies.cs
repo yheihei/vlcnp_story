@@ -5,16 +5,20 @@ using Cinemachine;
 using TNRD;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace VLCNP.Combat.EnemyAction
 {
-    public class JumpAndSpawnEnemies : EnemyAction
+    public class HipDropAndSpawnEnemies : EnemyAction
     {
         /*
-        ジャンプして着地時に敵をスポーンさせるアクション。
+        重力加速度を従来の2倍にして強力な下方向の加速度を与え　着地時に敵をスポーンさせるアクション。
         スポーンにはISpawnクラスをリストとして持ち、着地時に全部にExecute()を呼び出す。
         着地時、CinemachineImpulseSourceがあればカメラを揺らす
+        着地時、WeaponConfigの衝撃波を SyougekihaSpawnPosition に指定された位置から左右に生成する
         */
+        float originalGravityScale;
+
         [SerializeField]
         public List<SerializableInterface<ISpawn>> spawns;
 
@@ -22,27 +26,38 @@ namespace VLCNP.Combat.EnemyAction
         CinemachineImpulseSource impulseSource;
 
         [SerializeField]
-        float jumpForce = 150f;
-
-        [SerializeField]
-        float jumpHorizontalForce = 300f;
+        float verticalForce = 300f;
 
         [SerializeField]
         int maxSpawnCount = 2;
         List<GameObject> spawnedObjects = new List<GameObject>();
+
+        [SerializeField]
+        WeaponConfig syougekihaWeaponConfig;
+
+        [SerializeField]
+        Transform syougekihaSpawnPosition;
+
+        [SerializeField]
+        float minXPosition = -10f; // x座標の最小値
+
+        [SerializeField]
+        float maxXPosition = 10f; // x座標の最大値
 
         bool isGround = false;
         bool isLeft = false;
 
         Rigidbody2D rBody;
 
+        [SerializeField]
+        List<string> groundTags = new List<string> { "Ground", "Player" };
+
         private void Awake()
         {
             rBody = GetComponent<Rigidbody2D>();
             if (rBody == null)
-                Debug.LogError(
-                    $"Rigidbody2D is not set in the inspector for JumpAndSpawnEnemies on {gameObject.name}"
-                );
+                throw new Exception($"Rigidbody2D is null on {gameObject.name}");
+            originalGravityScale = rBody.gravityScale;
         }
 
         public override void Execute()
@@ -52,12 +67,22 @@ namespace VLCNP.Combat.EnemyAction
             if (IsDone)
                 return;
             IsExecuting = true;
-            StartCoroutine(JumpAndSpawn());
+            StartCoroutine(HipDropAndSpawnExecute());
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (!groundTags.Contains(collision.gameObject.tag))
+            {
+                return;
+            }
+            isGround = true;
+            rBody.gravityScale = originalGravityScale;
         }
 
         private void OnTriggerStay2D(Collider2D collision)
         {
-            if (!collision.gameObject.CompareTag("Ground"))
+            if (!groundTags.Contains(collision.gameObject.tag))
             {
                 return;
             }
@@ -99,14 +124,29 @@ namespace VLCNP.Combat.EnemyAction
             );
         }
 
-        private IEnumerator JumpAndSpawn()
+        private IEnumerator HipDropAndSpawnExecute()
         {
             LookAtPlayer();
-            // ジャンプ
-            float xForce = isLeft ? -jumpHorizontalForce : jumpHorizontalForce;
-            rBody.AddForce(new Vector2(xForce, jumpForce), ForceMode2D.Impulse);
+            // プレイヤーの真上に移動（x座標を制限付きで）
+            Vector3 playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+            // x座標を指定範囲内に制限
+            float clampedX = Mathf.Clamp(playerPosition.x, minXPosition, maxXPosition);
+            Vector3 targetPosition = new Vector3(
+                clampedX,
+                transform.position.y,
+                transform.position.z
+            );
+            transform.position = targetPosition;
+            // 落ちる前に一瞬カメラを揺らす
+            if (impulseSource != null)
+            {
+                impulseSource.GenerateImpulseWithVelocity(new Vector3(-0.3f, -0.3f, 0));
+            }
+            // ちょっと待つ
             yield return new WaitForSeconds(0.5f);
-
+            // 重力加速度を2倍にして強力な下方向の加速度を与える
+            rBody.gravityScale = originalGravityScale * 2;
+            rBody.velocity = new Vector2(0, -verticalForce);
             // 着地まで待機
             while (!isGround)
             {
@@ -116,8 +156,13 @@ namespace VLCNP.Combat.EnemyAction
             // カメラを揺らす
             if (impulseSource != null)
             {
-                impulseSource.GenerateImpulseWithVelocity(new Vector3(0.25f, 0.2f, 0));
+                impulseSource.GenerateImpulseWithVelocity(new Vector3(0.3f, 0.3f, 0));
             }
+
+            // 左右に衝撃波を生成
+            syougekihaWeaponConfig?.LaunchProjectile(syougekihaSpawnPosition, 1, true);
+            // 右に衝撃波
+            syougekihaWeaponConfig?.LaunchProjectile(syougekihaSpawnPosition, 1, false);
 
             // 着地したらスポーン
             // 現在のspawnedObjects内をチェックし、nullになっているものを削除
@@ -130,6 +175,7 @@ namespace VLCNP.Combat.EnemyAction
                     spawnedObjects.Add(spawnObject);
                 }
             }
+
             IsDone = true;
         }
     }
