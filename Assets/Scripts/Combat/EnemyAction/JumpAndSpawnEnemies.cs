@@ -57,11 +57,7 @@ namespace VLCNP.Combat.EnemyAction
 
         private void OnTriggerStay2D(Collider2D collision)
         {
-            if (
-                !collision.gameObject.CompareTag("Ground")
-                && !collision.gameObject.CompareTag("Enemy")
-                && !collision.gameObject.CompareTag("Player")
-            )
+            if (!collision.gameObject.CompareTag("Ground"))
             {
                 return;
             }
@@ -70,11 +66,7 @@ namespace VLCNP.Combat.EnemyAction
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (
-                !collision.gameObject.CompareTag("Ground")
-                && !collision.gameObject.CompareTag("Enemy")
-                && !collision.gameObject.CompareTag("Player")
-            )
+            if (!collision.gameObject.CompareTag("Ground"))
             {
                 return;
             }
@@ -139,8 +131,6 @@ namespace VLCNP.Combat.EnemyAction
                 }
             }
             IsDone = true;
-            IsExecuting = false;
-            yield return null;
         }
     }
 }

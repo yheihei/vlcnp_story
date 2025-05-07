@@ -55,10 +55,15 @@ namespace VLCNP.Combat
         float damage = 0;
         private ParticleSystem particle;
 
+        [SerializeField]
+        bool isFadeOut = false;
+
         private void Start()
         {
             if (deleteTime < 0)
                 return;
+            if (isFadeOut)
+                StartCoroutine(FadeOut(deleteTime - deleteTime / 5));
             Destroy(gameObject, deleteTime);
         }
 
@@ -79,6 +84,25 @@ namespace VLCNP.Combat
         public void SetDamage(float damage)
         {
             this.damage = damage;
+        }
+
+        private IEnumerator FadeOut(float waitTime)
+        {
+            // waitTime後に画像の透明度を0.5sかけて0にする
+            yield return new WaitForSeconds(waitTime);
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                Color color = spriteRenderer.color;
+                float alpha = color.a;
+                while (alpha > 0)
+                {
+                    alpha -= Time.deltaTime / 0.5f;
+                    color.a = alpha;
+                    spriteRenderer.color = color;
+                    yield return null;
+                }
+            }
         }
 
         private void FixedUpdate()

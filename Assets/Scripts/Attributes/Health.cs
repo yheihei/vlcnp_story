@@ -194,12 +194,16 @@ namespace VLCNP.Attributes
                 Time.timeScale = 1;
             }
 
-            GameObject _deadEffect = Instantiate(
-                deadEffect,
-                transform.position,
-                Quaternion.identity
-            );
-            Destroy(_deadEffect, 2f);
+            if (deadEffect)
+            {
+                // 死亡エフェクトを生成
+                GameObject _deadEffect = Instantiate(
+                    deadEffect,
+                    transform.position,
+                    Quaternion.identity
+                );
+                Destroy(_deadEffect, 2f);
+            }
             onDie?.Invoke();
             if (IsGameOverEventExecute)
             {
