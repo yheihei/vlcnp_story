@@ -175,8 +175,11 @@ namespace VLCNP.SceneManagement
             {
                 player.transform.position = transitionSpawnPoint.transform.position;
                 // 向きを変える
-                player.GetComponent<Movement.Mover>().IsLeft =
-                    transitionSpawnPoint.isPlayerDirectionLeft;
+                var mover = player.GetComponent<Movement.Mover>();
+                if (mover != null)
+                {
+                    mover.IsLeft = transitionSpawnPoint.isPlayerDirectionLeft;
+                }
             }
         }
 
