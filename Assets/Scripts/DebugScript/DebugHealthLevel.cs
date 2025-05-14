@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Control;
+using VLCNP.Stats;
 
 namespace VLCNP.DebugSctipt
 {
@@ -10,6 +11,7 @@ namespace VLCNP.DebugSctipt
         [SerializeField]
         private int healthLevel = 0;
         PartyCongroller partyCongroller;
+        PartyHealthLevel partyHealthLevel;
 
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
         void Awake()
@@ -17,12 +19,20 @@ namespace VLCNP.DebugSctipt
             partyCongroller = GameObject
                 .FindGameObjectWithTag("Party")
                 .GetComponent<PartyCongroller>();
+            partyHealthLevel = GameObject
+                .FindGameObjectWithTag("Party")
+                .GetComponent<PartyHealthLevel>();
         }
 
         void Start()
         {
-            // HealthLevelの数だけパーティーのHealthLevelをincrementさせる
-            for (int i = 0; i < healthLevel; i++)
+            if (partyHealthLevel == null)
+            {
+                Debug.Log("PartyHealthLevel component not found on Party GameObject.");
+                return;
+            }
+
+            while (partyHealthLevel.GetCurrentLevel() < healthLevel)
             {
                 partyCongroller.IncrementHealthLevel();
             }
