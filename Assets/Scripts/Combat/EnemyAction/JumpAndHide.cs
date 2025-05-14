@@ -11,6 +11,7 @@ namespace VLCNP.Combat.EnemyAction
 
         [SerializeField]
         private Transform hidePosition;
+        private Animator animator;
 
         private void Awake()
         {
@@ -19,6 +20,7 @@ namespace VLCNP.Combat.EnemyAction
             {
                 throw new Exception("hidePosition is null");
             }
+            animator = GetComponent<Animator>();
         }
 
         public override void Execute()
@@ -33,6 +35,12 @@ namespace VLCNP.Combat.EnemyAction
 
         IEnumerator JumpAndHideExecute()
         {
+            // 一瞬ジャンプ準備モーション挟む
+            animator.SetBool("isPreMagic", true);
+            yield return new WaitForSeconds(0.5f);
+            // ジャンプモーションにする
+            animator.SetBool("isPreMagic", false);
+            animator.SetBool("isMagic", true);
             // 垂直に素早く飛ぶ
             rBody.AddForce(new Vector2(0, 1800), ForceMode2D.Impulse);
             // 0.5sかけてFadeOut
@@ -60,6 +68,8 @@ namespace VLCNP.Combat.EnemyAction
                 color.a = 1;
                 spriteRenderer.color = color;
             }
+            // ジャンプモーションを終了
+            animator.SetBool("isMagic", false);
             IsDone = true;
         }
     }
