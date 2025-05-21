@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events; // UnityEventを使用するために追加
 
 namespace VLCNP.Combat
 {
@@ -15,6 +16,10 @@ namespace VLCNP.Combat
         [SerializeField]
         List<string> attackTargetTagNames = new List<string>();
 
+        // 攻撃成功時に呼び出されるUnityEvent
+        [SerializeField]
+        UnityEvent<GameObject> OnAttackSuccess;
+
         private void AttemptAttack(GameObject targetObject)
         {
             if (fighter == null)
@@ -25,6 +30,7 @@ namespace VLCNP.Combat
                 if (targetObject.CompareTag(tagName))
                 {
                     fighter.DirectAttack(targetObject);
+                    OnAttackSuccess?.Invoke(targetObject); // イベントを発火
                     // 1回の呼び出しにつき1回攻撃を実行
                     break;
                 }

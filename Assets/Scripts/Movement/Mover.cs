@@ -12,6 +12,7 @@ namespace VLCNP.Movement
         float speed = 4;
         float speedInWater = 0;
         bool isLeft = true;
+        float speedModifier = 1f;
 
         // isLeftのgetterを定義
         public bool IsLeft
@@ -64,7 +65,8 @@ namespace VLCNP.Movement
 
         private float GetSpeed()
         {
-            return isInWater ? speedInWater : speed;
+            float currentSpeed = isInWater ? speedInWater : speed;
+            return currentSpeed * speedModifier;
         }
 
         private bool isStunned()
@@ -172,6 +174,12 @@ namespace VLCNP.Movement
             if (!isInWater)
                 return;
             rbody.gravityScale = 2f / 9f;
+        }
+
+        // PoisonStatusから呼び出されるメソッド
+        public void SetSpeedModifier(float modifier)
+        {
+            speedModifier = modifier;
         }
     }
 }

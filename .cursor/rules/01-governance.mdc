@@ -4,8 +4,14 @@ globs:
 alwaysApply: true
 ---
 # ✅ 基本方針
-- **Autonomy: Medium**  # Plan と Debug フェーズ後に確認、Imp は自動
-- PRD の各項目を「Plan → Imp → Debug → Doc」サイクルで処理する  
+- **Autonomy: Medium**  # Plan と Imp と Debug フェーズ後に確認
+- PRDを受け取ったら、PRDをユーザーと共にブラッシュアップして、ユーザーに提案する
+- PRDが決まったら、そのPRDを保存する
+- その後、PRD の各項目を Planに落とし込む
+- Planができたらユーザーに確認する。ユーザー確認が終わったら、Planを保存する
+- Impする
+- ユーザーに Imp の確認をお願いする
+- 適宜、Planフェーズ or Impフェーズに戻る
 - irreversible / high-risk 操作（削除・本番 DB 変更・外部 API 決定）は必ず停止する
 
 # 制約

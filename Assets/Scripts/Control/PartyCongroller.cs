@@ -128,6 +128,13 @@ namespace VLCNP.Control
             Vector2 previousVelocity =
                 previousPlayer.GetComponent<Rigidbody2D>()?.velocity ?? Vector2.zero;
 
+            // 毒状態のタイマーを操作
+            PoisonStatus previousPoisonStatus = previousPlayer.GetComponent<PoisonStatus>();
+            if (previousPoisonStatus != null)
+            {
+                previousPoisonStatus.PauseTimer();
+            }
+
             SetNextPlayerPosition(nextPlayer);
             nextPlayer
                 .GetComponent<Health>()
@@ -164,6 +171,13 @@ namespace VLCNP.Control
             Jump jump = previousPlayer.GetComponent<Jump>();
             if (jump != null)
                 jump.EndJump();
+
+            // 切り替え後のキャラクターの毒タイマーを再開
+            PoisonStatus currentPlayerPoisonStatus = currentPlayer.GetComponent<PoisonStatus>();
+            if (currentPlayerPoisonStatus != null)
+            {
+                currentPlayerPoisonStatus.ResumeTimer();
+            }
 
             OnChangeCharacter?.Invoke(currentPlayer);
         }
