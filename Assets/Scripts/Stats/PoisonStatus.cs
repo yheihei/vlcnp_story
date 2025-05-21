@@ -67,35 +67,5 @@ namespace VLCNP.Stats
             Debug.Log($"{gameObject.name} is cured from poison.");
             OnPoisonCured?.Invoke();
         }
-
-        // キャラクターが無効になったときに呼び出される
-        void OnDisable()
-        {
-            // 毒のカウントダウンを一時停止する処理はUpdateが呼ばれなくなるため不要
-            // 必要に応じて、キャラクターが再度有効になった時に残り時間を調整するロジックをOnEnableに追加することも検討
-        }
-
-        // キャラクターが有効になったときに呼び出される
-        void OnEnable()
-        {
-            // プレイヤー切り替え時にタイマーを再開する
-            // isPoisoned が true の場合のみタイマーを進める（Update内で処理される）
-        }
-
-        // 外部から毒のカウントダウンを一時停止/再開するためのメソッド
-        public void PauseTimer()
-        {
-            // Updateループを止めることでタイマーは停止する
-            // enabled = false; だと他のコンポーネントから参照できなくなる可能性があるため、
-            // Update内の処理を isPoisoned フラグで制御することで対応
-            // より明示的に制御したい場合は、isActiveフラグなどを追加してUpdate内の時間更新を制御する
-            Debug.Log($"{gameObject.name} poison timer paused.");
-        }
-
-        public void ResumeTimer()
-        {
-            // enabled = true;
-            Debug.Log($"{gameObject.name} poison timer resumed.");
-        }
     }
 }

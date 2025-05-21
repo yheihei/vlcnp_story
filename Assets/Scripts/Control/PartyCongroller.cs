@@ -130,10 +130,10 @@ namespace VLCNP.Control
 
             // 毒状態のタイマーを操作
             PoisonStatus previousPoisonStatus = previousPlayer.GetComponent<PoisonStatus>();
-            if (previousPoisonStatus != null)
-            {
-                previousPoisonStatus.PauseTimer();
-            }
+            // if (previousPoisonStatus != null)
+            // {
+            //     previousPoisonStatus.PauseTimer();
+            // }
 
             SetNextPlayerPosition(nextPlayer);
             nextPlayer
@@ -174,10 +174,10 @@ namespace VLCNP.Control
 
             // 切り替え後のキャラクターの毒タイマーを再開
             PoisonStatus currentPlayerPoisonStatus = currentPlayer.GetComponent<PoisonStatus>();
-            if (currentPlayerPoisonStatus != null)
-            {
-                currentPlayerPoisonStatus.ResumeTimer();
-            }
+            // if (currentPlayerPoisonStatus != null)
+            // {
+            //     currentPlayerPoisonStatus.ResumeTimer();
+            // }
 
             OnChangeCharacter?.Invoke(currentPlayer);
         }
