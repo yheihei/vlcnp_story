@@ -1,3 +1,4 @@
+using System; // Action を使用するために追加
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,9 @@ namespace VLCNP.Stats
         float remainingTime = 0f; // 毒の残り時間
         bool isPoisoned = false; // 毒状態かどうか
         Mover mover; // Moverコンポーネントのキャッシュ
+
+        public event Action OnPoisonStarted;
+        public event Action OnPoisonCured;
 
         // 外部から毒状態を設定するためのプロパティ
         public bool IsPoisoned
@@ -47,6 +51,7 @@ namespace VLCNP.Stats
                 mover.SetSpeedModifier(0.5f); // 例: 速度を50%に
             }
             Debug.Log($"{gameObject.name} is poisoned.");
+            OnPoisonStarted?.Invoke();
         }
 
         // 毒状態を治療するメソッド
@@ -60,6 +65,7 @@ namespace VLCNP.Stats
                 mover.SetSpeedModifier(1f); // 例: 速度を100%に
             }
             Debug.Log($"{gameObject.name} is cured from poison.");
+            OnPoisonCured?.Invoke();
         }
 
         // キャラクターが無効になったときに呼び出される

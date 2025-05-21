@@ -2,7 +2,7 @@
 
 ## 1. 目的
 
-プレイヤーキャラクターがダメージを受けた際に毒状態を付与し、一定時間移動速度を低下させる機能を実装する。また、キャラクター切り替え時の毒状態の挙動を管理する。
+プレイヤーキャラクターがダメージを受けた際に毒状態を付与し、一定時間移動速度を低下させる機能を実装する。また、キャラクター切り替え時の毒状態の挙動を管理する。加えて、毒状態のキャラクターには専用の視覚エフェクトを表示する。
 
 ## 2. 主要コンポーネントと役割
 
@@ -10,6 +10,8 @@
 -   キャラクターの毒状態（毒にかかっているか、治癒までの残り時間）を管理する。
 -   毒にかかっている間、`Mover`コンポーネントと連携してキャラクターの移動速度を50%に低下させる。
 -   毒の治癒時間をカウントダウンし、0になったら毒状態を解除し、移動速度を元に戻す。
+-   **`OnPoisonStarted` イベント**: 毒状態が開始されたときに発火する。
+-   **`OnPoisonCured` イベント**: 毒状態が治癒されたときに発火する。
 -   アタッチされたGameObjectが無効化 (`OnDisable`) されると、実質的に治癒時間のカウントが停止する。
 -   アタッチされたGameObjectが有効化 (`OnEnable`) されると、毒状態であれば治癒時間のカウントが再開される（`Update`処理による）。
 -   `PauseTimer()` / `ResumeTimer()`: 外部から明示的にタイマーの挙動を制御するためのメソッド（現在は`PartyCongroller`からキャラクターの有効/無効状態の変更と合わせて呼び出される）。
@@ -32,6 +34,15 @@
 -   `UnityEvent<GameObject> OnAttackSuccess` を持つ。
 -   攻撃が成功した際 (`AttemptAttack` メソッド内) に、このイベントを発火し、攻撃対象の `GameObject` を引数として渡す。
 
+### 2.6. `PoisonEffectController.cs` (`VLCNP.Effects`)
+-   毒状態のエフェクト表示を管理する。
+-   インスペクターで以下の設定が必要:
+    -   `poisonEffectPrefab`: 表示する毒エフェクトのプレファブ。
+    -   `effectParent`: エフェクトを追従させる親となる `Transform`（例: キャラクターの頭部付近の空GameObject）。
+-   `PoisonStatus` の `OnPoisonStarted` イベントを購読し、エフェクトプレファブを `effectParent` の子としてインスタンス化して表示する。
+-   `PoisonStatus` の `OnPoisonCured` イベントを購読し、表示中のエフェクトインスタンスを破棄する。
+-   エフェクトの表示位置は、`effectParent` の Transform と、`poisonEffectPrefab` のローカル Transform に依存する。プレファブは原点に配置し、`effectParent` で表示位置を調整することを推奨。
+
 ## 3. 主要な動作フロー
 
 ### 3.1. 毒付与フロー
@@ -39,21 +50,35 @@
 2.  攻撃が成功すると `DirectAttack.OnAttackSuccess` イベントが発火される (引数は攻撃対象の `GameObject`)。
 3.  (Unity Editorでの設定により) `OnAttackSuccess` イベントが `PoisonAttacher.AttachPoison(GameObject target)` を呼び出す。
 4.  `PoisonAttacher` は対象の `GameObject` に `PoisonStatus` を付与（または取得）し、`PoisonStatus.ActivatePoison()` を実行する。
-5.  `PoisonStatus.ActivatePoison()` は自身の毒状態を `true` にし、治癒時間を設定後、`Mover.SetSpeedModifier(0.5f)` を呼び出して移動速度を50%にする。
+5.  `PoisonStatus.ActivatePoison()` は自身の毒状態を `true` にし、治癒時間を設定後、`Mover.SetSpeedModifier(0.5f)` を呼び出して移動速度を50%にし、`OnPoisonStarted` イベントを発火する。
 
-### 3.2. 毒治癒フロー
+### 3.2. 毒エフェクト表示フロー
+1.  `PoisonEffectController` は、アタッチされたキャラクターの `PoisonStatus.OnPoisonStarted` イベントを購読する。
+2.  `PoisonStatus.OnPoisonStarted` イベントが発火すると、`PoisonEffectController.ShowEffect()` が呼び出される。
+3.  `ShowEffect()` は、指定された `poisonEffectPrefab` を `effectParent` の子としてインスタンス化し、表示する。
+
+### 3.3. 毒治癒フロー
 1.  `PoisonStatus` が毒状態 (`isPoisoned == true`) の間、`Update()` メソッドで治癒残り時間 (`remainingTime`) を減少させる。
 2.  `remainingTime` が0以下になると `Cure()` メソッドが呼び出される。
-3.  `PoisonStatus.Cure()` は自身の毒状態を `false` にし、`Mover.SetSpeedModifier(1f)` を呼び出して移動速度を100%に戻す。
+3.  `PoisonStatus.Cure()` は自身の毒状態を `false` にし、`Mover.SetSpeedModifier(1f)` を呼び出して移動速度を100%に戻し、`OnPoisonCured` イベントを発火する。
 
-### 3.3. キャラクター切り替え時のフロー
+### 3.4. 毒エフェクト非表示フロー
+1.  `PoisonEffectController` は、アタッチされたキャラクターの `PoisonStatus.OnPoisonCured` イベントを購読する。
+2.  `PoisonStatus.OnPoisonCured` イベントが発火すると、`PoisonEffectController.HideEffect()` が呼び出される。
+3.  `HideEffect()` は、表示中のエフェクトインスタンスを破棄する。
+
+### 3.5. キャラクター切り替え時のフロー
 1.  プレイヤーがキャラクター切り替え操作を行う。
 2.  `PartyCongroller.SwitchToPlayer(GameObject nextPlayer)` が呼び出される。
-3.  切り替え前のキャラクター (`previousPlayer`) の `PoisonStatus` が取得され、存在すれば `PauseTimer()` が呼び出される。`previousPlayer` の GameObject は非アクティブ化されるため、`Update` が停止し、タイマーも実質停止する。
-4.  切り替え後のキャラクター (`currentPlayer`) の `PoisonStatus` が取得され、存在すれば `ResumeTimer()` が呼び出される。`currentPlayer` の GameObject はアクティブ化されるため、毒状態であれば `Update` によりタイマーが進行する。
+3.  切り替え前のキャラクター (`previousPlayer`) の `PoisonStatus` が取得され、存在すれば `PauseTimer()` が呼び出される。`previousPlayer` の GameObject は非アクティブ化されるため、`Update` が停止し、タイマーも実質停止する。`PoisonEffectController` も非アクティブ化され、`OnDisable` によりエフェクトが非表示になる。
+4.  切り替え後のキャラクター (`currentPlayer`) の `PoisonStatus` が取得され、存在すれば `ResumeTimer()` が呼び出される。`currentPlayer` の GameObject はアクティブ化されるため、毒状態であれば `Update` によりタイマーが進行する。`PoisonEffectController` も有効化され、`OnEnable` により現在の毒状態に応じてエフェクトが表示される。
 
 ## 4. Unity Editorでの設定
 
 -   攻撃時に毒を付与したい `GameObject` にアタッチされている `DirectAttack` コンポーネントのインスペクターを開く。
--   `On Attack Success (GameObject)` イベントスロットに、`PoisonAttacher` コンポーネントを持つ `GameObject` (例えば、攻撃を仕掛けるキャラクター自身や、シーン内の専用マネージャーなど) をドラッグ＆ドロップする。
--   ドロップダウンメニューから `PoisonAttacher` -> `AttachPoison (GameObject)` を選択する。 
+    -   `On Attack Success (GameObject)` イベントスロットに、`PoisonAttacher` コンポーネントを持つ `GameObject` (例えば、攻撃を仕掛けるキャラクター自身や、シーン内の専用マネージャーなど) をドラッグ＆ドロップする。
+    -   ドロップダウンメニューから `PoisonAttacher` -> `AttachPoison (GameObject)` を選択する。
+-   毒エフェクトを表示したいキャラクターの `GameObject` (またはその子オブジェクト) に `PoisonEffectController.cs` をアタッチする。
+    -   `PoisonEffectController` のインスペクターで以下を設定する:
+        -   `Poison Effect Prefab`: 毒エフェクトとして使用するプレファブ (例: `Assets/Game/Effect/PoisonEffect.prefab`)。
+        -   `Effect Parent`: エフェクトを表示する基準となる `Transform`。キャラクターの頭部付近に作成した空の `GameObject` の `Transform` などを指定する。 
