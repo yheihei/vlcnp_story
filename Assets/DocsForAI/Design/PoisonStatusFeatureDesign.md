@@ -12,9 +12,8 @@
 -   毒の治癒時間をカウントダウンし、0になったら毒状態を解除し、移動速度を元に戻す。
 -   **`OnPoisonStarted` イベント**: 毒状態が開始されたときに発火する。
 -   **`OnPoisonCured` イベント**: 毒状態が治癒されたときに発火する。
--   アタッチされたGameObjectが無効化 (`OnDisable`) されると、実質的に治癒時間のカウントが停止する。
--   アタッチされたGameObjectが有効化 (`OnEnable`) されると、毒状態であれば治癒時間のカウントが再開される（`Update`処理による）。
--   `PauseTimer()` / `ResumeTimer()`: 外部から明示的にタイマーの挙動を制御するためのメソッド（現在は`PartyCongroller`からキャラクターの有効/無効状態の変更と合わせて呼び出される）。
+-   アタッチされたGameObjectが無効化されると、Unityのライフサイクルにより`Update`メソッドが呼び出されなくなるため、実質的に治癒時間のカウントが停止する。
+-   アタッチされたGameObjectが有効化されると、毒状態であれば`Update`メソッドの処理により治癒時間のカウントが再開される。
 
 ### 2.2. `PoisonAttacher.cs` (`VLCNP.Combat`)
 -   `AttachPoison(GameObject target)` メソッドを提供する。
@@ -26,8 +25,7 @@
 
 ### 2.4. `PartyCongroller.cs` (`VLCNP.Control`)
 -   キャラクター切り替え処理 (`SwitchToPlayer` メソッド内) で以下を行う。
-    -   切り替え前のキャラクターの `PoisonStatus` を取得し、存在すれば `PauseTimer()` を呼び出す。
-    -   切り替え後のキャラクターの `PoisonStatus` を取得し、存在すれば `ResumeTimer()` を呼び出す。
+    -   切り替え前キャラクターのGameObjectを非アクティブ化し、切り替え後キャラクターのGameObjectをアクティブ化する。これにより、`PoisonStatus`の治癒時間カウントはGameObjectの有効/無効状態に応じて自動的に停止/再開される。
 -   毒状態はキャラクター固有であり、切り替え時に他のキャラクターには引き継がれない（`PoisonStatus`が各キャラクターに個別管理されるため）。
 
 ### 2.5. `DirectAttack.cs` (`VLCNP.Combat`)
@@ -42,6 +40,7 @@
 -   `PoisonStatus` の `OnPoisonStarted` イベントを購読し、エフェクトプレファブを `effectParent` の子としてインスタンス化して表示する。
 -   `PoisonStatus` の `OnPoisonCured` イベントを購読し、表示中のエフェクトインスタンスを破棄する。
 -   エフェクトの表示位置は、`effectParent` の Transform と、`poisonEffectPrefab` のローカル Transform に依存する。プレファブは原点に配置し、`effectParent` で表示位置を調整することを推奨。
+-   アタッチされたGameObjectが無効化 (`OnDisable`) されると、表示中のエフェクトを非表示にし、有効化 (`OnEnable`) されると現在の毒状態に応じてエフェクトを再表示する機能を持つ（具体的な実装は`PoisonEffectController`自身に依存）。
 
 ## 3. 主要な動作フロー
 
@@ -70,8 +69,8 @@
 ### 3.5. キャラクター切り替え時のフロー
 1.  プレイヤーがキャラクター切り替え操作を行う。
 2.  `PartyCongroller.SwitchToPlayer(GameObject nextPlayer)` が呼び出される。
-3.  切り替え前のキャラクター (`previousPlayer`) の `PoisonStatus` が取得され、存在すれば `PauseTimer()` が呼び出される。`previousPlayer` の GameObject は非アクティブ化されるため、`Update` が停止し、タイマーも実質停止する。`PoisonEffectController` も非アクティブ化され、`OnDisable` によりエフェクトが非表示になる。
-4.  切り替え後のキャラクター (`currentPlayer`) の `PoisonStatus` が取得され、存在すれば `ResumeTimer()` が呼び出される。`currentPlayer` の GameObject はアクティブ化されるため、毒状態であれば `Update` によりタイマーが進行する。`PoisonEffectController` も有効化され、`OnEnable` により現在の毒状態に応じてエフェクトが表示される。
+3.  切り替え前のキャラクター (`previousPlayer`) の GameObject は非アクティブ化される。これにより、`previousPlayer` にアタッチされた `PoisonStatus` の `Update` が停止し、毒の治癒時間カウントも実質停止する。また、`PoisonEffectController` も非アクティブ化され、エフェクトが非表示になる（`OnDisable`の挙動による）。
+4.  切り替え後のキャラクター (`currentPlayer`) の GameObject はアクティブ化される。これにより、`currentPlayer` にアタッチされた `PoisonStatus` が毒状態であれば `Update` により治癒時間カウントが進行する。`PoisonEffectController` も有効化され、現在の毒状態に応じてエフェクトが表示される（`OnEnable`の挙動による）。
 
 ## 4. Unity Editorでの設定
 
