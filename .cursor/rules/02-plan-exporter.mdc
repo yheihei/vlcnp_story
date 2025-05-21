@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 📝 Plan Exporter
+- **Trigger**: Plan フェーズが完了した直後
+- **Action**:
+  1. 生成した Plan 全文を `Assets/DocsForAI/Plan/${タスクの概要}.md` に **上書き**
+
+- **Confirmation**:  
+  - ファイル作成に失敗したら停止

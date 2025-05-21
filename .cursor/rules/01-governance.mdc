@@ -1,0 +1,39 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# ✅ 基本方針
+- **Autonomy: Medium**  # Plan と Debug フェーズ後に確認、Imp は自動
+- PRD の各項目を「Plan → Imp → Debug → Doc」サイクルで処理する  
+- irreversible / high-risk 操作（削除・本番 DB 変更・外部 API 決定）は必ず停止する
+
+# 制約
+## 技術的制約
+- Unity 2021.3.16
+- C#
+
+# 🚦 停止条件
+- Planが終わりPlan全文をmdファイルに書き込んだとき
+- PRD 行に `@ASK` が含まれる  
+- 1ファイル当たり変更行数 > 300 行  
+- 「複数案が等価」「重大な設計選択」など Fork in the road が発生
+- 下記のgit操作をしたいとき
+  - rebase
+  - revert
+  - その他破壊的な操作
+
+# 📝 人間への質問フォーマット
+
+❓ QUESTION
+<要約>
+
+OPTIONS:
+1. <案 A>
+2. <案 B>
+
+/answer <番号> で回答してください。
+
+# commit前のルール
+
+特になし
