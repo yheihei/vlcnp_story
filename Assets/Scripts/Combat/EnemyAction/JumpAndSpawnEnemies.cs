@@ -33,6 +33,7 @@ namespace VLCNP.Combat.EnemyAction
 
         bool isGround = false;
         bool isLeft = false;
+        Animator animator;
 
         Rigidbody2D rBody;
 
@@ -43,6 +44,7 @@ namespace VLCNP.Combat.EnemyAction
                 Debug.LogError(
                     $"Rigidbody2D is not set in the inspector for JumpAndSpawnEnemies on {gameObject.name}"
                 );
+            animator = GetComponent<Animator>();
         }
 
         public override void Execute()
@@ -102,7 +104,12 @@ namespace VLCNP.Combat.EnemyAction
         private IEnumerator JumpAndSpawn()
         {
             LookAtPlayer();
+            // 一瞬ジャンプ準備モーション挟む
+            animator.SetBool("isPreMagic", true);
+            yield return new WaitForSeconds(0.5f);
             // ジャンプ
+            animator.SetBool("isPreMagic", false);
+            animator.SetBool("isMagic", true);
             float xForce = isLeft ? -jumpHorizontalForce : jumpHorizontalForce;
             rBody.AddForce(new Vector2(xForce, jumpForce), ForceMode2D.Impulse);
             yield return new WaitForSeconds(0.5f);
@@ -118,6 +125,8 @@ namespace VLCNP.Combat.EnemyAction
             {
                 impulseSource.GenerateImpulseWithVelocity(new Vector3(0.25f, 0.2f, 0));
             }
+            // ジャンプモーションを終了
+            animator.SetBool("isMagic", false);
 
             // 着地したらスポーン
             // 現在のspawnedObjects内をチェックし、nullになっているものを削除

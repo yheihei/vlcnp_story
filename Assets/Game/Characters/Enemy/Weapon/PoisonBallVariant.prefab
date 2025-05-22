@@ -199,6 +199,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -584630991, guid: 233438f02fbc2401b90e77f6d33b3672, type: 3}
+    - target: {fileID: 5892641817486980514, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.012
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892641817486980514, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.023
+      objectReference: {fileID: 0}
     - target: {fileID: 5971951041953186551, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: m_Size.x
       value: 0.28
@@ -222,6 +230,34 @@ PrefabInstance:
     - target: {fileID: 6341821145133588806, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.293
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528670782053613577, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: OnAttackSuccess.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528670782053613577, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: OnAttackSuccess.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528670782053613577, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: OnAttackSuccess.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6232109641471914857}
+    - target: {fileID: 6528670782053613577, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: OnAttackSuccess.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528670782053613577, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: OnAttackSuccess.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AttachPoison
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528670782053613577, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: OnAttackSuccess.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: VLCNP.Combat.PoisonAttacher, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528670782053613577, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: OnAttackSuccess.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6915549942278031112, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: m_Mass
@@ -255,6 +291,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PoisonBallVariant
       objectReference: {fileID: 0}
+    - target: {fileID: 7888146297067582467, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: m_Size.x
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888146297067582467, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      propertyPath: m_Size.y
+      value: 0.15
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3905410308686529792, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
@@ -278,6 +322,23 @@ MonoBehaviour:
   speed: 5
   deleteTime: 10
   direction: {x: 1, y: 0, z: 0}
+--- !u!1 &3037454321413204488 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5062771027845163722, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+  m_PrefabInstance: {fileID: 7810833785168494786}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6232109641471914857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3037454321413204488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96e218a2f61084d9f889a0dbb6739f1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6250285462123256615 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4240383632628489189, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}

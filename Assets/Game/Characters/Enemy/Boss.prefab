@@ -1,5 +1,70 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8239354005453968875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2759093015343979367}
+  - component: {fileID: 1820257652299883615}
+  - component: {fileID: 7616940034276557187}
+  m_Layer: 0
+  m_Name: DirectAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2759093015343979367
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8239354005453968875}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.4925373, y: 1.4925373, z: 1.4925373}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2888467994159925159}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &1820257652299883615
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8239354005453968875}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1.07, y: 2.31}
+  m_Direction: 0
+--- !u!114 &7616940034276557187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8239354005453968875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1add7cdfd4bfb4b78b41568d41fc8dec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fighter: {fileID: 3685245042812483540}
+  touchCollider: {fileID: 1820257652299883615}
+  attackTargetTagNames:
+  - Player
 --- !u!1001 &7609002768349338833
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -133,6 +198,22 @@ PrefabInstance:
     - {fileID: 4217066025836454147, guid: f918822e12774495a9b170fcadc702ac, type: 3}
     - {fileID: 1386150007829824357, guid: f918822e12774495a9b170fcadc702ac, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f918822e12774495a9b170fcadc702ac, type: 3}
+--- !u!4 &2888467994159925159 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4723569995384216438, guid: f918822e12774495a9b170fcadc702ac, type: 3}
+  m_PrefabInstance: {fileID: 7609002768349338833}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3685245042812483540 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6538106683027516165, guid: f918822e12774495a9b170fcadc702ac, type: 3}
+  m_PrefabInstance: {fileID: 7609002768349338833}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7478345028051563179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1331766311754171b19af994112d31e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7478345028051563179 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1031588860070424186, guid: f918822e12774495a9b170fcadc702ac, type: 3}
@@ -167,3 +248,14 @@ MonoBehaviour:
   enemyActions: []
   attackTargetTagName: Player
   StartWaitTime: 1
+  detect:
+    mode: 0
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: -2
+  isAlwaysGround: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

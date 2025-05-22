@@ -128,21 +128,4 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
     {
         isStopped = false;
     }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        AttackBehavior(other);
-    }
-
-    private void OnCollisionStay2D(Collision2D other)
-    {
-        AttackBehavior(other);
-    }
-
-    private void AttackBehavior(Collision2D other)
-    {
-        if (other.gameObject.tag != attackTargetTagName)
-            return;
-        fighter.DirectAttack(other.gameObject);
-    }
 }
