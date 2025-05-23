@@ -2491,9 +2491,9 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 242621169}
+  - {fileID: 242621149}
   selectedCommands:
-  - {fileID: 242621170}
+  - {fileID: 242621154}
   variables: []
   description: 
   stepPause: 0
@@ -12688,9 +12688,9 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 970648284}
+  - {fileID: 970648278}
   selectedCommands:
-  - {fileID: 970648285}
+  - {fileID: 970648277}
   variables: []
   description: 
   stepPause: 0
@@ -14219,8 +14219,9 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 1117677320}
-  selectedCommands: []
+  - {fileID: 1117677306}
+  selectedCommands:
+  - {fileID: 1117677309}
   variables: []
   description: 
   stepPause: 0
@@ -14261,7 +14262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 8
   indentLevel: 0
-  storyText: "\u5909\u4EBA\u304C\u305A\u3063\u3068\u5F15\u304D\u3053\u3082\u3063\u3066\u30D9\u30EA\u30FC\u30ED\u30F3\u30B0\u738B\u56FD\u306E\u6B74\u53F2\u3092\n\u523B\u307F\u7D9A\u3051\u3066\u308B\u3093\u3060\u3063\u3066"
+  storyText: "\u5909\u4EBA\u304C \u5F15\u304D\u3053\u3082\u3063\u3066\u30D9\u30EA\u30FC\u30ED\u30F3\u30B0\u738B\u56FD\u306E\u6B74\u53F2\u3092\n\u523B\u307F\u7D9A\u3051\u3066\u308B\u3093\u3060\u3063\u3066"
   description: 
   character: {fileID: 0}
   portrait: {fileID: 0}
@@ -14813,9 +14814,9 @@ MonoBehaviour:
     width: 1114
     height: 859
   selectedBlocks:
-  - {fileID: 1161340051}
+  - {fileID: 1161340029}
   selectedCommands:
-  - {fileID: 1161340052}
+  - {fileID: 1161340041}
   variables: []
   description: 
   stepPause: 0
@@ -20784,7 +20785,6 @@ GameObject:
   - component: {fileID: 1532707956}
   - component: {fileID: 1532707955}
   - component: {fileID: 1532707954}
-  - component: {fileID: 1532707953}
   - component: {fileID: 1532707952}
   - component: {fileID: 1532707957}
   m_Layer: 0
@@ -20820,8 +20820,7 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 1532707949}
-  selectedCommands:
-  - {fileID: 1532707953}
+  selectedCommands: []
   variables: []
   description: 
   stepPause: 0
@@ -20847,7 +20846,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: 67
+    x: 68
     y: 70
     width: 107
     height: 40
@@ -20862,7 +20861,6 @@ MonoBehaviour:
   - {fileID: 1532707955}
   - {fileID: 1532707954}
   - {fileID: 1532707957}
-  - {fileID: 1532707953}
   - {fileID: 1532707952}
   suppressAllAutoSelections: 0
 --- !u!4 &1532707951
@@ -20908,33 +20906,6 @@ MonoBehaviour:
   returnValueType: System.Void
   showInherited: 0
   callMode: 0
---- !u!114 &1532707953
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1532707946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 16
-  indentLevel: 0
-  storyText: "\u5225\u540D \u7A0E\u306E\u697D\u5712\uFF01\n\u672C\u5F53\u306B\u30AF\u30BD\u3088\u306D\u301C\uFF01"
-  description: 
-  character: {fileID: 0}
-  portrait: {fileID: 0}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
 --- !u!114 &1532707954
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -21007,7 +20978,7 @@ MonoBehaviour:
   callMode: 0
 --- !u!114 &1532707957
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -49869,17 +49840,6 @@ PrefabInstance:
     - {fileID: 3811741307927765878, guid: fbb78368ef33c44faa030963b129d648, type: 3}
     - {fileID: 1509632038583652988, guid: fbb78368ef33c44faa030963b129d648, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
---- !u!114 &1813366303 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-  m_PrefabInstance: {fileID: 1813366302}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813366304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1813366304 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
@@ -51125,7 +51085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 1813366303}
+  selectedFlowchart: {fileID: 558657061}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
