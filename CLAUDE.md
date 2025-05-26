@@ -21,15 +21,10 @@
 
 ## 基本作業方針
 
-- **Autonomy: Medium**  # Plan と Imp と Debug フェーズ後に確認
-- PRDを受け取ったら、PRDを確認し、不明点がないか確認する。確認の結果 PRD に変更があればPRDを更新する
+- PRDを受け取ったら、PRDを確認し、不明点がないか確認する
 - その後、PRD の各項目を Planに落とし込む
   - Planは `Assets/DocsForAI/Plan/${タスクの概要}.md` に保存
-- Planができたらユーザーに確認する。ユーザー確認が終わったら、Planを保存する
 - Impする
-- ユーザーに Imp の確認をお願いする
-- 適宜、Planフェーズ or Impフェーズに戻る
-- ユーザーに Imp の確認をし、OKが出たら
+- Impが終わったら
   - `Assets/DocsForAI/Design`配下に設計書をmdファイルで出力して保存する
-- irreversible / high-risk 操作（削除・本番 DB 変更・外部 API 決定）は必ず停止する
 - プルリクエストのマージはユーザーが行う
