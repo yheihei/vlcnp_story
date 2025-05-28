@@ -30,5 +30,6 @@ namespace VLCNP.Core
         AkimVeryLong, // Akimがベリーロングになった
         KabeKickTutorial, // かべキックの使い方を教えてもらった
         OhiruneBeyaTutiTyukan, // お昼寝部屋土の中間地点に到達した
+        VLOrochiJoined, // オロチが仲間になった
     }
 }
