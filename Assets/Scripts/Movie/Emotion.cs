@@ -7,8 +7,12 @@ namespace VLCNP.Movie
     public class Emotion : MonoBehaviour
     {
         // SEを設定
-        [SerializeField] AudioClip se = null;
-        [SerializeField] float BikkuriVolume = 0.4f;
+        [SerializeField]
+        AudioClip se = null;
+
+        [SerializeField]
+        float BikkuriVolume = 0.4f;
+
         // 何フレーム後に削除するか
         int waitFrame = 90;
 
@@ -19,10 +23,18 @@ namespace VLCNP.Movie
 
         public void Bikkuri()
         {
+            CreateEmotion("Emotion/Bikkuri");
+        }
+
+        public void Hatena()
+        {
+            CreateEmotion("Emotion/Hatena");
+        }
+
+        private void CreateEmotion(string resourcePath)
+        {
             AudioSource.PlayClipAtPoint(se, transform.position, BikkuriVolume);
-            // 子にBikkuriを生成する
-            GameObject obj = Instantiate(Resources.Load<GameObject>("Emotion/Bikkuri"), transform);
-            // waitFrameフレーム後に削除
+            GameObject obj = Instantiate(Resources.Load<GameObject>(resourcePath), transform);
             Destroy(obj, waitFrame / 60);
         }
     }
