@@ -18,7 +18,11 @@ namespace VLCNP.Core
         
         private void Awake()
         {
-            flagManager = FindObjectOfType<FlagManager>();
+            GameObject flagManagerObject = GameObject.FindWithTag("FlagManager");
+            if (flagManagerObject != null)
+            {
+                flagManager = flagManagerObject.GetComponent<FlagManager>();
+            }
             baseStats = GetComponent<BaseStats>();
             spriteChanger = GetComponent<ChangeSpriteAnimationOnLevelUp>();
         }
@@ -76,13 +80,20 @@ namespace VLCNP.Core
         
         private void UpdateParticleSystemReference()
         {
-            // オーラprefab自体からパーティクルシステムを取得
-            auraParticleSystem = GetComponent<ParticleSystem>();
-            
-            // 自分自身にない場合は子オブジェクトから検索
-            if (auraParticleSystem == null)
+            // オーラオブジェクトからパーティクルシステムを取得
+            Transform leg = transform.Find("Leg");
+            if (leg != null)
             {
-                auraParticleSystem = GetComponentInChildren<ParticleSystem>();
+                // オーラエフェクトを子オブジェクトから検索
+                foreach (Transform child in leg)
+                {
+                    ParticleSystem ps = child.GetComponent<ParticleSystem>();
+                    if (ps != null)
+                    {
+                        auraParticleSystem = ps;
+                        break;
+                    }
+                }
             }
         }
         
