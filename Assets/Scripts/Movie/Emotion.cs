@@ -23,17 +23,18 @@ namespace VLCNP.Movie
 
         public void Bikkuri()
         {
-            AudioSource.PlayClipAtPoint(se, transform.position, BikkuriVolume);
-            // 子にBikkuriを生成する
-            GameObject obj = Instantiate(Resources.Load<GameObject>("Emotion/Bikkuri"), transform);
-            // waitFrameフレーム後に削除
-            Destroy(obj, waitFrame / 60);
+            CreateEmotion("Emotion/Bikkuri");
         }
 
         public void Hatena()
         {
+            CreateEmotion("Emotion/Hatena");
+        }
+
+        private void CreateEmotion(string resourcePath)
+        {
             AudioSource.PlayClipAtPoint(se, transform.position, BikkuriVolume);
-            GameObject obj = Instantiate(Resources.Load<GameObject>("Emotion/Hatena"), transform);
+            GameObject obj = Instantiate(Resources.Load<GameObject>(resourcePath), transform);
             Destroy(obj, waitFrame / 60);
         }
     }
