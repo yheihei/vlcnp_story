@@ -76,20 +76,13 @@ namespace VLCNP.Core
         
         private void UpdateParticleSystemReference()
         {
-            // オーラオブジェクトからパーティクルシステムを取得
-            Transform leg = transform.Find("Leg");
-            if (leg != null)
+            // オーラprefab自体からパーティクルシステムを取得
+            auraParticleSystem = GetComponent<ParticleSystem>();
+            
+            // 自分自身にない場合は子オブジェクトから検索
+            if (auraParticleSystem == null)
             {
-                // オーラエフェクトを子オブジェクトから検索
-                foreach (Transform child in leg)
-                {
-                    ParticleSystem ps = child.GetComponent<ParticleSystem>();
-                    if (ps != null)
-                    {
-                        auraParticleSystem = ps;
-                        break;
-                    }
-                }
+                auraParticleSystem = GetComponentInChildren<ParticleSystem>();
             }
         }
         
