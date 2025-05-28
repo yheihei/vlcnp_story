@@ -80,6 +80,20 @@ public enum Flag
 - イベント駆動によりフレーム毎の処理を削減
 - パーティクルシステムの参照をキャッシュ
 - 不要な更新処理を最小化
+- タグベース検索によるFlagManager取得の最適化
+
+### 依存性解決
+**FlagManager取得**:
+```csharp
+GameObject flagManagerObject = GameObject.FindWithTag("FlagManager");
+if (flagManagerObject != null)
+{
+    flagManager = flagManagerObject.GetComponent<FlagManager>();
+}
+```
+- `FindObjectOfType`から`FindWithTag`に変更してパフォーマンス向上
+- 複数インスタンス存在時の動作安定化
+- 適切なnull安全性の実装
 
 ## セーブデータ互換性
 
@@ -95,9 +109,33 @@ public enum Flag
 ## 使用方法
 
 ### Unity Editorでの設定
-1. プレイヤーオブジェクトに`AuraController`コンポーネントを追加
-2. 既存の`ChangeSpriteAnimationOnLevelUp`との共存
+1. **オーラprefab自体**に`AuraController`コンポーネントを追加
+2. FlagManagerオブジェクトに"FlagManager"タグを設定
 3. 追加の手動設定は不要
+
+### 配置方針の変更
+- **旧設計**: プレイヤーオブジェクトに配置
+- **新実装**: オーラprefab自体に配置
+- **理由**: より直感的で保守しやすい構造
+
+### ParticleSystem取得方法
+オーラprefab自体にスクリプトを配置する想定に合わせて簡素化：
+```csharp
+private void UpdateParticleSystemReference()
+{
+    // まず自分自身でParticleSystemを検索
+    if (auraParticleSystem == null)
+    {
+        auraParticleSystem = GetComponent<ParticleSystem>();
+    }
+    
+    // 見つからない場合は子オブジェクトから検索
+    if (auraParticleSystem == null)
+    {
+        auraParticleSystem = GetComponentInChildren<ParticleSystem>();
+    }
+}
+```
 
 ### コードでの制御
 ```csharp
@@ -140,6 +178,26 @@ flagManager.SetFlag(Flag.NoEnemies, false);
 - オーラ以外のエフェクトへの適用
 - 段階的な制御（フェードイン/アウト等）
 
+## 実装履歴と改善点
+
+### レビューフィードバック対応
+1. **FlagManager取得の最適化** (実装済み)
+   - `FindObjectOfType`から`FindWithTag`に変更
+   - パフォーマンス向上と動作安定化を実現
+
+2. **配置方式の見直し** (実装済み)
+   - プレイヤーオブジェクトからオーラprefab自体への配置変更
+   - より直感的な構造に改善
+
+3. **ParticleSystem取得の簡素化** (実装予定)
+   - 複雑な階層検索から自分自身・子要素検索に変更
+   - より堅牢で保守しやすいコードに改善
+
+### 技術的改善点
+- null安全性の強化
+- タグベースの依存性解決
+- より予測可能なコンポーネント検索
+
 ## まとめ
 
 本設計により以下を実現:
@@ -148,5 +206,7 @@ flagManager.SetFlag(Flag.NoEnemies, false);
 - ✅ セーブデータ互換性の維持
 - ✅ イベント駆動による効率的な制御
 - ✅ 拡張性を考慮した実装
+- ✅ パフォーマンス最適化
+- ✅ 保守性の向上
 
-Akimのレベル3オーラが「敵がいない」フラグに応じて適切に制御され、プレイヤーの快適性が向上することを期待する。
+レビュープロセスを通じて更に堅牢で効率的な実装に改善され、Akimのレベル3オーラが「敵がいない」フラグに応じて適切に制御される。
