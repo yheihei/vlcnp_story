@@ -32,5 +32,6 @@ namespace VLCNP.Core
         OhiruneBeyaTutiTyukan, // お昼寝部屋土の中間地点に到達した
         VLOrochiJoined, // オロチが仲間になった
         HPUpAfterVLOrochiJoined, // オロチ加入後のHPアップ
+        NoEnemies, // 敵がいない
     }
 }

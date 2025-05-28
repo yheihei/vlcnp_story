@@ -116,6 +116,13 @@ public class PlayerLevel : MonoBehaviour, ILevel
         // xに−0.26, yに-0.62の位置に表示
         _aura = Instantiate(aura, transform.position, Quaternion.identity, transform);
         _aura.transform.localPosition = new Vector3(-0.26f, -0.62f, 0);
+        
+        // AuraControllerコンポーネントを追加してオーラの表示制御を有効にする
+        AuraController auraController = _aura.GetComponent<AuraController>();
+        if (auraController == null)
+        {
+            auraController = _aura.AddComponent<AuraController>();
+        }
     }
     private void removeAura()
     {
