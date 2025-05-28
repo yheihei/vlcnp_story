@@ -25,6 +25,7 @@
 - その後、PRD の各項目を Planに落とし込む
   - Planは `Assets/DocsForAI/Plan/${タスクの概要}.md` に保存
 - Impする
+  - Imp時に触って良いファイルは`Assets/Scripts/`配下のみ
 - Impが終わったら
   - `Assets/DocsForAI/Design`配下に設計書をmdファイルで出力して保存する
 - プルリクエストのマージはユーザーが行う
