@@ -22,14 +22,11 @@
 - Animatorコンポーネントから`isAttack`パラメータをtrueに設定
 - Any Stateから`PlayerAttack`アニメーションへの遷移をトリガー
 
-### 3. DefaultAttackAnimationController クラス
-**ファイル**: `Assets/Scripts/Combat/DefaultAttackAnimationController.cs`
-
-**目的**: デフォルト実装（何もしない）
-
-**機能**:
-- 攻撃アニメーション無しキャラクター用
-- `TriggerAttackAnimation()`は空実装
+### 3. ~~DefaultAttackAnimationController クラス~~ (削除済み)
+**削除理由**: 
+- `Fighter.cs`でnull条件演算子（`?.`）を使用しているため、nullでも正常動作
+- 空実装クラスよりもnull状態の方がシンプルで直感的
+- Null Object パターンが不要な場面での過剰実装を回避
 
 ### 4. Fighter クラス拡張
 **ファイル**: `Assets/Scripts/Combat/Fighter.cs`
@@ -53,13 +50,13 @@
 **対象プレハブ**: `Assets/Game/Characters/LeeleePlayerVariant.prefab`
 
 1. プレハブを開く
-2. `DefaultAttackAnimationController`コンポーネントをアタッチ
+2. **何もアタッチしない**（攻撃アニメーション無し）
 
 ### 3. Akimキャラクター設定
 **対象プレハブ**: `Assets/Game/Characters/Player.prefab`
 
 1. プレハブを開く
-2. `DefaultAttackAnimationController`コンポーネントをアタッチ
+2. **何もアタッチしない**（攻撃アニメーション無し）
 
 ## 技術的特徴
 
@@ -82,10 +79,11 @@
 3. `Fighter.Attack()`が武器のプロジェクタイル発射
 4. `Fighter.Attack()`が`attackAnimationController?.TriggerAttackAnimation()`呼び出し
 5. オロチの場合：`OrochiAttackAnimationController.TriggerAttackAnimation()`が`isAttack=true`設定
-6. その他の場合：`DefaultAttackAnimationController.TriggerAttackAnimation()`は何もしない
+6. その他の場合：`attackAnimationController`がnullのため何も実行されない
 
 ## 注意事項
 
 - アニメーションの終了処理（`isAttack=false`設定）は既存のAnimation Event等で対応
 - この実装では攻撃開始時のトリガーのみ提供
 - プレハブへのコンポーネントアタッチ作業はユーザーが実施する必要がある
+- オロチのみOrochiAttackAnimationControllerをアタッチ、他キャラクターは何もアタッチしない
