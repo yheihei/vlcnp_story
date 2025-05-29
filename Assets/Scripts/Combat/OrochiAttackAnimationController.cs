@@ -18,5 +18,14 @@ namespace VLCNP.Combat
                 animator.SetBool("isAttack", true);
             }
         }
+
+        // Animationイベントから呼び出される
+        public void OnFinishAttackAnimation()
+        {
+            if (animator != null)
+            {
+                animator.SetBool("isAttack", false);
+            }
+        }
     }
 }

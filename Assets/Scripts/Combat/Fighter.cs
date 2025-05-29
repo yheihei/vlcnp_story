@@ -84,10 +84,10 @@ namespace VLCNP.Combat
         public void Attack()
         {
             int level = baseStats ? baseStats.GetLevel() : 1;
+            attackAnimationController?.TriggerAttackAnimation();
             if (!currentWeaponConfig.HasProjectile())
                 return;
             currentWeaponConfig.LaunchProjectile(handTransform, level, GetIsLeft());
-            attackAnimationController?.TriggerAttackAnimation();
         }
 
         public void DirectAttack(GameObject target = null)
