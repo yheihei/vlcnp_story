@@ -20,7 +20,7 @@ namespace VLCNP.Combat
             public float damage;
 
             [SerializeField]
-            public Projectile projectile;
+            public GameObject projectilePrefab; // IProjectileを実装したGameObject
         }
 
         const string weaponName = "Weapon";
@@ -43,24 +43,32 @@ namespace VLCNP.Combat
             WeaponLevel _weaponLevel = GetCurrentWeapon(level);
             if (_weaponLevel == null)
                 return false;
-            return _weaponLevel.projectile != null;
+            return _weaponLevel.projectilePrefab != null;
         }
 
         public void LaunchProjectile(Transform handTransform, int level = 1, bool isLeft = false)
         {
             WeaponLevel _weaponLevel = GetCurrentWeapon(level);
-            Projectile projectileInstance = Instantiate(
-                _weaponLevel.projectile,
+            GameObject projectileObj = Instantiate(
+                _weaponLevel.projectilePrefab,
                 handTransform.position,
                 handTransform.rotation
             );
-            AudioClip clip = projectileInstance.GetComponent<AudioSource>()?.clip;
+            
+            // 音声処理
+            AudioClip clip = projectileObj.GetComponent<AudioSource>()?.clip;
             if (clip != null)
             {
                 AudioSource.PlayClipAtPoint(clip, handTransform.position);
             }
-            projectileInstance.SetDirection(isLeft);
-            projectileInstance.SetDamage(_weaponLevel.damage);
+            
+            // IProjectileインターフェースを通じて操作
+            IProjectile projectile = projectileObj.GetComponent<IProjectile>();
+            if (projectile != null)
+            {
+                projectile.SetDirection(isLeft);
+                projectile.SetDamage(_weaponLevel.damage);
+            }
         }
 
         private WeaponLevel GetCurrentWeapon(int level = 1)
