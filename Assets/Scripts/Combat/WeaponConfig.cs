@@ -54,14 +54,14 @@ namespace VLCNP.Combat
                 handTransform.position,
                 handTransform.rotation
             );
-            
+
             // 音声処理
             AudioClip clip = projectileObj.GetComponent<AudioSource>()?.clip;
             if (clip != null)
             {
                 AudioSource.PlayClipAtPoint(clip, handTransform.position);
             }
-            
+
             // IProjectileインターフェースを通じて操作
             IProjectile projectile = projectileObj.GetComponent<IProjectile>();
             if (projectile != null)
