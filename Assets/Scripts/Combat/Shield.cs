@@ -21,20 +21,18 @@ namespace VLCNP.Combat
         {
             if (other.CompareTag("Projectile"))
             {
-                Projectile projectile = other.GetComponent<Projectile>();
-                if (ShouldIgnoreProjectile(projectile))
-                    return;
-                if (blockSe != null && audioSource != null)
+                // 新しいIProjectile実装クラスに対応
+                IProjectile iProjectile = other.GetComponent<IProjectile>();
+                if (iProjectile != null)
                 {
-                    audioSource.PlayOneShot(blockSe, 2.0f);
+                    if (iProjectile.IsStucking) return;
+                    if (blockSe != null && audioSource != null)
+                    {
+                        audioSource.PlayOneShot(blockSe, 2.0f);
+                    }
+                    iProjectile.ImpactAndDestroy();
                 }
-                projectile.ImpactAndDestroy();
             }
-        }
-
-        private bool ShouldIgnoreProjectile(Projectile projectile)
-        {
-            return projectile != null && projectile.IsStucking;
         }
     }
 }

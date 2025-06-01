@@ -7,7 +7,7 @@ using VLCNP.Core;
 
 namespace VLCNP.Combat
 {
-    public class Projectile : MonoBehaviour, IStoppable
+    public class Projectile : MonoBehaviour, IStoppable, IProjectile
     {
         [SerializeField]
         float speed = 30;
