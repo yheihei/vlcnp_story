@@ -15,7 +15,7 @@ namespace VLCNP.Combat
         float gravityScale = 2.0f;
 
         [SerializeField]
-        float bounceCoefficient = 0.85f;
+        float maxBounceHeight = 1.0f;
 
         [SerializeField]
         int maxBounceCount = 18;
@@ -132,9 +132,21 @@ namespace VLCNP.Combat
 
                 bounceCount++;
 
-                // バウンド処理
-                Vector2 velocity = rb.velocity;
-                velocity.y = Mathf.Abs(velocity.y) * bounceCoefficient;
+                // Physics2Dマテリアルでバウンドした後、y速度を制限
+                StartCoroutine(LimitBounceHeight());
+            }
+        }
+
+        private IEnumerator LimitBounceHeight()
+        {
+            // 物理エンジンのバウンド処理を1フレーム待つ
+            yield return new WaitForFixedUpdate();
+
+            // y方向の速度を最大値に制限
+            Vector2 velocity = rb.velocity;
+            if (velocity.y > maxBounceHeight)
+            {
+                velocity.y = maxBounceHeight;
                 rb.velocity = velocity;
             }
         }

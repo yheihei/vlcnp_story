@@ -25,13 +25,14 @@
 - マリオのファイアーボールのような動き：
   - 地面に触れたらバウンドする
   - 重力の影響を受ける
-  - バウンド時の反発係数は設定可能
+  - Physics2Dマテリアルで反発係数を調整
+  - バウンド後のy速度を最大値に制限
   - 最大バウンド回数の設定
 
 **SerializeFieldパラメータ**:
 - `float speed` - 初期速度（既存Projectileと同様）
 - `float gravityScale` - 重力倍率（デフォルト2.0）
-- `float bounceCoefficient` - バウンド反発係数（デフォルト0.85）
+- `float maxBounceHeight` - 最大バウンド高さ（デフォルト1.0）
 - `int maxBounceCount` - 最大バウンド回数（デフォルト18）
 - `GameObject hitEffect` - 衝突エフェクト
 - `GameObject destroyEffect` - 消滅エフェクト
@@ -43,7 +44,8 @@
 - `Rigidbody2D`を使用した重力とバウンドの実装
 - 重力値：`-9.8 * gravityScale`
 - バウンド処理：`OnCollisionEnter2D`で地面との衝突を検出
-- 水平速度は維持、垂直速度のみ反発係数を適用
+- Physics2Dマテリアルによる自動バウンド
+- バウンド後のy速度制限でコルーチンを使用
 
 **既存機能の継承**:
 - ダメージ処理（Health.TakeDamage）

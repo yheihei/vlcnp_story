@@ -50,15 +50,16 @@ Projectileシステムにおいて、既存のインターフェース設計を�
 
 **主な機能**:
 - **物理ベースの移動**: Rigidbody2Dを使用した重力とバウンド
-- **バウンド動作**: 地面との衝突時に反発係数を適用してバウンド
-- **設定可能なパラメータ**: 速度、重力、反発係数、最大バウンド回数
+- **バウンド動作**: Physics2Dマテリアルを使用した物理ベースバウンド
+- **バウンド高さ制限**: 最大バウンド高さを制限して一定の跳ね高を維持
+- **設定可能なパラメータ**: 速度、重力、最大バウンド高さ、最大バウンド回数
 - **エフェクト対応**: 衝突エフェクトと消滅エフェクトの生成
 - **ダメージ処理**: 既存のProjectileと同様のダメージシステム
 
 **設定可能パラメータ**:
 - `speed`: 初期速度（デフォルト30）
 - `gravityScale`: 重力倍率（デフォルト2.0）
-- `bounceCoefficient`: バウンド反発係数（デフォルト0.85）
+- `maxBounceHeight`: 最大バウンド高さ（デフォルト1.0）
 - `maxBounceCount`: 最大バウンド回数（デフォルト18）
 - `hitEffect`: 衝突時のエフェクトPrefab
 - `destroyEffect`: 消滅時のエフェクトPrefab
@@ -90,7 +91,7 @@ Projectileシステムにおいて、既存のインターフェース設計を�
 **基本パラメータ**:
 - `Speed`: 初期速度（30が推奨）
 - `Gravity Scale`: 重力倍率（2.0が推奨）
-- `Bounce Coefficient`: バウンド反発係数（0.85が推奨）
+- `Max Bounce Height`: 最大バウンド高さ（1.0が推奨）
 - `Max Bounce Count`: 最大バウンド回数（18回が推奨）
 
 **エフェクト設定**:
@@ -109,7 +110,8 @@ Projectileシステムにおいて、既存のインターフェース設計を�
 
 **Collider2D設定**:
 - Is Trigger: ダメージ判定用（敵との衝突）
-- 物理衝突用に別途Collider2Dを追加する場合は、Is Triggerを無効にしてバウンド判定に使用
+- 物理衝突用に別途Collider2Dを追加し、Is Triggerを無効にしてバウンド判定に使用
+- バウンド用Collider2DにPhysicsMaterial2Dをアタッチして反発係数を調整
 
 #### 4. WeaponConfigでの使用
 1. **WeaponConfig ScriptableObjectを開く**
@@ -147,7 +149,7 @@ public class BouncingProjectile : MonoBehaviour, IStoppable, IProjectile
     // 物理パラメータ
     [SerializeField] float speed = 30;
     [SerializeField] float gravityScale = 2.0f;
-    [SerializeField] float bounceCoefficient = 0.85f;
+    [SerializeField] float maxBounceHeight = 1.0f;
     [SerializeField] int maxBounceCount = 18;
     
     // バウンド処理
@@ -158,7 +160,8 @@ public class BouncingProjectile : MonoBehaviour, IStoppable, IProjectile
             if (bounceCount >= maxBounceCount)
                 ImpactAndDestroy();
             else
-                // バウンド処理実行
+                // Physics2Dマテリアルによるバウンド後、高さ制限
+                StartCoroutine(LimitBounceHeight());
         }
     }
 }
@@ -168,7 +171,8 @@ public class BouncingProjectile : MonoBehaviour, IStoppable, IProjectile
 
 ### 物理計算について
 - **重力**: Rigidbody2D.gravityScaleによる自然な重力効果
-- **バウンド**: 垂直速度に反発係数を適用、水平速度は維持
+- **バウンド**: Physics2Dマテリアルによる物理ベースバウンド
+- **高さ制限**: バウンド後のy速度を最大値に制限して一定の跳ね高を維持
 - **方向制御**: SetDirectionメソッドでの水平方向の反転対応
 
 ### エフェクトシステム
@@ -191,9 +195,10 @@ public class BouncingProjectile : MonoBehaviour, IStoppable, IProjectile
 ### よくある問題と解決方法
 
 1. **バウンドしない場合**
-   - Collider2DのIs Triggerが有効になっていないか確認
+   - バウンド用Collider2DのIs Triggerが無効になっているか確認
    - Ground タグが正しく設定されているか確認
-   - OnCollisionEnter2D用のCollider2Dが追加されているか確認
+   - バウンド用Collider2DにPhysicsMaterial2Dがアタッチされているか確認
+   - PhysicsMaterial2DのBounciness値が適切に設定されているか確認
 
 2. **エフェクトが表示されない場合**
    - hitEffect または destroyEffect Prefabが設定されているか確認
