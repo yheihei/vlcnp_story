@@ -67,7 +67,7 @@ Projectileシステムにおいて、既存のインターフェース設計を�
 - `targetTagName`: ダメージ対象のタグ（デフォルト"Enemy"）
 - `groundTagName`: 地面のタグ（デフォルト"Ground"）
 - `deleteTime`: 自動削除時間（デフォルト10秒）
-- `frontCollisionDetector`: 壁衝突検出用のFrontCollisionDetector
+- `frontCollisionDetector`: 壁検出用のFrontCollisionDetector
 
 ## Unity Editor操作マニュアル
 
@@ -126,6 +126,11 @@ Projectileシステムにおいて、既存のインターフェース設計を�
 - Is Trigger: ダメージ判定用（敵との衝突）
 - 物理衝突用に別途Collider2Dを追加し、Is Triggerを無効にしてバウンド判定に使用
 - バウンド用Collider2DにPhysicsMaterial2Dをアタッチして反発係数を調整
+
+**FrontCollisionDetector設定**:
+- 子オブジェクトとして作成
+- 前方に配置してCollider2D（Is Trigger: true）を設定
+- targetTagsに壁として検出したいタグを追加（デフォルトは"Ground", "Item", "Enemy"）
 
 #### 4. WeaponConfigでの使用
 1. **WeaponConfig ScriptableObjectを開く**
@@ -214,8 +219,9 @@ public class BouncingProjectile : MonoBehaviour, IStoppable, IProjectile
   - y方向の速度が計算値を超えている場合は制限
 - **方向制御**: SetDirectionメソッドでの水平方向の反転対応
 - **壁反射**: FrontCollisionDetectorによる壁衝突検出とX軸方向反転
-  - RepeatMovingクラスと同様の実装パターンを採用
-  - FixedUpdateで壁衝突を監視し、リアルタイムに方向転換
+  - 連続反転防止のためのフラグ管理
+  - FixedUpdateで毎フレーム水平速度を維持
+  - SetDirection()メソッドで方向とスケールを同時更新
 
 ### エフェクトシステム
 - **hitEffect**: 敵との衝突時に生成される衝突エフェクト
