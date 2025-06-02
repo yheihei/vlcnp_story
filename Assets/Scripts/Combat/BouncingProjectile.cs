@@ -1,0 +1,209 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using VLCNP.Attributes;
+using VLCNP.Core;
+
+namespace VLCNP.Combat
+{
+    public class BouncingProjectile : MonoBehaviour, IStoppable, IProjectile
+    {
+        [SerializeField]
+        float speed = 30;
+
+        [SerializeField]
+        float gravityScale = 2.0f;
+
+        [SerializeField]
+        float bounceCoefficient = 0.85f;
+
+        [SerializeField]
+        int maxBounceCount = 18;
+
+        [SerializeField]
+        GameObject hitEffect = null;
+
+        [SerializeField]
+        GameObject destroyEffect = null;
+
+        [SerializeField]
+        string targetTagName = "Enemy";
+
+        [SerializeField]
+        string groundTagName = "Ground";
+
+        [SerializeField]
+        float deleteTime = 10f;
+
+        bool isLeft = false;
+        public bool IsLeft
+        {
+            get => isLeft;
+            set => isLeft = value;
+        }
+
+        bool isStopped = false;
+        public bool IsStopped
+        {
+            get => isStopped;
+            set => isStopped = value;
+        }
+
+        private bool isStucking = false;
+        public bool IsStucking
+        {
+            get => isStucking;
+        }
+
+        private int bounceCount = 0;
+        private float damage = 0;
+        private Rigidbody2D rb;
+        private List<GameObject> penetratedObjects = new List<GameObject>();
+
+        private void Start()
+        {
+            rb = GetComponent<Rigidbody2D>();
+            if (rb == null)
+            {
+                rb = gameObject.AddComponent<Rigidbody2D>();
+            }
+
+            // 重力設定
+            rb.gravityScale = gravityScale;
+
+            // 初期速度を設定
+            int directionX = isLeft ? -1 : 1;
+            rb.velocity = new Vector2(directionX * speed, 0);
+
+            // 自動削除
+            if (deleteTime > 0)
+            {
+                Destroy(gameObject, deleteTime);
+            }
+        }
+
+        public void SetDirection(bool isLeft)
+        {
+            this.isLeft = isLeft;
+            if (isLeft)
+            {
+                // x方向のscaleを反転させる
+                transform.localScale = new Vector3(
+                    -Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y,
+                    transform.localScale.z
+                );
+            }
+            else
+            {
+                transform.localScale = new Vector3(
+                    Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y,
+                    transform.localScale.z
+                );
+            }
+
+            // 既にRigidbody2Dが存在する場合は速度を更新
+            if (rb != null)
+            {
+                int directionX = isLeft ? -1 : 1;
+                rb.velocity = new Vector2(directionX * speed, rb.velocity.y);
+            }
+        }
+
+        public void SetDamage(float damage)
+        {
+            this.damage = damage;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (isStopped)
+                return;
+
+            // 地面との衝突でバウンド
+            if (collision.gameObject.CompareTag(groundTagName))
+            {
+                if (bounceCount >= maxBounceCount)
+                {
+                    ImpactAndDestroy();
+                    return;
+                }
+
+                bounceCount++;
+
+                // バウンド処理
+                Vector2 velocity = rb.velocity;
+                velocity.y = Mathf.Abs(velocity.y) * bounceCoefficient;
+                rb.velocity = velocity;
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (isStopped)
+                return;
+
+            if (other.gameObject.CompareTag(targetTagName))
+            {
+                // 既にヒットしたオブジェクトにはダメージを与えない
+                if (penetratedObjects.Contains(other.gameObject))
+                    return;
+
+                // ヒットしたオブジェクトを記録しておく
+                penetratedObjects.Add(other.gameObject);
+
+                Health health = other.gameObject.GetComponent<Health>();
+                if (health != null)
+                    health.TakeDamage(damage, isLeft);
+
+                // バウンドする弾は貫通しない
+                ImpactAndDestroy();
+            }
+        }
+
+        public void ImpactAndDestroy()
+        {
+            if (hitEffect != null)
+            {
+                // エフェクトを生成
+                Vector3 effectPosition = new(
+                    transform.position.x + (isLeft ? -0.2f : 0.2f),
+                    transform.position.y,
+                    transform.position.z
+                );
+                GameObject effect = Instantiate(
+                    hitEffect,
+                    effectPosition,
+                    Quaternion.Euler(0, 0, isLeft ? -90 : 90)
+                );
+                Destroy(effect, 1);
+            }
+
+            // 消滅エフェクトを生成
+            if (destroyEffect != null)
+            {
+                GameObject effect = Instantiate(
+                    destroyEffect,
+                    transform.position,
+                    Quaternion.identity
+                );
+                Destroy(effect, 2f);
+            }
+
+            Destroy(gameObject);
+        }
+
+        private void FixedUpdate()
+        {
+            if (isStopped)
+                return;
+
+            // 水平速度を維持（重力による影響を受けないように）
+            Vector2 velocity = rb.velocity;
+            int directionX = isLeft ? -1 : 1;
+            velocity.x = directionX * speed;
+            rb.velocity = velocity;
+        }
+    }
+}
