@@ -60,6 +60,7 @@ namespace VLCNP.Combat
         private float damage = 0;
         private Rigidbody2D rb;
         private List<GameObject> penetratedObjects = new List<GameObject>();
+        private bool hasReversedDirection = false;
 
         private void Start()
         {
@@ -203,11 +204,20 @@ namespace VLCNP.Combat
             if (isStopped)
                 return;
 
-            // 壁に衝突した場合はX軸方向を反転
-            if (frontCollisionDetector != null && frontCollisionDetector.IsColliding)
+            // 壁に衝突した場合はX軸方向を反転（連続反転を防ぐ）
+            if (
+                frontCollisionDetector != null
+                && frontCollisionDetector.IsColliding
+                && !hasReversedDirection
+            )
             {
                 isLeft = !isLeft;
-                UpdateDirection();
+                SetDirection(isLeft);
+                hasReversedDirection = true;
+            }
+            else if (frontCollisionDetector != null && !frontCollisionDetector.IsColliding)
+            {
+                hasReversedDirection = false;
             }
 
             // 水平速度を維持（重力による影響を受けないように）
