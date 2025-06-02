@@ -15,7 +15,7 @@ namespace VLCNP.Combat
         float gravityScale = 2.0f;
 
         [SerializeField]
-        float maxBounceHeight = 1.0f;
+        float maxBounceHeight = 0.8f;
 
         [SerializeField]
         int maxBounceCount = 18;
@@ -49,11 +49,8 @@ namespace VLCNP.Combat
             set => isStopped = value;
         }
 
-        private bool isStucking = false;
-        public bool IsStucking
-        {
-            get => isStucking;
-        }
+        // IProjectile インターフェースの実装（このクラスでは使用しない）
+        public bool IsStucking => false;
 
         private int bounceCount = 0;
         private float damage = 0;
@@ -132,21 +129,27 @@ namespace VLCNP.Combat
 
                 bounceCount++;
 
-                // Physics2Dマテリアルでバウンドした後、y速度を制限
-                StartCoroutine(LimitBounceHeight());
+                // バウンド後の速度を制限するコルーチンを開始
+                StartCoroutine(LimitBounceHeightByVelocity());
             }
         }
 
-        private IEnumerator LimitBounceHeight()
+        private IEnumerator LimitBounceHeightByVelocity()
         {
             // 物理エンジンのバウンド処理を1フレーム待つ
             yield return new WaitForFixedUpdate();
 
-            // y方向の速度を最大値に制限
+            // バウンド後の初速度から、maxBounceHeightに到達する速度を計算
+            // v^2 = u^2 + 2as より、v=0（最高点）、a=-g、s=maxBounceHeight として
+            // 0 = u^2 - 2gs → u = sqrt(2gs)
+            float maxVelocityY = Mathf.Sqrt(
+                2 * Physics2D.gravity.magnitude * gravityScale * maxBounceHeight
+            );
+
             Vector2 velocity = rb.velocity;
-            if (velocity.y > maxBounceHeight)
+            if (velocity.y > maxVelocityY)
             {
-                velocity.y = maxBounceHeight;
+                velocity.y = maxVelocityY;
                 rb.velocity = velocity;
             }
         }
@@ -179,11 +182,12 @@ namespace VLCNP.Combat
             if (hitEffect != null)
             {
                 // エフェクトを生成
-                Vector3 effectPosition = new(
-                    transform.position.x + (isLeft ? -0.2f : 0.2f),
-                    transform.position.y,
-                    transform.position.z
-                );
+                Vector3 effectPosition =
+                    new(
+                        transform.position.x + (isLeft ? -0.2f : 0.2f),
+                        transform.position.y,
+                        transform.position.z
+                    );
                 GameObject effect = Instantiate(
                     hitEffect,
                     effectPosition,
