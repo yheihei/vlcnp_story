@@ -52,6 +52,7 @@ Projectileシステムにおいて、既存のインターフェース設計を�
 - **物理ベースの移動**: Rigidbody2Dを使用した重力とバウンド
 - **バウンド動作**: Physics2Dマテリアルを使用した物理ベースバウンド
 - **バウンド高さ制限**: 物理公式に基づいた最大バウンド高さ制限
+- **壁反射機能**: FrontCollisionDetectorを使用した壁衝突時のX軸方向反転
 - **設定可能なパラメータ**: 速度、重力、最大バウンド高さ、最大バウンド回数
 - **エフェクト対応**: 衝突エフェクトと消滅エフェクトの生成
 - **ダメージ処理**: 既存のProjectileと同様のダメージシステム
@@ -66,6 +67,7 @@ Projectileシステムにおいて、既存のインターフェース設計を�
 - `targetTagName`: ダメージ対象のタグ（デフォルト"Enemy"）
 - `groundTagName`: 地面のタグ（デフォルト"Ground"）
 - `deleteTime`: 自動削除時間（デフォルト10秒）
+- `frontCollisionDetector`: 壁衝突検出用のFrontCollisionDetector
 
 ## Unity Editor操作マニュアル
 
@@ -82,9 +84,20 @@ Projectileシステムにおいて、既存のインターフェース設計を�
    - `SpriteRenderer` コンポーネントを追加
    - `Collider2D` コンポーネントを追加（CircleCollider2D推奨）
 
-3. **Sprite設定**
+3. **FrontCollisionDetector子オブジェクトの作成**
+   - BouncingProjectileの子オブジェクトとして空のGameObjectを作成
+   - 名前を「FrontCollisionDetector」に変更
+   - `FrontCollisionDetector` スクリプトをアタッチ
+   - `Collider2D`（BoxCollider2D推奨）を追加し、Is Triggerを有効化
+   - Colliderを弾丸の前方に配置し、壁検出用のサイズに調整
+   - Target Tagsに「Ground」を追加
+
+4. **Sprite設定**
    - SpriteRenderer の Sprite フィールドに弾丸用のスプライトを設定
    - 適切なサイズに調整
+
+5. **FrontCollisionDetectorの関連付け**
+   - BouncingProjectileコンポーネントのFront Collision Detectorフィールドに、作成したFrontCollisionDetector子オブジェクトをドラッグ&ドロップで設定
 
 #### 2. BouncingProjectileコンポーネントの設定
 
@@ -102,6 +115,7 @@ Projectileシステムにおいて、既存のインターフェース設計を�
 - `Target Tag Name`: ダメージを与える対象のタグ（通常は"Enemy"）
 - `Ground Tag Name`: バウンドする地面のタグ（通常は"Ground"）
 - `Delete Time`: 自動削除時間（10秒推奨）
+- `Front Collision Detector`: 壁衝突検出用のFrontCollisionDetector（必須）
 
 #### 3. 物理設定
 **Rigidbody2D設定**:
@@ -124,11 +138,15 @@ Projectileシステムにおいて、既存のインターフェース設計を�
    - 地面に触れた際にバウンドすることを確認
    - 設定したバウンド回数に達したら消滅することを確認
 
-2. **ダメージテスト**
+2. **壁反射テスト**
+   - 弾丸が壁に衝突した際にX軸方向が反転することを確認
+   - 反転後も正常にバウンドし続けることを確認
+
+3. **ダメージテスト**
    - 敵に当たった際にダメージが与えられることを確認
    - 敵に当たったら即座に消滅することを確認
 
-3. **エフェクトテスト**
+4. **エフェクトテスト**
    - 衝突時にhitEffectが生成されることを確認
    - 消滅時にdestroyEffectが生成されることを確認
 
@@ -195,6 +213,9 @@ public class BouncingProjectile : MonoBehaviour, IStoppable, IProjectile
   - バウンド直後に最大到達高さから必要な初速度を逆算
   - y方向の速度が計算値を超えている場合は制限
 - **方向制御**: SetDirectionメソッドでの水平方向の反転対応
+- **壁反射**: FrontCollisionDetectorによる壁衝突検出とX軸方向反転
+  - RepeatMovingクラスと同様の実装パターンを採用
+  - FixedUpdateで壁衝突を監視し、リアルタイムに方向転換
 
 ### エフェクトシステム
 - **hitEffect**: 敵との衝突時に生成される衝突エフェクト
@@ -229,3 +250,9 @@ public class BouncingProjectile : MonoBehaviour, IStoppable, IProjectile
    - Target Tag Nameが正しく設定されているか確認
    - 敵にHealthコンポーネントがアタッチされているか確認
    - ダメージ用のCollider2DのIs Triggerが有効になっているか確認
+
+4. **壁反射が動作しない場合**
+   - FrontCollisionDetectorがBouncingProjectileコンポーネントに正しく設定されているか確認
+   - FrontCollisionDetectorの子オブジェクトのCollider2DのIs Triggerが有効になっているか確認
+   - FrontCollisionDetectorのTarget Tagsに「Ground」が設定されているか確認
+   - FrontCollisionDetectorのColliderが弾丸の前方に正しく配置されているか確認

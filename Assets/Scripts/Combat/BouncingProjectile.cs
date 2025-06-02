@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Attributes;
 using VLCNP.Core;
+using VLCNP.Movement;
 
 namespace VLCNP.Combat
 {
@@ -34,6 +35,9 @@ namespace VLCNP.Combat
 
         [SerializeField]
         float deleteTime = 10f;
+
+        [SerializeField]
+        private FrontCollisionDetector frontCollisionDetector = null;
 
         bool isLeft = false;
         public bool IsLeft
@@ -82,23 +86,7 @@ namespace VLCNP.Combat
         public void SetDirection(bool isLeft)
         {
             this.isLeft = isLeft;
-            if (isLeft)
-            {
-                // x方向のscaleを反転させる
-                transform.localScale = new Vector3(
-                    -Mathf.Abs(transform.localScale.x),
-                    transform.localScale.y,
-                    transform.localScale.z
-                );
-            }
-            else
-            {
-                transform.localScale = new Vector3(
-                    Mathf.Abs(transform.localScale.x),
-                    transform.localScale.y,
-                    transform.localScale.z
-                );
-            }
+            UpdateDirection();
 
             // 既にRigidbody2Dが存在する場合は速度を更新
             if (rb != null)
@@ -215,11 +203,39 @@ namespace VLCNP.Combat
             if (isStopped)
                 return;
 
+            // 壁に衝突した場合はX軸方向を反転
+            if (frontCollisionDetector != null && frontCollisionDetector.IsColliding)
+            {
+                isLeft = !isLeft;
+                UpdateDirection();
+            }
+
             // 水平速度を維持（重力による影響を受けないように）
             Vector2 velocity = rb.velocity;
             int directionX = isLeft ? -1 : 1;
             velocity.x = directionX * speed;
             rb.velocity = velocity;
+        }
+
+        private void UpdateDirection()
+        {
+            if (isLeft)
+            {
+                // x方向のscaleを反転させる
+                transform.localScale = new Vector3(
+                    -Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y,
+                    transform.localScale.z
+                );
+            }
+            else
+            {
+                transform.localScale = new Vector3(
+                    Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y,
+                    transform.localScale.z
+                );
+            }
         }
     }
 }
