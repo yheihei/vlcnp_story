@@ -32,7 +32,7 @@
 **SerializeFieldパラメータ**:
 - `float speed` - 初期速度（既存Projectileと同様）
 - `float gravityScale` - 重力倍率（デフォルト2.0）
-- `float maxBounceHeight` - 最大バウンド高さ（デフォルト1.0）
+- `float maxBounceHeight` - 最大バウンド高さ（デフォルト0.8）
 - `int maxBounceCount` - 最大バウンド回数（デフォルト18）
 - `GameObject hitEffect` - 衝突エフェクト
 - `GameObject destroyEffect` - 消滅エフェクト
@@ -45,7 +45,9 @@
 - 重力値：`-9.8 * gravityScale`
 - バウンド処理：`OnCollisionEnter2D`で地面との衝突を検出
 - Physics2Dマテリアルによる自動バウンド
-- バウンド後のy速度制限でコルーチンを使用
+- バウンド後の速度制限：物理公式（v² = u² + 2as）を使用
+  - 最大到達高さから必要な初速度を逆算
+  - コルーチンで1フレーム待機後に速度制限を適用
 
 **既存機能の継承**:
 - ダメージ処理（Health.TakeDamage）

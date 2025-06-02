@@ -51,7 +51,7 @@ Projectileシステムにおいて、既存のインターフェース設計を�
 **主な機能**:
 - **物理ベースの移動**: Rigidbody2Dを使用した重力とバウンド
 - **バウンド動作**: Physics2Dマテリアルを使用した物理ベースバウンド
-- **バウンド高さ制限**: 最大バウンド高さを制限して一定の跳ね高を維持
+- **バウンド高さ制限**: 物理公式に基づいた最大バウンド高さ制限
 - **設定可能なパラメータ**: 速度、重力、最大バウンド高さ、最大バウンド回数
 - **エフェクト対応**: 衝突エフェクトと消滅エフェクトの生成
 - **ダメージ処理**: 既存のProjectileと同様のダメージシステム
@@ -59,7 +59,7 @@ Projectileシステムにおいて、既存のインターフェース設計を�
 **設定可能パラメータ**:
 - `speed`: 初期速度（デフォルト30）
 - `gravityScale`: 重力倍率（デフォルト2.0）
-- `maxBounceHeight`: 最大バウンド高さ（デフォルト1.0）
+- `maxBounceHeight`: 最大バウンド高さ（デフォルト0.8）
 - `maxBounceCount`: 最大バウンド回数（デフォルト18）
 - `hitEffect`: 衝突時のエフェクトPrefab
 - `destroyEffect`: 消滅時のエフェクトPrefab
@@ -91,7 +91,7 @@ Projectileシステムにおいて、既存のインターフェース設計を�
 **基本パラメータ**:
 - `Speed`: 初期速度（30が推奨）
 - `Gravity Scale`: 重力倍率（2.0が推奨）
-- `Max Bounce Height`: 最大バウンド高さ（1.0が推奨）
+- `Max Bounce Height`: 最大バウンド高さ（0.8が推奨）
 - `Max Bounce Count`: 最大バウンド回数（18回が推奨）
 
 **エフェクト設定**:
@@ -149,8 +149,11 @@ public class BouncingProjectile : MonoBehaviour, IStoppable, IProjectile
     // 物理パラメータ
     [SerializeField] float speed = 30;
     [SerializeField] float gravityScale = 2.0f;
-    [SerializeField] float maxBounceHeight = 1.0f;
+    [SerializeField] float maxBounceHeight = 0.8f;
     [SerializeField] int maxBounceCount = 18;
+    
+    // IsStuckingプロパティ（IProjectileインターフェース実装）
+    public bool IsStucking => false;
     
     // バウンド処理
     private void OnCollisionEnter2D(Collision2D collision)
@@ -160,8 +163,24 @@ public class BouncingProjectile : MonoBehaviour, IStoppable, IProjectile
             if (bounceCount >= maxBounceCount)
                 ImpactAndDestroy();
             else
-                // Physics2Dマテリアルによるバウンド後、高さ制限
-                StartCoroutine(LimitBounceHeight());
+                // 物理公式に基づくバウンド高さ制限
+                StartCoroutine(LimitBounceHeightByVelocity());
+        }
+    }
+    
+    // バウンド高さを制限するコルーチン
+    private IEnumerator LimitBounceHeightByVelocity()
+    {
+        yield return new WaitForFixedUpdate();
+        
+        // v^2 = u^2 + 2as より最大速度を計算
+        float maxVelocityY = Mathf.Sqrt(2 * Physics2D.gravity.magnitude * gravityScale * maxBounceHeight);
+        
+        Vector2 velocity = rb.velocity;
+        if (velocity.y > maxVelocityY)
+        {
+            velocity.y = maxVelocityY;
+            rb.velocity = velocity;
         }
     }
 }
@@ -172,7 +191,9 @@ public class BouncingProjectile : MonoBehaviour, IStoppable, IProjectile
 ### 物理計算について
 - **重力**: Rigidbody2D.gravityScaleによる自然な重力効果
 - **バウンド**: Physics2Dマテリアルによる物理ベースバウンド
-- **高さ制限**: バウンド後のy速度を最大値に制限して一定の跳ね高を維持
+- **高さ制限**: 物理公式（v² = u² + 2as）を使用した正確なバウンド高さ制限
+  - バウンド直後に最大到達高さから必要な初速度を逆算
+  - y方向の速度が計算値を超えている場合は制限
 - **方向制御**: SetDirectionメソッドでの水平方向の反転対応
 
 ### エフェクトシステム
