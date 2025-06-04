@@ -56,8 +56,9 @@ namespace VLCNP.Combat.EnemyAction
         private IEnumerator Move(float _moveTimeout)
         {
             float elapsedTime = 0f;
-            // 向いてる方向で移動
-            float _speed = direction == Direction.Left ? -speed : speed;
+            // 向いてる方向で移動（速度修正を適用）
+            float modifiedSpeed = GetModifiedSpeed(speed);
+            float _speed = direction == Direction.Left ? -modifiedSpeed : modifiedSpeed;
             while (elapsedTime <= _moveTimeout)
             {
                 UpdateMoveSpeed(_speed);
@@ -68,7 +69,8 @@ namespace VLCNP.Combat.EnemyAction
                 if (gakeCollisionDetector != null && !gakeCollisionDetector.IsColliding)
                 {
                     SetDirection(direction == Direction.Left ? Direction.Right : Direction.Left);
-                    _speed *= -1;
+                    float newModifiedSpeed = GetModifiedSpeed(speed);
+                    _speed = direction == Direction.Left ? -newModifiedSpeed : newModifiedSpeed;
                     UpdateMoveSpeed(_speed);
                     yield return null;
                 }
@@ -76,7 +78,8 @@ namespace VLCNP.Combat.EnemyAction
                 if (frontCollisionDetector != null && frontCollisionDetector.IsColliding)
                 {
                     SetDirection(direction == Direction.Left ? Direction.Right : Direction.Left);
-                    _speed *= -1;
+                    float newModifiedSpeed = GetModifiedSpeed(speed);
+                    _speed = direction == Direction.Left ? -newModifiedSpeed : newModifiedSpeed;
                     UpdateMoveSpeed(_speed);
                     yield return null;
                 }
