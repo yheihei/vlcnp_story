@@ -113,7 +113,7 @@ namespace VLCNP.Combat
             transform.Translate(directionX * speed / 50, 0, 0);
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        protected virtual void OnTriggerEnter2D(Collider2D other)
         {
             // 地面に刺さっている場合は何もしない
             if (isStucking)
