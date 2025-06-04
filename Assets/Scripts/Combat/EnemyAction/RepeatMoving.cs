@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using UnityEngine;
 using VLCNP.Movement;
+using Core.Status;
 
 namespace VLCNP.Combat.EnemyAction
 {
     /**
      * 足場があるところを左右に繰り返し移動する
      */
-    public class RepeatMoving : EnemyAction
+    public class RepeatMoving : EnemyAction, ISpeedModifiable
     {
         [SerializeField]
         float speed = 4;
@@ -26,6 +27,7 @@ namespace VLCNP.Combat.EnemyAction
         Animator animator;
         float vx = 0;
         bool isGround = false;
+        private float speedModifier = 1f;
 
         public enum Direction
         {
@@ -56,8 +58,9 @@ namespace VLCNP.Combat.EnemyAction
         private IEnumerator Move(float _moveTimeout)
         {
             float elapsedTime = 0f;
-            // 向いてる方向で移動
-            float _speed = direction == Direction.Left ? -speed : speed;
+            // 向いてる方向で移動（速度修正を適用）
+            float currentSpeed = GetCurrentSpeed();
+            float _speed = direction == Direction.Left ? -currentSpeed : currentSpeed;
             while (elapsedTime <= _moveTimeout)
             {
                 UpdateMoveSpeed(_speed);
@@ -68,7 +71,8 @@ namespace VLCNP.Combat.EnemyAction
                 if (gakeCollisionDetector != null && !gakeCollisionDetector.IsColliding)
                 {
                     SetDirection(direction == Direction.Left ? Direction.Right : Direction.Left);
-                    _speed *= -1;
+                    float newCurrentSpeed = GetCurrentSpeed();
+                    _speed = direction == Direction.Left ? -newCurrentSpeed : newCurrentSpeed;
                     UpdateMoveSpeed(_speed);
                     yield return null;
                 }
@@ -76,7 +80,8 @@ namespace VLCNP.Combat.EnemyAction
                 if (frontCollisionDetector != null && frontCollisionDetector.IsColliding)
                 {
                     SetDirection(direction == Direction.Left ? Direction.Right : Direction.Left);
-                    _speed *= -1;
+                    float newCurrentSpeed = GetCurrentSpeed();
+                    _speed = direction == Direction.Left ? -newCurrentSpeed : newCurrentSpeed;
                     UpdateMoveSpeed(_speed);
                     yield return null;
                 }
@@ -132,5 +137,17 @@ namespace VLCNP.Combat.EnemyAction
                 );
             }
         }
+
+        #region ISpeedModifiable Implementation
+        public void SetSpeedModifier(float modifier)
+        {
+            speedModifier = modifier;
+        }
+
+        public float GetCurrentSpeed()
+        {
+            return speed * speedModifier;
+        }
+        #endregion
     }
 }
