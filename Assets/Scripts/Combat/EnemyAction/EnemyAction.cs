@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using Core.Status;
 
 namespace VLCNP.Combat.EnemyAction
 {
@@ -25,6 +26,22 @@ namespace VLCNP.Combat.EnemyAction
         public void Stop()
         {
             // 何もしない
+        }
+
+        /// <summary>
+        /// SpeedModifierを考慮した速度を取得する
+        /// SpeedModifierコンポーネントがアタッチされている場合は倍率を適用した速度を返す
+        /// </summary>
+        /// <param name="baseSpeed">基準速度</param>
+        /// <returns>修正後の速度</returns>
+        protected float GetModifiedSpeed(float baseSpeed)
+        {
+            SpeedModifier modifier = GetComponent<SpeedModifier>();
+            if (modifier != null)
+            {
+                return modifier.CalculateModifiedSpeed(baseSpeed);
+            }
+            return baseSpeed;
         }
     }
 }

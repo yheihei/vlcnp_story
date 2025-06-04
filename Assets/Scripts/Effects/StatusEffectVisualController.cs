@@ -56,8 +56,6 @@ namespace VLCNP.Effects
 
             GameObject effectInstance = Instantiate(effectPrefab, effectPosition, effectRotation, parent);
             activeEffects[effectType] = effectInstance;
-
-            Debug.Log($"StatusEffectVisualController: '{effectType}' のエフェクトを表示しました");
         }
 
         /// <summary>
@@ -79,7 +77,6 @@ namespace VLCNP.Effects
             }
 
             activeEffects.Remove(effectType);
-            Debug.Log($"StatusEffectVisualController: '{effectType}' のエフェクトを非表示にしました");
         }
 
         /// <summary>
@@ -96,7 +93,6 @@ namespace VLCNP.Effects
             }
 
             activeEffects.Clear();
-            Debug.Log("StatusEffectVisualController: すべての状態効果エフェクトを非表示にしました");
         }
 
         /// <summary>
@@ -127,36 +123,5 @@ namespace VLCNP.Effects
             // オブジェクト削除時にすべてのエフェクトを削除
             HideAllStatusEffects();
         }
-
-#if UNITY_EDITOR
-        [Header("エディタ用テスト機能")]
-        [SerializeField]
-        [Tooltip("テスト用：表示するエフェクトタイプ")]
-        private string testEffectType = "麻痺";
-
-        [ContextMenu("Test: Show Effect")]
-        private void TestShowEffect()
-        {
-            if (!string.IsNullOrEmpty(testEffectType))
-            {
-                ShowStatusEffect(testEffectType);
-            }
-        }
-
-        [ContextMenu("Test: Hide Effect")]
-        private void TestHideEffect()
-        {
-            if (!string.IsNullOrEmpty(testEffectType))
-            {
-                HideStatusEffect(testEffectType);
-            }
-        }
-
-        [ContextMenu("Test: Hide All Effects")]
-        private void TestHideAllEffects()
-        {
-            HideAllStatusEffects();
-        }
-#endif
     }
 }

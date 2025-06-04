@@ -15,13 +15,6 @@ Projectileが敵にヒットした際に様々な状態効果（麻痺、毒な�
   - `string EffectName { get; }`: 効果名を取得
   - `void ApplyEffect(GameObject target)`: ターゲットに効果を適用
 
-#### `ISpeedModifiable`
-- **場所**: `Assets/Scripts/Core/Status/ISpeedModifiable.cs`  
-- **役割**: 速度制御可能オブジェクトのインターフェース
-- **主要メソッド**:
-  - `void SetSpeedModifier(float modifier)`: 速度倍率を設定
-  - `float GetCurrentSpeed()`: 現在の実効速度を取得
-
 ### 2. 弾丸システム拡張
 
 #### `IProjectile`の拡張
@@ -46,15 +39,20 @@ Projectileが敵にヒットした際に様々な状態効果（麻痺、毒な�
 
 ### 4. 敵速度制御システム
 
-#### 対象EnemyActionクラスの拡張
-- **場所**: 
-  - `Assets/Scripts/Combat/EnemyAction/Moving.cs`
-  - `Assets/Scripts/Combat/EnemyAction/RepeatMoving.cs`
-- **変更点**: `ISpeedModifiable`インターフェースを実装
-- **機能**: 
-  - `speedModifier`フィールドを追加（デフォルト1.0）
-  - `GetCurrentSpeed()`で基準速度×倍率を計算
-  - 移動処理で実効速度を使用
+#### `SpeedModifier`
+- **場所**: `Assets/Scripts/Core/Status/SpeedModifier.cs`
+- **役割**: 速度倍率を管理する独立したコンポーネント
+- **主要メソッド**:
+  - `SetModifier(float modifier)`: 速度倍率を設定
+  - `ResetModifier()`: 速度倍率をリセット（1.0に戻す）
+  - `CalculateModifiedSpeed(float baseSpeed)`: 修正後の速度を計算
+- **特徴**: Unity Editorで直接設定可能
+
+#### `EnemyAction`基底クラスの拡張
+- **場所**: `Assets/Scripts/Combat/EnemyAction/EnemyAction.cs`
+- **追加メソッド**: `GetModifiedSpeed(float baseSpeed)`
+- **動作**: SpeedModifierコンポーネントを参照し、倍率適用後の速度を返す
+- **互換性**: SpeedModifierがない場合は基準速度をそのまま返す
 
 ### 5. 麻痺効果実装
 
@@ -119,12 +117,14 @@ Projectileが敵にヒットした際に様々な状態効果（麻痺、毒な�
 
 ### 3. 敵キャラクターへの設定
 
-#### 速度制御対応（Moving/RepeatMoving使用時）
-- 特別な設定は不要（ISpeedModifiable実装済み）
+#### 速度制御対応
+1. 敵プレファブに "Speed Modifier" コンポーネントを追加
+2. 通常時はCurrent Modifierが1.0のまま
+3. 状態効果適用時に自動的に倍率が変更される
 
 #### 状態管理（オプション）
 1. 敵プレファブに "Enemy Status Manager" コンポーネントを追加
-2. 実行時にInspectorで状態効果の一覧を確認可能
+2. 状態効果の重複チェックや統合管理が可能
 
 #### 視覚エフェクト（オプション）
 1. 敵プレファブに "Status Effect Visual Controller" コンポーネントを追加
@@ -152,9 +152,9 @@ Projectileが敵にヒットした際に様々な状態効果（麻痺、毒な�
 
 ### 新しい移動タイプへの対応
 
-1. EnemyActionクラスに`ISpeedModifiable`を実装
-2. `speedModifier`フィールドを追加
-3. 移動処理で`GetCurrentSpeed()`を使用
+1. 既存のEnemyActionクラスを継承して作成
+2. 移動処理で`GetModifiedSpeed(基準速度)`を使用
+3. SpeedModifierコンポーネントの有無に関わらず正常動作
 
 ## システムの利点
 
@@ -162,13 +162,18 @@ Projectileが敵にヒットした際に様々な状態効果（麻痺、毒な�
 2. **高い拡張性**: 新効果の追加が容易
 3. **既存互換性**: 既存システムへの影響なし
 4. **Unity Editor統合**: 直感的な設定・管理機能
-5. **デバッグ支援**: 詳細なログ出力と状態確認機能
-6. **重複防止**: 同じ効果の重複適用を自動防止
+5. **重複防止**: 同じ効果の重複適用を自動防止
 
 ## 注意事項
 
-1. SerializableInterfaceパッケージが必要
+1. SerializableInterfaceパッケージが必要（TNRDネームスペース）
 2. 状態効果アセットは事前作成が必要
-3. ISpeedModifiableを実装していない敵には速度系効果は適用されない
+3. **SpeedModifierコンポーネントが必須**（速度効果を使用する敵の場合）
 4. エフェクトプレファブの設定は任意（なくても動作）
 5. EnemyStatusManagerは任意コンポーネント（統合管理時のみ必要）
+
+## 移行ガイド（既存プロジェクト向け）
+
+1. 敵プレファブにSpeedModifierコンポーネントを追加
+2. 各EnemyActionクラスはすでに対応済み（GetModifiedSpeed使用）
+3. 新規作成するEnemyActionクラスも自動的に対応

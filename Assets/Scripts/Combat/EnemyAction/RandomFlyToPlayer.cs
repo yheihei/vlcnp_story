@@ -3,11 +3,10 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using VLCNP.Movement;
-using Core.Status;
 
 namespace VLCNP.Combat.EnemyAction
 {
-    public class RandomFlyToPlayer : EnemyAction, ISpeedModifiable
+    public class RandomFlyToPlayer : EnemyAction
     {
         [SerializeField]
         float speed = 6;
@@ -31,7 +30,6 @@ namespace VLCNP.Combat.EnemyAction
         Animator animator;
         float vx = 0;
         float vy = 0;
-        private float speedModifier = 1f;
 
         public enum Direction
         {
@@ -118,10 +116,10 @@ namespace VLCNP.Combat.EnemyAction
                     break;
                 }
                 // 指定の位置に向かって移動（速度修正を適用）
-                float currentSpeed = GetCurrentSpeed();
+                float modifiedSpeed = GetModifiedSpeed(speed);
                 UpdateMoveSpeed(
-                    position.x < transform.position.x ? -currentSpeed : currentSpeed,
-                    position.y < transform.position.y ? -currentSpeed : currentSpeed
+                    position.x < transform.position.x ? -modifiedSpeed : modifiedSpeed,
+                    position.y < transform.position.y ? -modifiedSpeed : modifiedSpeed
                 );
                 yield return null;
             }
@@ -162,17 +160,5 @@ namespace VLCNP.Combat.EnemyAction
                 );
             }
         }
-
-        #region ISpeedModifiable Implementation
-        public void SetSpeedModifier(float modifier)
-        {
-            speedModifier = modifier;
-        }
-
-        public float GetCurrentSpeed()
-        {
-            return speed * speedModifier;
-        }
-        #endregion
     }
 }

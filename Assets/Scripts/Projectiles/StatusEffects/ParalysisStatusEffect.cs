@@ -40,7 +40,6 @@ namespace Projectiles.StatusEffects
             EnemyStatusManager statusManager = target.GetComponent<EnemyStatusManager>();
             if (statusManager != null && statusManager.HasStatusEffect(EffectName))
             {
-                Debug.Log($"ParalysisStatusEffect: {target.name} は既に'{EffectName}'状態です。重複適用をスキップします");
                 return;
             }
 
@@ -48,15 +47,14 @@ namespace Projectiles.StatusEffects
             ParalysisStatusController existingController = target.GetComponent<ParalysisStatusController>();
             if (existingController != null && existingController.IsParalyzed)
             {
-                Debug.Log($"ParalysisStatusEffect: {target.name} は既に麻痺状態です。重複適用をスキップします");
                 return;
             }
 
-            // 速度制御可能なコンポーネントを取得
-            ISpeedModifiable[] speedModifiables = target.GetComponents<ISpeedModifiable>();
-            if (speedModifiables.Length == 0)
+            // SpeedModifierコンポーネントを取得
+            SpeedModifier speedModifier = target.GetComponent<SpeedModifier>();
+            if (speedModifier == null)
             {
-                Debug.LogWarning($"ParalysisStatusEffect: {target.name} にISpeedModifiableを実装したコンポーネントが見つかりません");
+                Debug.LogWarning($"ParalysisStatusEffect: {target.name} にSpeedModifierコンポーネントが見つかりません。麻痺効果を適用できません");
                 return;
             }
 
@@ -67,7 +65,7 @@ namespace Projectiles.StatusEffects
             }
 
             // 麻痺効果を適用
-            existingController.ApplyParalysis(speedModifiables, speedMultiplier, duration, effectPrefab, statusManager);
+            existingController.ApplyParalysis(speedModifier, speedMultiplier, duration, effectPrefab, statusManager);
         }
     }
 
@@ -77,7 +75,7 @@ namespace Projectiles.StatusEffects
     /// </summary>
     public class ParalysisStatusController : MonoBehaviour
     {
-        private ISpeedModifiable[] speedModifiables;
+        private SpeedModifier speedModifier;
         private Coroutine paralysisCoroutine;
         private GameObject currentEffect;
         
@@ -85,7 +83,7 @@ namespace Projectiles.StatusEffects
 
         private EnemyStatusManager statusManager;
 
-        public void ApplyParalysis(ISpeedModifiable[] speedModifiables, float speedMultiplier, float duration, GameObject effectPrefab, EnemyStatusManager statusManager = null)
+        public void ApplyParalysis(SpeedModifier speedModifier, float speedMultiplier, float duration, GameObject effectPrefab, EnemyStatusManager statusManager = null)
         {
             // 既に麻痺状態の場合は現在の効果を停止
             if (paralysisCoroutine != null)
@@ -94,7 +92,7 @@ namespace Projectiles.StatusEffects
                 RemoveParalysis();
             }
 
-            this.speedModifiables = speedModifiables;
+            this.speedModifier = speedModifier;
             this.statusManager = statusManager;
             paralysisCoroutine = StartCoroutine(ParalysisCoroutine(speedMultiplier, duration, effectPrefab));
         }
@@ -110,12 +108,11 @@ namespace Projectiles.StatusEffects
             }
 
             // 速度を減少
-            foreach (var modifiable in speedModifiables)
+            if (speedModifier != null)
             {
-                modifiable.SetSpeedModifier(speedMultiplier);
+                speedModifier.SetModifier(speedMultiplier);
             }
 
-            Debug.Log($"ParalysisStatusController: {gameObject.name} に麻痺効果を適用しました。倍率: {speedMultiplier}, 継続時間: {duration}秒");
 
             // 指定時間待機
             yield return new WaitForSeconds(duration);
@@ -129,12 +126,9 @@ namespace Projectiles.StatusEffects
             IsParalyzed = false;
 
             // 速度を元に戻す
-            if (speedModifiables != null)
+            if (speedModifier != null)
             {
-                foreach (var modifiable in speedModifiables)
-                {
-                    modifiable.SetSpeedModifier(1.0f);
-                }
+                speedModifier.ResetModifier();
             }
 
             // エフェクトを削除
@@ -144,7 +138,6 @@ namespace Projectiles.StatusEffects
                 currentEffect = null;
             }
 
-            Debug.Log($"ParalysisStatusController: {gameObject.name} の麻痺効果が解除されました");
 
             // EnemyStatusManagerに除去を通知
             if (statusManager != null)

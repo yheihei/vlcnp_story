@@ -2,11 +2,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 using VLCNP.Movement;
-using Core.Status;
 
 namespace VLCNP.Combat.EnemyAction
 {
-    public class Moving : EnemyAction, ISpeedModifiable
+    public class Moving : EnemyAction
     {
         [SerializeField] float speed = 4;
         [SerializeField] float moveX = 0;
@@ -18,7 +17,6 @@ namespace VLCNP.Combat.EnemyAction
         Rigidbody2D rbody;
         Animator animator;
         float vx = 0;
-        private float speedModifier = 1f;
 
         public enum Direction
         {
@@ -86,8 +84,8 @@ namespace VLCNP.Combat.EnemyAction
                     break;
                 }
                 // 指定の位置に向かって移動（速度修正を適用）
-                float currentSpeed = GetCurrentSpeed();
-                UpdateMoveSpeed(position.x < transform.position.x ? -currentSpeed : currentSpeed);
+                float modifiedSpeed = GetModifiedSpeed(speed);
+                UpdateMoveSpeed(position.x < transform.position.x ? -modifiedSpeed : modifiedSpeed);
                 yield return null;
             }
             UpdateMoveSpeed(0);
@@ -118,17 +116,5 @@ namespace VLCNP.Combat.EnemyAction
                 transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
         }
-
-        #region ISpeedModifiable Implementation
-        public void SetSpeedModifier(float modifier)
-        {
-            speedModifier = modifier;
-        }
-
-        public float GetCurrentSpeed()
-        {
-            return speed * speedModifier;
-        }
-        #endregion
     }
 }
