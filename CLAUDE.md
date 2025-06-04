@@ -26,6 +26,8 @@
   - 例: `feature_#531_claude_add_orochi_anime`
 - その後、PRD の各項目を Planに落とし込む
   - Planは `Assets/DocsForAI/Plan/${タスクの概要}.md` に保存
+- Planが終わったら、ユーザーに確認するために停止する
+- ユーザーが`OK`という文言をうったらImpに進む
 - Impする
   - Imp時に触って良いファイルは`Assets/Scripts/`配下のみ
 - Impが終わったら
