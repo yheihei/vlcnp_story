@@ -10,11 +10,7 @@ namespace VLCNP.Core
     public class AuraController : MonoBehaviour
     {
         private FlagManager flagManager;
-        private BaseStats baseStats;
-        private ChangeSpriteAnimationOnLevelUp spriteChanger;
         private ParticleSystem auraParticleSystem;
-
-        private bool isAuraActiveByLevel = false;
 
         private void Awake()
         {
@@ -23,8 +19,13 @@ namespace VLCNP.Core
             {
                 flagManager = flagManagerObject.GetComponent<FlagManager>();
             }
-            baseStats = GetComponent<BaseStats>();
-            spriteChanger = GetComponent<ChangeSpriteAnimationOnLevelUp>();
+
+            // 自分自身からParticleSystemを取得
+            auraParticleSystem = GetComponent<ParticleSystem>();
+            if (auraParticleSystem == null)
+            {
+                auraParticleSystem = GetComponentInChildren<ParticleSystem>();
+            }
         }
 
         private void OnEnable()
@@ -33,11 +34,6 @@ namespace VLCNP.Core
             {
                 flagManager.OnChangeFlag += OnFlagChanged;
             }
-
-            if (baseStats != null)
-            {
-                baseStats.OnChangeLevel += OnLevelChanged;
-            }
         }
 
         private void OnDisable()
@@ -45,11 +41,6 @@ namespace VLCNP.Core
             if (flagManager != null)
             {
                 flagManager.OnChangeFlag -= OnFlagChanged;
-            }
-
-            if (baseStats != null)
-            {
-                baseStats.OnChangeLevel -= OnLevelChanged;
             }
         }
 
@@ -67,39 +58,9 @@ namespace VLCNP.Core
             }
         }
 
-        private void OnLevelChanged(int newLevel)
-        {
-            // レベル3の場合のみオーラが有効
-            isAuraActiveByLevel = (newLevel >= 3);
-
-            // パーティクルシステムの参照を更新
-            UpdateParticleSystemReference();
-
-            UpdateAuraState();
-        }
-
-        private void UpdateParticleSystemReference()
-        {
-            // オーラオブジェクトからパーティクルシステムを取得
-            Transform leg = transform.Find("Leg");
-            if (leg != null)
-            {
-                // オーラエフェクトを子オブジェクトから検索
-                foreach (Transform child in leg)
-                {
-                    ParticleSystem ps = child.GetComponent<ParticleSystem>();
-                    if (ps != null)
-                    {
-                        auraParticleSystem = ps;
-                        break;
-                    }
-                }
-            }
-        }
-
         private void UpdateAuraState()
         {
-            if (!isAuraActiveByLevel || auraParticleSystem == null)
+            if (auraParticleSystem == null)
             {
                 return;
             }
@@ -129,7 +90,6 @@ namespace VLCNP.Core
         /// </summary>
         public void ForceUpdateAuraState()
         {
-            UpdateParticleSystemReference();
             UpdateAuraState();
         }
     }
