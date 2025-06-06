@@ -13,9 +13,9 @@ namespace VLCNP.Core
         private BaseStats baseStats;
         private ChangeSpriteAnimationOnLevelUp spriteChanger;
         private ParticleSystem auraParticleSystem;
-        
+
         private bool isAuraActiveByLevel = false;
-        
+
         private void Awake()
         {
             GameObject flagManagerObject = GameObject.FindWithTag("FlagManager");
@@ -26,58 +26,58 @@ namespace VLCNP.Core
             baseStats = GetComponent<BaseStats>();
             spriteChanger = GetComponent<ChangeSpriteAnimationOnLevelUp>();
         }
-        
+
         private void OnEnable()
         {
             if (flagManager != null)
             {
                 flagManager.OnChangeFlag += OnFlagChanged;
             }
-            
+
             if (baseStats != null)
             {
                 baseStats.OnChangeLevel += OnLevelChanged;
             }
         }
-        
+
         private void OnDisable()
         {
             if (flagManager != null)
             {
                 flagManager.OnChangeFlag -= OnFlagChanged;
             }
-            
+
             if (baseStats != null)
             {
                 baseStats.OnChangeLevel -= OnLevelChanged;
             }
         }
-        
+
         private void Start()
         {
             // 初期状態を設定
             UpdateAuraState();
         }
-        
-        private void OnFlagChanged(Flag flag)
+
+        private void OnFlagChanged(Flag flag, bool value)
         {
             if (flag == Flag.NoEnemies)
             {
                 UpdateAuraState();
             }
         }
-        
+
         private void OnLevelChanged(int newLevel)
         {
             // レベル3の場合のみオーラが有効
             isAuraActiveByLevel = (newLevel >= 3);
-            
+
             // パーティクルシステムの参照を更新
             UpdateParticleSystemReference();
-            
+
             UpdateAuraState();
         }
-        
+
         private void UpdateParticleSystemReference()
         {
             // オーラオブジェクトからパーティクルシステムを取得
@@ -96,16 +96,16 @@ namespace VLCNP.Core
                 }
             }
         }
-        
+
         private void UpdateAuraState()
         {
             if (!isAuraActiveByLevel || auraParticleSystem == null)
             {
                 return;
             }
-            
+
             bool noEnemiesFlag = flagManager != null && flagManager.GetFlag(Flag.NoEnemies);
-            
+
             if (noEnemiesFlag)
             {
                 // 敵がいない場合はパーティクルシステムを停止
@@ -123,7 +123,7 @@ namespace VLCNP.Core
                 }
             }
         }
-        
+
         /// <summary>
         /// 外部からオーラの状態を強制更新する場合に使用
         /// </summary>
