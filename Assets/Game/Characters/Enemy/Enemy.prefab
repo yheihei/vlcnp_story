@@ -215,6 +215,9 @@ MonoBehaviour:
   touchCollider: {fileID: 7888146297067582467}
   attackTargetTagNames:
   - Player
+  OnAttackSuccess:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &7609002768349338833
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -619,6 +622,21 @@ MonoBehaviour:
   frontCollisionDetector: {fileID: 7056235407816223915}
   gakeCollisionDetector: {fileID: 5230588063922204164}
   moveTimeout: 4
+--- !u!114 &74265363342354780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7478345028051563179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98b57fceae76b4c3daba330a0b8c5c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentModifier: 1
+  isModified: 0
+  testModifier: 0.5
 --- !u!114 &8284897732275466759 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1972934130586545878, guid: f918822e12774495a9b170fcadc702ac, type: 3}

@@ -275,6 +275,9 @@ namespace VLCNP.Control
             // LeeleeであればJoinedLeeleeフラグが立っていれば仲間
             if (name == "Leelee")
                 return flagManager.GetFlag(Flag.JoinedLeelee);
+            // OrochiであればVLOrochiJoinedフラグが立っていれば仲間
+            if (name == "Orochi")
+                return flagManager.GetFlag(Flag.VLOrochiJoined);
             // それ以外は仲間でない
             return false;
         }

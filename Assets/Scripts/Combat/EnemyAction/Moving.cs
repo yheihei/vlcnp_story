@@ -83,8 +83,9 @@ namespace VLCNP.Combat.EnemyAction
                 {
                     break;
                 }
-                // 指定の位置に向かって移動
-                UpdateMoveSpeed(position.x < transform.position.x ? -speed : speed);
+                // 指定の位置に向かって移動（速度修正を適用）
+                float modifiedSpeed = GetModifiedSpeed(speed);
+                UpdateMoveSpeed(position.x < transform.position.x ? -modifiedSpeed : modifiedSpeed);
                 yield return null;
             }
             UpdateMoveSpeed(0);

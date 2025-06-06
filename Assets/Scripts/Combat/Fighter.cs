@@ -32,6 +32,7 @@ namespace VLCNP.Combat
 
         WeaponConfig currentWeaponConfig;
         BaseStats baseStats;
+        IAttackAnimationController attackAnimationController;
         public Vector3 positionWhenHorizontal = new(-0.903f, -0.365f, 0f);
         public Vector3 positionWhenUp = new(-0.7f, 0.1f, 0f);
         public Vector3 positionWhenDown = new(-0.7f, -0.515f, 0f);
@@ -40,6 +41,7 @@ namespace VLCNP.Combat
         {
             EquipWeapon(defaultWeaponConfig);
             baseStats = GetComponent<BaseStats>();
+            attackAnimationController = GetComponent<IAttackAnimationController>();
         }
 
         public void WeaponUp()
@@ -82,6 +84,7 @@ namespace VLCNP.Combat
         public void Attack()
         {
             int level = baseStats ? baseStats.GetLevel() : 1;
+            attackAnimationController?.TriggerAttackAnimation();
             if (!currentWeaponConfig.HasProjectile())
                 return;
             currentWeaponConfig.LaunchProjectile(handTransform, level, GetIsLeft());

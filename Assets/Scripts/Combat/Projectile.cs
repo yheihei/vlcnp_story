@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using VLCNP.Attributes;
 using VLCNP.Core;
 
 namespace VLCNP.Combat
 {
-    public class Projectile : MonoBehaviour, IStoppable
+    public class Projectile : MonoBehaviour, IStoppable, IProjectile
     {
         [SerializeField]
         float speed = 30;
@@ -57,6 +58,10 @@ namespace VLCNP.Combat
 
         [SerializeField]
         bool isFadeOut = false;
+        
+        [SerializeField]
+        private UnityEvent<GameObject> onTargetHit = new UnityEvent<GameObject>();
+        public UnityEvent<GameObject> OnTargetHit => onTargetHit;
 
         private void Start()
         {
@@ -138,7 +143,11 @@ namespace VLCNP.Combat
                 penetratedObjects.Add(other.gameObject);
                 Health health = other.gameObject.GetComponent<Health>();
                 if (health != null)
+                {
                     health.TakeDamage(damage, isLeft);
+                    // ダメージを与えた後にイベントを発火
+                    onTargetHit?.Invoke(other.gameObject);
+                }
                 if (!IsPenetration)
                     ImpactAndDestroy();
             }

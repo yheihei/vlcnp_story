@@ -34,6 +34,10 @@ namespace VLCNP.Combat.EnemyAction
         }
 
         Direction direction = Direction.Left;
+        
+        // 連続反転を防ぐためのフラグ
+        private bool hasReversedForGake = false;
+        private bool hasReversedForWall = false;
 
         private void Awake()
         {
@@ -56,30 +60,47 @@ namespace VLCNP.Combat.EnemyAction
         private IEnumerator Move(float _moveTimeout)
         {
             float elapsedTime = 0f;
-            // 向いてる方向で移動
-            float _speed = direction == Direction.Left ? -speed : speed;
+            // 向いてる方向で移動（速度修正を適用）
+            float modifiedSpeed = GetModifiedSpeed(speed);
+            float _speed = direction == Direction.Left ? -modifiedSpeed : modifiedSpeed;
             while (elapsedTime <= _moveTimeout)
             {
                 UpdateMoveSpeed(_speed);
                 // 経過時間加算
                 elapsedTime += Time.deltaTime;
 
-                // ガケに来たら方向転換
-                if (gakeCollisionDetector != null && !gakeCollisionDetector.IsColliding)
+                // ガケに来たら方向転換（連続反転を防ぐ）
+                if (gakeCollisionDetector != null && !gakeCollisionDetector.IsColliding && !hasReversedForGake)
                 {
                     SetDirection(direction == Direction.Left ? Direction.Right : Direction.Left);
-                    _speed *= -1;
+                    float newModifiedSpeed = GetModifiedSpeed(speed);
+                    _speed = direction == Direction.Left ? -newModifiedSpeed : newModifiedSpeed;
                     UpdateMoveSpeed(_speed);
+                    hasReversedForGake = true;
                     yield return null;
                 }
-                // 前方で壁にぶつかったら方向転換
-                if (frontCollisionDetector != null && frontCollisionDetector.IsColliding)
+                else if (gakeCollisionDetector != null && gakeCollisionDetector.IsColliding)
+                {
+                    // ガケから離れたらフラグをリセット
+                    hasReversedForGake = false;
+                }
+                
+                // 前方で壁にぶつかったら方向転換（連続反転を防ぐ）
+                if (frontCollisionDetector != null && frontCollisionDetector.IsColliding && !hasReversedForWall)
                 {
                     SetDirection(direction == Direction.Left ? Direction.Right : Direction.Left);
-                    _speed *= -1;
+                    float newModifiedSpeed = GetModifiedSpeed(speed);
+                    _speed = direction == Direction.Left ? -newModifiedSpeed : newModifiedSpeed;
                     UpdateMoveSpeed(_speed);
+                    hasReversedForWall = true;
                     yield return null;
                 }
+                else if (frontCollisionDetector != null && !frontCollisionDetector.IsColliding)
+                {
+                    // 壁から離れたらフラグをリセット
+                    hasReversedForWall = false;
+                }
+                
                 yield return null;
             }
             UpdateMoveSpeed(0);

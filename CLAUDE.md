@@ -22,9 +22,15 @@
 ## 基本作業方針
 
 - PRDを受け取ったら、PRDを確認し、不明点がないか確認する
+- ブランチは `feature/#<issue番号>_claude_<作業概要>` という命名規則で作る
+  - 例: `feature_#531_claude_add_orochi_anime`
 - その後、PRD の各項目を Planに落とし込む
   - Planは `Assets/DocsForAI/Plan/${タスクの概要}.md` に保存
 - Impする
+  - Imp時に触って良いファイルは`Assets/Scripts/`配下のみ
 - Impが終わったら
   - `Assets/DocsForAI/Design`配下に設計書をmdファイルで出力して保存する
+    - 設計書の内容
+      - 簡単なコンポーネントの役割と変更箇所
+      - Unity Editor上での操作マニュアル
 - プルリクエストのマージはユーザーが行う
