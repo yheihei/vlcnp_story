@@ -5,11 +5,20 @@ namespace VLCNP.Combat.EnemyAction
 {
     public class JumpSwordThrow : EnemyAction
     {
-        [SerializeField] WeaponConfig weaponConfig = null;
-        [SerializeField] Transform handTransform = null;
-        [SerializeField] float animationOffsetWaitTime = 0.417f;
-        [SerializeField] private float jumpPowerX = 100;
-        [SerializeField] private float jumpPowerY = 200;
+        [SerializeField]
+        WeaponConfig weaponConfig = null;
+
+        [SerializeField]
+        Transform handTransform = null;
+
+        [SerializeField]
+        float animationOffsetWaitTime = 0.417f;
+
+        [SerializeField]
+        private float jumpPowerX = 100;
+
+        [SerializeField]
+        private float jumpPowerY = 200;
 
         private Animator animator;
         private Rigidbody2D rBody;
@@ -18,7 +27,7 @@ namespace VLCNP.Combat.EnemyAction
         public enum Direction
         {
             Left,
-            Right
+            Right,
         }
 
         Direction direction = Direction.Left;
@@ -34,16 +43,23 @@ namespace VLCNP.Combat.EnemyAction
             if (handTransform == null)
                 Debug.LogError("HandTransform is not set in the inspector for JumpSwordThrow");
             if (animator == null)
-                Debug.LogError("Animator component is missing on the GameObject with JumpSwordThrow");
+                Debug.LogError(
+                    "Animator component is missing on the GameObject with JumpSwordThrow"
+                );
             if (rBody == null)
-                Debug.LogError("Rigidbody2D component is missing on the GameObject with JumpSwordThrow");
+                Debug.LogError(
+                    "Rigidbody2D component is missing on the GameObject with JumpSwordThrow"
+                );
             if (damageStun == null)
-                Debug.LogError("DamageStun component is missing on the GameObject with JumpSwordThrow");
+                Debug.LogError(
+                    "DamageStun component is missing on the GameObject with JumpSwordThrow"
+                );
         }
 
         public override void Execute()
         {
-            if (IsExecuting || IsDone) return;
+            if (IsExecuting || IsDone)
+                return;
             IsExecuting = true;
             StartCoroutine(Throw());
         }
@@ -56,20 +72,25 @@ namespace VLCNP.Combat.EnemyAction
                 yield break;
             }
 
-            if (damageStun != null) damageStun.InvalidStan();
+            if (damageStun != null)
+                damageStun.InvalidStan();
 
             SetDirectionToPlayer();
 
+            // 1s preJump animation
+            animator?.SetBool("isPreJump", true);
+            yield return new WaitForSeconds(0.8f);
+            animator?.SetBool("isPreJump", false);
+            yield return new WaitForSeconds(0.2f);
+
             if (rBody != null)
             {
-                float _jumpPowerX = this.direction == Direction.Left ? (-1) * jumpPowerX : jumpPowerX;
+                float _jumpPowerX =
+                    this.direction == Direction.Left ? (-1) * jumpPowerX : jumpPowerX;
                 rBody.AddForce(new Vector2(_jumpPowerX, jumpPowerY), ForceMode2D.Impulse);
             }
 
-            if (animator != null)
-            {
-                animator.SetTrigger("throw");
-            }
+            animator?.SetTrigger("throw");
 
             yield return new WaitForSeconds(animationOffsetWaitTime);
 
@@ -95,12 +116,14 @@ namespace VLCNP.Combat.EnemyAction
 
             handTransform.rotation = Quaternion.identity;
             IsDone = true;
-            if (damageStun != null) damageStun.ValidStan();
+            if (damageStun != null)
+                damageStun.ValidStan();
         }
 
         private void LaunchProjectiles(bool isLeft)
         {
-            if (weaponConfig == null || handTransform == null) return;
+            if (weaponConfig == null || handTransform == null)
+                return;
 
             weaponConfig.LaunchProjectile(handTransform, 1, isLeft);
             handTransform.Rotate(0, 0, 20);
@@ -112,19 +135,26 @@ namespace VLCNP.Combat.EnemyAction
         private void SetDirectionToPlayer()
         {
             GameObject player = GameObject.FindWithTag("Player");
-            if (player == null) return;
-            SetDirection(player.transform.position.x < transform.position.x ? Direction.Left : Direction.Right);
+            if (player == null)
+                return;
+            SetDirection(
+                player.transform.position.x < transform.position.x
+                    ? Direction.Left
+                    : Direction.Right
+            );
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (animator == null || other.tag != "Ground") return;
+            if (animator == null || other.tag != "Ground")
+                return;
             animator.SetBool("isGround", true);
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (animator == null || other.tag != "Ground") return;
+            if (animator == null || other.tag != "Ground")
+                return;
             animator.SetBool("isGround", false);
         }
 
@@ -137,7 +167,11 @@ namespace VLCNP.Combat.EnemyAction
         private void UpdateCharacterDirection()
         {
             float scaleX = Mathf.Abs(transform.localScale.x);
-            transform.localScale = new Vector3(direction == Direction.Left ? scaleX : -scaleX, transform.localScale.y, transform.localScale.z);
+            transform.localScale = new Vector3(
+                direction == Direction.Left ? scaleX : -scaleX,
+                transform.localScale.y,
+                transform.localScale.z
+            );
         }
-    }    
+    }
 }
