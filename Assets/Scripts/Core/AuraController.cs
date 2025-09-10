@@ -33,6 +33,8 @@ namespace VLCNP.Core
             if (flagManager != null)
             {
                 flagManager.OnChangeFlag += OnFlagChanged;
+                // キャラ切り替え後の復帰時にチェック
+                UpdateAuraState();
             }
         }
 
