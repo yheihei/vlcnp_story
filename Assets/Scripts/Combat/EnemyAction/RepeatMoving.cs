@@ -38,6 +38,7 @@ namespace VLCNP.Combat.EnemyAction
         // 連続反転を防ぐためのフラグ
         private bool hasReversedForGake = false;
         private bool hasReversedForWall = false;
+        private bool hasReversedForPlayer = false;
 
         private void Awake()
         {
@@ -114,11 +115,29 @@ namespace VLCNP.Combat.EnemyAction
             isGround = true;
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (!collision.gameObject.CompareTag("Player"))
+                return;
+            if (hasReversedForPlayer)
+                return;
+                
+            // プレイヤーに当たったら方向転換
+            SetDirection(direction == Direction.Left ? Direction.Right : Direction.Left);
+            hasReversedForPlayer = true;
+        }
+
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (!collision.gameObject.CompareTag("Ground"))
-                return;
-            isGround = false;
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                isGround = false;
+            }
+            else if (collision.gameObject.CompareTag("Player"))
+            {
+                // プレイヤーから離れたらフラグをリセット
+                hasReversedForPlayer = false;
+            }
         }
 
         private void UpdateMoveSpeed(float _vx)
