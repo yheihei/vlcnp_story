@@ -4,6 +4,7 @@ using VLCNP.Actions;
 using VLCNP.Attributes;
 using VLCNP.Combat;
 using VLCNP.Core;
+using VLCNP.Input;
 using VLCNP.Movement;
 using VLCNP.Saving;
 using VLCNP.Stats;
@@ -23,7 +24,6 @@ namespace VLCNP.Control
             set => isStopped = value;
         }
 
-        public string attackButton = "x";
 
         [SerializeField]
         Leg leg;
@@ -75,11 +75,11 @@ namespace VLCNP.Control
 
         private void AttackBehaviour()
         {
-            if (Input.GetKey("up"))
+            if (InputManager.Instance.IsMovingUp())
             {
                 fighter.WeaponUp();
             }
-            else if (Input.GetKey("down"))
+            else if (InputManager.Instance.IsMovingDown())
             {
                 fighter.WeaponDown();
             }
@@ -87,7 +87,7 @@ namespace VLCNP.Control
             {
                 fighter.WeaponHorizontal();
             }
-            if (Input.GetKeyDown(attackButton))
+            if (InputManager.Instance.IsAttackPressed())
             {
                 fighter.Attack();
             }
@@ -103,7 +103,7 @@ namespace VLCNP.Control
 
         private bool canInteractAction()
         {
-            return Input.GetKeyDown("up")
+            return InputManager.Instance.IsInteractPressed()
                 && collisionAction != null
                 && collisionAction.IsAction
                 && leg.IsGround;

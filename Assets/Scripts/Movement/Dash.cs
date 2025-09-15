@@ -61,7 +61,7 @@ namespace VLCNP.Movement
 
         private void HandleInput()
         {
-            if (Input.GetKeyDown(KeyCode.X) && !isDashing && leg.IsGround)
+            if (UnityEngine.Input.GetKeyDown(KeyCode.X) && !isDashing && leg.IsGround)
             {
                 StartDash();
             }
