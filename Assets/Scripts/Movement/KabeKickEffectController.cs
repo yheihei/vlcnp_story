@@ -1,5 +1,6 @@
 using UnityEngine;
 using VLCNP.Core;
+using VLCNP.Input;
 
 namespace VLCNP.Movement
 {
@@ -118,7 +119,7 @@ namespace VLCNP.Movement
         void Update()
         {
             // ジャンプの開始判定
-            if (IsKabekick() && Input.GetKeyDown("space") && playerRigidbody2D.velocity.y < -0.1)
+            if (IsKabekick() && InputManager.Instance.IsJumpPressed() && playerRigidbody2D.velocity.y < -0.1)
             {
                 isJumping = true;
                 PlayJumpSound();

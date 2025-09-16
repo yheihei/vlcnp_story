@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Core;
+using VLCNP.Input;
 
 namespace VLCNP.Movement
 {
@@ -46,7 +47,6 @@ namespace VLCNP.Movement
             get => isStopped;
             set => isStopped = value;
         }
-        public string jumpButton = "space";
         float defaultJumpPower = 0;
         float waterJumpPower = 0;
         bool isInWater = false;
@@ -69,7 +69,7 @@ namespace VLCNP.Movement
                 return;
             }
             // ジャンプの開始判定
-            if (CanJump() && Input.GetKeyDown(jumpButton))
+            if (CanJump() && InputManager.Instance.IsJumpPressed())
             {
                 isJumping = true;
                 PlayJumpSound();
@@ -77,11 +77,11 @@ namespace VLCNP.Movement
             // ジャンプ中の処理
             if (isJumping)
             {
-                if (Input.GetKeyUp(jumpButton) || jumpTime >= maxJumpTime)
+                if (InputManager.Instance.IsJumpReleased() || jumpTime >= maxJumpTime)
                 {
                     EndJump();
                 }
-                else if (Input.GetKey(jumpButton))
+                else if (InputManager.Instance.IsJumpHeld())
                 {
                     jumpTime += Time.deltaTime;
                 }

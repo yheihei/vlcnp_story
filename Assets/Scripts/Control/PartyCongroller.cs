@@ -5,6 +5,7 @@ using UnityEngine;
 using VLCNP.Attributes;
 using VLCNP.Combat;
 using VLCNP.Core;
+using VLCNP.Input;
 using VLCNP.Movement;
 using VLCNP.Saving;
 using VLCNP.Stats;
@@ -55,8 +56,6 @@ namespace VLCNP.Control
 
         public event Action<GameObject> OnChangeCharacter;
 
-        KeyCode swithCharacterButton = KeyCode.Z;
-
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
@@ -94,7 +93,7 @@ namespace VLCNP.Control
             // 現在のキャラが死んでいれば受け付けない
             if (currentPlayer.GetComponent<Health>().IsDead)
                 return;
-            if (Input.GetKeyDown(swithCharacterButton))
+            if (InputManager.Instance.IsSwitchCharacterPressed())
             {
                 if (SwitchNextPlayer())
                     playChangeSe();
