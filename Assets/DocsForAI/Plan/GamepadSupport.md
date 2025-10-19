@@ -23,7 +23,8 @@
    - `Control/PlayerController`
    - `Movement/Jump`, `Movement/KabeKickEffectController`, `Movement/Dash`
    - `Control/PartyCongroller`
-   - `UI/GameSelect`
+- `UI/GameSelect`
+- Fungus メニュー向けのブリッジレイヤー追加（ゲームパッドでの選択／決定対応）
 4. 影響範囲テスト：  
    - エディタ再生でゲームパッド/キーボード双方の主要操作確認  
    - UI GameSelect シーンでメニュー移動と決定を確認

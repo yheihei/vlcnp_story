@@ -7,6 +7,7 @@
 
 ## コンポーネントごとの役割と変更点
 - `Control/PlayerInputAdapter`：操作別のラッパーメソッドを提供。移動・武器上下・攻撃・ジャンプ・キャラ切替・ダッシュ・UI メニュー操作をカバー。左スティックのデッドゾーンを 0.3 に設定。
+- `Control/FungusMenuInputBridge`：Fungus の `MenuDialog` に対してゲームパッドの上下移動・決定入力（B/○）をブリッジ。
 - `Movement/Mover`：横移動量を `GetMoveHorizontal()` の戻り値で計算し、アナログ値に応じた速度へ拡張。
 - `Control/PlayerController`：武器方向と攻撃入力をラッパーに委譲し、ゲームパッドのボタン（Y）・スティック上下をサポート。インタラクトはボタン South（A/×）。
 - `Movement/Jump` と `Movement/KabeKickEffectController`：ジャンプの押下／ホールド／リリースを共通化し、B/○ または Space で挙動統一。
