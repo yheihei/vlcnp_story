@@ -1,6 +1,7 @@
 using System.Collections;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using VLCNP.Control;
 using VLCNP.Combat;
 using VLCNP.Saving;
 
@@ -50,14 +51,14 @@ namespace VLCNP.Movement
             // Stun状態の場合は移動不可
             if (isStunned())
                 return;
-            if (Input.GetKey("right"))
+            float horizontal = PlayerInputAdapter.GetMoveHorizontal();
+            vx = GetSpeed() * horizontal;
+            if (horizontal > 0.01f)
             {
-                vx = GetSpeed();
                 isLeft = false;
             }
-            if (Input.GetKey("left"))
+            else if (horizontal < -0.01f)
             {
-                vx = -GetSpeed();
                 isLeft = true;
             }
             UpdateAnimator();

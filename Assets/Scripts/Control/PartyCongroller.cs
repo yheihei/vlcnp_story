@@ -94,7 +94,7 @@ namespace VLCNP.Control
             // 現在のキャラが死んでいれば受け付けない
             if (currentPlayer.GetComponent<Health>().IsDead)
                 return;
-            if (Input.GetKeyDown(swithCharacterButton))
+            if (PlayerInputAdapter.WasCharacterSwitchPressed(swithCharacterButton))
             {
                 if (SwitchNextPlayer())
                     playChangeSe();

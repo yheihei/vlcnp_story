@@ -1,4 +1,5 @@
 using UnityEngine;
+using VLCNP.Control;
 
 namespace VLCNP.Movement
 {
@@ -61,7 +62,7 @@ namespace VLCNP.Movement
 
         private void HandleInput()
         {
-            if (Input.GetKeyDown(KeyCode.X) && !isDashing && leg.IsGround)
+            if (PlayerInputAdapter.WasDashPressed() && !isDashing && leg.IsGround)
             {
                 StartDash();
             }

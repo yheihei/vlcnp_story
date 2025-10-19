@@ -1,4 +1,5 @@
 using UnityEngine;
+using VLCNP.Control;
 using VLCNP.SceneManagement;
 
 namespace VLCNP.UI
@@ -31,15 +32,15 @@ namespace VLCNP.UI
         public void Update()
         {
             if (!canSelect) return;
-            if (Input.GetKeyDown("down"))
+            if (PlayerInputAdapter.WasMenuDownPressed())
             {
                 ChangeSelect(Select.Load);
             }
-            else if (Input.GetKeyDown("up"))
+            else if (PlayerInputAdapter.WasMenuUpPressed())
             {
                 ChangeSelect(Select.Start);
             }
-            else if (Input.GetKeyDown("return") || Input.GetKeyDown("space"))
+            else if (PlayerInputAdapter.WasMenuSubmitPressed())
             {
                 SelectGameMode();
             }
