@@ -1,39 +1,28 @@
 # コードスタイルと規約
 
 ## 名前空間規約
-- メインの名前空間: `VLCNP.*`
-  - UI: `VLCNP.UI`
-  - 戦闘: `VLCNP.Combat`
-  - 移動: `VLCNP.Movement`
-  - コントロール: `VLCNP.Control`
-  - 属性: `VLCNP.Attributes`
-  - アクション: `VLCNP.Actions`
-  - エフェクト: `VLCNP.Effects`
-  - ムービー: `VLCNP.Movie`
-  - コア: `VLCNP.Core`
-  - デバッグ: `VLCNP.DebugSctipt`
-  - その他: `VLCNP.Stats`, `VLCNP.Pickups`, `VLCNP.Projectiles`, `VLCNP.Saving`, `VLCNP.SceneManagement`
-- その他の名前空間:
-  - `Core.Status` - ステータス管理
-  - `Projectiles.StatusEffects` - 投射物の状態効果
-  - `CLCNP.Core` - 一部のコアクラス
+- メイン名前空間: `VLCNP.*`
+  - `VLCNP.Core`, `VLCNP.Combat`, `VLCNP.Movement`, `VLCNP.Control`, `VLCNP.Attributes`,
+    `VLCNP.Actions`, `VLCNP.Effects`, `VLCNP.UI`, `VLCNP.Movie`, `VLCNP.Stats`,
+    `VLCNP.Pickups`, `VLCNP.Projectiles`, `VLCNP.Saving`, `VLCNP.SceneManagement`, `VLCNP.DebugScript`
+- サブ名前空間: `Core.Status`, `Projectiles.StatusEffects` など機能別に分割
 
-## コーディング規約
-- **クラス名**: PascalCase (例: `PlayerController`, `EnemyController`)
-- **メソッド名**: PascalCase (例: `AttackBehaviour`, `Update`)
-- **フィールド名**: camelCase (例: `attackButton`, `isStopped`)
-- **プロパティ名**: PascalCase (例: `IsStopped`)
-- **インターフェース**: `I`プレフィックス (例: `IStoppable`, `ICollisionAction`)
+## C#コーディング規約
+- クラス/構造体/enum: PascalCase（例: `FlagManager`, `ProjectileStatus`）
+- メソッド: PascalCase（例: `SetFlag`, `CaptureAsJToken`）
+- フィールド: camelCase。`[SerializeField]` 付き private フィールドも camelCase（例: `flagDictionary`）。接頭辞 `_` は基本使用しない。
+- プロパティ/イベント: PascalCase (例: `OnChangeFlag`, `IsStopped`)
+- インターフェース: `I` プレフィックス (例: `IJsonSaveable`, `IStoppable`)
+- 初期化: target-typed `new()` を多用。
+- コメント: `//` を用いた短い日本語コメントが中心。
 
-## Unityコンポーネントパターン
-- MonoBehaviourを継承
-- Unity標準メソッド使用: `Awake()`, `Update()`, `OnTriggerEnter2D()`, `OnTriggerExit2D()`
-- Singletonパターン: `Instance`プロパティ使用
+## Unityコンポーネントの慣習
+- `MonoBehaviour` を継承したコンポーネントが中心。
+- ライフサイクルメソッド: `Awake`, `Start`, `Update`, `OnTriggerEnter2D` など Unity 標準を使用。
+- イベント駆動: `Action` イベントを使い、`?.Invoke` で通知。
+- セーブ処理: `IJsonSaveable` 実装で `CaptureAsJToken`, `RestoreFromJToken` を実装。
 
-## セーブデータ
-- JSON形式で保存
-- `IJsonSaveable`インターフェース実装
-- `CaptureAsJToken()`と`RestoreFromJToken()`メソッド使用
-
-## 型ヒント
-C#の標準的な型システムを使用、明示的な型宣言を基本とする
+## その他
+- シリアライズ対象: `[SerializeField]` を private フィールドにつける。
+- null チェックやディクショナリアクセスではガード節 (`if (!flagDictionary.ContainsKey(flag)) return`) を使用。
+- スペーシング: インデントは4スペース。
