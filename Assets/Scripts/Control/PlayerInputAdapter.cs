@@ -206,13 +206,13 @@ namespace VLCNP.Control
 
         public static bool WasMenuSubmitPressed()
         {
-            if (Input.GetKeyDown("return") || Input.GetKeyDown("space"))
+            if (Input.GetKeyDown("return"))
             {
                 return true;
             }
 
             Gamepad gamepad = Gamepad.current;
-            if (gamepad != null && gamepad.buttonSouth.wasPressedThisFrame)
+            if (gamepad != null && gamepad.buttonEast.wasPressedThisFrame)
             {
                 return true;
             }
