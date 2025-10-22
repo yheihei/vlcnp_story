@@ -6,8 +6,8 @@ namespace VLCNP.Core
 {
     public class VisibilityFlagManager : MonoBehaviour
     {
-
-        [SerializeField] VisibilityFlag[] visibilityFlags = null;
+        [SerializeField]
+        VisibilityFlag[] visibilityFlags = null;
 
         [System.Serializable]
         class VisibilityFlag
@@ -37,6 +37,11 @@ namespace VLCNP.Core
                 if (flagManager.GetFlag(visibilityFlags[i].flag))
                 {
                     gameObject.SetActive(visibilityFlags[i].isVisible);
+                    // 子要素すべてをActiveにする
+                    foreach (Transform child in transform)
+                    {
+                        child.gameObject.SetActive(visibilityFlags[i].isVisible);
+                    }
                     return;
                 }
             }
@@ -45,7 +50,8 @@ namespace VLCNP.Core
         void OnChangeFlag(Flag flag, bool value)
         {
             // 変化のあったflagがvisibilityFlagsに含まれていなければ何もしない 配列のfindで探す
-            if (System.Array.Find(visibilityFlags, x => x.flag == flag) == null) return;
+            if (System.Array.Find(visibilityFlags, x => x.flag == flag) == null)
+                return;
             CheckVisibility();
         }
     }

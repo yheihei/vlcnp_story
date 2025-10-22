@@ -78,11 +78,11 @@ namespace VLCNP.Control
                     continue;
                 }
                 member.gameObject.SetActive(true);
-                // playerのIStoppableをすべて取得して停止状態を解除する
+                // player配下のIStoppableへ現在の停止状態を伝播する
                 IStoppable[] stoppables = member.GetComponentsInChildren<IStoppable>();
                 foreach (IStoppable stoppable in stoppables)
                 {
-                    stoppable.IsStopped = false;
+                    stoppable.IsStopped = isStopped;
                 }
             }
         }

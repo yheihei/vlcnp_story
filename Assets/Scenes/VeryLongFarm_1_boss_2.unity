@@ -5595,7 +5595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: selectedCommands.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: nodeRect.x
@@ -17613,7 +17613,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fee0171f23a14aff959b87a539cecfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTag: Ground
+  targetTags:
+  - Ground
+  - Item
+  - Enemy
 --- !u!1 &1422904075
 GameObject:
   m_ObjectHideFlags: 0
