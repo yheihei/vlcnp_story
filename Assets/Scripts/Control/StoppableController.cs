@@ -1,3 +1,5 @@
+using System.Collections;
+using Fungus;
 using UnityEngine;
 using VLCNP.Core;
 
@@ -7,25 +9,58 @@ namespace VLCNP.Control
     {
         public void StopAll()
         {
-            // ゲームの中でIStoppableを実装しているものを全て取得する
-            foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>())
+            Debug.Log("Stop All Components Called");
+            StartCoroutine(StopAllCoroutine());
+        }
+
+        private IEnumerator StopAllCoroutine()
+        {
+            // Loadが完了するのを待つ
+            LoadCompleteManager loadCompleteManager = LoadCompleteManager.Instance;
+            // LoadCompleteManagerが存在し、ロードが完了していない場合は待つ
+            if (loadCompleteManager != null)
             {
-                IStoppable[] stoppables = obj.GetComponents<IStoppable>();
-                foreach (IStoppable stoppable in stoppables)
+                while (!loadCompleteManager.IsLoaded)
                 {
-                    stoppable.IsStopped = true;
+                    yield return null;
+                }
+                Debug.Log("Stop All Components");
+                // ゲームの中でIStoppableを実装しているものを全て取得する
+                foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>())
+                {
+                    IStoppable[] stoppables = obj.GetComponents<IStoppable>();
+                    foreach (IStoppable stoppable in stoppables)
+                    {
+                        stoppable.IsStopped = true;
+                    }
                 }
             }
         }
 
         public void StartAll()
         {
-            foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>())
+            Debug.Log("Start All Components Called");
+            StartCoroutine(StartAllCoroutine());
+        }
+
+        private IEnumerator StartAllCoroutine()
+        {
+            // Loadが完了するのを待つ
+            LoadCompleteManager loadCompleteManager = LoadCompleteManager.Instance;
+            if (loadCompleteManager != null)
             {
-                IStoppable[] stoppables = obj.transform.GetComponents<IStoppable>();
-                foreach (IStoppable stoppable in stoppables)
+                while (!loadCompleteManager.IsLoaded)
                 {
-                    stoppable.IsStopped = false;
+                    yield return null;
+                }
+                Debug.Log("Start All Coroutines");
+                foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>())
+                {
+                    IStoppable[] stoppables = obj.GetComponents<IStoppable>();
+                    foreach (IStoppable stoppable in stoppables)
+                    {
+                        stoppable.IsStopped = false;
+                    }
                 }
             }
         }
