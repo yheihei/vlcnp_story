@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VLCNP.Control;
 using VLCNP.Core;
 
 namespace VLCNP.Movement
@@ -69,7 +70,7 @@ namespace VLCNP.Movement
                 return;
             }
             // ジャンプの開始判定
-            if (CanJump() && Input.GetKeyDown(jumpButton))
+            if (CanJump() && PlayerInputAdapter.WasJumpPressed(jumpButton))
             {
                 isJumping = true;
                 PlayJumpSound();
@@ -77,11 +78,11 @@ namespace VLCNP.Movement
             // ジャンプ中の処理
             if (isJumping)
             {
-                if (Input.GetKeyUp(jumpButton) || jumpTime >= maxJumpTime)
+                if (PlayerInputAdapter.WasJumpReleased(jumpButton) || jumpTime >= maxJumpTime)
                 {
                     EndJump();
                 }
-                else if (Input.GetKey(jumpButton))
+                else if (PlayerInputAdapter.IsJumpHeld(jumpButton))
                 {
                     jumpTime += Time.deltaTime;
                 }

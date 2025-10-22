@@ -75,11 +75,11 @@ namespace VLCNP.Control
 
         private void AttackBehaviour()
         {
-            if (Input.GetKey("up"))
+            if (PlayerInputAdapter.IsAimUpPressed())
             {
                 fighter.WeaponUp();
             }
-            else if (Input.GetKey("down"))
+            else if (PlayerInputAdapter.IsAimDownPressed())
             {
                 fighter.WeaponDown();
             }
@@ -87,7 +87,7 @@ namespace VLCNP.Control
             {
                 fighter.WeaponHorizontal();
             }
-            if (Input.GetKeyDown(attackButton))
+            if (PlayerInputAdapter.WasAttackPressed(attackButton))
             {
                 fighter.Attack();
             }
@@ -103,7 +103,7 @@ namespace VLCNP.Control
 
         private bool canInteractAction()
         {
-            return Input.GetKeyDown("up")
+            return PlayerInputAdapter.WasInteractPressed()
                 && collisionAction != null
                 && collisionAction.IsAction
                 && leg.IsGround;
