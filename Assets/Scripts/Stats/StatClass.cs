@@ -18,5 +18,6 @@ namespace VLCNP.Stats
         PoisonBall,
         VeryLongYamatanoOrochi,
         VeryLongOrochi,
+        Ghost,
     }
 }
