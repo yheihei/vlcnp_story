@@ -67,9 +67,11 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
             GetCurrentAction()?.Stop();
             return;
         }
-        StartWaitTime -= Time.deltaTime;
         if (StartWaitTime > 0f)
+        {
+            StartWaitTime -= Time.deltaTime;
             return;
+        }
         // プレイヤーを発見していなければ何もしない
         if (detect != null && detect.Value != null && !detect.Value.IsDetect())
             return;
