@@ -17,9 +17,6 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         Transform launchTransform = null;
 
-        [SerializeField] // 発射前のアニメーションの待ち時間
-        float beforeLaunchWaitTime = 2f;
-
         [SerializeField]
         string triggerName = "special1";
 
@@ -55,26 +52,14 @@ namespace VLCNP.Combat.EnemyAction
             StartCoroutine(Launch());
         }
 
-        private IEnumerator Launch()
+        public void OnLaunchAnimationEvent()
         {
-            if (weaponConfig == null || !weaponConfig.HasProjectile())
-            {
-                IsDone = true;
-                yield break;
-            }
-
             SetDirectionToPlayer();
-
-            if (animator != null)
-            {
-                animator.SetTrigger("special1");
-            }
 
             GameObject player = GameObject.FindWithTag("Player");
             if (player == null || launchTransform == null)
             {
                 IsDone = true;
-                yield break;
             }
 
             // プレイヤーの方向に向ける
@@ -90,11 +75,33 @@ namespace VLCNP.Combat.EnemyAction
             launchTransform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
             bool isLeft = transform.lossyScale.x > 0;
-            yield return new WaitForSeconds(beforeLaunchWaitTime);
             LaunchProjectiles(isLeft);
 
             launchTransform.rotation = Quaternion.identity;
             IsDone = true;
+        }
+
+        private IEnumerator Launch()
+        {
+            if (weaponConfig == null || !weaponConfig.HasProjectile())
+            {
+                IsDone = true;
+                yield break;
+            }
+
+            SetDirectionToPlayer();
+
+            if (animator != null)
+            {
+                animator.SetTrigger(triggerName);
+            }
+            else
+            {
+                IsDone = true;
+                yield break;
+            }
+
+            // 発射はAnimation Eventで行うため、ここではアニメーション遷移させるだけ
         }
 
         private void LaunchProjectiles(bool isLeft)
