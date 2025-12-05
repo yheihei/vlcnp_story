@@ -9774,7 +9774,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponConfig: {fileID: 11400000, guid: 36ca01da778d84801932ea12b30de1be, type: 2}
   launchTransform: {fileID: 90546482}
-  beforeLaunchWaitTime: 2.5
   triggerName: special1
 --- !u!114 &1102199741 stripped
 MonoBehaviour:
@@ -9803,6 +9802,22 @@ MonoBehaviour:
   cycleDuration: 2
   phaseOffset: 0
   useUnscaledTime: 0
+--- !u!114 &1102199783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589804978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dff13ca2d7114eb6ad892339351cdd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  approachDuration: 4
+  floatAmplitude: 0.25
+  floatCycleDuration: 2
 --- !u!1 &1141898532
 GameObject:
   m_ObjectHideFlags: 0
@@ -10615,8 +10630,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 404770326930490197, guid: c1fbc228d2a314042863da7fe19928ae, type: 3}
       propertyPath: enemyActions.Array.size
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 404770326930490197, guid: c1fbc228d2a314042863da7fe19928ae, type: 3}
+      propertyPath: enemyActions.Array.data[0].unityReference
+      value: 
+      objectReference: {fileID: 1102199783}
+    - target: {fileID: 404770326930490197, guid: c1fbc228d2a314042863da7fe19928ae, type: 3}
+      propertyPath: enemyActions.Array.data[1].unityReference
+      value: 
+      objectReference: {fileID: 1102199741}
     - target: {fileID: 404770326930490197, guid: c1fbc228d2a314042863da7fe19928ae, type: 3}
       propertyPath: enemyActions.Array.data[2].unityReference
       value: 
