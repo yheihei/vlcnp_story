@@ -16,11 +16,18 @@ namespace VLCNP.Control
         Fighter fighter;
         ICollisionAction collisionAction;
         bool isStopped = false;
+        bool reportedStopped = false;
 
         public bool IsStopped
         {
             get => isStopped;
-            set => isStopped = value;
+            set
+            {
+                if (isStopped == value) return;
+                isStopped = value;
+                reportedStopped = false;
+                Debug.Log($"[PlayerController] {name} IsStopped -> {value} at t={Time.time:F3}");
+            }
         }
 
         public string attackButton = "x";
@@ -34,14 +41,34 @@ namespace VLCNP.Control
             fighter = GetComponent<Fighter>();
         }
 
+        private void OnEnable()
+        {
+            Debug.Log($"[PlayerController] {name} enabled at t={Time.time:F3}");
+        }
+
+        private void OnDisable()
+        {
+            Debug.Log($"[PlayerController] {name} disabled at t={Time.time:F3}");
+        }
+
         void Update()
         {
             if (LoadCompleteManager.Instance != null && !LoadCompleteManager.Instance.IsLoaded)
                 return;
             if (isStopped)
             {
+                if (!reportedStopped)
+                {
+                    Debug.Log($"[PlayerController] {name} Update skipped because IsStopped at t={Time.time:F3}");
+                    reportedStopped = true;
+                }
                 mover.Stop();
                 return;
+            }
+            if (reportedStopped)
+            {
+                Debug.Log($"[PlayerController] {name} Update resumed at t={Time.time:F3}");
+                reportedStopped = false;
             }
             mover.Move();
             AttackBehaviour();

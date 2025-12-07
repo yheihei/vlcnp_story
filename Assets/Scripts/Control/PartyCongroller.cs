@@ -50,7 +50,12 @@ namespace VLCNP.Control
         public bool IsStopped
         {
             get => isStopped;
-            set => isStopped = value;
+            set
+            {
+                if (isStopped == value) return;
+                isStopped = value;
+                Debug.Log($"[PartyCongroller] IsStopped -> {value} at t={Time.time:F3}");
+            }
         }
 
         public event Action<GameObject> OnChangeCharacter;
@@ -66,6 +71,7 @@ namespace VLCNP.Control
         private void Start()
         {
             SetCurrentPlayerActive();
+            Debug.Log($"[PartyCongroller] Start currentPlayer={currentPlayer?.name} at t={Time.time:F3}");
         }
 
         private void SetCurrentPlayerActive()
@@ -75,9 +81,11 @@ namespace VLCNP.Control
                 if (member.gameObject != currentPlayer)
                 {
                     member.gameObject.SetActive(false);
+                    Debug.Log($"[PartyCongroller] deactivate member={member.name}");
                     continue;
                 }
                 member.gameObject.SetActive(true);
+                Debug.Log($"[PartyCongroller] activate current member={member.name}");
                 // player配下のIStoppableへ現在の停止状態を伝播する
                 IStoppable[] stoppables = member.GetComponentsInChildren<IStoppable>();
                 foreach (IStoppable stoppable in stoppables)
@@ -90,10 +98,15 @@ namespace VLCNP.Control
         private void Update()
         {
             if (isStopped)
+            {
                 return;
+            }
             // 現在のキャラが死んでいれば受け付けない
             if (currentPlayer.GetComponent<Health>().IsDead)
+            {
+                Debug.Log("[PartyCongroller] currentPlayer is dead. input ignored");
                 return;
+            }
             if (PlayerInputAdapter.WasCharacterSwitchPressed(swithCharacterButton))
             {
                 if (SwitchNextPlayer())

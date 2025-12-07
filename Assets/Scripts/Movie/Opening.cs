@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Cinemachine;
 using Fungus;
 using Newtonsoft.Json.Linq;
@@ -51,6 +52,7 @@ namespace VLCNP.Movie
             StopAll();
             GameObject player = GameObject.FindWithTag("Player");
             player.GetComponent<PlayerController>().enabled = false;
+            Debug.Log($"Opening.DisableControl: disabled PlayerController at t={Time.time:F3}");
             // チュートリアル取得して、disableにする
             tutorial.SetActive(false);
         }
@@ -62,6 +64,7 @@ namespace VLCNP.Movie
             // Akim、はてなマーク
             // StartCoroutine(Talk());
             player.GetComponent<PlayerController>().enabled = true;
+            Debug.Log($"Opening.EnableControl: enabled PlayerController at t={Time.time:F3}");
             // プレイヤーを開始位置に移動
             player.transform.position = startPoint.position;
             // CMCameraを取得して、プレイヤーを追従させる
@@ -104,22 +107,38 @@ namespace VLCNP.Movie
 
         private void StopAll()
         {
-            foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>())
+            float now = Time.time;
+            int stoppedCount = 0;
+            var seen = new HashSet<IStoppable>();
+            // 非アクティブ／子オブジェクトも含めてユニークな IStoppable を停止
+            foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>(true))
             {
-                IStoppable stoppable = obj.GetComponent<IStoppable>();
-                if (stoppable == null) continue;
-                stoppable.IsStopped = true;
+                foreach (IStoppable stoppable in obj.GetComponentsInChildren<IStoppable>(true))
+                {
+                    if (!seen.Add(stoppable)) continue;
+                    stoppable.IsStopped = true;
+                    stoppedCount++;
+                }
             }
+            Debug.Log($"Opening.StopAll: stopped {stoppedCount} unique IStoppable components at t={now:F3}");
         }
 
         private void StartAll()
         {
-            foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>())
+            float now = Time.time;
+            int restartedCount = 0;
+            var seen = new HashSet<IStoppable>();
+            // 非アクティブ／子オブジェクトも含めてユニークな IStoppable を再開
+            foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>(true))
             {
-                IStoppable stoppable = obj.transform.GetComponent<IStoppable>();
-                if (stoppable == null) continue;
-                stoppable.IsStopped = false;
+                foreach (IStoppable stoppable in obj.GetComponentsInChildren<IStoppable>(true))
+                {
+                    if (!seen.Add(stoppable)) continue;
+                    stoppable.IsStopped = false;
+                    restartedCount++;
+                }
             }
+            Debug.Log($"Opening.StartAll: resumed {restartedCount} unique IStoppable components at t={now:F3}");
         }
 
         // public JToken CaptureAsJToken()

@@ -25,12 +25,13 @@ namespace VLCNP.Control
                     yield return null;
                 }
                 Debug.Log("Stop All Components");
-                // ゲームの中でIStoppableを実装しているものを全て取得する
-                foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>())
+                // ゲームの中で IStoppable を実装しているものを全て取得する（非アクティブ/子も含む）
+                var seen = new System.Collections.Generic.HashSet<IStoppable>();
+                foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>(true))
                 {
-                    IStoppable[] stoppables = obj.GetComponents<IStoppable>();
-                    foreach (IStoppable stoppable in stoppables)
+                    foreach (IStoppable stoppable in obj.GetComponentsInChildren<IStoppable>(true))
                     {
+                        if (!seen.Add(stoppable)) continue;
                         stoppable.IsStopped = true;
                     }
                 }
@@ -54,11 +55,12 @@ namespace VLCNP.Control
                     yield return null;
                 }
                 Debug.Log("Start All Coroutines");
-                foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>())
+                var seen = new System.Collections.Generic.HashSet<IStoppable>();
+                foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>(true))
                 {
-                    IStoppable[] stoppables = obj.GetComponents<IStoppable>();
-                    foreach (IStoppable stoppable in stoppables)
+                    foreach (IStoppable stoppable in obj.GetComponentsInChildren<IStoppable>(true))
                     {
+                        if (!seen.Add(stoppable)) continue;
                         stoppable.IsStopped = false;
                     }
                 }
