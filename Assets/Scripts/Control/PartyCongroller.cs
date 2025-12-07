@@ -104,7 +104,6 @@ namespace VLCNP.Control
             // 現在のキャラが死んでいれば受け付けない
             if (currentPlayer.GetComponent<Health>().IsDead)
             {
-                Debug.Log("[PartyCongroller] currentPlayer is dead. input ignored");
                 return;
             }
             if (PlayerInputAdapter.WasCharacterSwitchPressed(swithCharacterButton))

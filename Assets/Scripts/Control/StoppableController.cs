@@ -1,6 +1,7 @@
 using System.Collections;
 using Fungus;
 using UnityEngine;
+using UnityAsyncAwaitUtil;
 using VLCNP.Core;
 
 namespace VLCNP.Control
@@ -10,7 +11,7 @@ namespace VLCNP.Control
         public void StopAll()
         {
             Debug.Log("Stop All Components Called");
-            StartCoroutine(StopAllCoroutine());
+            StartSafeCoroutine(StopAllCoroutine());
         }
 
         private IEnumerator StopAllCoroutine()
@@ -41,7 +42,7 @@ namespace VLCNP.Control
         public void StartAll()
         {
             Debug.Log("Start All Components Called");
-            StartCoroutine(StartAllCoroutine());
+            StartSafeCoroutine(StartAllCoroutine());
         }
 
         private IEnumerator StartAllCoroutine()
@@ -65,6 +66,21 @@ namespace VLCNP.Control
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 自分のGameObjectが非アクティブでもコルーチンを実行するためのラッパー。
+        /// 非アクティブ時は AsyncCoroutineRunner (DontDestroyOnLoad) に委譲する。
+        /// </summary>
+        private Coroutine StartSafeCoroutine(IEnumerator routine)
+        {
+            if (isActiveAndEnabled)
+            {
+                return StartCoroutine(routine);
+            }
+
+            Debug.LogWarning("[StoppableController] inactive GameObject detected. Running coroutine via AsyncCoroutineRunner.");
+            return AsyncCoroutineRunner.Instance.StartCoroutine(routine);
         }
     }
 }

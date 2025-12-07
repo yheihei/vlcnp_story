@@ -103,6 +103,19 @@ namespace VLCNP.SceneManagement
             yield return fader.FadeIn(fadeInTime);
             print("fade in end");
 
+            // 入力再開: 遷移先シーンの StoppableController で全IStoppableを解除
+            StoppableController newStoppableController = GameObject
+                .FindWithTag("StoppableController")
+                ?.GetComponent<StoppableController>();
+            if (newStoppableController != null)
+            {
+                newStoppableController.StartAll();
+            }
+            else
+            {
+                Debug.LogWarning("TransitionEvent: StoppableController not found in destination scene");
+            }
+
             if (isRetryOnDestination)
             {
                 // 遷移先でリトライする場合は遷移後のシーンでオートセーブ
