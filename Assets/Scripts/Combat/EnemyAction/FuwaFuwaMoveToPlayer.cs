@@ -103,7 +103,8 @@ namespace VLCNP.Combat.EnemyAction
                 // 上下に揺れるための速度成分（sin波の微分）
                 floatElapsed += deltaTime;
                 float angularFrequency = Mathf.PI * 2f / Mathf.Max(floatCycleDuration, 0.01f);
-                float bobVelocity = Mathf.Cos(floatElapsed * angularFrequency) * floatAmplitude * angularFrequency;
+                float bobVelocity =
+                    Mathf.Cos(floatElapsed * angularFrequency) * floatAmplitude * angularFrequency;
 
                 Vector2 finalVelocity = moveVelocity + new Vector2(0f, bobVelocity);
 

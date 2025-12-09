@@ -20,6 +20,16 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         string triggerName = "special1";
 
+        [SerializeField]
+        [Min(0f)]
+        [Tooltip("プレイヤーとの距離がこの値より大きいと発射せず完了する。0 なら常に発射する。")]
+        float fireDistanceThreshold = 8f;
+
+        [SerializeField]
+        [Min(0f)]
+        [Tooltip("攻撃後に待機する時間")]
+        float waitAfterAttack = 2f;
+
         private Animator animator;
 
         public enum Direction
@@ -56,10 +66,15 @@ namespace VLCNP.Combat.EnemyAction
         {
             SetDirectionToPlayer();
 
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player == null || launchTransform == null)
+            if (!TryGetPlayer(out GameObject player))
+            {
+                return;
+            }
+
+            if (launchTransform == null)
             {
                 IsDone = true;
+                return;
             }
 
             // プレイヤーの方向に向ける
@@ -76,6 +91,12 @@ namespace VLCNP.Combat.EnemyAction
 
             bool isLeft = transform.lossyScale.x > 0;
             LaunchProjectiles(isLeft);
+            StartCoroutine(WaitAndComplete());
+        }
+
+        private IEnumerator WaitAndComplete()
+        {
+            yield return new WaitForSeconds(waitAfterAttack);
 
             launchTransform.rotation = Quaternion.identity;
             IsDone = true;
@@ -87,6 +108,22 @@ namespace VLCNP.Combat.EnemyAction
             {
                 IsDone = true;
                 yield break;
+            }
+
+            if (!TryGetPlayer(out GameObject player))
+            {
+                yield break;
+            }
+
+            if (fireDistanceThreshold > 0f)
+            {
+                float sqrDistance = (player.transform.position - transform.position).sqrMagnitude;
+                float sqrThreshold = fireDistanceThreshold * fireDistanceThreshold;
+                if (sqrDistance > sqrThreshold)
+                {
+                    IsDone = true;
+                    yield break;
+                }
             }
 
             SetDirectionToPlayer();
@@ -138,6 +175,17 @@ namespace VLCNP.Combat.EnemyAction
                 transform.localScale.y,
                 transform.localScale.z
             );
+        }
+
+        private bool TryGetPlayer(out GameObject player)
+        {
+            player = GameObject.FindWithTag("Player");
+            if (player == null)
+            {
+                IsDone = true;
+                return false;
+            }
+            return true;
         }
     }
 }
