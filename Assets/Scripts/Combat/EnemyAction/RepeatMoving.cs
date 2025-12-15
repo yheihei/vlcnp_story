@@ -60,6 +60,9 @@ namespace VLCNP.Combat.EnemyAction
         private IEnumerator Move(float _moveTimeout)
         {
             float elapsedTime = 0f;
+            // 動く前に今向いている方向を取得 local.scaleが正なら左、負なら右
+            direction = transform.localScale.x > 0 ? Direction.Left : Direction.Right;
+            SetDirection(direction);
             // 向いてる方向で移動（速度修正を適用）
             float modifiedSpeed = GetModifiedSpeed(speed);
             float _speed = direction == Direction.Left ? -modifiedSpeed : modifiedSpeed;

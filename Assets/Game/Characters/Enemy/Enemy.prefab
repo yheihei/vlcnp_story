@@ -259,7 +259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2920555958815651784, guid: f918822e12774495a9b170fcadc702ac, type: 3}
       propertyPath: statClass
-      value: 4
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 3918241336420572121, guid: f918822e12774495a9b170fcadc702ac, type: 3}
       propertyPath: m_Material
@@ -535,6 +535,19 @@ MonoBehaviour:
   enemyDetectionRange: 10
   isDetected: 0
   chaseRange: 15
+--- !u!114 &74265363342354780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7478345028051563179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98b57fceae76b4c3daba330a0b8c5c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentModifier: 1
 --- !u!114 &314289703556747111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -622,21 +635,6 @@ MonoBehaviour:
   frontCollisionDetector: {fileID: 7056235407816223915}
   gakeCollisionDetector: {fileID: 5230588063922204164}
   moveTimeout: 4
---- !u!114 &74265363342354780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7478345028051563179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98b57fceae76b4c3daba330a0b8c5c9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentModifier: 1
-  isModified: 0
-  testModifier: 0.5
 --- !u!114 &8284897732275466759 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1972934130586545878, guid: f918822e12774495a9b170fcadc702ac, type: 3}
