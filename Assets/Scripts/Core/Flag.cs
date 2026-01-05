@@ -33,5 +33,6 @@ namespace VLCNP.Core
         VLOrochiJoined, // オロチが仲間になった
         HPUpAfterVLOrochiJoined, // オロチ加入後のHPアップ
         NoEnemies, // 敵がいない
+        IsGamePad, // ゲームパッドでプレイしている
     }
 }
