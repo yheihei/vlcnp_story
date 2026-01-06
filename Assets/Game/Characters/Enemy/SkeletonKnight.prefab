@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1284403765}
   m_Layer: 0
   m_Name: Shield_1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1284403763}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.58, y: -0.7, z: 0.4029531}
+  m_LocalPosition: {x: 0.7, y: -0.7, z: 0.4029531}
   m_LocalScale: {x: 0.66, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 3634850957670358442}
   m_Layer: 0
   m_Name: Shield
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -228,7 +228,7 @@ Transform:
   m_GameObject: {fileID: 7274492105508641126}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.75, y: -0.58, z: 0.4029531}
-  m_LocalScale: {x: 0.85, y: 0.76, z: 1}
+  m_LocalScale: {x: 0.61, y: 0.76, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 345248218653938603}
@@ -605,36 +605,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7478345028051563179, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
   m_PrefabInstance: {fileID: 3233434151567266828}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1599918631036188830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5410824353293723303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e74da9be6302743139ca0cd47f553703, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waitTimeSecond: 3
---- !u!114 &3469376142657906741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5410824353293723303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e903c08b3a697485293954f4b5d5688f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponConfig: {fileID: 11400000, guid: 9137d3e641c284dec823716dc2879ae9, type: 2}
-  launchTransform: {fileID: 6741831326731634459}
-  triggerName: special1
-  fireDistanceThreshold: 8
-  waitAfterAttack: 2
 --- !u!114 &1948596917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -679,6 +649,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shields:
   - {fileID: 3634850957670358442}
+--- !u!114 &1599918631036188830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5410824353293723303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74da9be6302743139ca0cd47f553703, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waitTimeSecond: 3
+--- !u!114 &3469376142657906741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5410824353293723303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e903c08b3a697485293954f4b5d5688f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponConfig: {fileID: 11400000, guid: 9137d3e641c284dec823716dc2879ae9, type: 2}
+  launchTransform: {fileID: 6741831326731634459}
+  triggerName: special1
+  fireDistanceThreshold: 8
+  waitAfterAttack: 2
 --- !u!114 &5563000579168663719 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7056235407816223915, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
