@@ -9,6 +9,12 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         float enemyDetectionRange = 12f;
 
+        [SerializeField]
+        bool enableUndetectedAnimation = false;
+
+        [SerializeField]
+        Animator animator;
+
         // 一度発見状態になったかどうか
         public bool isDetected = false;
 
@@ -19,10 +25,20 @@ namespace VLCNP.Combat.EnemyAction
 
         PartyCongroller partyCongroller;
 
+        const string IsUndetectedParam = "isUndetected";
+
         private void Awake()
         {
             player = GameObject.FindGameObjectWithTag("Player");
             InitializePartyController();
+            if (animator == null)
+                animator = GetComponent<Animator>();
+        }
+
+        private void Start()
+        {
+            if (enableUndetectedAnimation)
+                SetIsUndetected(true);
         }
 
         void OnEnable()
@@ -51,6 +67,13 @@ namespace VLCNP.Combat.EnemyAction
             player = _player;
         }
 
+        private void SetIsUndetected(bool value)
+        {
+            if (!enableUndetectedAnimation || animator == null)
+                return;
+            animator.SetBool(IsUndetectedParam, value);
+        }
+
         public bool IsDetect()
         {
             if (player == null)
@@ -58,9 +81,14 @@ namespace VLCNP.Combat.EnemyAction
             float distance = Vector2.Distance(player.transform.position, transform.position);
             // 1度発見状態になったら追跡距離内にいるかどうかを返す
             if (isDetected)
-                return distance < chaseRange;
+            {
+                bool inChaseRange = distance < chaseRange;
+                SetIsUndetected(!inChaseRange);
+                return inChaseRange;
+            }
             // 未発見状態でプレイヤーが発見距離内にいるかどうかを返す
             isDetected = distance < enemyDetectionRange;
+            SetIsUndetected(!isDetected);
             return isDetected;
         }
 
