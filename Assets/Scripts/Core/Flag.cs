@@ -34,5 +34,6 @@ namespace VLCNP.Core
         HPUpAfterVLOrochiJoined, // オロチ加入後のHPアップ
         NoEnemies, // 敵がいない
         IsGamePad, // ゲームパッドでプレイしている
+        SkeletonEnemyDoorClosed1, // おひるねべや(闇)のスケルトン部屋の扉が閉まっている
     }
 }
