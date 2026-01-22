@@ -26,6 +26,7 @@ namespace VLCNP.Combat.EnemyAction
         PartyCongroller partyCongroller;
 
         const string IsUndetectedParam = "isUndetected";
+        bool isWaitingUndetectedAnimationEnd = false;
 
         private void Awake()
         {
@@ -38,7 +39,10 @@ namespace VLCNP.Combat.EnemyAction
         private void Start()
         {
             if (enableUndetectedAnimation)
+            {
                 SetIsUndetected(true);
+                isWaitingUndetectedAnimationEnd = true;
+            }
         }
 
         void OnEnable()
@@ -71,6 +75,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             if (!enableUndetectedAnimation || animator == null)
                 return;
+            // 発見時のアニメーションをOnする場合 Animation EventでOnUndetectedAnimationFinishedを呼び出すこと
             animator.SetBool(IsUndetectedParam, value);
         }
 
@@ -90,6 +95,14 @@ namespace VLCNP.Combat.EnemyAction
             isDetected = distance < enemyDetectionRange;
             SetIsUndetected(!isDetected);
             return isDetected;
+        }
+
+        // AnimationからEventで必ず呼び出すこと
+        public void OnUndetectedAnimationFinished()
+        {
+            if (!enableUndetectedAnimation)
+                return;
+            isWaitingUndetectedAnimationEnd = false;
         }
 
         private void OnDrawGizmosSelected()

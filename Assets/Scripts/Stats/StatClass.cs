@@ -20,5 +20,6 @@ namespace VLCNP.Stats
         VeryLongOrochi,
         Ghost,
         SkullKnight,
+        Bat,
     }
 }
