@@ -1,0 +1,18 @@
+# 目的
+
+`RangeDetect`を改良したい
+
+## 問題
+
+enableUndetectedAnimation=trueの時、敵発見時のAnimationを再生、再生が終わった後の通知を Animationから OnUndetectedAnimationFinished イベントで受け取っている
+
+OnUndetectedAnimationFinished のイベントが来る前に、IsDetect がTrueを返してしまう。
+
+### IsDetect がすぐにTrueを返すと何が問題か
+IsDetectはEnemyV2Controllerから呼ばれ、次のIEnemyActionを実行するか否かを判定している。
+敵発見時のAnimation再生中にIsDetectがtrueになると、敵発見時のAnimationのまま次のIEnemyActionを実行して違和感がある。
+
+また、敵発見時Animation側で敵発見時の後隙の調整をしたいので、Animation再生中にIsDetect=trueを返すとその調整ができない。
+
+## 期待動作
+IsDetectがtrueを返せるタイミングを OnUndetectedAnimationFinished が来た後にしたい

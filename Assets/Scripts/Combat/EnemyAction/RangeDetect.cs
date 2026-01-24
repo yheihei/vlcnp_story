@@ -26,7 +26,7 @@ namespace VLCNP.Combat.EnemyAction
         PartyCongroller partyCongroller;
 
         const string IsUndetectedParam = "isUndetected";
-        bool isWaitingUndetectedAnimationEnd = false;
+        bool isWaitingDetectConfirm = false;
 
         private void Awake()
         {
@@ -41,7 +41,7 @@ namespace VLCNP.Combat.EnemyAction
             if (enableUndetectedAnimation)
             {
                 SetIsUndetected(true);
-                isWaitingUndetectedAnimationEnd = true;
+                isWaitingDetectConfirm = false;
             }
         }
 
@@ -91,6 +91,24 @@ namespace VLCNP.Combat.EnemyAction
                 SetIsUndetected(!inChaseRange);
                 return inChaseRange;
             }
+            // 発見アニメ待機中は検出しない
+            if (isWaitingDetectConfirm)
+            {
+                return false;
+            }
+            if (enableUndetectedAnimation)
+            {
+                if (distance < enemyDetectionRange)
+                {
+                    isWaitingDetectConfirm = true;
+                    SetIsUndetected(false);
+                }
+                else
+                {
+                    SetIsUndetected(true);
+                }
+                return false;
+            }
             // 未発見状態でプレイヤーが発見距離内にいるかどうかを返す
             isDetected = distance < enemyDetectionRange;
             SetIsUndetected(!isDetected);
@@ -102,7 +120,10 @@ namespace VLCNP.Combat.EnemyAction
         {
             if (!enableUndetectedAnimation)
                 return;
-            isWaitingUndetectedAnimationEnd = false;
+            if (!isWaitingDetectConfirm)
+                return;
+            isWaitingDetectConfirm = false;
+            isDetected = true;
         }
 
         private void OnDrawGizmosSelected()
