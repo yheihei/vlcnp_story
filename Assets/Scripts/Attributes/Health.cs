@@ -103,6 +103,7 @@ namespace VLCNP.Attributes
             float _damage = damage - guardPower;
             if (_damage <= 0)
             {
+                _damage = 0;
                 AudioSource audioSource = GetComponent<AudioSource>();
                 if (audioSource)
                     audioSource.PlayOneShot(zeroDamageSe, 0.5f);

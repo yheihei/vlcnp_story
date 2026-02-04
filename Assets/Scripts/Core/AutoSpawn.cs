@@ -13,10 +13,12 @@ public class AutoSpawn : MonoBehaviour, IStoppable
     [SerializeField] float spawnMaxRange = 8f;
     // playerとの距離がこれ以下ならスポーンしない
     [SerializeField] float spawnMinRange = 2f;
+    [SerializeField] int maxSpawnCount = 3;
 
     private float timeSinceLastSpawn = Mathf.Infinity;
     private GameObject player;
     PartyCongroller partyCongroller;
+    private readonly List<GameObject> spawnedObjects = new List<GameObject>();
 
     bool isStopped = false;
     public bool IsStopped { get => isStopped; set => isStopped = value; }
@@ -54,6 +56,7 @@ public class AutoSpawn : MonoBehaviour, IStoppable
         if (!CanSpawnRange()) return;
         if (timeSinceLastSpawn > intervalSecond)
         {
+            if (!CanSpawnCount()) return;
             Spawn();
             timeSinceLastSpawn = 0;
         }
@@ -69,12 +72,19 @@ public class AutoSpawn : MonoBehaviour, IStoppable
 
     private void Spawn()
     {
-        Instantiate(spawnObject, transform.position, Quaternion.identity);
+        GameObject spawn = Instantiate(spawnObject, transform.position, Quaternion.identity);
+        spawnedObjects.Add(spawn);
         if (spawnEffect != null)
         {
             GameObject effect = Instantiate(spawnEffect, transform.position, Quaternion.identity);
             Destroy(effect, 1f);
         }
+    }
+
+    private bool CanSpawnCount()
+    {
+        spawnedObjects.RemoveAll(obj => obj == null);
+        return spawnedObjects.Count < maxSpawnCount;
     }
 
     private void OnDrawGizmosSelected()

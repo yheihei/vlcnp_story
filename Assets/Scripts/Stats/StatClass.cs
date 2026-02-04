@@ -21,5 +21,6 @@ namespace VLCNP.Stats
         Ghost,
         SkullKnight,
         Bat,
+        GhostHand,
     }
 }
