@@ -14,12 +14,24 @@ namespace VLCNP.Combat
         private bool invalidStun = false;
         private float stunTimer;
         private Rigidbody2D rb;
-        private Vector3 originalVelocity;
+        private Vector2 originalVelocity;
+
+        private bool TryCacheRigidbody()
+        {
+            if (rb != null)
+                return true;
+            rb = GetComponent<Rigidbody2D>();
+            return rb != null;
+        }
+
+        private void Awake()
+        {
+            TryCacheRigidbody();
+        }
 
         private void Start()
         {
-            rb = GetComponent<Rigidbody2D>();
-            if (rb == null)
+            if (!TryCacheRigidbody())
             {
                 Debug.LogError("Rigidbodyが見つかりません");
             }
@@ -31,7 +43,10 @@ namespace VLCNP.Combat
             if (!isStunned) // すでにStunned状態でないことを確認
             {
                 isStunned = true;
-                originalVelocity = rb.velocity; // 現在の速度を保存
+                if (TryCacheRigidbody())
+                {
+                    originalVelocity = rb.velocity; // 現在の速度を保存
+                }
                 StartCoroutine(Shake()); // ブルブル効果開始
             }
         }
@@ -61,7 +76,10 @@ namespace VLCNP.Combat
             }
 
             transform.position = originalPosition; // 元の位置に戻す
-            rb.velocity = originalVelocity; // 保存した速度を復元
+            if (TryCacheRigidbody())
+            {
+                rb.velocity = originalVelocity; // 保存した速度を復元
+            }
             isStunned = false;
         }
     }
