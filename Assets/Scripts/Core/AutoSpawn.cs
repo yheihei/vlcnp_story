@@ -56,7 +56,11 @@ public class AutoSpawn : MonoBehaviour, IStoppable
         if (!CanSpawnRange()) return;
         if (timeSinceLastSpawn > intervalSecond)
         {
-            if (!CanSpawnCount()) return;
+            if (!CanSpawnCount())
+            {
+                timeSinceLastSpawn = 0;
+                return;
+            }
             Spawn();
             timeSinceLastSpawn = 0;
         }
