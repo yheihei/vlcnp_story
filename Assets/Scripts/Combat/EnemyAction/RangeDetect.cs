@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using VLCNP.Control;
 
@@ -17,9 +16,6 @@ namespace VLCNP.Combat.EnemyAction
 
         // 一度発見状態になったかどうか
         public bool isDetected = false;
-
-        [SerializeField] // 一度発見状態になった後の追跡距離
-        float chaseRange = 15f;
 
         GameObject player;
 
@@ -84,12 +80,11 @@ namespace VLCNP.Combat.EnemyAction
             if (player == null)
                 return false;
             float distance = Vector2.Distance(player.transform.position, transform.position);
-            // 1度発見状態になったら追跡距離内にいるかどうかを返す
+            // 一度発見状態になったら常に発見状態を維持する
             if (isDetected)
             {
-                bool inChaseRange = distance < chaseRange;
-                SetIsUndetected(!inChaseRange);
-                return inChaseRange;
+                SetIsUndetected(false);
+                return true;
             }
             // 発見アニメ待機中は検出しない
             if (isWaitingDetectConfirm)
@@ -130,9 +125,6 @@ namespace VLCNP.Combat.EnemyAction
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, enemyDetectionRange);
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, chaseRange);
         }
     }
 }
