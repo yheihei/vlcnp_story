@@ -38,7 +38,8 @@ namespace VLCNP.Core
         SkeltonEnemyDoorClosed2,  // おひるねべや(闇)のB1Fのスケルトン部屋の扉が閉まっている
         B1FLightSwitched1, // おひるねべや(闇)のB1Fの真ん中のライトがついている
         B1FLightSwitched2, // おひるねべや(闇)のB1Fの右上のライトがついている
-        B1FLightSwitched3, // おひるねべや(闇)のB1Fの一番上のライトがついている
-
+        B1FLightSwitched3, // おひるねべや(闇)のB1Fの一番上のスイッチが降りている
+        B1FTojikome,  // おひるねべや(闇)のB1Fの閉じ込めイベントが発生した
+        B1FBossDefeated, // おひるねべや(闇)のB1Fのボスを倒した
     }
 }
