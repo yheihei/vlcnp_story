@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1284403765}
   m_Layer: 11
   m_Name: Shield_1
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 3634850957670358442}
   m_Layer: 11
   m_Name: Shield
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -390,7 +390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 544694468188286105, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: enemyActions.Array.size
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 544694468188286105, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: enemyActions.Array.data[1].rawReference
@@ -415,27 +415,27 @@ PrefabInstance:
     - target: {fileID: 544694468188286105, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: enemyActions.Array.data[0].unityReference
       value: 
-      objectReference: {fileID: 1599918631036188830}
+      objectReference: {fileID: 327599431}
     - target: {fileID: 544694468188286105, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: enemyActions.Array.data[1].unityReference
       value: 
-      objectReference: {fileID: 327599431}
+      objectReference: {fileID: 1940412354162348300}
     - target: {fileID: 544694468188286105, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: enemyActions.Array.data[2].unityReference
       value: 
-      objectReference: {fileID: 1940412354162348300}
+      objectReference: {fileID: 1948596938}
     - target: {fileID: 544694468188286105, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: enemyActions.Array.data[3].unityReference
       value: 
-      objectReference: {fileID: 1948596938}
+      objectReference: {fileID: 3469376142657906741}
     - target: {fileID: 544694468188286105, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: enemyActions.Array.data[4].unityReference
       value: 
-      objectReference: {fileID: 3469376142657906741}
+      objectReference: {fileID: 1948596937}
     - target: {fileID: 544694468188286105, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: enemyActions.Array.data[5].unityReference
       value: 
-      objectReference: {fileID: 1948596937}
+      objectReference: {fileID: 1599918631036188830}
     - target: {fileID: 1539643153073874212, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: m_Size.x
       value: 0.49
@@ -804,7 +804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c22f4d1c4e37477cbf35124059958f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  afterWaitTimeSecond: 0
+  afterWaitTimeSecond: 1
 --- !u!114 &1948596937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -845,7 +845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e74da9be6302743139ca0cd47f553703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTimeSecond: 0.5
+  waitTimeSecond: 1
 --- !u!114 &1940412354162348300
 MonoBehaviour:
   m_ObjectHideFlags: 0

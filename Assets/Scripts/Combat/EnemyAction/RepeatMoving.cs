@@ -63,11 +63,11 @@ namespace VLCNP.Combat.EnemyAction
             // 動く前に今向いている方向を取得 local.scaleが正なら左、負なら右
             direction = transform.localScale.x > 0 ? Direction.Left : Direction.Right;
             SetDirection(direction);
-            // 向いてる方向で移動（速度修正を適用）
-            float modifiedSpeed = GetModifiedSpeed(speed);
-            float _speed = direction == Direction.Left ? -modifiedSpeed : modifiedSpeed;
             while (elapsedTime <= _moveTimeout)
             {
+                // 向いてる方向で移動（速度修正を適用）
+                float modifiedSpeed = GetModifiedSpeed(speed);
+                float _speed = direction == Direction.Left ? -modifiedSpeed : modifiedSpeed;
                 UpdateMoveSpeed(_speed);
                 // 経過時間加算
                 elapsedTime += Time.deltaTime;
@@ -134,11 +134,6 @@ namespace VLCNP.Combat.EnemyAction
         public void SetDirection(Direction _direction)
         {
             direction = _direction;
-            UpdateCharacterDirection();
-        }
-
-        private void UpdateCharacterDirection()
-        {
             if (direction == Direction.Left)
             {
                 transform.localScale = new Vector3(
