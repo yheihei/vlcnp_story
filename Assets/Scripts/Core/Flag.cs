@@ -41,5 +41,6 @@ namespace VLCNP.Core
         B1FLightSwitched3, // おひるねべや(闇)のB1Fの一番上のスイッチが降りている
         B1FTojikome,  // おひるねべや(闇)のB1Fの閉じ込めイベントが発生した
         B1FBossDefeated, // おひるねべや(闇)のB1Fのボスを倒した
+        TrialEnd2,  // 体験版終了のメッセージが出た
     }
 }
