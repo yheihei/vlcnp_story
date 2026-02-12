@@ -6,16 +6,38 @@ using VLCNP.Core;
 namespace VLCNP.Control
 {
     /// <summary>
-    /// ロード完了時点でゲームパッドが利用可能かを確認し、Flag.IsGamePad を設定する。
-    /// 常時監視は行わず、1回だけ判定する。
+    /// ロード完了後にゲームパッド利用可否を判定し、Flag.IsGamePad を更新する。
+    /// WebGL の遅延認識対策として接続変化監視とポーリング再判定を行う。
     /// </summary>
     public class GamePadFlagSetter : MonoBehaviour
     {
         private const float TimeoutSeconds = 20f;
+        private const float PollIntervalSeconds = 3f;
 
         [SerializeField] private bool enableDebugLog = false;
 
         private bool hasSet = false;
+        private bool isReady = false;
+        private bool hasLastState = false;
+        private bool lastIsGamePad = false;
+        private bool hasLoggedMissingFlagManager = false;
+        private Coroutine monitorCoroutine;
+
+        private void OnEnable()
+        {
+            InputSystem.onDeviceChange += OnDeviceChange;
+        }
+
+        private void OnDisable()
+        {
+            InputSystem.onDeviceChange -= OnDeviceChange;
+
+            if (monitorCoroutine != null)
+            {
+                StopCoroutine(monitorCoroutine);
+                monitorCoroutine = null;
+            }
+        }
 
         private void Start()
         {
@@ -53,9 +75,34 @@ namespace VLCNP.Control
                 yield return null;
             }
 
-            bool isGamePad = IsGamePadAvailable();
-            TrySetFlag(isGamePad);
+            isReady = true;
+            RefreshGamePadFlag("load-complete");
+
+            if (monitorCoroutine == null)
+            {
+                monitorCoroutine = StartCoroutine(PollGamePadState());
+            }
+
             hasSet = true;
+        }
+
+        private IEnumerator PollGamePadState()
+        {
+            while (true)
+            {
+                yield return new WaitForSecondsRealtime(PollIntervalSeconds);
+
+                if (!isReady) continue;
+                RefreshGamePadFlag("poll");
+            }
+        }
+
+        private void OnDeviceChange(InputDevice device, InputDeviceChange change)
+        {
+            if (!isReady) return;
+            if (!(device is Gamepad)) return;
+
+            RefreshGamePadFlag($"device-change:{change}");
         }
 
         private static bool IsGamePadAvailable()
@@ -64,28 +111,49 @@ namespace VLCNP.Control
             return Gamepad.all.Count > 0;
         }
 
-        private void TrySetFlag(bool isGamePad)
+        private void RefreshGamePadFlag(string source)
+        {
+            bool isGamePad = IsGamePadAvailable();
+            if (hasLastState && lastIsGamePad == isGamePad) return;
+            if (!TrySetFlag(isGamePad, source)) return;
+
+            lastIsGamePad = isGamePad;
+            hasLastState = true;
+        }
+
+        private bool TrySetFlag(bool isGamePad, string source)
         {
             GameObject flagManagerObject = GameObject.FindWithTag("FlagManager");
             if (flagManagerObject == null)
             {
-                Debug.LogWarning("[GamePadFlagSetter] FlagManager (Tag: FlagManager) not found. Skip setting Flag.IsGamePad.");
-                return;
+                if (!hasLoggedMissingFlagManager)
+                {
+                    Debug.LogWarning("[GamePadFlagSetter] FlagManager (Tag: FlagManager) not found. Skip setting Flag.IsGamePad.");
+                    hasLoggedMissingFlagManager = true;
+                }
+                return false;
             }
 
             FlagManager flagManager = flagManagerObject.GetComponent<FlagManager>();
             if (flagManager == null)
             {
-                Debug.LogWarning("[GamePadFlagSetter] FlagManager component not found. Skip setting Flag.IsGamePad.");
-                return;
+                if (!hasLoggedMissingFlagManager)
+                {
+                    Debug.LogWarning("[GamePadFlagSetter] FlagManager component not found. Skip setting Flag.IsGamePad.");
+                    hasLoggedMissingFlagManager = true;
+                }
+                return false;
             }
 
+            hasLoggedMissingFlagManager = false;
             flagManager.SetFlag(Flag.IsGamePad, isGamePad);
 
             if (enableDebugLog)
             {
-                Debug.Log($"[GamePadFlagSetter] Flag.IsGamePad -> {isGamePad}");
+                Debug.Log($"[GamePadFlagSetter] Flag.IsGamePad -> {isGamePad} ({source})");
             }
+
+            return true;
         }
     }
 }
