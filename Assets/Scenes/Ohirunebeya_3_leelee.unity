@@ -3138,7 +3138,6 @@ GameObject:
   - component: {fileID: 468763058}
   - component: {fileID: 468763056}
   - component: {fileID: 468763055}
-  - component: {fileID: 468763057}
   - component: {fileID: 468763064}
   - component: {fileID: 468763066}
   - component: {fileID: 468763069}
@@ -3153,7 +3152,6 @@ GameObject:
   - component: {fileID: 468763085}
   - component: {fileID: 468763075}
   - component: {fileID: 468763078}
-  - component: {fileID: 468763079}
   - component: {fileID: 468763080}
   - component: {fileID: 468763076}
   - component: {fileID: 468763074}
@@ -3179,6 +3177,7 @@ GameObject:
   - component: {fileID: 468763102}
   - component: {fileID: 468763105}
   - component: {fileID: 468763106}
+  - component: {fileID: 468763107}
   m_Layer: 0
   m_Name: LeeleeChat
   m_TagString: Untagged
@@ -3213,7 +3212,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 468763066}
   selectedCommands:
-  - {fileID: 468763076}
+  - {fileID: 468763084}
   variables: []
   description: 
   stepPause: 0
@@ -3366,7 +3365,7 @@ MonoBehaviour:
   nodeRect:
     serializedVersion: 2
     x: 53
-    y: 138
+    y: 139.003
     width: 108.17449
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
@@ -3422,7 +3421,7 @@ MonoBehaviour:
   nodeRect:
     serializedVersion: 2
     x: 226
-    y: 221
+    y: 222.003
     width: 121.2136
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}
@@ -3432,37 +3431,10 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
-  - {fileID: 468763055}
-  - {fileID: 468763057}
   - {fileID: 468763103}
+  - {fileID: 468763055}
+  - {fileID: 468763107}
   suppressAllAutoSelections: 0
---- !u!114 &468763057
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468763047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 15
-  indentLevel: 0
-  storyText: "\u3060\u308C\u304B\u304C \u3081\u3061\u3083\u304F\u3061\u3083 \u6012\u3063\u3066\u3044\u308B\u3088\u3046\u306A\u6C17\u304C\u3059\u308B"
-  description: 
-  character: {fileID: 0}
-  portrait: {fileID: 0}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
 --- !u!114 &468763058
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -3722,7 +3694,6 @@ MonoBehaviour:
   - {fileID: 468763082}
   - {fileID: 468763081}
   - {fileID: 468763080}
-  - {fileID: 468763079}
   - {fileID: 468763078}
   - {fileID: 468763092}
   - {fileID: 468763076}
@@ -4067,36 +4038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 32
   indentLevel: 0
-  storyText: "\u307E\u3001\u3048\u3048\u304B\uFF01\n\u3072\u3068\u307E\u305A \u3053\u3053
-    \u8131\u51FA\u3059\u308B\u3067\uFF01 \u8272\u3005\u898B\u305F\u3089\u601D\u3044\u51FA\u3059\u3084\u308D\uFF01"
-  description: 
-  character: {fileID: 5427655415111988580}
-  portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
---- !u!114 &468763079
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468763047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 33
-  indentLevel: 0
-  storyText: "\u306A\u3093\u304B\u5F15\u3063\u304B\u304B\u308B\u540D\u524D\u3084\u306A\n\u3082\u3057\u304B\u3057\u3066
-    \u306B\u304F\u3044 \u3042\u3093\u3061\u304D\u3057\u3087\u3046\u3063\u3066\u304A\u524D\u304B\uFF1F"
+  storyText: "\u3072\u3068\u307E\u305A \u3053\u3053 \u8131\u51FA\u3059\u308B\u3067\uFF01"
   description: 
   character: {fileID: 5427655415111988580}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -4151,7 +4093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 24
   indentLevel: 0
-  storyText: "\u3084\u3001\u3057\u3083\u30FC\u306A\u3044\u3084\u3093\uFF1F\n1\u4E07\u5E74\u3082\u7D4C\u3063\u3068\u3093\u3084\u304B\u3089\u3002\u591A\u5C11\u3042\u305F\u307E\u3082\u304A\u304B\u3057\u306A\u308B\u308F"
+  storyText: "\u3084\u3001\u3057\u3083\u30FC\u306A\u3044\u3084\u3093\uFF1F\n1\u4E07\u5E74\u3082\u7D4C\u3063\u3068\u3093\u3084\u304B\u3089"
   description: 
   character: {fileID: 5427655415111988580}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -4178,8 +4120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 26
   indentLevel: 0
-  storyText: "\u3042\u304B\u30FC\u3093\uFF01 \u5FD8\u308C\u3066\u3082\u3046\u305F\uFF01\n1\u4E07\u5E74\u304B\u305E\u3048\u3093\u306E\u306B\u3080\u3061\u3085\u3046\u3067
-    \u8AB0\u306B\u3080\u304B\u3064\u3044\u3068\u3063\u305F\u304B\u5FD8\u308C\u3066\u3082\u3046\u305F\uFF01"
+  storyText: "\u3042\u304B\u30FC\u3093\uFF01 \u5FD8\u308C\u3066\u3082\u3046\u305F\uFF01"
   description: 
   character: {fileID: 5427655415111988580}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -4233,8 +4174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 28
   indentLevel: 0
-  storyText: "\u3086\u308B\u3055\u3078\u3093\u3067\u30DE\u30B8\u3067...\n\u308F\u3057\u3092
-    \u3053\u3093\u306A\u76EE\u306B\u3042\u308F\u305B\u305F \u3042\u306E...\u3042\u308C\u3084\u3042\u308C\u3002\u3042\u3044\u3064...\uFF1F"
+  storyText: "\u308F\u3057\u3092 \u3053\u3093\u306A\u76EE\u306B\u3042\u308F\u305B\u305F\n\u3042\u306E...\u3042\u308C\u3084\u3042\u308C\u3002\u3042\u3044\u3064...\uFF1F"
   description: 
   character: {fileID: 5427655415111988580}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -4261,7 +4201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 29
   indentLevel: 0
-  storyText: "\u3060\u308C\u304B\u3057\u3089\u3093\u3051\u3069 \u30B5\u30F3\u30AD\u30E5\u30FC\u3084\u3067\uFF01\n\u304A\u304B\u3052\u3067
+  storyText: "\u30B5\u30F3\u30AD\u30E5\u30FC\u3084\u3067\uFF01\n\u304A\u304B\u3052\u3067
     \u306B\u304F\u3044 \u3042\u3093\u3061\u304D\u3057\u3087\u3046\u306B\u5FA9\u8B90\u3067\u304D\u308B\u308F\uFF01"
   description: 
   character: {fileID: 5427655415111988580}
@@ -4289,7 +4229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 25
   indentLevel: 0
-  storyText: "\u82E6\u7BC0 1\u4E07\u5E74\u30682\u30F6\u670814\u65E52\u6642\u959336\u520618\u79D2...\n\u3088\u3046\u3084\u304F\u5FA9\u6D3B\u3084\u308F\u301C\uFF01"
+  storyText: "\u82E6\u7BC0 1\u4E07\u5E74\u30682\u30F6\u670814\u65E52\u6642\u959336\u520618\u79D2...\n\u3088\u3046\u3084\u304F\u5FA9\u6D3B\u3084\u301C\uFF01"
   description: 
   character: {fileID: 5427655415111988580}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -4974,8 +4914,8 @@ MonoBehaviour:
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
   targetComponentText: StoppableController
-  targetMethod: StartAll
-  targetMethodText: 'StartAll (): Void'
+  targetMethod: StopAll
+  targetMethodText: 'StopAll (): Void'
   methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 
@@ -5073,6 +5013,34 @@ MonoBehaviour:
     floatRef: {fileID: 0}
     floatVal: 1
   durationOLD: 0
+--- !u!114 &468763107
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468763047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 63
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 787010252}
+  targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: StoppableController
+  targetMethod: StartAll
+  targetMethodText: 'StartAll (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!4 &475292730 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3564026850829729314, guid: 72a905bcc22e3e443be6f48bfb173c00, type: 3}
