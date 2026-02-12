@@ -377,17 +377,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc9968c4dc5d5264b89413cdfe5d303e, type: 3}
---- !u!114 &116293567 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-  m_PrefabInstance: {fileID: 342678621}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &119538647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1856,7 +1845,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 296661665}
   selectedCommands:
-  - {fileID: 296661694}
+  - {fileID: 296661679}
   variables: []
   description: 
   stepPause: 0
@@ -1900,8 +1889,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 5
   indentLevel: 0
-  storyText: "\u30EF\u30B7\u3068Akim \u6614\u304B\u3089 \u3044\u3063\u3057\u3087\u306B
-    \u6226\u3063\u3066\u305F\u3093\u304B\uFF1F\n"
+  storyText: "\u30EF\u30B7\u3068Akim \u6614\u304B\u3089\u77E5\u308A\u5408\u3044\u306A\u3093\u304B\uFF1F\n"
   description: 
   character: {fileID: 550956466}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -1928,7 +1916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 4
   indentLevel: 0
-  storyText: "\u305D\u3046\u3044\u3048\u3070 \u30EF\u30B7\u3082 \u304A\u307C\u3048\u304C\u3042\u308B\n\u304A\u524D\u304C
+  storyText: "\u305D\u3046\u3044\u3048\u3070 \u30EF\u30B7\u3082 \u304A\u307C\u3048\u304C\n\u304A\u524D\u304C
     \u305D\u308C\u6301\u3063\u3066 \u3068\u306A\u308A\u306B..."
   description: 
   character: {fileID: 550956466}
@@ -1956,7 +1944,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 3
   indentLevel: 0
-  storyText: "\u306A\u306B? VeryLongGun\uFF1F\n\u81EA\u5206\u304C\u6614\u4F7F\u3063\u3066\u305F\u3082\u3093\u3084\u3066\uFF1F"
+  storyText: "\u306A\u306B? VeryLongGun\uFF1F\n\u6614\u4F7F\u3063\u3066\u305F\u3082\u3093\u3084\u3066\uFF1F"
   description: 
   character: {fileID: 550956466}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -1983,7 +1971,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 2
   indentLevel: 0
-  storyText: "\u305D\u308C\u306B\u3057\u3066\u3082Akim...\n\u306A\u3093\u3084\u305D\u306E\u9283\uFF1F"
+  storyText: "\u305D\u308C\u306B\u3057\u3066\u3082\n\u306A\u3093\u3084\u305D\u306E\u9283\uFF1F"
   description: 
   character: {fileID: 550956466}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -2245,9 +2233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 15
   indentLevel: 0
-  storyText: "\u30EF\u30B7\u306E \u30D1\u30F3\u30C1\u3058\u3083 \u3042\u306E \u9AD8\u3055\u306F
-    \u7121\u7406\u3084...\n\u3067\u3082 \u304A\u524D\u306E Very Long Gun\u306A\u3089
-    \u3044\u3051\u308B\u3093\u3061\u3083\u3046\u304B\uFF1F\n"
+  storyText: "\u304A\u524D\u306E Very Long Gun\u3092\n\u4E0A\u306B\u5411\u3051\u3066\u3046\u3066\u3070\u58CA\u305B\u305D\u3046\u3084"
   description: 
   character: {fileID: 550956466}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -2420,7 +2406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 35
   indentLevel: 0
-  storyText: "Akim...Very Long Gun\u3067 \u3044\u308F \u3053\u308F\u305B\u308B\u304B\uFF1F"
+  storyText: "Very Long Gun\u3067 \u3044\u308F \u3053\u308F\u305B\u308B\u304B\uFF1F"
   description: 
   character: {fileID: 550956466}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -51373,7 +51359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 116293567}
+  selectedFlowchart: {fileID: 296661666}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
