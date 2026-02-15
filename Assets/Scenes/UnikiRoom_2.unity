@@ -1429,6 +1429,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &807293560
 GameObject:
   m_ObjectHideFlags: 0
@@ -2421,16 +2422,11 @@ GameObject:
   - component: {fileID: 1430527663}
   - component: {fileID: 1430527669}
   - component: {fileID: 1430527668}
-  - component: {fileID: 1430527665}
-  - component: {fileID: 1430527667}
-  - component: {fileID: 1430527666}
   - component: {fileID: 1430527671}
   - component: {fileID: 1430527670}
   - component: {fileID: 1430527673}
   - component: {fileID: 1430527672}
   - component: {fileID: 1430527674}
-  - component: {fileID: 1430527676}
-  - component: {fileID: 1430527675}
   - component: {fileID: 1430527677}
   - component: {fileID: 1430527678}
   - component: {fileID: 1430527679}
@@ -2473,7 +2469,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 1430527644}
   selectedCommands:
-  - {fileID: 1430527677}
+  - {fileID: 1430527672}
   variables: []
   description: 
   stepPause: 0
@@ -2561,11 +2557,6 @@ MonoBehaviour:
   - {fileID: 1430527663}
   - {fileID: 1430527669}
   - {fileID: 1430527668}
-  - {fileID: 1430527665}
-  - {fileID: 1430527667}
-  - {fileID: 1430527666}
-  - {fileID: 1430527676}
-  - {fileID: 1430527675}
   - {fileID: 1430527674}
   - {fileID: 1430527671}
   - {fileID: 1430527678}
@@ -2842,7 +2833,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 8
   indentLevel: 0
-  storyText: "\u305D\u3046\u3001\u305D\u308C\uFF01\nMillco\u3055\u3093\u3001\u305D\u308C\uFF01"
+  storyText: "\u305D\u3046\u3001\u305D\u308C\uFF01"
   description: 
   character: {fileID: 1953749611}
   portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
@@ -3024,88 +3015,6 @@ MonoBehaviour:
   indentLevel: 0
   storyText: "\u307B\u3068\u3093\u3069\u8A18\u61B6\u306F\u306A\u3044...\n\u3060\u3051\u3069\u3082
     \u305F\u3057\u304B\u306B\u30EF\u30B7\u306FCNP\u3068\u547C\u3070\u308C\u3066\u3044\u305F"
-  description: 
-  character: {fileID: 2025787970}
-  portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
---- !u!114 &1430527665
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1430527641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 22
-  indentLevel: 0
-  storyText: "\u864E\u304F\u3093...\u3044\u3084 Akim\u304F\u3093\u306B\u6BD4\u3079\u308B\u3068\n\u30EA\u30FC\u30EA\u30FC\u3055\u3093\u306F\u591A\u5C11...\u3084
-    \u304B\u306A\u308A\u5F31\u3044\u3051\u3069"
-  description: 
-  character: {fileID: 1953749611}
-  portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
---- !u!114 &1430527666
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1430527641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 24
-  indentLevel: 0
-  storyText: "\u3042\u308C \u6012\u3089\u306A\u3044\uFF1F"
-  description: 
-  character: {fileID: 1953749611}
-  portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
---- !u!114 &1430527667
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1430527641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 23
-  indentLevel: 0
-  storyText: ......
   description: 
   character: {fileID: 2025787970}
   portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
@@ -3352,61 +3261,6 @@ MonoBehaviour:
   description: 
   character: {fileID: 1953749611}
   portrait: {fileID: 21300000, guid: 2b3dee63346a14909b619113629b5dad, type: 3}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
---- !u!114 &1430527675
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1430527641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 31
-  indentLevel: 0
-  storyText: "(\u3084...\u300C\u5B88\u308B\u300D\u3063\u3066...\u8AB0\u3092\u3084\uFF1F\uFF1F)"
-  description: 
-  character: {fileID: 2025787970}
-  portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
-  voiceOverClip: {fileID: 0}
-  showAlways: 1
-  showCount: 1
-  extendPrevious: 0
-  fadeWhenDone: 1
-  waitForClick: 1
-  stopVoiceover: 1
-  waitForVO: 0
-  setSayDialog: {fileID: 0}
---- !u!114 &1430527676
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1430527641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 30
-  indentLevel: 0
-  storyText: "(\u30A6\u30CB\u306E\u8A00\u3046\u901A\u308A\u3084\n\u30EF\u30B7 \u3053\u306E1\u4E07\u5E74\u306E\u9593\u306B\u304B\u306A\u308A\u5F31\u304F\u306A\u3063\u3068\u308B...\n\u3053\u3093\u306A\u3093\u3058\u3083
-    \u8AB0\u3082\u5B88\u308C\u3078\u3093\u3067...\uFF09"
-  description: 
-  character: {fileID: 2025787970}
-  portrait: {fileID: 21300000, guid: 6954a922670574d0bbdb7ea8546283b8, type: 3}
   voiceOverClip: {fileID: 0}
   showAlways: 1
   showCount: 1
@@ -6835,6 +6689,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2117443253
 GameObject:
   m_ObjectHideFlags: 0
