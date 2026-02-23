@@ -30,6 +30,14 @@ namespace VLCNP.Combat.EnemyAction
         [Tooltip("攻撃後に待機する時間")]
         float waitAfterAttack = 2f;
 
+        [SerializeField]
+        [Tooltip("射出角度に加えるランダム角度の最小値")]
+        float randomAngleMin = -15f;
+
+        [SerializeField]
+        [Tooltip("射出角度に加えるランダム角度の最大値")]
+        float randomAngleMax = 15f;
+
         private Animator animator;
 
         public enum Direction
@@ -86,7 +94,9 @@ namespace VLCNP.Combat.EnemyAction
                 angle += 180;
             }
             // ランダム性をもたせる
-            angle += Random.Range(-15, 15);
+            float minRandomAngle = Mathf.Min(randomAngleMin, randomAngleMax);
+            float maxRandomAngle = Mathf.Max(randomAngleMin, randomAngleMax);
+            angle += Random.Range(minRandomAngle, maxRandomAngle);
             launchTransform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
             bool isLeft = transform.lossyScale.x > 0;

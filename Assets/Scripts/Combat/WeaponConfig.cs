@@ -21,6 +21,9 @@ namespace VLCNP.Combat
 
             [SerializeField]
             public GameObject projectilePrefab; // IProjectileを実装したGameObject
+
+            [SerializeField]  // 射出パワー
+            public float launchPower = 0f;
         }
 
         const string weaponName = "Weapon";
@@ -54,6 +57,18 @@ namespace VLCNP.Combat
                 handTransform.position,
                 handTransform.rotation
             );
+            // 射出パワーがある場合、生成した射出物にRigidBodyで力を加える
+            Debug.Log("launchPower: " + _weaponLevel.launchPower);
+            if (_weaponLevel.launchPower > 0)
+            {
+                Rigidbody2D rb = projectileObj.GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    // handTransformの向きに力を加える
+                    Vector2 direction = handTransform.right;
+                    rb.AddForce(new Vector2(_weaponLevel.launchPower * direction.x, _weaponLevel.launchPower * direction.y), ForceMode2D.Impulse);
+                }
+            }
 
             // 音声処理
             AudioClip clip = projectileObj.GetComponent<AudioSource>()?.clip;

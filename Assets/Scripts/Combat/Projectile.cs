@@ -186,6 +186,13 @@ namespace VLCNP.Combat
             // 刺さるところまでの時間を待つ
             yield return new WaitForSeconds(0.03f);
             isStopped = true;
+            // RigidBody2Dがあれば速度0にして、無効化する
+            Rigidbody2D rigidBody2D = GetComponent<Rigidbody2D>();
+            if (rigidBody2D != null)
+            {
+                rigidBody2D.velocity = Vector2.zero;
+                rigidBody2D.simulated = false;
+            }
             // 10s後に削除
             Destroy(gameObject, 10);
         }
