@@ -21,6 +21,10 @@ namespace VLCNP.Combat
             if (v.sqrMagnitude < minSpeed * minSpeed) return;
 
             float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+            if (transform.lossyScale.x < 0f)
+            {
+                angle += 180f;
+            }
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         }
     }

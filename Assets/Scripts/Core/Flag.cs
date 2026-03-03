@@ -42,6 +42,7 @@ namespace VLCNP.Core
         B1FTojikome,  // おひるねべや(闇)のB1Fの閉じ込めイベントが発生した
         B1FBossDefeated, // おひるねべや(闇)のB1Fのボスを倒した
         TrialEnd2,  // 体験版終了のメッセージが出た
-        Yami1FDoorClosed,  
+        Yami1FDoorClosed,
+        Yami2FDoorOpend,  // おひるねべや(闇)の2Fの出口が開いている
     }
 }

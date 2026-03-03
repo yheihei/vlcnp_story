@@ -87,12 +87,8 @@ namespace VLCNP.Combat.EnemyAction
 
             // プレイヤーの方向に向ける
             Vector3 playerPosition = player.transform.position;
-            Vector3 direction = launchTransform.position - playerPosition;
+            Vector3 direction = playerPosition - launchTransform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            if (playerPosition.x > launchTransform.position.x)
-            {
-                angle += 180;
-            }
             // ランダム性をもたせる
             float minRandomAngle = Mathf.Min(randomAngleMin, randomAngleMax);
             float maxRandomAngle = Mathf.Max(randomAngleMin, randomAngleMax);
