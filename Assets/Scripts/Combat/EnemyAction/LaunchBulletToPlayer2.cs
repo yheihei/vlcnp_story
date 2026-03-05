@@ -92,7 +92,8 @@ namespace VLCNP.Combat.EnemyAction
             // ランダム性をもたせる
             float minRandomAngle = Mathf.Min(randomAngleMin, randomAngleMax);
             float maxRandomAngle = Mathf.Max(randomAngleMin, randomAngleMax);
-            angle += Random.Range(minRandomAngle, maxRandomAngle);
+            float randomAngleOffset = Random.Range(minRandomAngle, maxRandomAngle);
+            angle += direction.x >= 0f ? randomAngleOffset : -randomAngleOffset;
             launchTransform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
             bool isLeft = transform.lossyScale.x > 0;
