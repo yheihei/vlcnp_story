@@ -80,8 +80,7 @@ namespace VLCNP.SceneManagement
 
             // 遷移後 こちらのシーンでのSaving wrapperを再取得
             savingWrapper = FindObjectOfType<SavingWrapper>();
-            // StoppableControllerをタグから取得
-            StoppableController stoppableController = GameObject.FindWithTag("StoppableController").GetComponent<StoppableController>();
+            StoppableController stoppableController = StoppableController.FindInScene();
             stoppableController?.StopAll();
             // BGMの変更があれば変更
             StartCoroutine(ChangeBGM());

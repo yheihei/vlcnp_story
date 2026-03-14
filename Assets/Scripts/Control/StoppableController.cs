@@ -8,6 +8,30 @@ namespace VLCNP.Control
 {
     public class StoppableController : MonoBehaviour
     {
+        public const string TagName = "StoppableController";
+
+        public static StoppableController FindInScene()
+        {
+            GameObject taggedObject = GameObject.FindWithTag(TagName);
+            if (taggedObject != null &&
+                taggedObject.TryGetComponent(out StoppableController controller))
+            {
+                return controller;
+            }
+
+            StoppableController[] controllers = FindObjectsOfType<StoppableController>(true);
+            foreach (StoppableController candidate in controllers)
+            {
+                if (candidate != null &&
+                    candidate.CompareTag(TagName))
+                {
+                    return candidate;
+                }
+            }
+
+            return controllers.Length > 0 ? controllers[0] : null;
+        }
+
         public void StopAll()
         {
             Debug.Log("Stop All Components Called");
