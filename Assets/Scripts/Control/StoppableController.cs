@@ -16,7 +16,6 @@ namespace VLCNP.Control
 
         private IEnumerator StopAllCoroutine()
         {
-            // Loadが完了するのを待つ
             LoadCompleteManager loadCompleteManager = LoadCompleteManager.Instance;
             // LoadCompleteManagerが存在し、ロードが完了していない場合は待つ
             if (loadCompleteManager != null)

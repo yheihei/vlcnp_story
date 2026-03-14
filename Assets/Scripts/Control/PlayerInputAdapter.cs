@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VLCNP.SceneManagement;
 
 namespace VLCNP.Control
 {
@@ -17,8 +18,18 @@ namespace VLCNP.Control
         private static string lastGamepadId = "";
         private static float lastLoggedHorizontal = 0f;
 
+        private static bool IsGameplayInputBlocked()
+        {
+            return TransitionEvent.IsAnyTransitionRunning;
+        }
+
         public static float GetMoveHorizontal()
         {
+            if (IsGameplayInputBlocked())
+            {
+                return 0f;
+            }
+
             float horizontal = 0f;
             if (Input.GetKey("right"))
             {
@@ -52,6 +63,11 @@ namespace VLCNP.Control
 
         public static bool IsAimUpPressed()
         {
+            if (IsGameplayInputBlocked())
+            {
+                return false;
+            }
+
             if (Input.GetKey("up"))
             {
                 return true;
@@ -78,6 +94,11 @@ namespace VLCNP.Control
 
         public static bool IsAimDownPressed()
         {
+            if (IsGameplayInputBlocked())
+            {
+                return false;
+            }
+
             if (Input.GetKey("down"))
             {
                 return true;
@@ -104,6 +125,11 @@ namespace VLCNP.Control
 
         public static bool WasAttackPressed(string keyboardAttackButton)
         {
+            if (IsGameplayInputBlocked())
+            {
+                return false;
+            }
+
             if (
                 !string.IsNullOrEmpty(keyboardAttackButton)
                 && Input.GetKeyDown(keyboardAttackButton)
@@ -122,6 +148,11 @@ namespace VLCNP.Control
 
         public static bool WasInteractPressed()
         {
+            if (IsGameplayInputBlocked())
+            {
+                return false;
+            }
+
             if (Input.GetKeyDown("up"))
             {
                 return true;
@@ -145,6 +176,11 @@ namespace VLCNP.Control
 
         public static bool WasCharacterSwitchPressed(KeyCode keyboardKey)
         {
+            if (IsGameplayInputBlocked())
+            {
+                return false;
+            }
+
             if (Input.GetKeyDown(keyboardKey))
             {
                 return true;
@@ -221,6 +257,11 @@ namespace VLCNP.Control
 
         public static bool WasJumpPressed(string keyboardJumpButton)
         {
+            if (IsGameplayInputBlocked())
+            {
+                return false;
+            }
+
             if (!string.IsNullOrEmpty(keyboardJumpButton) && Input.GetKeyDown(keyboardJumpButton))
             {
                 return true;
@@ -236,6 +277,11 @@ namespace VLCNP.Control
 
         public static bool WasJumpReleased(string keyboardJumpButton)
         {
+            if (IsGameplayInputBlocked())
+            {
+                return false;
+            }
+
             if (!string.IsNullOrEmpty(keyboardJumpButton) && Input.GetKeyUp(keyboardJumpButton))
             {
                 return true;
@@ -251,6 +297,11 @@ namespace VLCNP.Control
 
         public static bool IsJumpHeld(string keyboardJumpButton)
         {
+            if (IsGameplayInputBlocked())
+            {
+                return false;
+            }
+
             if (!string.IsNullOrEmpty(keyboardJumpButton) && Input.GetKey(keyboardJumpButton))
             {
                 return true;
@@ -266,6 +317,11 @@ namespace VLCNP.Control
 
         public static bool WasDashPressed()
         {
+            if (IsGameplayInputBlocked())
+            {
+                return false;
+            }
+
             if (Input.GetKeyDown(KeyCode.X))
             {
                 return true;

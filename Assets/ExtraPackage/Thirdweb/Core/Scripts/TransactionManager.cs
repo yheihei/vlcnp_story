@@ -77,7 +77,7 @@ namespace Thirdweb
 
                 string txHash = null;
 
-                using (UnityWebRequest req = UnityWebRequest.Post(relayerUrl, ""))
+                using (UnityWebRequest req = UnityWebRequest.PostWwwForm(relayerUrl, ""))
                 {
                     byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(postData));
                     req.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);

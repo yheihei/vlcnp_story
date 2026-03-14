@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using VLCNP.Control;
 using VLCNP.Core;
 using VLCNP.UI;
 
@@ -12,6 +11,18 @@ namespace VLCNP.SceneManagement
      */
     public class TransitionEvent : MonoBehaviour
     {
+        public enum TransitionState
+        {
+            Idle,
+            Transitioning,
+            Completed,
+        }
+
+        private static int activeTransitionCount = 0;
+
+        public static bool IsAnyTransitionRunning => activeTransitionCount > 0;
+        public static TransitionState SharedState { get; private set; } = TransitionState.Idle;
+
         [SerializeField]
         int sceneToLoad = -1;
 
@@ -46,9 +57,16 @@ namespace VLCNP.SceneManagement
         private AreaBGM areaBGM;
 
         bool isTransitioning = false;
+        bool isRegisteredSharedState = false;
 
         public void ExecuteTransition()
         {
+            if (isTransitioning)
+            {
+                Debug.LogWarning("TransitionEvent is already running.");
+                return;
+            }
+            isTransitioning = true;
             StartCoroutine(Transition());
         }
 
@@ -56,83 +74,107 @@ namespace VLCNP.SceneManagement
         {
             if (sceneToLoad < 0)
             {
+                isTransitioning = false;
                 Debug.LogError("Scene to load not set");
                 yield break;
             }
-            DontDestroyOnLoad(gameObject);
-
-            // StoppableControllerをタグから取得
-            StoppableController stoppableController = GameObject
-                .FindWithTag("StoppableController")
-                .GetComponent<StoppableController>();
-            stoppableController?.StopAll();
-
-            // SceneFaderタグでFaderを取得
-            Fader fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
-            yield return fader.FadeOut(fadeOutTime);
-
-            // キャラたちの状態保存
-            SavingWrapper savingWrapper = FindObjectOfType<SavingWrapper>();
-            if (isAutoSave)
+            RegisterSharedState();
+            try
             {
-                savingWrapper.Save(autoSaveFileName);
+                DontDestroyOnLoad(gameObject);
+
+                // SceneFaderタグでFaderを取得
+                Fader fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
+                yield return fader.FadeOut(fadeOutTime);
+
+                // キャラたちの状態保存
+                SavingWrapper savingWrapper = FindObjectOfType<SavingWrapper>();
+                if (isAutoSave)
+                {
+                    savingWrapper.Save(autoSaveFileName);
+                }
+
+                yield return new WaitForSeconds(fadeWaitTime / 2);
+
+                yield return SceneManager.LoadSceneAsync(sceneToLoad);
+                print("scene load end: " + sceneToLoad);
+                // キャラたちの状態復元
+                // 遷移後 こちらのシーンでのSaving wrapperを再取得
+                savingWrapper = FindObjectOfType<SavingWrapper>();
+                savingWrapper.LoadOnlyState(autoSaveFileName);
+
+                // BGMの変更があれば変更
+                yield return ChangeBGM();
+
+                TransitionSpawnPoint transitionSpawnPoint =
+                    GetTransitionSpawnPoint()
+                    ?? throw new System.Exception("Transition spawn point not found");
+                print("transition spawn point found");
+                UpdatePlayerPosition(transitionSpawnPoint);
+
+                yield return new WaitForSeconds(fadeWaitTime / 2);
+
+                // 1フレーム待つ この間に自動起動イベント等を起こさせる
+                yield return null;
+
+                // 自動起動イベントが起きた後にフェードインする
+                fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
+                print("fade in start");
+                yield return fader.FadeIn(fadeInTime);
+                print("fade in end");
+                SharedState = TransitionState.Completed;
+
+                if (isRetryOnDestination)
+                {
+                    // 遷移先でリトライする場合は遷移後のシーンでオートセーブ
+                    savingWrapper.AutoSave();
+                }
+
+                if (isShowAreaName)
+                {
+                    // 遷移先でエリア名を表示する場合は遷移後のシーンでエリア名表示
+                    AreaNameShow areaNameShow = GameObject
+                        .FindWithTag("AreaName")
+                        .GetComponent<AreaNameShow>();
+                    if (areaNameShow)
+                        areaNameShow.Show();
+                }
+
+                Destroy(gameObject);
             }
-
-            yield return new WaitForSeconds(fadeWaitTime / 2);
-
-            yield return SceneManager.LoadSceneAsync(sceneToLoad);
-            print("scene load end: " + sceneToLoad);
-            // キャラたちの状態復元
-            // 遷移後 こちらのシーンでのSaving wrapperを再取得
-            savingWrapper = FindObjectOfType<SavingWrapper>();
-            savingWrapper.LoadOnlyState(autoSaveFileName);
-
-            // BGMの変更があれば変更
-            yield return ChangeBGM();
-
-            TransitionSpawnPoint transitionSpawnPoint =
-                GetTransitionSpawnPoint()
-                ?? throw new System.Exception("Transition spawn point not found");
-            print("transition spawn point found");
-            UpdatePlayerPosition(transitionSpawnPoint);
-
-            yield return new WaitForSeconds(fadeWaitTime / 2);
-
-            fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
-            print("fade in start");
-            yield return fader.FadeIn(fadeInTime);
-            print("fade in end");
-
-            // 入力再開: 遷移先シーンの StoppableController で全IStoppableを解除
-            StoppableController newStoppableController = GameObject
-                .FindWithTag("StoppableController")
-                ?.GetComponent<StoppableController>();
-            if (newStoppableController != null)
+            finally
             {
-                newStoppableController.StartAll();
+                UnregisterSharedState();
             }
-            else
-            {
-                Debug.LogWarning("TransitionEvent: StoppableController not found in destination scene");
-            }
+        }
 
-            if (isRetryOnDestination)
-            {
-                // 遷移先でリトライする場合は遷移後のシーンでオートセーブ
-                savingWrapper.AutoSave();
-            }
+        private void OnDestroy()
+        {
+            UnregisterSharedState();
+        }
 
-            if (isShowAreaName)
-            {
-                // 遷移先でエリア名を表示する場合は遷移後のシーンでエリア名表示
-                AreaNameShow areaNameShow = GameObject
-                    .FindWithTag("AreaName")
-                    .GetComponent<AreaNameShow>();
-                if (areaNameShow)
-                    areaNameShow.Show();
-            }
+        private void RegisterSharedState()
+        {
+            if (isRegisteredSharedState)
+                return;
+            activeTransitionCount++;
+            SharedState = TransitionState.Transitioning;
+            isRegisteredSharedState = true;
+        }
 
-            Destroy(gameObject);
+        private void UnregisterSharedState()
+        {
+            if (!isRegisteredSharedState)
+                return;
+
+            activeTransitionCount = Mathf.Max(0, activeTransitionCount - 1);
+            isRegisteredSharedState = false;
+            isTransitioning = false;
+
+            if (activeTransitionCount == 0)
+            {
+                SharedState = TransitionState.Idle;
+            }
         }
 
         private IEnumerator ChangeBGM()
