@@ -71,6 +71,7 @@ namespace VLCNP.Control
         private void Start()
         {
             SetCurrentPlayerActive();
+            ChangeHud();
             Debug.Log($"[PartyCongroller] Start currentPlayer={currentPlayer?.name} at t={Time.time:F3}");
         }
 
