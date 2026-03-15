@@ -26,8 +26,8 @@ namespace VLCNP.Combat.EnemyAction
 
         private void Awake()
         {
-            player = GameObject.FindGameObjectWithTag("Player");
             InitializePartyController();
+            RefreshPlayer();
             if (animator == null)
                 animator = GetComponent<Animator>();
         }
@@ -43,6 +43,9 @@ namespace VLCNP.Combat.EnemyAction
 
         void OnEnable()
         {
+            if (partyCongroller == null)
+                InitializePartyController();
+            RefreshPlayer();
             if (partyCongroller == null)
                 return;
             partyCongroller.OnChangeCharacter += SetPlayer;
@@ -60,6 +63,13 @@ namespace VLCNP.Combat.EnemyAction
             partyCongroller = GameObject
                 .FindGameObjectWithTag("Party")
                 ?.GetComponent<PartyCongroller>();
+        }
+
+        private void RefreshPlayer()
+        {
+            player = partyCongroller != null
+                ? partyCongroller.GetCurrentPlayer()
+                : GameObject.FindGameObjectWithTag("Player");
         }
 
         private void SetPlayer(GameObject _player)
