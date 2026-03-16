@@ -8,9 +8,33 @@ namespace VLCNP.Core
 {
     public class FlagManager : MonoBehaviour, IJsonSaveable
     {
+        public const string TagName = "FlagManager";
+
         [SerializeField]
         private Dictionary<Flag, bool> flagDictionary = new();
         public event Action<Flag, bool> OnChangeFlag;
+
+        public static FlagManager FindInScene()
+        {
+            GameObject taggedObject = GameObject.FindWithTag(TagName);
+            if (taggedObject != null &&
+                taggedObject.TryGetComponent(out FlagManager manager))
+            {
+                return manager;
+            }
+
+            FlagManager[] managers = FindObjectsOfType<FlagManager>(true);
+            foreach (FlagManager candidate in managers)
+            {
+                if (candidate != null &&
+                    candidate.CompareTag(TagName))
+                {
+                    return candidate;
+                }
+            }
+
+            return managers.Length > 0 ? managers[0] : null;
+        }
 
         public bool GetFlag(Flag flag)
         {

@@ -14,6 +14,8 @@ namespace VLCNP.Control
 {
     public class PartyCongroller : MonoBehaviour, IJsonSaveable, IStoppable
     {
+        public const string TagName = "Party";
+
         [SerializeField]
         GameObject currentPlayer;
 
@@ -61,6 +63,28 @@ namespace VLCNP.Control
         public event Action<GameObject> OnChangeCharacter;
 
         KeyCode swithCharacterButton = KeyCode.Z;
+
+        public static PartyCongroller FindInScene()
+        {
+            GameObject taggedObject = GameObject.FindWithTag(TagName);
+            if (taggedObject != null &&
+                taggedObject.TryGetComponent(out PartyCongroller controller))
+            {
+                return controller;
+            }
+
+            PartyCongroller[] controllers = FindObjectsOfType<PartyCongroller>(true);
+            foreach (PartyCongroller candidate in controllers)
+            {
+                if (candidate != null &&
+                    candidate.CompareTag(TagName))
+                {
+                    return candidate;
+                }
+            }
+
+            return controllers.Length > 0 ? controllers[0] : null;
+        }
 
         private void Awake()
         {
