@@ -44,5 +44,6 @@ namespace VLCNP.Core
         TrialEnd2,  // 体験版終了のメッセージが出た
         Yami1FDoorClosed,
         Yami2FDoorOpend,  // おひるねべや(闇)の2Fの出口が開いている
+        HPUpYami3F, // お昼寝部屋やみの3FHPアップ
     }
 }
