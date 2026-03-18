@@ -45,5 +45,6 @@ namespace VLCNP.Core
         Yami1FDoorClosed,
         Yami2FDoorOpend,  // おひるねべや(闇)の2Fの出口が開いている
         HPUpYami3F, // お昼寝部屋やみの3FHPアップ
+        Yami3FBossDefeated, // おひるねべや(闇)の3Fのボスを倒した
     }
 }

@@ -81,9 +81,7 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
             return;
         // 現在の行動を実行する
         if (!currentAction.IsExecuting)
-        {
             currentAction.Execute();
-        }
         if (!currentAction.IsDone)
             return;
         // 現在の行動が終了した場合はリセットして次の行動に進む

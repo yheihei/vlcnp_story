@@ -63,6 +63,9 @@ namespace VLCNP.Combat.EnemyAction
             // 動く前に今向いている方向を取得 local.scaleが正なら左、負なら右
             direction = transform.localScale.x > 0 ? Direction.Left : Direction.Right;
             SetDirection(direction);
+            // 初回実行直後は Trigger 状態がまだ更新されていないことがあるため、
+            // 1 回 FixedUpdate を待ってから崖/壁判定を開始する。
+            yield return new WaitForFixedUpdate();
             while (elapsedTime <= _moveTimeout)
             {
                 // 向いてる方向で移動（速度修正を適用）
