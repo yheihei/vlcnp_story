@@ -144,5 +144,10 @@ namespace VLCNP.SceneManagement
 
             AudioSource.PlayClipAtPoint(setFlagSe, transform.position, setFlagSeVolume);
         }
+
+        private void OnDisable()
+        {
+            UnsubscribeEnemyHealths();
+        }
     }
 }
