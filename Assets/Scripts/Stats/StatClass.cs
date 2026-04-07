@@ -24,5 +24,6 @@ namespace VLCNP.Stats
         GhostHand,
         SkullKnightBoss,
         SkullArcher,
+        VLMitamaBoss,
     }
 }
