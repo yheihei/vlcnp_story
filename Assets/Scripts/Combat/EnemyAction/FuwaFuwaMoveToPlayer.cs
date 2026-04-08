@@ -57,7 +57,7 @@ namespace VLCNP.Combat.EnemyAction
             moveRoutine = StartCoroutine(MoveToPlayer(player.transform));
         }
 
-        public new void Stop()
+        public override void Stop()
         {
             if (moveRoutine != null)
             {
