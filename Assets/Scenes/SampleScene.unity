@@ -828,10 +828,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 803405205989460652, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: enemyActions.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 803405205989460652, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: enemyActions.Array.data[1].rawReference
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 803405205989460652, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: enemyActions.Array.data[2].rawReference
       value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 803405205989460652, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
@@ -842,6 +846,10 @@ PrefabInstance:
       propertyPath: enemyActions.Array.data[1].unityReference
       value: 
       objectReference: {fileID: 567842407}
+    - target: {fileID: 803405205989460652, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: enemyActions.Array.data[2].unityReference
+      value: 
+      objectReference: {fileID: 567842408}
     - target: {fileID: 2647138199795982738, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -920,6 +928,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7737478085877585054, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 567842407}
+    - targetCorrespondingSourceObject: {fileID: 7737478085877585054, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 567842408}
   m_SourcePrefab: {fileID: 100100000, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
 --- !u!1 &567842405 stripped
 GameObject:
@@ -964,6 +975,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTimeSecond: 0.5
+--- !u!114 &567842408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567842405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3701541655026492c9e6f3752600db09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileSprite: {fileID: -584630991, guid: 233438f02fbc2401b90e77f6d33b3672, type: 3}
+  projectileColor: {r: 1, g: 1, b: 1, a: 1}
+  projectileScale: {x: 1.2, y: 1.2, z: 1}
+  orbitCenterOffset: {x: 0, y: 0.5}
+  projectileColliderSize: {x: 0.28, y: 0.28}
+  projectileCount: 4
+  orbitRadius: 1.1
+  orbitDegreesPerSecond: 240
+  orbitWarmupDuration: 1.2
+  launchInterval: 0.2
+  projectileSpeed: 6
+  projectileLifetime: 4
+  projectileDamage: 1
+  selfRotationDegreesPerSecond: 180
+  targetTagName: Player
 --- !u!1 &603898113
 GameObject:
   m_ObjectHideFlags: 0
