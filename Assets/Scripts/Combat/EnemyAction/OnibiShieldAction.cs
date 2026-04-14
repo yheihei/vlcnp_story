@@ -59,11 +59,16 @@ namespace VLCNP.Combat.EnemyAction
         readonly List<OrbitingOnibiProjectile> activeProjectiles = new List<OrbitingOnibiProjectile>();
         SpriteRenderer ownerSpriteRenderer = null;
         Health ownerHealth = null;
+        Animator animator = null;
+
+        const string PreMagicParameterName = "isPreMagic";
+        const string MagicParameterName = "isMagic";
 
         void Awake()
         {
             ownerSpriteRenderer = GetComponent<SpriteRenderer>();
             ownerHealth = GetComponent<Health>();
+            animator = GetComponent<Animator>();
         }
 
         void OnDisable()
@@ -111,6 +116,7 @@ namespace VLCNP.Combat.EnemyAction
                 yield break;
             }
 
+            SetPreMagic(true);
             SpawnProjectiles();
 
             float elapsed = 0f;
@@ -125,6 +131,9 @@ namespace VLCNP.Combat.EnemyAction
                 elapsed += Time.deltaTime;
                 yield return null;
             }
+
+            SetPreMagic(false);
+            SetMagic(true);
 
             for (int i = 0; i < activeProjectiles.Count; i++)
             {
@@ -147,6 +156,8 @@ namespace VLCNP.Combat.EnemyAction
                 projectile.LaunchTowards(player.transform.position, projectileSpeed, projectileLifetime);
                 yield return new WaitForSeconds(launchInterval);
             }
+
+            SetMagic(false);
 
             while (HasLivingProjectiles())
             {
@@ -246,6 +257,7 @@ namespace VLCNP.Combat.EnemyAction
                 actionRoutine = null;
             }
 
+            ResetMagicStates();
             CleanupProjectiles();
             IsExecuting = false;
             IsDone = true;
@@ -255,8 +267,25 @@ namespace VLCNP.Combat.EnemyAction
         {
             actionRoutine = null;
             activeProjectiles.Clear();
+            ResetMagicStates();
             IsExecuting = false;
             IsDone = true;
+        }
+
+        void SetPreMagic(bool value)
+        {
+            animator?.SetBool(PreMagicParameterName, value);
+        }
+
+        void SetMagic(bool value)
+        {
+            animator?.SetBool(MagicParameterName, value);
+        }
+
+        void ResetMagicStates()
+        {
+            SetPreMagic(false);
+            SetMagic(false);
         }
     }
 }
