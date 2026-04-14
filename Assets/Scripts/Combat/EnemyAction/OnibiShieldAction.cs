@@ -11,6 +11,9 @@ namespace VLCNP.Combat.EnemyAction
         Sprite projectileSprite = null;
 
         [SerializeField]
+        RuntimeAnimatorController projectileAnimatorController = null;
+
+        [SerializeField]
         Color projectileColor = Color.white;
 
         [SerializeField]
@@ -32,7 +35,7 @@ namespace VLCNP.Combat.EnemyAction
         float orbitDegreesPerSecond = 240f;
 
         [SerializeField]
-        float orbitWarmupDuration = 1.2f;
+        float orbitWarmupDuration = 2.4f;
 
         [SerializeField]
         float launchInterval = 0.2f;
@@ -47,7 +50,7 @@ namespace VLCNP.Combat.EnemyAction
         float projectileDamage = 1f;
 
         [SerializeField]
-        float selfRotationDegreesPerSecond = 180f;
+        float selfRotationDegreesPerSecond = 0f;
 
         [SerializeField]
         string targetTagName = "Player";
@@ -175,6 +178,7 @@ namespace VLCNP.Combat.EnemyAction
                 projectile.InitializeOrbit(
                     transform,
                     projectileSprite,
+                    projectileAnimatorController,
                     projectileColor,
                     projectileScale,
                     orbitCenterOffset,

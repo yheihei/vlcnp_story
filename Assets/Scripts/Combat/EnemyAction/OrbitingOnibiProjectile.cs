@@ -12,6 +12,7 @@ namespace VLCNP.Combat.EnemyAction
         SpriteRenderer spriteRenderer = null;
         BoxCollider2D triggerCollider = null;
         Shield shield = null;
+        Animator animator = null;
 
         Vector2 orbitCenterOffset = new Vector2(0f, 0.5f);
         float orbitRadius = 1.1f;
@@ -23,15 +24,19 @@ namespace VLCNP.Combat.EnemyAction
         float lifetimeAfterLaunch = 4f;
         string targetTagName = "Player";
         Vector2 moveDirection = Vector2.zero;
+        [SerializeField]
+        float hitFadeDuration = 0.25f;
         bool isOrbiting = false;
         bool isLaunched = false;
         bool isLeft = false;
+        bool isFadingOut = false;
 
         void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
             triggerCollider = GetComponent<BoxCollider2D>();
             shield = GetComponent<Shield>();
+            animator = GetComponent<Animator>();
 
             AudioSource audioSource = GetComponent<AudioSource>();
             if (audioSource != null)
@@ -48,6 +53,7 @@ namespace VLCNP.Combat.EnemyAction
         public void InitializeOrbit(
             Transform owner,
             Sprite sprite,
+            RuntimeAnimatorController animatorController,
             Color color,
             Vector3 projectileScale,
             Vector2 centerOffset,
@@ -80,6 +86,17 @@ namespace VLCNP.Combat.EnemyAction
                 spriteRenderer.color = color;
                 spriteRenderer.sortingLayerID = sortingLayerId;
                 spriteRenderer.sortingOrder = sortingOrder;
+            }
+
+            if (animatorController != null)
+            {
+                if (animator == null)
+                {
+                    animator = gameObject.AddComponent<Animator>();
+                }
+
+                animator.runtimeAnimatorController = animatorController;
+                animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
             }
 
             if (triggerCollider != null)
@@ -145,7 +162,7 @@ namespace VLCNP.Combat.EnemyAction
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (!isLaunched)
+            if (!isLaunched || isFadingOut)
                 return;
 
             if (!other.CompareTag(targetTagName))
@@ -156,7 +173,7 @@ namespace VLCNP.Combat.EnemyAction
                 return;
 
             health.TakeDamage(damage, isLeft);
-            Destroy(gameObject);
+            StartCoroutine(FadeOutAndDestroy());
         }
 
         void UpdateOrbitPosition()
@@ -168,6 +185,41 @@ namespace VLCNP.Combat.EnemyAction
             Vector3 offset =
                 new Vector3(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians), 0f) * orbitRadius;
             transform.localPosition = (Vector3)orbitCenterOffset + offset;
+        }
+
+        System.Collections.IEnumerator FadeOutAndDestroy()
+        {
+            isFadingOut = true;
+
+            if (triggerCollider != null)
+            {
+                triggerCollider.enabled = false;
+            }
+
+            if (shield != null)
+            {
+                shield.enabled = false;
+            }
+
+            if (spriteRenderer == null || hitFadeDuration <= 0f)
+            {
+                Destroy(gameObject);
+                yield break;
+            }
+
+            Color startColor = spriteRenderer.color;
+            float elapsed = 0f;
+            while (elapsed < hitFadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / hitFadeDuration);
+                Color color = startColor;
+                color.a = Mathf.Lerp(startColor.a, 0f, t);
+                spriteRenderer.color = color;
+                yield return null;
+            }
+
+            Destroy(gameObject);
         }
     }
 }
