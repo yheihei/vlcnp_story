@@ -850,6 +850,14 @@ PrefabInstance:
       propertyPath: enemyActions.Array.data[2].unityReference
       value: 
       objectReference: {fileID: 567842408}
+    - target: {fileID: 1870270614399124241, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: m_Size.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1870270614399124241, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 2647138199795982738, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -913,6 +921,22 @@ PrefabInstance:
     - target: {fileID: 6003747406024057149, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_GravityScale
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6794174441529861314, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: m_Size.x
+      value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 6794174441529861314, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: m_Size.y
+      value: 1.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 6794174441529861314, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6794174441529861314, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.33
       objectReference: {fileID: 0}
     - target: {fileID: 7737478085877585054, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_Name
@@ -993,11 +1017,11 @@ MonoBehaviour:
   projectileScale: {x: 1.2, y: 1.2, z: 1}
   orbitCenterOffset: {x: 0, y: 0.5}
   projectileColliderSize: {x: 0.28, y: 0.28}
-  projectileCount: 4
-  orbitRadius: 1.1
+  projectileCount: 6
+  orbitRadius: 1.5
   orbitDegreesPerSecond: 240
-  orbitWarmupDuration: 2.4
-  launchInterval: 0.2
+  orbitWarmupDuration: 4
+  launchInterval: 0.8
   projectileSpeed: 6
   projectileLifetime: 4
   projectileDamage: 1

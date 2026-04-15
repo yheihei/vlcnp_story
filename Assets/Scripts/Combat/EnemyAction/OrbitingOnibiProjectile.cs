@@ -25,7 +25,10 @@ namespace VLCNP.Combat.EnemyAction
         string targetTagName = "Player";
         Vector2 moveDirection = Vector2.zero;
         [SerializeField]
+        float spawnFadeDuration = 0.25f;
+        [SerializeField]
         float hitFadeDuration = 0.25f;
+        Color targetColor = Color.white;
         bool isOrbiting = false;
         bool isLaunched = false;
         bool isLeft = false;
@@ -76,6 +79,7 @@ namespace VLCNP.Combat.EnemyAction
             selfRotationDegreesPerSecond = spinSpeed;
             damage = projectileDamage;
             targetTagName = targetTag;
+            targetColor = color;
 
             transform.SetParent(owner, false);
             transform.localScale = projectileScale;
@@ -83,7 +87,7 @@ namespace VLCNP.Combat.EnemyAction
             if (spriteRenderer != null)
             {
                 spriteRenderer.sprite = sprite;
-                spriteRenderer.color = color;
+                spriteRenderer.color = new Color(color.r, color.g, color.b, 0f);
                 spriteRenderer.sortingLayerID = sortingLayerId;
                 spriteRenderer.sortingOrder = sortingOrder;
             }
@@ -115,6 +119,7 @@ namespace VLCNP.Combat.EnemyAction
             isLaunched = false;
             moveDirection = Vector2.zero;
             UpdateOrbitPosition();
+            StartCoroutine(FadeInOnSpawn());
         }
 
         public void LaunchTowards(Vector3 targetPosition, float speed, float lifetime)
@@ -220,6 +225,31 @@ namespace VLCNP.Combat.EnemyAction
             }
 
             Destroy(gameObject);
+        }
+
+        System.Collections.IEnumerator FadeInOnSpawn()
+        {
+            if (spriteRenderer == null)
+                yield break;
+
+            if (spawnFadeDuration <= 0f)
+            {
+                spriteRenderer.color = targetColor;
+                yield break;
+            }
+
+            float elapsed = 0f;
+            while (elapsed < spawnFadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / spawnFadeDuration);
+                Color color = targetColor;
+                color.a = Mathf.Lerp(0f, targetColor.a, t);
+                spriteRenderer.color = color;
+                yield return null;
+            }
+
+            spriteRenderer.color = targetColor;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace VLCNP.Combat.EnemyAction
         Vector2 projectileColliderSize = new Vector2(0.28f, 0.28f);
 
         [SerializeField]
-        int projectileCount = 4;
+        int projectileCount = 6;
 
         [SerializeField]
         float orbitRadius = 1.1f;
