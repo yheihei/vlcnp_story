@@ -818,6 +818,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &364230649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364230650}
+  m_Layer: 0
+  m_Name: GhostSummonPoint_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &364230650
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364230649}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.05, y: 0.53, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 894716387}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &567842404
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -828,7 +859,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 803405205989460652, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: enemyActions.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 803405205989460652, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: enemyActions.Array.data[1].rawReference
@@ -836,6 +867,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 803405205989460652, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: enemyActions.Array.data[2].rawReference
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 803405205989460652, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: enemyActions.Array.data[3].rawReference
       value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 803405205989460652, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
@@ -850,6 +885,10 @@ PrefabInstance:
       propertyPath: enemyActions.Array.data[2].unityReference
       value: 
       objectReference: {fileID: 567842408}
+    - target: {fileID: 803405205989460652, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: enemyActions.Array.data[3].unityReference
+      value: 
+      objectReference: {fileID: 567842409}
     - target: {fileID: 1870270614399124241, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_Size.x
       value: 0.9
@@ -955,6 +994,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7737478085877585054, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 567842408}
+    - targetCorrespondingSourceObject: {fileID: 7737478085877585054, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 567842409}
   m_SourcePrefab: {fileID: 100100000, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
 --- !u!1 &567842405 stripped
 GameObject:
@@ -1027,6 +1069,36 @@ MonoBehaviour:
   projectileDamage: 1
   selfRotationDegreesPerSecond: 0
   targetTagName: Player
+--- !u!114 &567842409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567842405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 949001356a1c5418185ca23e17abc1c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  summonSettings:
+  - spawnPoint: {fileID: 897958465}
+    enemyPrefab: {fileID: 7338976103897652583, guid: c1fbc228d2a314042863da7fe19928ae, type: 3}
+    spawnEffectPrefab: {fileID: 5879255110472687074, guid: e43cd6c23642f4806b9c12a858b90d8d, type: 3}
+  - spawnPoint: {fileID: 364230650}
+    enemyPrefab: {fileID: 7338976103897652583, guid: c1fbc228d2a314042863da7fe19928ae, type: 3}
+    spawnEffectPrefab: {fileID: 5879255110472687074, guid: e43cd6c23642f4806b9c12a858b90d8d, type: 3}
+  - spawnPoint: {fileID: 1826724129}
+    enemyPrefab: {fileID: 7338976103897652583, guid: c1fbc228d2a314042863da7fe19928ae, type: 3}
+    spawnEffectPrefab: {fileID: 5879255110472687074, guid: e43cd6c23642f4806b9c12a858b90d8d, type: 3}
+  preMagicDuration: 2
+  spawnInterval: 0.25
+  postMagicDuration: 0.2
+  spawnSe: {fileID: 8300000, guid: ef6f7e50dde644087aed9a84f94cfb16, type: 3}
+  spawnSeVolume: 1
+  spawnEffectLifetime: 1
+  preMagicBoolName: isPreMagic
+  magicBoolName: isMagic
 --- !u!1 &603898113
 GameObject:
   m_ObjectHideFlags: 0
@@ -9340,6 +9412,71 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17f65a1a907b3495f9f1a77069074055, type: 3}
+--- !u!1 &894716386
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 894716387}
+  m_Layer: 0
+  m_Name: VLMitamaBoss_GhostSummonPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &894716387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894716386}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 897958465}
+  - {fileID: 364230650}
+  - {fileID: 1826724129}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &897958464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 897958465}
+  m_Layer: 0
+  m_Name: GhostSummonPoint_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &897958465
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897958464}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.45, y: 0.53, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 894716387}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &967744061
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11666,6 +11803,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1826724128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1826724129}
+  m_Layer: 0
+  m_Name: GhostSummonPoint_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1826724129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826724128}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.05, y: 0.53, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 894716387}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1836443559 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3873212499115288699, guid: 12e4c22d8e42f4702bc0143cfa843dc4, type: 3}
@@ -13443,3 +13611,4 @@ SceneRoots:
   - {fileID: 967744061}
   - {fileID: 567842404}
   - {fileID: 1498674183}
+  - {fileID: 894716387}
