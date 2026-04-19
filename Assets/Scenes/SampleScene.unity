@@ -860,23 +860,35 @@ PrefabInstance:
       objectReference: {fileID: 567842409}
     - target: {fileID: 1870270614399124241, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_Size.x
-      value: 0.9
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1870270614399124241, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: m_Size.y
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1870270614399124241, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_Offset.y
-      value: -0.8
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1870270614399124241, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1870270614399124241, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2647138199795982738, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2647138199795982738, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2647138199795982738, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2647138199795982738, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -922,6 +934,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 6b53b129562d84b718b74c8e84d2057e, type: 2}
+    - target: {fileID: 5041946185620343291, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1001000001, guid: 66dc004bc9397492096e2400a8893a25, type: 3}
     - target: {fileID: 5599696047736507692, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: statClass
       value: 22
@@ -944,7 +960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6794174441529861314, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_Offset.y
-      value: -0.33
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7737478085877585054, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_Name
@@ -1025,7 +1041,7 @@ MonoBehaviour:
   projectileSprite: {fileID: -3821110960952004854, guid: a333d8825de27484ba49475a64f8b42c, type: 3}
   projectileAnimatorController: {fileID: 9100000, guid: a4bd46bdac0744a7db339b1b4d3e9c4b, type: 2}
   projectileColor: {r: 1, g: 1, b: 1, a: 1}
-  projectileScale: {x: 1.2, y: 1.2, z: 1}
+  projectileScale: {x: 0.8, y: 0.8, z: 0.8}
   orbitCenterOffset: {x: 0, y: 0.5}
   projectileColliderSize: {x: 0.28, y: 0.28}
   projectileCount: 6
