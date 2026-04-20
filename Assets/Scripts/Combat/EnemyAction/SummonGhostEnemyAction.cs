@@ -37,6 +37,18 @@ namespace VLCNP.Combat.EnemyAction
         float spawnEffectLifetime = 1f;
 
         [SerializeField]
+        float spawnFadeInDuration = 0.5f;
+
+        [SerializeField]
+        GameObject castEffectPrefab = null;
+
+        [SerializeField]
+        Vector3 castEffectOffset = new Vector3(0f, 0.5f, 0f);
+
+        [SerializeField]
+        float castEffectLingerDuration = 0.5f;
+
+        [SerializeField]
         string preMagicBoolName = "isPreMagic";
 
         [SerializeField]
@@ -45,6 +57,7 @@ namespace VLCNP.Combat.EnemyAction
         readonly List<GameObject> summonedEnemies = new List<GameObject>();
         Coroutine actionRoutine = null;
         Animator animator = null;
+        GameObject activeCastEffect = null;
 
         void Awake()
         {
@@ -88,6 +101,7 @@ namespace VLCNP.Combat.EnemyAction
             }
 
             ResetMagicStates();
+            CleanupCastEffect();
             IsExecuting = false;
             IsDone = true;
         }
@@ -95,6 +109,7 @@ namespace VLCNP.Combat.EnemyAction
         IEnumerator ExecuteRoutine()
         {
             SetPreMagic(true);
+            StartCastEffect();
             yield return WaitForSecondsInterruptible(preMagicDuration);
 
             SetPreMagic(false);
@@ -114,6 +129,9 @@ namespace VLCNP.Combat.EnemyAction
 
             if (postMagicDuration > 0f)
                 yield return WaitForSecondsInterruptible(postMagicDuration);
+
+            if (castEffectLingerDuration > 0f)
+                yield return WaitForSecondsInterruptible(castEffectLingerDuration);
 
             CompleteAction();
         }
@@ -157,7 +175,58 @@ namespace VLCNP.Combat.EnemyAction
                 spawnPosition,
                 setting.spawnPoint.rotation
             );
+            StartCoroutine(FadeInSummonedEnemy(summonedEnemy));
             summonedEnemies.Add(summonedEnemy);
+        }
+
+        IEnumerator FadeInSummonedEnemy(GameObject summonedEnemy)
+        {
+            if (summonedEnemy == null || spawnFadeInDuration <= 0f)
+                yield break;
+
+            SpriteRenderer[] renderers = summonedEnemy.GetComponentsInChildren<SpriteRenderer>(true);
+            if (renderers.Length == 0)
+                yield break;
+
+            Color[] initialColors = new Color[renderers.Length];
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (renderers[i] == null)
+                    continue;
+
+                initialColors[i] = renderers[i].color;
+                SetRendererAlpha(renderers[i], 0f);
+            }
+
+            float elapsed = 0f;
+            while (elapsed < spawnFadeInDuration)
+            {
+                elapsed += Time.deltaTime;
+                float rate = Mathf.Clamp01(elapsed / spawnFadeInDuration);
+
+                for (int i = 0; i < renderers.Length; i++)
+                {
+                    if (renderers[i] == null)
+                        continue;
+
+                    SetRendererAlpha(renderers[i], initialColors[i].a * rate);
+                }
+
+                yield return null;
+            }
+
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (renderers[i] != null)
+                    renderers[i].color = initialColors[i];
+            }
+        }
+
+        void SetRendererAlpha(SpriteRenderer spriteRenderer, float alpha)
+        {
+            Color color = spriteRenderer.color;
+            color.a = alpha;
+            spriteRenderer.color = color;
         }
 
         bool HasValidSummonSetting()
@@ -186,10 +255,33 @@ namespace VLCNP.Combat.EnemyAction
             summonedEnemies.RemoveAll(enemy => enemy == null);
         }
 
+        void StartCastEffect()
+        {
+            CleanupCastEffect();
+
+            if (castEffectPrefab == null)
+                return;
+
+            activeCastEffect = Instantiate(castEffectPrefab, transform);
+            activeCastEffect.transform.localPosition = castEffectOffset;
+            activeCastEffect.transform.localRotation = Quaternion.identity;
+            activeCastEffect.transform.localScale = Vector3.one;
+        }
+
+        void CleanupCastEffect()
+        {
+            if (activeCastEffect == null)
+                return;
+
+            Destroy(activeCastEffect);
+            activeCastEffect = null;
+        }
+
         void CompleteAction()
         {
             actionRoutine = null;
             ResetMagicStates();
+            CleanupCastEffect();
             IsExecuting = false;
             IsDone = true;
         }
