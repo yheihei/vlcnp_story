@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Attributes;
+using VLCNP.Effects;
 
 namespace VLCNP.Combat.EnemyAction
 {
@@ -55,11 +56,21 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         string targetTagName = "Player";
 
+        [SerializeField]
+        GameObject castEffectPrefab = null;
+
+        [SerializeField]
+        Vector3 castEffectOffset = new Vector3(0f, 0.5f, 0f);
+
+        [SerializeField]
+        float castEffectFadeOutDuration = 0.5f;
+
         Coroutine actionRoutine = null;
         readonly List<OrbitingOnibiProjectile> activeProjectiles = new List<OrbitingOnibiProjectile>();
         SpriteRenderer ownerSpriteRenderer = null;
         Health ownerHealth = null;
         Animator animator = null;
+        GameObject activeCastEffect = null;
 
         const string PreMagicParameterName = "isPreMagic";
         const string MagicParameterName = "isMagic";
@@ -73,12 +84,13 @@ namespace VLCNP.Combat.EnemyAction
 
         void OnDisable()
         {
-            CleanupAndComplete();
+            CleanupAndComplete(false);
         }
 
         void OnDestroy()
         {
             CleanupProjectiles();
+            CleanupCastEffect(false);
         }
 
         public override void Execute()
@@ -117,6 +129,7 @@ namespace VLCNP.Combat.EnemyAction
             }
 
             SetPreMagic(true);
+            StartCastEffect();
             SpawnProjectiles();
 
             float elapsed = 0f;
@@ -170,6 +183,7 @@ namespace VLCNP.Combat.EnemyAction
                 yield return null;
             }
 
+            yield return FadeOutCastEffect();
             CompleteAction();
         }
 
@@ -249,7 +263,44 @@ namespace VLCNP.Combat.EnemyAction
             activeProjectiles.Clear();
         }
 
-        void CleanupAndComplete()
+        void StartCastEffect()
+        {
+            CleanupCastEffect(false);
+
+            if (castEffectPrefab == null)
+                return;
+
+            activeCastEffect = Instantiate(castEffectPrefab, transform);
+            activeCastEffect.transform.localPosition = castEffectOffset;
+            activeCastEffect.transform.localRotation = Quaternion.identity;
+            activeCastEffect.transform.localScale = Vector3.one;
+        }
+
+        void CleanupCastEffect(bool fadeOut)
+        {
+            if (activeCastEffect == null)
+                return;
+
+            GameObject effect = activeCastEffect;
+            activeCastEffect = null;
+
+            if (fadeOut && isActiveAndEnabled && gameObject.activeInHierarchy)
+                StartCoroutine(ParticleEffectFadeOut.FadeOutAndDestroy(effect, castEffectFadeOutDuration));
+            else
+                Destroy(effect);
+        }
+
+        IEnumerator FadeOutCastEffect()
+        {
+            if (activeCastEffect == null)
+                yield break;
+
+            GameObject effect = activeCastEffect;
+            activeCastEffect = null;
+            yield return ParticleEffectFadeOut.FadeOutAndDestroy(effect, castEffectFadeOutDuration);
+        }
+
+        void CleanupAndComplete(bool fadeOutCastEffect = true)
         {
             if (actionRoutine != null)
             {
@@ -259,6 +310,7 @@ namespace VLCNP.Combat.EnemyAction
 
             ResetMagicStates();
             CleanupProjectiles();
+            CleanupCastEffect(fadeOutCastEffect);
             IsExecuting = false;
             IsDone = true;
         }

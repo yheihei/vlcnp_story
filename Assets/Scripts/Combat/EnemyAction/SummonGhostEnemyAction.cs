@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VLCNP.Effects;
 
 namespace VLCNP.Combat.EnemyAction
 {
@@ -49,6 +50,9 @@ namespace VLCNP.Combat.EnemyAction
         float castEffectLingerDuration = 0.5f;
 
         [SerializeField]
+        float castEffectFadeOutDuration = 0.5f;
+
+        [SerializeField]
         string preMagicBoolName = "isPreMagic";
 
         [SerializeField]
@@ -66,7 +70,16 @@ namespace VLCNP.Combat.EnemyAction
 
         void OnDisable()
         {
-            Stop();
+            if (actionRoutine != null)
+            {
+                StopCoroutine(actionRoutine);
+                actionRoutine = null;
+            }
+
+            ResetMagicStates();
+            CleanupCastEffect(false);
+            IsExecuting = false;
+            IsDone = true;
         }
 
         public override void Execute()
@@ -101,7 +114,7 @@ namespace VLCNP.Combat.EnemyAction
             }
 
             ResetMagicStates();
-            CleanupCastEffect();
+            CleanupCastEffect(true);
             IsExecuting = false;
             IsDone = true;
         }
@@ -132,6 +145,8 @@ namespace VLCNP.Combat.EnemyAction
 
             if (castEffectLingerDuration > 0f)
                 yield return WaitForSecondsInterruptible(castEffectLingerDuration);
+
+            yield return FadeOutCastEffect();
 
             CompleteAction();
         }
@@ -257,7 +272,7 @@ namespace VLCNP.Combat.EnemyAction
 
         void StartCastEffect()
         {
-            CleanupCastEffect();
+            CleanupCastEffect(false);
 
             if (castEffectPrefab == null)
                 return;
@@ -268,20 +283,34 @@ namespace VLCNP.Combat.EnemyAction
             activeCastEffect.transform.localScale = Vector3.one;
         }
 
-        void CleanupCastEffect()
+        void CleanupCastEffect(bool fadeOut)
         {
             if (activeCastEffect == null)
                 return;
 
-            Destroy(activeCastEffect);
+            GameObject effect = activeCastEffect;
             activeCastEffect = null;
+
+            if (fadeOut && isActiveAndEnabled && gameObject.activeInHierarchy)
+                StartCoroutine(ParticleEffectFadeOut.FadeOutAndDestroy(effect, castEffectFadeOutDuration));
+            else
+                Destroy(effect);
+        }
+
+        IEnumerator FadeOutCastEffect()
+        {
+            if (activeCastEffect == null)
+                yield break;
+
+            GameObject effect = activeCastEffect;
+            activeCastEffect = null;
+            yield return ParticleEffectFadeOut.FadeOutAndDestroy(effect, castEffectFadeOutDuration);
         }
 
         void CompleteAction()
         {
             actionRoutine = null;
             ResetMagicStates();
-            CleanupCastEffect();
             IsExecuting = false;
             IsDone = true;
         }
