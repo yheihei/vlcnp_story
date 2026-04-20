@@ -92,12 +92,14 @@ namespace VLCNP.Combat
 
         public void DirectAttack(GameObject target = null)
         {
-            if (directAttackWeaponConfig == null)
+            if (directAttackWeaponConfig == null || target == null)
                 return;
+            Health health = target.GetComponent<Health>();
+            if (health == null)
+                return;
+
             int level = baseStats ? baseStats.GetLevel() : 1;
-            target
-                .GetComponent<Health>()
-                .TakeDamage(directAttackWeaponConfig.GetDamage(level), transform.lossyScale.x < 0);
+            health.TakeDamage(directAttackWeaponConfig.GetDamage(level), transform.lossyScale.x < 0);
             onDirectAttack?.Invoke();
         }
 
