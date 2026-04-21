@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Attributes;
 using VLCNP.Combat;
@@ -13,6 +14,9 @@ namespace VLCNP.Combat.EnemyAction
 
         [SerializeField]
         Transform rightPoint = null;
+
+        [SerializeField]
+        Transform middlePoint = null;
 
         [SerializeField]
         float disappearFadeDuration = 0.4f;
@@ -92,19 +96,9 @@ namespace VLCNP.Combat.EnemyAction
         Health ownerHealth = null;
         AudioClip generatedLaughClip = null;
 
-        bool ownerWasHit = false;
-        bool decoyWasHit = false;
-        bool decoyHitHandled = false;
-        bool ownerDamageSubscribed = false;
-
-        GameObject decoy = null;
-        SpriteRenderer[] decoyRenderers = null;
-        Color[] decoyInitialColors = null;
-        Animator decoyAnimator = null;
         GameObject ownerCastEffect = null;
-        GameObject decoyCastEffect = null;
         OrbitingOnibiProjectile ownerOnibi = null;
-        OrbitingOnibiProjectile decoyOnibi = null;
+        readonly List<CloneDecoyState> decoyStates = new List<CloneDecoyState>();
 
         void Awake()
         {
@@ -155,32 +149,36 @@ namespace VLCNP.Combat.EnemyAction
         IEnumerator ExecuteRoutine()
         {
             PrepareOwnerState();
-            SubscribeOwnerDamage();
-            ownerWasHit = false;
-            decoyWasHit = false;
-            decoyHitHandled = false;
+            decoyStates.Clear();
 
             PlayLaugh(transform.position);
             yield return FadeRenderers(ownerRenderers, ownerInitialColors, 0f, disappearFadeDuration);
             RestoreOwnerColliders(false);
 
-            bool ownerOnLeft = Random.value < 0.5f;
-            Transform ownerPoint = ownerOnLeft ? leftPoint : rightPoint;
-            Transform decoyPoint = ownerOnLeft ? rightPoint : leftPoint;
+            Transform[] clonePoints = GetClonePoints();
+            int ownerPointIndex = Random.Range(0, clonePoints.Length);
+            Transform ownerPoint = clonePoints[ownerPointIndex];
 
             transform.position = ownerPoint.position;
-            CreateDecoy(decoyPoint.position);
-            LookAtPlayer(transform);
-            LookAtPlayer(decoy != null ? decoy.transform : null);
+            for (int i = 0; i < clonePoints.Length; i++)
+            {
+                if (i == ownerPointIndex)
+                    continue;
 
-            yield return FadeBothIn();
+                CreateDecoy(clonePoints[i].position, i);
+            }
+
+            LookAtPlayer(transform);
+            LookAtDecoysAtPlayer();
+
+            yield return FadeAllIn();
             RestoreOwnerColliders(true);
-            SetCollidersEnabled(decoy, true);
+            SetDecoyCollidersEnabled(true);
 
             SetMagicState(true, false);
             StartCastEffects();
             ownerOnibi = SpawnHeadOnibi(transform, "VLMitamaWeak_Onibi_Main");
-            decoyOnibi = SpawnHeadOnibi(decoy != null ? decoy.transform : null, "VLMitamaWeak_Onibi_Decoy");
+            SpawnDecoyOnibis();
 
             yield return WaitPreMagic();
             if (IsDone)
@@ -199,23 +197,12 @@ namespace VLCNP.Combat.EnemyAction
                 ownerOnibi = null;
             }
 
-            if (decoyOnibi != null)
-            {
-                StartCoroutine(FadeOutAndDestroy(decoyOnibi.gameObject, cleanupFadeDuration));
-                decoyOnibi = null;
-            }
-
-            StartCoroutine(FadeOutDecoy());
+            StartFadeOutDecoyOnibis();
+            StartCoroutine(FadeOutAllDecoys());
 
             yield return WaitInterruptible(magicDuration);
             if (IsDone)
                 yield break;
-
-            if (ownerWasHit)
-            {
-                yield return CompleteWithoutProjectile();
-                yield break;
-            }
 
             SetMagicState(false, false);
             yield return FadeOutCastEffects();
@@ -228,20 +215,13 @@ namespace VLCNP.Combat.EnemyAction
             float elapsed = 0f;
             while (elapsed < preMagicDuration)
             {
-                if (ownerWasHit)
-                {
-                    yield return CompleteWithoutProjectile();
-                    yield break;
-                }
-
                 if (!CanContinue())
                 {
                     AbortAction();
                     yield break;
                 }
 
-                if (decoyWasHit && !decoyHitHandled)
-                    yield return HandleDecoyHit();
+                yield return HandlePendingDecoyHits();
 
                 elapsed += Time.deltaTime;
                 yield return null;
@@ -256,17 +236,13 @@ namespace VLCNP.Combat.EnemyAction
             float elapsed = 0f;
             while (elapsed < seconds)
             {
-                if (ownerWasHit)
-                    yield break;
-
                 if (!CanContinue())
                 {
                     AbortAction();
                     yield break;
                 }
 
-                if (decoyWasHit && !decoyHitHandled)
-                    yield return HandleDecoyHit();
+                yield return HandlePendingDecoyHits();
 
                 elapsed += Time.deltaTime;
                 yield return null;
@@ -284,27 +260,6 @@ namespace VLCNP.Combat.EnemyAction
             return TryGetPlayer(out _);
         }
 
-        IEnumerator CompleteWithoutProjectile()
-        {
-            SetMagicState(false, false);
-            if (ownerOnibi != null)
-            {
-                yield return FadeOutAndDestroy(ownerOnibi.gameObject, cleanupFadeDuration);
-                ownerOnibi = null;
-            }
-
-            if (decoyOnibi != null)
-            {
-                yield return FadeOutAndDestroy(decoyOnibi.gameObject, cleanupFadeDuration);
-                decoyOnibi = null;
-            }
-
-            yield return FadeOutCastEffects();
-            yield return FadeOutDecoy();
-            yield return FadeRenderers(ownerRenderers, ownerInitialColors, 0f, cleanupFadeDuration);
-            CompleteAction();
-        }
-
         void PrepareOwnerState()
         {
             ownerRenderers = GetComponentsInChildren<SpriteRenderer>(true);
@@ -318,22 +273,37 @@ namespace VLCNP.Combat.EnemyAction
             SetMagicState(false, false);
         }
 
-        void CreateDecoy(Vector3 position)
+        Transform[] GetClonePoints()
         {
-            decoy = Instantiate(gameObject, position, transform.rotation);
-            decoy.name = $"{gameObject.name}_WeakCloneDecoy";
+            if (middlePoint == null)
+                return new[] { leftPoint, rightPoint };
+
+            return new[] { leftPoint, middlePoint, rightPoint };
+        }
+
+        void CreateDecoy(Vector3 position, int pointIndex)
+        {
+            GameObject decoy = Instantiate(gameObject, position, transform.rotation);
+            decoy.name = $"{gameObject.name}_WeakCloneDecoy_{pointIndex + 1}";
             decoy.transform.localScale = transform.localScale;
 
             DisableDecoyBehaviours(decoy);
             RemoveDecoyDamageReceivers(decoy);
+
+            CloneDecoyState state = new CloneDecoyState
+            {
+                gameObject = decoy,
+                animator = decoy.GetComponent<Animator>(),
+                renderers = decoy.GetComponentsInChildren<SpriteRenderer>(true),
+            };
+            state.initialColors = BuildDecoyTargetColors(state.renderers);
+            decoyStates.Add(state);
+
             VLMitamaCloneDecoyHitDetector hitDetector =
                 decoy.AddComponent<VLMitamaCloneDecoyHitDetector>();
-            hitDetector.Initialize(this);
+            hitDetector.Initialize(this, state);
 
-            decoyAnimator = decoy.GetComponent<Animator>();
-            decoyRenderers = decoy.GetComponentsInChildren<SpriteRenderer>(true);
-            decoyInitialColors = BuildDecoyTargetColors(decoyRenderers);
-            SetRenderersAlpha(decoyRenderers, decoyInitialColors, 0f);
+            SetRenderersAlpha(state.renderers, state.initialColors, 0f);
             SetCollidersEnabled(decoy, false);
         }
 
@@ -389,13 +359,13 @@ namespace VLCNP.Combat.EnemyAction
                 Destroy(damageStun);
         }
 
-        IEnumerator FadeBothIn()
+        IEnumerator FadeAllIn()
         {
             float duration = Mathf.Max(0f, appearFadeDuration);
             if (duration <= 0f)
             {
                 SetRenderersAlpha(ownerRenderers, ownerInitialColors, 1f);
-                SetRenderersAlpha(decoyRenderers, decoyInitialColors, 1f);
+                SetDecoyRenderersAlpha(1f);
                 yield break;
             }
 
@@ -405,54 +375,78 @@ namespace VLCNP.Combat.EnemyAction
                 elapsed += Time.deltaTime;
                 float alpha = Mathf.Clamp01(elapsed / duration);
                 SetRenderersAlpha(ownerRenderers, ownerInitialColors, alpha);
-                SetRenderersAlpha(decoyRenderers, decoyInitialColors, alpha);
+                SetDecoyRenderersAlpha(alpha);
                 yield return null;
             }
 
             SetRenderersAlpha(ownerRenderers, ownerInitialColors, 1f);
-            SetRenderersAlpha(decoyRenderers, decoyInitialColors, 1f);
+            SetDecoyRenderersAlpha(1f);
         }
 
-        IEnumerator HandleDecoyHit()
+        IEnumerator HandlePendingDecoyHits()
         {
-            decoyHitHandled = true;
-            if (decoy != null)
-                PlayLaugh(decoy.transform.position);
-
-            if (decoyOnibi != null)
+            for (int i = 0; i < decoyStates.Count; i++)
             {
-                StartCoroutine(FadeOutAndDestroy(decoyOnibi.gameObject, cleanupFadeDuration));
-                decoyOnibi = null;
+                CloneDecoyState state = decoyStates[i];
+                if (state != null && state.wasHit && !state.hitHandled)
+                    yield return HandleDecoyHit(state);
+            }
+        }
+
+        IEnumerator HandleDecoyHit(CloneDecoyState state)
+        {
+            if (state == null || state.hitHandled)
+                yield break;
+
+            state.hitHandled = true;
+            if (state.gameObject != null)
+                PlayLaugh(state.gameObject.transform.position);
+
+            if (state.onibi != null)
+            {
+                StartCoroutine(FadeOutAndDestroy(state.onibi.gameObject, cleanupFadeDuration));
+                state.onibi = null;
             }
 
-            if (decoyCastEffect != null)
+            if (state.castEffect != null)
             {
-                GameObject effect = decoyCastEffect;
-                decoyCastEffect = null;
+                GameObject effect = state.castEffect;
+                state.castEffect = null;
                 StartCoroutine(ParticleEffectFadeOut.FadeOutAndDestroy(
                     effect,
                     castEffectFadeOutDuration
                 ));
             }
 
-            yield return FadeOutDecoy();
+            yield return FadeOutDecoy(state);
         }
 
-        IEnumerator FadeOutDecoy()
+        IEnumerator FadeOutAllDecoys()
         {
-            if (decoy == null)
+            for (int i = 0; i < decoyStates.Count; i++)
+            {
+                CloneDecoyState state = decoyStates[i];
+                if (state != null)
+                    yield return FadeOutDecoy(state);
+            }
+        }
+
+        IEnumerator FadeOutDecoy(CloneDecoyState state)
+        {
+            if (state == null || state.gameObject == null)
                 yield break;
 
-            SetCollidersEnabled(decoy, false);
-            yield return FadeRenderers(decoyRenderers, decoyInitialColors, 0f, cleanupFadeDuration);
+            state.hitHandled = true;
+            SetCollidersEnabled(state.gameObject, false);
+            yield return FadeRenderers(state.renderers, state.initialColors, 0f, cleanupFadeDuration);
 
-            if (decoy != null)
-                Destroy(decoy);
+            if (state.gameObject != null)
+                Destroy(state.gameObject);
 
-            decoy = null;
-            decoyRenderers = null;
-            decoyInitialColors = null;
-            decoyAnimator = null;
+            state.gameObject = null;
+            state.renderers = null;
+            state.initialColors = null;
+            state.animator = null;
         }
 
         OrbitingOnibiProjectile SpawnHeadOnibi(Transform owner, string objectName)
@@ -510,7 +504,12 @@ namespace VLCNP.Combat.EnemyAction
         void StartCastEffects()
         {
             ownerCastEffect = StartCastEffect(transform);
-            decoyCastEffect = StartCastEffect(decoy != null ? decoy.transform : null);
+            for (int i = 0; i < decoyStates.Count; i++)
+            {
+                CloneDecoyState state = decoyStates[i];
+                if (state != null && state.gameObject != null)
+                    state.castEffect = StartCastEffect(state.gameObject.transform);
+            }
         }
 
         GameObject StartCastEffect(Transform target)
@@ -534,11 +533,25 @@ namespace VLCNP.Combat.EnemyAction
                 yield return ParticleEffectFadeOut.FadeOutAndDestroy(effect, castEffectFadeOutDuration);
             }
 
-            if (decoyCastEffect != null)
+            for (int i = 0; i < decoyStates.Count; i++)
             {
-                GameObject effect = decoyCastEffect;
-                decoyCastEffect = null;
+                CloneDecoyState state = decoyStates[i];
+                if (state == null || state.castEffect == null)
+                    continue;
+
+                GameObject effect = state.castEffect;
+                state.castEffect = null;
                 yield return ParticleEffectFadeOut.FadeOutAndDestroy(effect, castEffectFadeOutDuration);
+            }
+        }
+
+        void LookAtDecoysAtPlayer()
+        {
+            for (int i = 0; i < decoyStates.Count; i++)
+            {
+                CloneDecoyState state = decoyStates[i];
+                if (state != null && state.gameObject != null)
+                    LookAtPlayer(state.gameObject.transform);
             }
         }
 
@@ -563,8 +576,16 @@ namespace VLCNP.Combat.EnemyAction
         {
             SetAnimatorBool(ownerAnimator, preMagicBoolName, preMagic);
             SetAnimatorBool(ownerAnimator, magicBoolName, magic);
-            SetAnimatorBool(decoyAnimator, preMagicBoolName, preMagic);
-            SetAnimatorBool(decoyAnimator, magicBoolName, magic);
+
+            for (int i = 0; i < decoyStates.Count; i++)
+            {
+                CloneDecoyState state = decoyStates[i];
+                if (state == null)
+                    continue;
+
+                SetAnimatorBool(state.animator, preMagicBoolName, preMagic);
+                SetAnimatorBool(state.animator, magicBoolName, magic);
+            }
         }
 
         void SetAnimatorBool(Animator animator, string parameterName, bool value)
@@ -575,36 +596,12 @@ namespace VLCNP.Combat.EnemyAction
             animator.SetBool(parameterName, value);
         }
 
-        void SubscribeOwnerDamage()
+        void NotifyDecoyHit(CloneDecoyState state)
         {
-            if (ownerHealth == null || ownerDamageSubscribed)
+            if (state == null || state.gameObject == null || state.hitHandled)
                 return;
 
-            ownerHealth.takeDamage.AddListener(OnOwnerTakeDamage);
-            ownerDamageSubscribed = true;
-        }
-
-        void UnsubscribeOwnerDamage()
-        {
-            if (ownerHealth == null || !ownerDamageSubscribed)
-                return;
-
-            ownerHealth.takeDamage.RemoveListener(OnOwnerTakeDamage);
-            ownerDamageSubscribed = false;
-        }
-
-        void OnOwnerTakeDamage(float damage)
-        {
-            if (damage > 0f)
-                ownerWasHit = true;
-        }
-
-        void NotifyDecoyHit()
-        {
-            if (decoy == null || decoyHitHandled)
-                return;
-
-            decoyWasHit = true;
+            state.wasHit = true;
         }
 
         void PlayLaugh(Vector3 position)
@@ -794,6 +791,54 @@ namespace VLCNP.Combat.EnemyAction
             }
         }
 
+        void SetDecoyCollidersEnabled(bool value)
+        {
+            for (int i = 0; i < decoyStates.Count; i++)
+            {
+                CloneDecoyState state = decoyStates[i];
+                if (state != null)
+                    SetCollidersEnabled(state.gameObject, value);
+            }
+        }
+
+        void SetDecoyRenderersAlpha(float alphaRate)
+        {
+            for (int i = 0; i < decoyStates.Count; i++)
+            {
+                CloneDecoyState state = decoyStates[i];
+                if (state != null)
+                    SetRenderersAlpha(state.renderers, state.initialColors, alphaRate);
+            }
+        }
+
+        void SpawnDecoyOnibis()
+        {
+            for (int i = 0; i < decoyStates.Count; i++)
+            {
+                CloneDecoyState state = decoyStates[i];
+                if (state == null || state.gameObject == null)
+                    continue;
+
+                state.onibi = SpawnHeadOnibi(
+                    state.gameObject.transform,
+                    $"VLMitamaWeak_Onibi_Decoy_{i + 1}"
+                );
+            }
+        }
+
+        void StartFadeOutDecoyOnibis()
+        {
+            for (int i = 0; i < decoyStates.Count; i++)
+            {
+                CloneDecoyState state = decoyStates[i];
+                if (state == null || state.onibi == null)
+                    continue;
+
+                StartCoroutine(FadeOutAndDestroy(state.onibi.gameObject, cleanupFadeDuration));
+                state.onibi = null;
+            }
+        }
+
         void CompleteAction()
         {
             actionRoutine = null;
@@ -823,55 +868,73 @@ namespace VLCNP.Combat.EnemyAction
                 ownerOnibi = null;
             }
 
-            if (decoyOnibi != null)
-            {
-                Destroy(decoyOnibi.gameObject);
-                decoyOnibi = null;
-            }
-
             if (ownerCastEffect != null)
             {
                 Destroy(ownerCastEffect);
                 ownerCastEffect = null;
             }
 
-            if (decoyCastEffect != null)
+            for (int i = 0; i < decoyStates.Count; i++)
             {
-                Destroy(decoyCastEffect);
-                decoyCastEffect = null;
-            }
+                CloneDecoyState state = decoyStates[i];
+                if (state == null)
+                    continue;
 
-            if (decoy != null)
-            {
-                Destroy(decoy);
-                decoy = null;
+                if (state.onibi != null)
+                {
+                    Destroy(state.onibi.gameObject);
+                    state.onibi = null;
+                }
+
+                if (state.castEffect != null)
+                {
+                    Destroy(state.castEffect);
+                    state.castEffect = null;
+                }
+
+                if (state.gameObject != null)
+                {
+                    Destroy(state.gameObject);
+                    state.gameObject = null;
+                }
             }
 
             RestoreOwnerForNextAction();
+            decoyStates.Clear();
         }
 
         void RestoreOwnerForNextAction()
         {
-            UnsubscribeOwnerDamage();
             SetMagicState(false, false);
 
             if (ownerRenderers != null)
                 SetRenderersAlpha(ownerRenderers, ownerInitialColors, 1f);
 
             RestoreOwnerColliders(true);
-            ownerWasHit = false;
-            decoyWasHit = false;
-            decoyHitHandled = false;
+        }
+
+        class CloneDecoyState
+        {
+            public GameObject gameObject = null;
+            public SpriteRenderer[] renderers = null;
+            public Color[] initialColors = null;
+            public Animator animator = null;
+            public GameObject castEffect = null;
+            public OrbitingOnibiProjectile onibi = null;
+            public bool wasHit = false;
+            public bool hitHandled = false;
         }
 
         class VLMitamaCloneDecoyHitDetector : MonoBehaviour
         {
             VLMitamaCloneWeakAction owner = null;
+            CloneDecoyState state = null;
             bool isHit = false;
 
-            public void Initialize(VLMitamaCloneWeakAction action)
+            public void Initialize(VLMitamaCloneWeakAction action, CloneDecoyState decoyState)
             {
                 owner = action;
+                state = decoyState;
             }
 
             void OnTriggerEnter2D(Collider2D other)
@@ -893,7 +956,7 @@ namespace VLCNP.Combat.EnemyAction
                     return;
 
                 isHit = true;
-                owner?.NotifyDecoyHit();
+                owner?.NotifyDecoyHit(state);
             }
 
             bool IsPlayerAttack(Collider2D other)
