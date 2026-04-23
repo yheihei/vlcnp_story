@@ -42,6 +42,15 @@ namespace VLCNP.Combat.EnemyAction
         Coroutine teleportRoutine;
         Color[] initialRendererColors = null;
         float[] initialCanvasGroupAlphas = null;
+        ParticleSystemRenderer[] targetParticleRenderers = null;
+        Color[] initialParticleColors = null;
+        Color[] initialParticleTintColors = null;
+        bool[] initialParticleRendererEnabled = null;
+        MaterialPropertyBlock particlePropertyBlock = null;
+
+        static readonly int ColorPropertyId = Shader.PropertyToID("_Color");
+        static readonly int TintColorPropertyId = Shader.PropertyToID("_TintColor");
+
         void Awake()
         {
             if (targetRenderers == null || targetRenderers.Length == 0)
@@ -230,7 +239,9 @@ namespace VLCNP.Combat.EnemyAction
         {
             bool hasRendererTargets = targetRenderers != null && targetRenderers.Any(renderer => renderer != null);
             bool hasCanvasGroupTargets = targetCanvasGroups != null && targetCanvasGroups.Any(canvasGroup => canvasGroup != null);
-            return hasRendererTargets || hasCanvasGroupTargets;
+            bool hasParticleTargets =
+                targetParticleRenderers != null && targetParticleRenderers.Any(renderer => renderer != null);
+            return hasRendererTargets || hasCanvasGroupTargets || hasParticleTargets;
         }
 
         CanvasGroup GetOrAddCanvasGroup(Canvas canvas)
@@ -292,6 +303,8 @@ namespace VLCNP.Combat.EnemyAction
                     canvasGroup.alpha = GetInitialCanvasGroupAlpha(i, canvasGroup) * alpha;
                 }
             }
+
+            SetParticleAlpha(alpha);
         }
 
         void SetCollidersEnabled(bool value)
@@ -383,6 +396,8 @@ namespace VLCNP.Combat.EnemyAction
                     initialCanvasGroupAlphas[i] = canvasGroup != null ? canvasGroup.alpha : 1f;
                 }
             }
+
+            CacheParticleRenderers();
         }
 
         Color GetInitialRendererColor(int index, SpriteRenderer fallbackRenderer)
@@ -403,6 +418,125 @@ namespace VLCNP.Combat.EnemyAction
             }
 
             return initialCanvasGroupAlphas[index];
+        }
+
+        void CacheParticleRenderers()
+        {
+            targetParticleRenderers = GetComponentsInChildren<ParticleSystemRenderer>(true)
+                .Where(renderer => renderer != null)
+                .Distinct()
+                .ToArray();
+
+            if (targetParticleRenderers.Length == 0)
+            {
+                initialParticleColors = null;
+                initialParticleTintColors = null;
+                initialParticleRendererEnabled = null;
+                return;
+            }
+
+            initialParticleColors = new Color[targetParticleRenderers.Length];
+            initialParticleTintColors = new Color[targetParticleRenderers.Length];
+            initialParticleRendererEnabled = new bool[targetParticleRenderers.Length];
+
+            for (int i = 0; i < targetParticleRenderers.Length; i++)
+            {
+                ParticleSystemRenderer particleRenderer = targetParticleRenderers[i];
+                initialParticleColors[i] = GetMaterialColor(particleRenderer, ColorPropertyId, Color.white);
+                initialParticleTintColors[i] =
+                    GetMaterialColor(particleRenderer, TintColorPropertyId, initialParticleColors[i]);
+                initialParticleRendererEnabled[i] = particleRenderer != null && particleRenderer.enabled;
+            }
+        }
+
+        Color GetMaterialColor(Renderer renderer, int propertyId, Color fallback)
+        {
+            if (renderer == null || renderer.sharedMaterial == null)
+                return fallback;
+
+            return renderer.sharedMaterial.HasProperty(propertyId)
+                ? renderer.sharedMaterial.GetColor(propertyId)
+                : fallback;
+        }
+
+        void SetParticleAlpha(float alpha)
+        {
+            if (targetParticleRenderers == null)
+                return;
+
+            if (particlePropertyBlock == null)
+            {
+                particlePropertyBlock = new MaterialPropertyBlock();
+            }
+
+            float clampedAlpha = Mathf.Clamp01(alpha);
+            for (int i = 0; i < targetParticleRenderers.Length; i++)
+            {
+                ParticleSystemRenderer particleRenderer = targetParticleRenderers[i];
+                if (particleRenderer == null)
+                    continue;
+
+                bool initiallyEnabled = GetInitialParticleRendererEnabled(i, particleRenderer);
+                if (clampedAlpha > 0f)
+                {
+                    particleRenderer.enabled = initiallyEnabled;
+                }
+
+                particleRenderer.GetPropertyBlock(particlePropertyBlock);
+
+                Color color = GetInitialParticleColor(i, particleRenderer);
+                color.a *= clampedAlpha;
+                particlePropertyBlock.SetColor(ColorPropertyId, color);
+
+                Color tintColor = GetInitialParticleTintColor(i, particleRenderer);
+                tintColor.a *= clampedAlpha;
+                particlePropertyBlock.SetColor(TintColorPropertyId, tintColor);
+
+                particleRenderer.SetPropertyBlock(particlePropertyBlock);
+
+                if (clampedAlpha <= 0f)
+                {
+                    particleRenderer.enabled = false;
+                }
+            }
+        }
+
+        Color GetInitialParticleColor(int index, ParticleSystemRenderer fallbackRenderer)
+        {
+            if (initialParticleColors == null || index < 0 || index >= initialParticleColors.Length)
+            {
+                return GetMaterialColor(fallbackRenderer, ColorPropertyId, Color.white);
+            }
+
+            return initialParticleColors[index];
+        }
+
+        Color GetInitialParticleTintColor(int index, ParticleSystemRenderer fallbackRenderer)
+        {
+            if (initialParticleTintColors == null || index < 0 || index >= initialParticleTintColors.Length)
+            {
+                return GetMaterialColor(
+                    fallbackRenderer,
+                    TintColorPropertyId,
+                    GetInitialParticleColor(index, fallbackRenderer)
+                );
+            }
+
+            return initialParticleTintColors[index];
+        }
+
+        bool GetInitialParticleRendererEnabled(int index, ParticleSystemRenderer fallbackRenderer)
+        {
+            if (
+                initialParticleRendererEnabled == null
+                || index < 0
+                || index >= initialParticleRendererEnabled.Length
+            )
+            {
+                return fallbackRenderer != null && fallbackRenderer.enabled;
+            }
+
+            return initialParticleRendererEnabled[index];
         }
 
         void RestoreVisibleState()

@@ -167,7 +167,17 @@ namespace VLCNP.Combat.EnemyAction
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (!isLaunched || isFadingOut)
+            TryHitTarget(other);
+        }
+
+        void OnTriggerStay2D(Collider2D other)
+        {
+            TryHitTarget(other);
+        }
+
+        void TryHitTarget(Collider2D other)
+        {
+            if ((!isOrbiting && !isLaunched) || isFadingOut)
                 return;
 
             if (!other.CompareTag(targetTagName))
@@ -177,8 +187,15 @@ namespace VLCNP.Combat.EnemyAction
             if (health == null)
                 return;
 
-            health.TakeDamage(damage, isLeft);
-            StartCoroutine(FadeOutAndDestroy());
+            bool blowAwayLeft = isLaunched
+                ? isLeft
+                : other.transform.position.x < transform.position.x;
+            health.TakeDamage(damage, blowAwayLeft);
+
+            if (isLaunched)
+            {
+                StartCoroutine(FadeOutAndDestroy());
+            }
         }
 
         void UpdateOrbitPosition()
