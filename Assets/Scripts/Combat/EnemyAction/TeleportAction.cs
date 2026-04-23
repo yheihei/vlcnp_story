@@ -120,7 +120,7 @@ namespace VLCNP.Combat.EnemyAction
                 Vector3 previousPosition = transform.position;
                 transform.position = destination.position;
 
-                if (!keepCurrentFacing)
+                if (!TryFacePlayer() && !keepCurrentFacing)
                 {
                     UpdateFacing(previousPosition.x, destination.position.x);
                 }
@@ -334,6 +334,23 @@ namespace VLCNP.Combat.EnemyAction
 
             Vector3 scale = transform.localScale;
             scale.x = deltaX < 0f ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
+            transform.localScale = scale;
+        }
+
+        bool TryFacePlayer()
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player == null)
+                return false;
+
+            FaceTarget(player.transform.position.x);
+            return true;
+        }
+
+        void FaceTarget(float targetX)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = targetX < transform.position.x ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
             transform.localScale = scale;
         }
 

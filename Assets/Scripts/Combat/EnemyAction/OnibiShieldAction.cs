@@ -125,12 +125,13 @@ namespace VLCNP.Combat.EnemyAction
 
         IEnumerator ExecuteRoutine()
         {
-            if (!TryGetPlayer(out _))
+            if (!TryGetPlayer(out GameObject player))
             {
                 CleanupAndComplete();
                 yield break;
             }
 
+            FaceTarget(player.transform.position.x);
             SetPreMagic(true);
             StartCastEffect();
             SpawnProjectiles();
@@ -173,12 +174,13 @@ namespace VLCNP.Combat.EnemyAction
                     yield break;
                 }
 
-                if (!TryGetPlayer(out GameObject player))
+                if (!TryGetPlayer(out player))
                 {
                     CleanupAndComplete();
                     yield break;
                 }
 
+                FaceTarget(player.transform.position.x);
                 projectile.LaunchTowards(player.transform.position, projectileSpeed, projectileLifetime);
                 hasLaunchedProjectile = true;
             }
@@ -253,6 +255,13 @@ namespace VLCNP.Combat.EnemyAction
                 return false;
 
             return TryGetPlayer(out _);
+        }
+
+        void FaceTarget(float targetX)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = targetX < transform.position.x ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
+            transform.localScale = scale;
         }
 
         void CleanupProjectiles()
