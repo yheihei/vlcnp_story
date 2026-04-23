@@ -42,6 +42,9 @@ namespace VLCNP.Combat.EnemyAction
         float launchInterval = 0.2f;
 
         [SerializeField]
+        float postLaunchDelay = 0f;
+
+        [SerializeField]
         float projectileSpeed = 6f;
 
         [SerializeField]
@@ -148,6 +151,7 @@ namespace VLCNP.Combat.EnemyAction
             SetPreMagic(false);
             SetMagic(true);
 
+            bool hasLaunchedProjectile = false;
             for (int i = 0; i < activeProjectiles.Count; i++)
             {
                 if (!CanContinue())
@@ -160,6 +164,15 @@ namespace VLCNP.Combat.EnemyAction
                 if (projectile == null)
                     continue;
 
+                if (hasLaunchedProjectile && launchInterval > 0f)
+                    yield return new WaitForSeconds(launchInterval);
+
+                if (!CanContinue())
+                {
+                    CleanupAndComplete();
+                    yield break;
+                }
+
                 if (!TryGetPlayer(out GameObject player))
                 {
                     CleanupAndComplete();
@@ -167,12 +180,14 @@ namespace VLCNP.Combat.EnemyAction
                 }
 
                 projectile.LaunchTowards(player.transform.position, projectileSpeed, projectileLifetime);
-                yield return new WaitForSeconds(launchInterval);
+                hasLaunchedProjectile = true;
             }
 
             SetMagic(false);
 
-            while (HasLivingProjectiles())
+            float clampedPostLaunchDelay = Mathf.Max(0f, postLaunchDelay);
+            float postLaunchElapsed = 0f;
+            while (postLaunchElapsed < clampedPostLaunchDelay)
             {
                 if (!CanContinue())
                 {
@@ -180,10 +195,11 @@ namespace VLCNP.Combat.EnemyAction
                     yield break;
                 }
 
+                postLaunchElapsed += Time.deltaTime;
                 yield return null;
             }
 
-            yield return FadeOutCastEffect();
+            CleanupCastEffect(true);
             CompleteAction();
         }
 
@@ -239,17 +255,6 @@ namespace VLCNP.Combat.EnemyAction
             return TryGetPlayer(out _);
         }
 
-        bool HasLivingProjectiles()
-        {
-            for (int i = 0; i < activeProjectiles.Count; i++)
-            {
-                if (activeProjectiles[i] != null)
-                    return true;
-            }
-
-            return false;
-        }
-
         void CleanupProjectiles()
         {
             for (int i = 0; i < activeProjectiles.Count; i++)
@@ -290,16 +295,6 @@ namespace VLCNP.Combat.EnemyAction
                 Destroy(effect);
         }
 
-        IEnumerator FadeOutCastEffect()
-        {
-            if (activeCastEffect == null)
-                yield break;
-
-            GameObject effect = activeCastEffect;
-            activeCastEffect = null;
-            yield return ParticleEffectFadeOut.FadeOutAndDestroy(effect, castEffectFadeOutDuration);
-        }
-
         void CleanupAndComplete(bool fadeOutCastEffect = true)
         {
             if (actionRoutine != null)
@@ -318,7 +313,6 @@ namespace VLCNP.Combat.EnemyAction
         void CompleteAction()
         {
             actionRoutine = null;
-            activeProjectiles.Clear();
             ResetMagicStates();
             IsExecuting = false;
             IsDone = true;

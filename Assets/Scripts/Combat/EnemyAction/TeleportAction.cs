@@ -16,6 +16,9 @@ namespace VLCNP.Combat.EnemyAction
         SpriteRenderer[] targetRenderers = null;
 
         [SerializeField]
+        CanvasGroup[] targetCanvasGroups = null;
+
+        [SerializeField]
         Collider2D[] targetColliders = null;
 
         [SerializeField]
@@ -37,7 +40,8 @@ namespace VLCNP.Combat.EnemyAction
         bool keepCurrentFacing = true;
 
         Coroutine teleportRoutine;
-        Color[] initialColors = null;
+        Color[] initialRendererColors = null;
+        float[] initialCanvasGroupAlphas = null;
         void Awake()
         {
             if (targetRenderers == null || targetRenderers.Length == 0)
@@ -45,12 +49,21 @@ namespace VLCNP.Combat.EnemyAction
                 targetRenderers = GetComponentsInChildren<SpriteRenderer>(true);
             }
 
+            if (targetCanvasGroups == null || targetCanvasGroups.Length == 0)
+            {
+                targetCanvasGroups = GetComponentsInChildren<Canvas>(true)
+                    .Select(GetOrAddCanvasGroup)
+                    .Where(canvasGroup => canvasGroup != null)
+                    .Distinct()
+                    .ToArray();
+            }
+
             if (targetColliders == null || targetColliders.Length == 0)
             {
                 targetColliders = GetComponentsInChildren<Collider2D>(true);
             }
 
-            CacheInitialColors();
+            CacheInitialVisualState();
         }
 
         void OnEnable()
@@ -95,6 +108,8 @@ namespace VLCNP.Combat.EnemyAction
             {
                 yield return WaitInterruptible(poisonExtraDelay);
             }
+
+            CacheInitialVisualState();
 
             yield return FadeToAlpha(0f, fadeOutDuration);
             SetCollidersEnabled(false);
@@ -155,9 +170,7 @@ namespace VLCNP.Combat.EnemyAction
 
         IEnumerator FadeToAlpha(float alpha, float duration)
         {
-            CacheInitialColors();
-
-            if (targetRenderers == null || targetRenderers.Length == 0)
+            if (!HasFadeTargets())
                 yield break;
 
             float clampedDuration = Mathf.Max(0f, duration);
@@ -168,8 +181,11 @@ namespace VLCNP.Combat.EnemyAction
             }
 
             float elapsed = 0f;
-            float[] startAlphas = targetRenderers
+            float[] startRendererAlphas = (targetRenderers ?? new SpriteRenderer[0])
                 .Select(renderer => renderer != null ? renderer.color.a : alpha)
+                .ToArray();
+            float[] startCanvasGroupAlphas = (targetCanvasGroups ?? new CanvasGroup[0])
+                .Select(canvasGroup => canvasGroup != null ? canvasGroup.alpha : alpha)
                 .ToArray();
 
             while (elapsed < clampedDuration)
@@ -177,21 +193,59 @@ namespace VLCNP.Combat.EnemyAction
                 elapsed += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / clampedDuration);
 
-                for (int i = 0; i < targetRenderers.Length; i++)
+                if (targetRenderers != null)
                 {
-                    SpriteRenderer renderer = targetRenderers[i];
-                    if (renderer == null)
-                        continue;
+                    for (int i = 0; i < targetRenderers.Length; i++)
+                    {
+                        SpriteRenderer renderer = targetRenderers[i];
+                        if (renderer == null)
+                            continue;
 
-                    Color color = renderer.color;
-                    color.a = Mathf.Lerp(startAlphas[i], alpha, t);
-                    renderer.color = color;
+                        Color color = renderer.color;
+                        color.a = Mathf.Lerp(startRendererAlphas[i], alpha, t);
+                        renderer.color = color;
+                    }
+                }
+
+                if (targetCanvasGroups != null)
+                {
+                    for (int i = 0; i < targetCanvasGroups.Length; i++)
+                    {
+                        CanvasGroup canvasGroup = targetCanvasGroups[i];
+                        if (canvasGroup == null)
+                            continue;
+
+                        float targetAlpha = GetInitialCanvasGroupAlpha(i, canvasGroup) * alpha;
+                        canvasGroup.alpha = Mathf.Lerp(startCanvasGroupAlphas[i], targetAlpha, t);
+                    }
                 }
 
                 yield return null;
             }
 
             SetAlpha(alpha);
+        }
+
+        bool HasFadeTargets()
+        {
+            bool hasRendererTargets = targetRenderers != null && targetRenderers.Any(renderer => renderer != null);
+            bool hasCanvasGroupTargets = targetCanvasGroups != null && targetCanvasGroups.Any(canvasGroup => canvasGroup != null);
+            return hasRendererTargets || hasCanvasGroupTargets;
+        }
+
+        CanvasGroup GetOrAddCanvasGroup(Canvas canvas)
+        {
+            if (canvas == null)
+                return null;
+
+            CanvasGroup canvasGroup = canvas.GetComponent<CanvasGroup>();
+            if (canvasGroup != null)
+                return canvasGroup;
+
+            canvasGroup = canvas.gameObject.AddComponent<CanvasGroup>();
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+            return canvasGroup;
         }
 
         bool HasTeleportDelayStatus()
@@ -213,18 +267,30 @@ namespace VLCNP.Combat.EnemyAction
 
         void SetAlpha(float alpha)
         {
-            if (targetRenderers == null)
-                return;
-
-            for (int i = 0; i < targetRenderers.Length; i++)
+            if (targetRenderers != null)
             {
-                SpriteRenderer renderer = targetRenderers[i];
-                if (renderer == null)
-                    continue;
+                for (int i = 0; i < targetRenderers.Length; i++)
+                {
+                    SpriteRenderer renderer = targetRenderers[i];
+                    if (renderer == null)
+                        continue;
 
-                Color baseColor = GetInitialColor(i, renderer);
-                baseColor.a = alpha;
-                renderer.color = baseColor;
+                    Color baseColor = GetInitialRendererColor(i, renderer);
+                    baseColor.a = alpha;
+                    renderer.color = baseColor;
+                }
+            }
+
+            if (targetCanvasGroups != null)
+            {
+                for (int i = 0; i < targetCanvasGroups.Length; i++)
+                {
+                    CanvasGroup canvasGroup = targetCanvasGroups[i];
+                    if (canvasGroup == null)
+                        continue;
+
+                    canvasGroup.alpha = GetInitialCanvasGroupAlpha(i, canvasGroup) * alpha;
+                }
             }
         }
 
@@ -271,35 +337,59 @@ namespace VLCNP.Combat.EnemyAction
             transform.localScale = scale;
         }
 
-        void CacheInitialColors()
+        void CacheInitialVisualState()
         {
             if (targetRenderers == null)
             {
-                initialColors = null;
-                return;
+                initialRendererColors = null;
+            }
+            else
+            {
+                initialRendererColors = new Color[targetRenderers.Length];
+                for (int i = 0; i < targetRenderers.Length; i++)
+                {
+                    SpriteRenderer renderer = targetRenderers[i];
+                    initialRendererColors[i] = renderer != null ? renderer.color : Color.white;
+                }
             }
 
-            initialColors = new Color[targetRenderers.Length];
-            for (int i = 0; i < targetRenderers.Length; i++)
+            if (targetCanvasGroups == null)
             {
-                SpriteRenderer renderer = targetRenderers[i];
-                initialColors[i] = renderer != null ? renderer.color : Color.white;
+                initialCanvasGroupAlphas = null;
+            }
+            else
+            {
+                initialCanvasGroupAlphas = new float[targetCanvasGroups.Length];
+                for (int i = 0; i < targetCanvasGroups.Length; i++)
+                {
+                    CanvasGroup canvasGroup = targetCanvasGroups[i];
+                    initialCanvasGroupAlphas[i] = canvasGroup != null ? canvasGroup.alpha : 1f;
+                }
             }
         }
 
-        Color GetInitialColor(int index, SpriteRenderer fallbackRenderer)
+        Color GetInitialRendererColor(int index, SpriteRenderer fallbackRenderer)
         {
-            if (initialColors == null || index < 0 || index >= initialColors.Length)
+            if (initialRendererColors == null || index < 0 || index >= initialRendererColors.Length)
             {
                 return fallbackRenderer != null ? fallbackRenderer.color : Color.white;
             }
 
-            return initialColors[index];
+            return initialRendererColors[index];
+        }
+
+        float GetInitialCanvasGroupAlpha(int index, CanvasGroup fallbackCanvasGroup)
+        {
+            if (initialCanvasGroupAlphas == null || index < 0 || index >= initialCanvasGroupAlphas.Length)
+            {
+                return fallbackCanvasGroup != null ? fallbackCanvasGroup.alpha : 1f;
+            }
+
+            return initialCanvasGroupAlphas[index];
         }
 
         void RestoreVisibleState()
         {
-            CacheInitialColors();
             SetAlpha(1f);
             SetCollidersEnabled(true);
         }
