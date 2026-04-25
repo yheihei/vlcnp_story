@@ -39,6 +39,15 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         bool keepCurrentFacing = true;
 
+        [SerializeField]
+        bool playTeleportSound = false;
+
+        [SerializeField]
+        AudioClip teleportSoundClip = null;
+
+        [SerializeField]
+        float teleportSoundVolume = 1f;
+
         Coroutine teleportRoutine;
         Color[] initialRendererColors = null;
         float[] initialCanvasGroupAlphas = null;
@@ -120,6 +129,7 @@ namespace VLCNP.Combat.EnemyAction
 
             CacheInitialVisualState();
 
+            PlayTeleportSound();
             yield return FadeToAlpha(0f, fadeOutDuration);
             SetCollidersEnabled(false);
 
@@ -274,6 +284,14 @@ namespace VLCNP.Combat.EnemyAction
             }
 
             return false;
+        }
+
+        void PlayTeleportSound()
+        {
+            if (!playTeleportSound)
+                return;
+
+            VLMitamaLaughSound.Play(teleportSoundClip, transform.position, teleportSoundVolume);
         }
 
         void SetAlpha(float alpha)

@@ -4,6 +4,7 @@ using UnityEngine;
 using VLCNP.Attributes;
 using VLCNP.Combat;
 using VLCNP.Effects;
+using VLCNP.UI;
 
 namespace VLCNP.Combat.EnemyAction
 {
@@ -94,7 +95,6 @@ namespace VLCNP.Combat.EnemyAction
         bool[] ownerColliderStates = null;
         Animator ownerAnimator = null;
         Health ownerHealth = null;
-        AudioClip generatedLaughClip = null;
 
         GameObject ownerCastEffect = null;
         OrbitingOnibiProjectile ownerOnibi = null;
@@ -458,6 +458,14 @@ namespace VLCNP.Combat.EnemyAction
             int sortingLayerId = ownerRenderer != null ? ownerRenderer.sortingLayerID : 0;
             int sortingOrder = ownerRenderer != null ? ownerRenderer.sortingOrder + 1 : 0;
 
+            DamageTextV2 damageText = owner.GetComponentInChildren<DamageTextV2>(true);
+            Canvas damageTextCanvas = damageText != null ? damageText.GetComponent<Canvas>() : null;
+            if (damageTextCanvas != null)
+            {
+                sortingLayerId = damageTextCanvas.sortingLayerID;
+                sortingOrder = damageTextCanvas.sortingOrder - 1;
+            }
+
             GameObject projectileObject = new GameObject(objectName);
             OrbitingOnibiProjectile projectile =
                 projectileObject.AddComponent<OrbitingOnibiProjectile>();
@@ -606,40 +614,7 @@ namespace VLCNP.Combat.EnemyAction
 
         void PlayLaugh(Vector3 position)
         {
-            AudioClip clip = laughClip != null ? laughClip : GetGeneratedLaughClip();
-            if (clip != null)
-                AudioSource.PlayClipAtPoint(clip, position, laughVolume);
-        }
-
-        AudioClip GetGeneratedLaughClip()
-        {
-            if (generatedLaughClip != null)
-                return generatedLaughClip;
-
-            const int frequency = 44100;
-            const float duration = 0.35f;
-            int sampleCount = Mathf.CeilToInt(frequency * duration);
-            float[] samples = new float[sampleCount];
-
-            for (int i = 0; i < sampleCount; i++)
-            {
-                float t = (float)i / frequency;
-                float envelope = Mathf.Sin(Mathf.Clamp01(t / duration) * Mathf.PI);
-                float wave =
-                    Mathf.Sin(2f * Mathf.PI * 720f * t)
-                    + 0.45f * Mathf.Sin(2f * Mathf.PI * 980f * t);
-                samples[i] = wave * envelope * 0.18f;
-            }
-
-            generatedLaughClip = AudioClip.Create(
-                "VLMitamaBoss_TempLaugh",
-                sampleCount,
-                1,
-                frequency,
-                false
-            );
-            generatedLaughClip.SetData(samples, 0);
-            return generatedLaughClip;
+            VLMitamaLaughSound.Play(laughClip, position, laughVolume);
         }
 
         Color[] CaptureColors(SpriteRenderer[] renderers)
