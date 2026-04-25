@@ -39,6 +39,12 @@ namespace VLCNP.Combat.EnemyAction
         float orbitWarmupDuration = 2.4f;
 
         [SerializeField]
+        float spawnDelayAfterCastStart = 1f;
+
+        [SerializeField]
+        float orbitRadiusExpandDuration = 1f;
+
+        [SerializeField]
         float launchInterval = 0.2f;
 
         [SerializeField]
@@ -134,19 +140,21 @@ namespace VLCNP.Combat.EnemyAction
             FaceTarget(player.transform.position.x);
             SetPreMagic(true);
             StartCastEffect();
+
+            yield return WaitWhileCanContinue(spawnDelayAfterCastStart);
+            if (!CanContinue())
+            {
+                CleanupAndComplete();
+                yield break;
+            }
+
             SpawnProjectiles();
 
-            float elapsed = 0f;
-            while (elapsed < orbitWarmupDuration)
+            yield return WaitWhileCanContinue(orbitWarmupDuration);
+            if (!CanContinue())
             {
-                if (!CanContinue())
-                {
-                    CleanupAndComplete();
-                    yield break;
-                }
-
-                elapsed += Time.deltaTime;
-                yield return null;
+                CleanupAndComplete();
+                yield break;
             }
 
             SetPreMagic(false);
@@ -236,7 +244,22 @@ namespace VLCNP.Combat.EnemyAction
                     sortingOrder
                 );
 
+                projectile.StartOrbitRadiusExpansion(0f, orbitRadiusExpandDuration);
                 activeProjectiles.Add(projectile);
+            }
+        }
+
+        IEnumerator WaitWhileCanContinue(float seconds)
+        {
+            float clampedSeconds = Mathf.Max(0f, seconds);
+            float elapsed = 0f;
+            while (elapsed < clampedSeconds)
+            {
+                if (!CanContinue())
+                    yield break;
+
+                elapsed += Time.deltaTime;
+                yield return null;
             }
         }
 

@@ -16,6 +16,10 @@ namespace VLCNP.Combat.EnemyAction
 
         Vector2 orbitCenterOffset = new Vector2(0f, 0.5f);
         float orbitRadius = 1.1f;
+        float currentOrbitRadius = 1.1f;
+        float orbitRadiusExpandStartRadius = 1.1f;
+        float orbitRadiusExpandDuration = 0f;
+        float orbitRadiusExpandElapsed = 0f;
         float orbitSpeedDegreesPerSecond = 240f;
         float currentAngleDegrees = 0f;
         float selfRotationDegreesPerSecond = 180f;
@@ -74,6 +78,10 @@ namespace VLCNP.Combat.EnemyAction
             orbitOwner = owner;
             orbitCenterOffset = centerOffset;
             orbitRadius = radius;
+            currentOrbitRadius = radius;
+            orbitRadiusExpandStartRadius = radius;
+            orbitRadiusExpandDuration = 0f;
+            orbitRadiusExpandElapsed = 0f;
             currentAngleDegrees = initialAngleDegrees;
             orbitSpeedDegreesPerSecond = orbitSpeed;
             selfRotationDegreesPerSecond = spinSpeed;
@@ -122,6 +130,21 @@ namespace VLCNP.Combat.EnemyAction
             StartCoroutine(FadeInOnSpawn());
         }
 
+        public void StartOrbitRadiusExpansion(float startRadius, float duration)
+        {
+            currentOrbitRadius = Mathf.Max(0f, startRadius);
+            orbitRadiusExpandStartRadius = currentOrbitRadius;
+            orbitRadiusExpandDuration = Mathf.Max(0f, duration);
+            orbitRadiusExpandElapsed = 0f;
+
+            if (orbitRadiusExpandDuration <= 0f)
+            {
+                currentOrbitRadius = orbitRadius;
+            }
+
+            UpdateOrbitPosition();
+        }
+
         public void LaunchTowards(Vector3 targetPosition, float speed, float lifetime)
         {
             Vector2 direction = ((Vector2)targetPosition - (Vector2)transform.position).normalized;
@@ -152,6 +175,7 @@ namespace VLCNP.Combat.EnemyAction
             if (isOrbiting)
             {
                 currentAngleDegrees += orbitSpeedDegreesPerSecond * Time.deltaTime;
+                UpdateOrbitRadiusExpansion();
                 UpdateOrbitPosition();
             }
             else if (isLaunched)
@@ -205,8 +229,18 @@ namespace VLCNP.Combat.EnemyAction
 
             float angleRadians = currentAngleDegrees * Mathf.Deg2Rad;
             Vector3 offset =
-                new Vector3(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians), 0f) * orbitRadius;
+                new Vector3(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians), 0f) * currentOrbitRadius;
             transform.localPosition = (Vector3)orbitCenterOffset + offset;
+        }
+
+        void UpdateOrbitRadiusExpansion()
+        {
+            if (orbitRadiusExpandDuration <= 0f || currentOrbitRadius >= orbitRadius)
+                return;
+
+            orbitRadiusExpandElapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(orbitRadiusExpandElapsed / orbitRadiusExpandDuration);
+            currentOrbitRadius = Mathf.Lerp(orbitRadiusExpandStartRadius, orbitRadius, t);
         }
 
         System.Collections.IEnumerator FadeOutAndDestroy()
