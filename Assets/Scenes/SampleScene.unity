@@ -1207,8 +1207,16 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 2090651027985858659, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: playTeleportSound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090651027985858659, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: hiddenWaitDuration
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090651027985858659, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: teleportSoundVolume
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2090651027985858659, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: teleportPoints.Array.size
@@ -1216,14 +1224,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2090651027985858659, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: baseCooldownBeforeTeleport
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2090651027985858659, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
-      propertyPath: playTeleportSound
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2090651027985858659, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
-      propertyPath: teleportSoundVolume
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2090651027985858659, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
@@ -1385,6 +1385,7 @@ MonoBehaviour:
   appearFadeDuration: 0.4
   preMagicDuration: 2
   magicDuration: 0.2
+  projectileLaunchDelay: 0.5
   cleanupFadeDuration: 0.3
   laughClip: {fileID: 0}
   laughVolume: 1
@@ -1423,6 +1424,7 @@ MonoBehaviour:
   appearFadeDuration: 0.4
   preMagicDuration: 2
   magicDuration: 0.2
+  projectileLaunchDelay: 0.8
   cleanupFadeDuration: 0.3
   laughClip: {fileID: 0}
   laughVolume: 1

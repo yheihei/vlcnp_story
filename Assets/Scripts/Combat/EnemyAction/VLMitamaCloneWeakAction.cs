@@ -32,6 +32,9 @@ namespace VLCNP.Combat.EnemyAction
         float magicDuration = 0.2f;
 
         [SerializeField]
+        float projectileLaunchDelay = 0.8f;
+
+        [SerializeField]
         float cleanupFadeDuration = 0.3f;
 
         [SerializeField]
@@ -191,6 +194,16 @@ namespace VLCNP.Combat.EnemyAction
             }
 
             SetMagicState(false, true);
+            yield return WaitInterruptible(projectileLaunchDelay);
+            if (IsDone)
+                yield break;
+
+            if (!CanContinue())
+            {
+                AbortAction();
+                yield break;
+            }
+
             if (TryGetPlayer(out GameObject player))
             {
                 ownerOnibi?.LaunchTowards(player.transform.position, projectileSpeed, projectileLifetime);

@@ -24,5 +24,6 @@
 
 ## Git作業の決まり
 
-すべてmainブランチで作業してpushしてよい
+- すべてmainブランチで作業してpushしてよい
+- issue がある場合は `#issue番号` のmessageをつけてcommitすること
 
