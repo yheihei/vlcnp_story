@@ -44,6 +44,9 @@ namespace VLCNP.Combat.EnemyAction
         float laughVolume = 1f;
 
         [SerializeField]
+        GameObject decoyPrefab = null;
+
+        [SerializeField]
         GameObject castEffectPrefab = null;
 
         [SerializeField]
@@ -57,6 +60,9 @@ namespace VLCNP.Combat.EnemyAction
 
         [SerializeField]
         RuntimeAnimatorController projectileAnimatorController = null;
+
+        [SerializeField]
+        OrbitingOnibiProjectile projectilePrefab = null;
 
         [SerializeField]
         Color projectileColor = Color.white;
@@ -101,6 +107,7 @@ namespace VLCNP.Combat.EnemyAction
 
         GameObject ownerCastEffect = null;
         OrbitingOnibiProjectile ownerOnibi = null;
+        Transform cachedPlayerTransform = null;
         readonly List<CloneDecoyState> decoyStates = new List<CloneDecoyState>();
 
         void Awake()
@@ -204,9 +211,9 @@ namespace VLCNP.Combat.EnemyAction
                 yield break;
             }
 
-            if (TryGetPlayer(out GameObject player))
+            if (TryGetPlayer(out Transform playerTransform))
             {
-                ownerOnibi?.LaunchTowards(player.transform.position, projectileSpeed, projectileLifetime);
+                ownerOnibi?.LaunchTowards(playerTransform.position, projectileSpeed, projectileLifetime);
                 ownerOnibi = null;
             }
 
@@ -296,12 +303,11 @@ namespace VLCNP.Combat.EnemyAction
 
         void CreateDecoy(Vector3 position, int pointIndex)
         {
-            GameObject decoy = Instantiate(gameObject, position, transform.rotation);
+            GameObject decoy = CreateDecoyObject(position);
             decoy.name = $"{gameObject.name}_WeakCloneDecoy_{pointIndex + 1}";
             decoy.transform.localScale = transform.localScale;
 
-            DisableDecoyBehaviours(decoy);
-            RemoveDecoyDamageReceivers(decoy);
+            ConfigureDecoyFromOwner(decoy);
 
             CloneDecoyState state = new CloneDecoyState
             {
@@ -320,56 +326,153 @@ namespace VLCNP.Combat.EnemyAction
             SetCollidersEnabled(decoy, false);
         }
 
-        void DisableDecoyBehaviours(GameObject target)
+        GameObject CreateDecoyObject(Vector3 position)
         {
-            EnemyV2Controller controller = target.GetComponent<EnemyV2Controller>();
-            if (controller != null)
-                controller.enabled = false;
-
-            EnemyAction[] actions = target.GetComponents<EnemyAction>();
-            for (int i = 0; i < actions.Length; i++)
+            if (decoyPrefab != null)
             {
-                if (actions[i] != null)
-                    actions[i].enabled = false;
+                return Instantiate(decoyPrefab, position, transform.rotation);
             }
 
-            MonoBehaviour[] behaviours = target.GetComponents<MonoBehaviour>();
-            for (int i = 0; i < behaviours.Length; i++)
-            {
-                MonoBehaviour behaviour = behaviours[i];
-                if (behaviour == null)
-                    continue;
+            GameObject decoy = new GameObject();
+            decoy.transform.SetPositionAndRotation(position, transform.rotation);
+            decoy.AddComponent<SpriteRenderer>();
+            decoy.AddComponent<Animator>();
 
-                string namespaceName = behaviour.GetType().Namespace;
-                if (namespaceName == "VLCNP.Pickups")
-                    behaviour.enabled = false;
+            Rigidbody2D body = decoy.AddComponent<Rigidbody2D>();
+            body.gravityScale = 0f;
+            body.constraints = RigidbodyConstraints2D.FreezeAll;
+            return decoy;
+        }
+
+        void ConfigureDecoyFromOwner(GameObject decoy)
+        {
+            CopyRootVisual(decoy);
+            EnsureDecoyRigidbody(decoy);
+            EnsureDecoyColliders(decoy);
+        }
+
+        void CopyRootVisual(GameObject decoy)
+        {
+            SpriteRenderer ownerRenderer = GetComponent<SpriteRenderer>();
+            SpriteRenderer decoyRenderer = decoy.GetComponent<SpriteRenderer>();
+            if (ownerRenderer != null && decoyRenderer == null)
+                decoyRenderer = decoy.AddComponent<SpriteRenderer>();
+
+            if (ownerRenderer != null && decoyRenderer != null)
+            {
+                decoyRenderer.sprite = ownerRenderer.sprite;
+                decoyRenderer.color = ownerRenderer.color;
+                decoyRenderer.flipX = ownerRenderer.flipX;
+                decoyRenderer.flipY = ownerRenderer.flipY;
+                decoyRenderer.drawMode = ownerRenderer.drawMode;
+                decoyRenderer.size = ownerRenderer.size;
+                decoyRenderer.tileMode = ownerRenderer.tileMode;
+                decoyRenderer.maskInteraction = ownerRenderer.maskInteraction;
+                decoyRenderer.spriteSortPoint = ownerRenderer.spriteSortPoint;
+                decoyRenderer.sortingLayerID = ownerRenderer.sortingLayerID;
+                decoyRenderer.sortingOrder = ownerRenderer.sortingOrder;
+                decoyRenderer.sharedMaterial = ownerRenderer.sharedMaterial;
             }
 
-            Rigidbody2D body = target.GetComponent<Rigidbody2D>();
+            Animator decoyAnimator = decoy.GetComponent<Animator>();
+            if (ownerAnimator != null && decoyAnimator == null)
+                decoyAnimator = decoy.AddComponent<Animator>();
+
+            if (ownerAnimator != null && decoyAnimator != null)
+            {
+                decoyAnimator.runtimeAnimatorController = ownerAnimator.runtimeAnimatorController;
+                decoyAnimator.avatar = ownerAnimator.avatar;
+                decoyAnimator.applyRootMotion = false;
+                decoyAnimator.updateMode = ownerAnimator.updateMode;
+                decoyAnimator.cullingMode = ownerAnimator.cullingMode;
+            }
+        }
+
+        void EnsureDecoyRigidbody(GameObject decoy)
+        {
+            Rigidbody2D body = decoy.GetComponent<Rigidbody2D>();
+            if (body == null)
+                body = decoy.AddComponent<Rigidbody2D>();
+
             if (body != null)
             {
                 body.velocity = Vector2.zero;
                 body.angularVelocity = 0f;
                 body.gravityScale = 0f;
+                body.constraints = RigidbodyConstraints2D.FreezeAll;
             }
         }
 
-        void RemoveDecoyDamageReceivers(GameObject target)
+        void EnsureDecoyColliders(GameObject decoy)
         {
-            if (target == null)
+            if (decoy.GetComponentsInChildren<Collider2D>(true).Length > 0)
                 return;
 
-            Health health = target.GetComponent<Health>();
-            if (health != null)
-                Destroy(health);
+            Collider2D[] sourceColliders = ownerColliders != null && ownerColliders.Length > 0
+                ? ownerColliders
+                : GetComponentsInChildren<Collider2D>(true);
 
-            TakeDamageSe takeDamageSe = target.GetComponent<TakeDamageSe>();
-            if (takeDamageSe != null)
-                Destroy(takeDamageSe);
+            for (int i = 0; i < sourceColliders.Length; i++)
+            {
+                Collider2D source = sourceColliders[i];
+                if (source == null)
+                    continue;
 
-            DamageStun damageStun = target.GetComponent<DamageStun>();
-            if (damageStun != null)
-                Destroy(damageStun);
+                GameObject colliderTarget = source.transform == transform
+                    ? decoy
+                    : CreateDecoyColliderChild(decoy, source.transform);
+
+                CopyCollider(source, colliderTarget);
+            }
+        }
+
+        GameObject CreateDecoyColliderChild(GameObject decoy, Transform sourceTransform)
+        {
+            GameObject child = new GameObject(sourceTransform.name);
+            child.layer = sourceTransform.gameObject.layer;
+            child.tag = sourceTransform.gameObject.tag;
+            child.transform.SetParent(decoy.transform, false);
+            child.transform.localPosition = sourceTransform.localPosition;
+            child.transform.localRotation = sourceTransform.localRotation;
+            child.transform.localScale = sourceTransform.localScale;
+            return child;
+        }
+
+        void CopyCollider(Collider2D source, GameObject target)
+        {
+            target.layer = source.gameObject.layer;
+            target.tag = source.gameObject.tag;
+
+            if (source is BoxCollider2D sourceBox)
+            {
+                BoxCollider2D collider = target.AddComponent<BoxCollider2D>();
+                collider.offset = sourceBox.offset;
+                collider.size = sourceBox.size;
+                collider.edgeRadius = sourceBox.edgeRadius;
+                collider.isTrigger = sourceBox.isTrigger;
+                collider.enabled = sourceBox.enabled;
+                return;
+            }
+
+            if (source is CapsuleCollider2D sourceCapsule)
+            {
+                CapsuleCollider2D collider = target.AddComponent<CapsuleCollider2D>();
+                collider.offset = sourceCapsule.offset;
+                collider.size = sourceCapsule.size;
+                collider.direction = sourceCapsule.direction;
+                collider.isTrigger = sourceCapsule.isTrigger;
+                collider.enabled = sourceCapsule.enabled;
+                return;
+            }
+
+            if (source is CircleCollider2D sourceCircle)
+            {
+                CircleCollider2D collider = target.AddComponent<CircleCollider2D>();
+                collider.offset = sourceCircle.offset;
+                collider.radius = sourceCircle.radius;
+                collider.isTrigger = sourceCircle.isTrigger;
+                collider.enabled = sourceCircle.enabled;
+            }
         }
 
         IEnumerator FadeAllIn()
@@ -479,9 +582,7 @@ namespace VLCNP.Combat.EnemyAction
                 sortingOrder = damageTextCanvas.sortingOrder - 1;
             }
 
-            GameObject projectileObject = new GameObject(objectName);
-            OrbitingOnibiProjectile projectile =
-                projectileObject.AddComponent<OrbitingOnibiProjectile>();
+            OrbitingOnibiProjectile projectile = CreateOnibiProjectile(objectName);
 
             projectile.InitializeOrbit(
                 owner,
@@ -501,6 +602,16 @@ namespace VLCNP.Combat.EnemyAction
                 sortingOrder
             );
 
+            return projectile;
+        }
+
+        OrbitingOnibiProjectile CreateOnibiProjectile(string objectName)
+        {
+            OrbitingOnibiProjectile projectile = projectilePrefab != null
+                ? Instantiate(projectilePrefab)
+                : new GameObject(objectName).AddComponent<OrbitingOnibiProjectile>();
+
+            projectile.gameObject.name = objectName;
             return projectile;
         }
 
@@ -578,18 +689,26 @@ namespace VLCNP.Combat.EnemyAction
 
         void LookAtPlayer(Transform target)
         {
-            if (target == null || !TryGetPlayer(out GameObject player))
+            if (target == null || !TryGetPlayer(out Transform player))
                 return;
 
             Vector3 scale = target.localScale;
             float scaleX = Mathf.Abs(scale.x);
-            scale.x = player.transform.position.x < target.position.x ? scaleX : -scaleX;
+            scale.x = player.position.x < target.position.x ? scaleX : -scaleX;
             target.localScale = scale;
         }
 
-        bool TryGetPlayer(out GameObject player)
+        bool TryGetPlayer(out Transform player)
         {
-            player = GameObject.FindWithTag(targetTagName);
+            if (cachedPlayerTransform != null && cachedPlayerTransform.gameObject.activeInHierarchy)
+            {
+                player = cachedPlayerTransform;
+                return true;
+            }
+
+            GameObject playerObject = GameObject.FindWithTag(targetTagName);
+            cachedPlayerTransform = playerObject != null ? playerObject.transform : null;
+            player = cachedPlayerTransform;
             return player != null;
         }
 

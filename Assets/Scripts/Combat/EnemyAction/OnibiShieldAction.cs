@@ -15,6 +15,9 @@ namespace VLCNP.Combat.EnemyAction
         RuntimeAnimatorController projectileAnimatorController = null;
 
         [SerializeField]
+        OrbitingOnibiProjectile projectilePrefab = null;
+
+        [SerializeField]
         Color projectileColor = Color.white;
 
         [SerializeField]
@@ -80,6 +83,7 @@ namespace VLCNP.Combat.EnemyAction
         Health ownerHealth = null;
         Animator animator = null;
         GameObject activeCastEffect = null;
+        Transform cachedPlayerTransform = null;
 
         const string PreMagicParameterName = "isPreMagic";
         const string MagicParameterName = "isMagic";
@@ -131,13 +135,13 @@ namespace VLCNP.Combat.EnemyAction
 
         IEnumerator ExecuteRoutine()
         {
-            if (!TryGetPlayer(out GameObject player))
+            if (!TryGetPlayer(out Transform playerTransform))
             {
                 CleanupAndComplete();
                 yield break;
             }
 
-            FaceTarget(player.transform.position.x);
+            FaceTarget(playerTransform.position.x);
             SetPreMagic(true);
             StartCastEffect();
 
@@ -182,14 +186,14 @@ namespace VLCNP.Combat.EnemyAction
                     yield break;
                 }
 
-                if (!TryGetPlayer(out player))
+                if (!TryGetPlayer(out playerTransform))
                 {
                     CleanupAndComplete();
                     yield break;
                 }
 
-                FaceTarget(player.transform.position.x);
-                projectile.LaunchTowards(player.transform.position, projectileSpeed, projectileLifetime);
+                FaceTarget(playerTransform.position.x);
+                projectile.LaunchTowards(playerTransform.position, projectileSpeed, projectileLifetime);
                 hasLaunchedProjectile = true;
             }
 
@@ -222,9 +226,7 @@ namespace VLCNP.Combat.EnemyAction
 
             for (int i = 0; i < projectileCount; i++)
             {
-                GameObject projectileObject = new GameObject($"Onibi_{i + 1}");
-                OrbitingOnibiProjectile projectile =
-                    projectileObject.AddComponent<OrbitingOnibiProjectile>();
+                OrbitingOnibiProjectile projectile = CreateProjectile($"Onibi_{i + 1}");
 
                 projectile.InitializeOrbit(
                     transform,
@@ -249,6 +251,16 @@ namespace VLCNP.Combat.EnemyAction
             }
         }
 
+        OrbitingOnibiProjectile CreateProjectile(string objectName)
+        {
+            OrbitingOnibiProjectile projectile = projectilePrefab != null
+                ? Instantiate(projectilePrefab)
+                : new GameObject(objectName).AddComponent<OrbitingOnibiProjectile>();
+
+            projectile.gameObject.name = objectName;
+            return projectile;
+        }
+
         IEnumerator WaitWhileCanContinue(float seconds)
         {
             float clampedSeconds = Mathf.Max(0f, seconds);
@@ -263,9 +275,17 @@ namespace VLCNP.Combat.EnemyAction
             }
         }
 
-        bool TryGetPlayer(out GameObject player)
+        bool TryGetPlayer(out Transform player)
         {
-            player = GameObject.FindWithTag(targetTagName);
+            if (cachedPlayerTransform != null && cachedPlayerTransform.gameObject.activeInHierarchy)
+            {
+                player = cachedPlayerTransform;
+                return true;
+            }
+
+            GameObject playerObject = GameObject.FindWithTag(targetTagName);
+            cachedPlayerTransform = playerObject != null ? playerObject.transform : null;
+            player = cachedPlayerTransform;
             return player != null;
         }
 

@@ -89,6 +89,7 @@ namespace VLCNP.Combat.EnemyAction
             damage = projectileDamage;
             targetTagName = targetTag;
             targetColor = color;
+            isFadingOut = false;
 
             transform.SetParent(owner, false);
             transform.localScale = projectileScale;
@@ -114,7 +115,7 @@ namespace VLCNP.Combat.EnemyAction
                 }
 
                 animator.runtimeAnimatorController = animatorController;
-                animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+                animator.cullingMode = AnimatorCullingMode.CullUpdateTransforms;
             }
 
             if (triggerCollider != null)
