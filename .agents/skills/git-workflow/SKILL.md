@@ -30,10 +30,10 @@ description: Git workflow rules for /Users/yhei/unity/vlcnpStory2022. Use when C
 
 - ユーザーが明示的に依頼しない限り、feature ブランチを作らない。
 - `main` に直接 commit して push してよい。
-- commit 前に diff を確認し、無関係なユーザー変更を stage しない。
+- commit messageは日本語
 - 元の issue がある場合、commit message に issue 番号を `#618` の形式で含める。
 - issue 番号がローカル文脈から分からない場合は、捏造せず、ユーザーに確認するか省略する。
-- issue 番号が分かっている場合、commit message は `Fix player jump timing #618` のように簡潔にする。
+- issue 番号が分かっている場合、commit message は `プレイヤーのジャンプタイミングを修正 #618` のように簡潔にする。
 
 ## Validation
 
