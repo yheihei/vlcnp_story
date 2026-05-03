@@ -37,6 +37,7 @@ namespace VLCNP.Combat.EnemyAction
         bool isLaunched = false;
         bool isLeft = false;
         bool isFadingOut = false;
+        static Material spriteUnlitMaterial = null;
 
         void Awake()
         {
@@ -98,6 +99,11 @@ namespace VLCNP.Combat.EnemyAction
                 spriteRenderer.color = new Color(color.r, color.g, color.b, 0f);
                 spriteRenderer.sortingLayerID = sortingLayerId;
                 spriteRenderer.sortingOrder = sortingOrder;
+                Material unlitMaterial = GetSpriteUnlitMaterial();
+                if (unlitMaterial != null)
+                {
+                    spriteRenderer.sharedMaterial = unlitMaterial;
+                }
             }
 
             if (animatorController != null)
@@ -128,6 +134,26 @@ namespace VLCNP.Combat.EnemyAction
             moveDirection = Vector2.zero;
             UpdateOrbitPosition();
             StartCoroutine(FadeInOnSpawn());
+        }
+
+        static Material GetSpriteUnlitMaterial()
+        {
+            if (spriteUnlitMaterial != null)
+                return spriteUnlitMaterial;
+
+            Shader shader = Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default");
+            if (shader == null)
+                shader = Shader.Find("Sprites/Default");
+
+            if (shader == null)
+                return null;
+
+            spriteUnlitMaterial = new Material(shader)
+            {
+                name = "OrbitingOnibiProjectile_SpriteUnlit",
+                hideFlags = HideFlags.HideAndDontSave,
+            };
+            return spriteUnlitMaterial;
         }
 
         public void StartOrbitRadiusExpansion(float startRadius, float duration)
