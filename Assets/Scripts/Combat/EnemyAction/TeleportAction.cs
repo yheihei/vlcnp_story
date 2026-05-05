@@ -48,6 +48,9 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         float teleportSoundVolume = 1f;
 
+        [SerializeField]
+        float teleportSoundPitch = 1f;
+
         Coroutine teleportRoutine;
         Color[] initialRendererColors = null;
         float[] initialCanvasGroupAlphas = null;
@@ -288,10 +291,21 @@ namespace VLCNP.Combat.EnemyAction
 
         void PlayTeleportSound()
         {
-            if (!playTeleportSound)
+            if (!playTeleportSound || teleportSoundClip == null)
                 return;
 
-            VLMitamaLaughSound.Play(teleportSoundClip, transform.position, teleportSoundVolume);
+            GameObject soundObject = new GameObject("VLMitamaTeleportSound");
+            soundObject.transform.position = transform.position;
+
+            float pitch = Mathf.Max(0.01f, teleportSoundPitch);
+            AudioSource audioSource = soundObject.AddComponent<AudioSource>();
+            audioSource.clip = teleportSoundClip;
+            audioSource.volume = teleportSoundVolume;
+            audioSource.pitch = pitch;
+            audioSource.Play();
+
+            float destroyDelay = teleportSoundClip.length / pitch;
+            Destroy(soundObject, destroyDelay);
         }
 
         void SetAlpha(float alpha)

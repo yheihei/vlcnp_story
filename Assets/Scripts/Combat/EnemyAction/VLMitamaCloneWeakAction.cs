@@ -44,6 +44,12 @@ namespace VLCNP.Combat.EnemyAction
         float laughVolume = 1f;
 
         [SerializeField]
+        float decoyHitLaughVolume = 1.4f;
+
+        [SerializeField]
+        float laughPitch = 1f;
+
+        [SerializeField]
         GameObject decoyPrefab = null;
 
         [SerializeField]
@@ -516,7 +522,7 @@ namespace VLCNP.Combat.EnemyAction
 
             state.hitHandled = true;
             if (state.gameObject != null)
-                PlayLaugh(state.gameObject.transform.position);
+                PlayLaugh(state.gameObject.transform.position, decoyHitLaughVolume);
 
             if (state.onibi != null)
             {
@@ -746,7 +752,26 @@ namespace VLCNP.Combat.EnemyAction
 
         void PlayLaugh(Vector3 position)
         {
-            VLMitamaLaughSound.Play(laughClip, position, laughVolume);
+            PlayLaugh(position, laughVolume);
+        }
+
+        void PlayLaugh(Vector3 position, float volume)
+        {
+            if (laughClip == null)
+                return;
+
+            GameObject soundObject = new GameObject("VLMitamaLaughSound");
+            soundObject.transform.position = position;
+
+            float pitch = Mathf.Max(0.01f, laughPitch);
+            AudioSource audioSource = soundObject.AddComponent<AudioSource>();
+            audioSource.clip = laughClip;
+            audioSource.volume = volume;
+            audioSource.pitch = pitch;
+            audioSource.Play();
+
+            float destroyDelay = laughClip.length / pitch;
+            Destroy(soundObject, destroyDelay);
         }
 
         Color[] CaptureColors(SpriteRenderer[] renderers)
