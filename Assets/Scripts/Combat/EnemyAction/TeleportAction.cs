@@ -12,6 +12,9 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         List<Transform> teleportPoints = new List<Transform>();
 
+        [SerializeField, Min(0f)]
+        float minimumTeleportDistance = 2f;
+
         [SerializeField]
         SpriteRenderer[] targetRenderers = null;
 
@@ -59,6 +62,7 @@ namespace VLCNP.Combat.EnemyAction
         Color[] initialParticleTintColors = null;
         bool[] initialParticleRendererEnabled = null;
         MaterialPropertyBlock particlePropertyBlock = null;
+        Transform lastTeleportDestination = null;
 
         static readonly int ColorPropertyId = Shader.PropertyToID("_Color");
         static readonly int TintColorPropertyId = Shader.PropertyToID("_TintColor");
@@ -141,6 +145,7 @@ namespace VLCNP.Combat.EnemyAction
             {
                 Vector3 previousPosition = transform.position;
                 transform.position = destination.position;
+                lastTeleportDestination = destination;
 
                 if (!TryFacePlayer() && !keepCurrentFacing)
                 {
@@ -362,11 +367,19 @@ namespace VLCNP.Combat.EnemyAction
                 return null;
             }
 
-            List<Transform> differentPoints = validPoints
-                .Where(point => Vector3.Distance(point.position, transform.position) > 0.05f)
+            List<Transform> distantPoints = validPoints
+                .Where(point => Vector3.Distance(point.position, transform.position) > minimumTeleportDistance)
                 .ToList();
 
-            List<Transform> candidates = differentPoints.Count > 0 ? differentPoints : validPoints;
+            List<Transform> candidates = distantPoints
+                .Where(point => point != lastTeleportDestination)
+                .ToList();
+
+            if (candidates.Count == 0)
+            {
+                candidates = distantPoints.Count > 0 ? distantPoints : validPoints;
+            }
+
             int randomIndex = Random.Range(0, candidates.Count);
             return candidates[randomIndex];
         }
