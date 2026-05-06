@@ -12,6 +12,9 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         List<Transform> teleportPoints = new List<Transform>();
 
+        [SerializeField]
+        Transform teleportPointsCenter = null;
+
         [SerializeField, Min(0f)]
         float minimumTeleportDistance = 2f;
 
@@ -63,9 +66,34 @@ namespace VLCNP.Combat.EnemyAction
         bool[] initialParticleRendererEnabled = null;
         MaterialPropertyBlock particlePropertyBlock = null;
         Transform lastTeleportDestination = null;
+        bool hasWarnedMissingPlayer = false;
 
         static readonly int ColorPropertyId = Shader.PropertyToID("_Color");
         static readonly int TintColorPropertyId = Shader.PropertyToID("_TintColor");
+
+        class TeleportDestination
+        {
+            public Transform Point { get; }
+            public Vector3 Position { get; }
+
+            public TeleportDestination(Transform point, Vector3 position)
+            {
+                Point = point;
+                Position = position;
+            }
+        }
+
+        struct TeleportCandidate
+        {
+            public Transform Point { get; }
+            public Vector3 Position { get; }
+
+            public TeleportCandidate(Transform point, Vector3 position)
+            {
+                Point = point;
+                Position = position;
+            }
+        }
 
         void Awake()
         {
@@ -140,16 +168,16 @@ namespace VLCNP.Combat.EnemyAction
             yield return FadeToAlpha(0f, fadeOutDuration);
             SetCollidersEnabled(false);
 
-            Transform destination = SelectDestination();
+            TeleportDestination destination = SelectDestination();
             if (destination != null)
             {
                 Vector3 previousPosition = transform.position;
-                transform.position = destination.position;
-                lastTeleportDestination = destination;
+                transform.position = destination.Position;
+                lastTeleportDestination = destination.Point;
 
                 if (!TryFacePlayer() && !keepCurrentFacing)
                 {
-                    UpdateFacing(previousPosition.x, destination.position.x);
+                    UpdateFacing(previousPosition.x, destination.Position.x);
                 }
             }
 
@@ -358,7 +386,7 @@ namespace VLCNP.Combat.EnemyAction
             }
         }
 
-        Transform SelectDestination()
+        TeleportDestination SelectDestination()
         {
             List<Transform> validPoints = teleportPoints.Where(point => point != null).ToList();
             if (validPoints.Count == 0)
@@ -367,21 +395,70 @@ namespace VLCNP.Combat.EnemyAction
                 return null;
             }
 
-            List<Transform> distantPoints = validPoints
-                .Where(point => Vector3.Distance(point.position, transform.position) > minimumTeleportDistance)
+            Transform player = GetPlayerRelativeTarget();
+            List<TeleportCandidate> validCandidates = validPoints
+                .Select(point => new TeleportCandidate(point, GetDestinationPosition(point, player)))
                 .ToList();
 
-            List<Transform> candidates = distantPoints
-                .Where(point => point != lastTeleportDestination)
+            List<TeleportCandidate> distantCandidates = validCandidates
+                .Where(candidate => Vector3.Distance(candidate.Position, transform.position) > minimumTeleportDistance)
+                .ToList();
+
+            List<TeleportCandidate> candidates = distantCandidates
+                .Where(candidate => candidate.Point != lastTeleportDestination)
                 .ToList();
 
             if (candidates.Count == 0)
             {
-                candidates = distantPoints.Count > 0 ? distantPoints : validPoints;
+                candidates = distantCandidates.Count > 0 ? distantCandidates : validCandidates;
             }
 
-            int randomIndex = Random.Range(0, candidates.Count);
-            return candidates[randomIndex];
+            ShuffleCandidates(candidates);
+
+            TeleportCandidate destination = candidates[0];
+            return new TeleportDestination(destination.Point, destination.Position);
+        }
+
+        Transform GetPlayerRelativeTarget()
+        {
+            if (teleportPointsCenter == null)
+                return null;
+
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player == null)
+            {
+                if (!hasWarnedMissingPlayer)
+                {
+                    Debug.LogWarning($"TeleportAction: Player tag is not found on {gameObject.name}. Use fixed teleport points.");
+                    hasWarnedMissingPlayer = true;
+                }
+
+                return null;
+            }
+
+            return player.transform;
+        }
+
+        Vector3 GetDestinationPosition(Transform point, Transform player)
+        {
+            if (teleportPointsCenter == null || player == null)
+                return point.position;
+
+            Vector3 relativePosition = point.position - teleportPointsCenter.position;
+            Vector3 destination = player.position + relativePosition;
+            destination.z = point.position.z;
+            return destination;
+        }
+
+        void ShuffleCandidates(List<TeleportCandidate> candidates)
+        {
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                int randomIndex = Random.Range(i, candidates.Count);
+                TeleportCandidate current = candidates[i];
+                candidates[i] = candidates[randomIndex];
+                candidates[randomIndex] = current;
+            }
         }
 
         void UpdateFacing(float previousX, float nextX)
