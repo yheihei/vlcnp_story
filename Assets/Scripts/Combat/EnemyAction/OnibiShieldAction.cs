@@ -48,6 +48,9 @@ namespace VLCNP.Combat.EnemyAction
         float orbitRadiusExpandDuration = 1f;
 
         [SerializeField]
+        float projectileLaunchDelay = 0.5f;
+
+        [SerializeField]
         float launchInterval = 0.2f;
 
         [SerializeField]
@@ -177,6 +180,13 @@ namespace VLCNP.Combat.EnemyAction
 
             SetPreMagic(false);
             SetMagic(true);
+
+            yield return WaitWhileCanContinue(projectileLaunchDelay);
+            if (!CanContinue())
+            {
+                CleanupAndComplete();
+                yield break;
+            }
 
             bool hasLaunchedProjectile = false;
             for (int i = 0; i < activeProjectiles.Count; i++)
