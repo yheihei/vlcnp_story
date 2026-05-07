@@ -50,6 +50,18 @@ namespace VLCNP.Combat.EnemyAction
         float laughPitch = 1f;
 
         [SerializeField]
+        AudioClip onibiSpawnSe = null;
+
+        [SerializeField]
+        float onibiSpawnSeVolume = 1f;
+
+        [SerializeField]
+        AudioClip onibiLaunchSe = null;
+
+        [SerializeField]
+        float onibiLaunchSeVolume = 1f;
+
+        [SerializeField]
         GameObject decoyPrefab = null;
 
         [SerializeField]
@@ -110,6 +122,7 @@ namespace VLCNP.Combat.EnemyAction
         bool[] ownerColliderStates = null;
         Animator ownerAnimator = null;
         Health ownerHealth = null;
+        AudioSource audioSource = null;
 
         GameObject ownerCastEffect = null;
         OrbitingOnibiProjectile ownerOnibi = null;
@@ -120,6 +133,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             ownerAnimator = GetComponent<Animator>();
             ownerHealth = GetComponent<Health>();
+            audioSource = GetComponent<AudioSource>();
         }
 
         void OnDisable()
@@ -195,6 +209,7 @@ namespace VLCNP.Combat.EnemyAction
             StartCastEffects();
             ownerOnibi = SpawnHeadOnibi(transform, "VLMitamaWeak_Onibi_Main");
             SpawnDecoyOnibis();
+            PlayOnibiSpawnSe();
 
             yield return WaitPreMagic();
             if (IsDone)
@@ -219,7 +234,12 @@ namespace VLCNP.Combat.EnemyAction
 
             if (TryGetPlayer(out Transform playerTransform))
             {
-                ownerOnibi?.LaunchTowards(playerTransform.position, projectileSpeed, projectileLifetime);
+                if (ownerOnibi != null)
+                {
+                    PlayOnibiLaunchSe();
+                    ownerOnibi.LaunchTowards(playerTransform.position, projectileSpeed, projectileLifetime);
+                }
+
                 ownerOnibi = null;
             }
 
@@ -772,6 +792,24 @@ namespace VLCNP.Combat.EnemyAction
 
             float destroyDelay = laughClip.length / pitch;
             Destroy(soundObject, destroyDelay);
+        }
+
+        void PlayOnibiSpawnSe()
+        {
+            PlaySe(onibiSpawnSe, onibiSpawnSeVolume);
+        }
+
+        void PlayOnibiLaunchSe()
+        {
+            PlaySe(onibiLaunchSe, onibiLaunchSeVolume);
+        }
+
+        void PlaySe(AudioClip clip, float volume)
+        {
+            if (clip == null)
+                return;
+
+            audioSource?.PlayOneShot(clip, volume);
         }
 
         Color[] CaptureColors(SpriteRenderer[] renderers)

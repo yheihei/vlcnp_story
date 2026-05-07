@@ -77,6 +77,18 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         float castEffectFadeOutDuration = 0.5f;
 
+        [SerializeField]
+        AudioClip onibiSpawnSe = null;
+
+        [SerializeField]
+        float onibiSpawnSeVolume = 1f;
+
+        [SerializeField]
+        AudioClip onibiLaunchSe = null;
+
+        [SerializeField]
+        float onibiLaunchSeVolume = 1f;
+
         Coroutine actionRoutine = null;
         readonly List<OrbitingOnibiProjectile> activeProjectiles = new List<OrbitingOnibiProjectile>();
         SpriteRenderer ownerSpriteRenderer = null;
@@ -84,6 +96,7 @@ namespace VLCNP.Combat.EnemyAction
         Animator animator = null;
         GameObject activeCastEffect = null;
         Transform cachedPlayerTransform = null;
+        AudioSource audioSource = null;
 
         const string PreMagicParameterName = "isPreMagic";
         const string MagicParameterName = "isMagic";
@@ -93,6 +106,7 @@ namespace VLCNP.Combat.EnemyAction
             ownerSpriteRenderer = GetComponent<SpriteRenderer>();
             ownerHealth = GetComponent<Health>();
             animator = GetComponent<Animator>();
+            audioSource = GetComponent<AudioSource>();
         }
 
         void OnDisable()
@@ -193,6 +207,7 @@ namespace VLCNP.Combat.EnemyAction
                 }
 
                 FaceTarget(playerTransform.position.x);
+                PlayOnibiLaunchSe();
                 projectile.LaunchTowards(playerTransform.position, projectileSpeed, projectileLifetime);
                 hasLaunchedProjectile = true;
             }
@@ -249,6 +264,8 @@ namespace VLCNP.Combat.EnemyAction
                 projectile.StartOrbitRadiusExpansion(0f, orbitRadiusExpandDuration);
                 activeProjectiles.Add(projectile);
             }
+
+            PlayOnibiSpawnSe();
         }
 
         OrbitingOnibiProjectile CreateProjectile(string objectName)
@@ -378,6 +395,24 @@ namespace VLCNP.Combat.EnemyAction
         void SetMagic(bool value)
         {
             animator?.SetBool(MagicParameterName, value);
+        }
+
+        void PlayOnibiSpawnSe()
+        {
+            PlaySe(onibiSpawnSe, onibiSpawnSeVolume);
+        }
+
+        void PlayOnibiLaunchSe()
+        {
+            PlaySe(onibiLaunchSe, onibiLaunchSeVolume);
+        }
+
+        void PlaySe(AudioClip clip, float volume)
+        {
+            if (clip == null)
+                return;
+
+            audioSource?.PlayOneShot(clip, volume);
         }
 
         void ResetMagicStates()
