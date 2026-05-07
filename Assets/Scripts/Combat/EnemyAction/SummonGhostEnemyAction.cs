@@ -62,10 +62,12 @@ namespace VLCNP.Combat.EnemyAction
         Coroutine actionRoutine = null;
         Animator animator = null;
         GameObject activeCastEffect = null;
+        AudioSource audioSource = null;
 
         void Awake()
         {
             animator = GetComponent<Animator>();
+            audioSource = GetComponent<AudioSource>();
         }
 
         void OnDisable()
@@ -182,7 +184,7 @@ namespace VLCNP.Combat.EnemyAction
 
             if (spawnSe != null)
             {
-                AudioSource.PlayClipAtPoint(spawnSe, spawnPosition, spawnSeVolume);
+                audioSource?.PlayOneShot(spawnSe, spawnSeVolume);
             }
 
             GameObject summonedEnemy = Instantiate(
