@@ -47,5 +47,6 @@ namespace VLCNP.Core
         HPUpYami3F, // お昼寝部屋やみの3FHPアップ
         Yami3FBossDefeated, // おひるねべや(闇)の3Fのボスを倒した
         Yami3FDoorClosed, // おひるねべや(闇)の3Fで閉じ込められた
+        VLMitamaJoined, // VLミタマが仲間になった
     }
 }

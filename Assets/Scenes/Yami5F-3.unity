@@ -19601,6 +19601,52 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &628646939
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 628646941}
+  - component: {fileID: 628646940}
+  m_Layer: 0
+  m_Name: VLMitamaJoinedAutoEvent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &628646940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628646939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b970805e6f54b45e3b283203175e806d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leeleeLine: "\u3053\u308C\u3067 VL\u30DF\u30BF\u30DE\u3082\u4EF2\u9593\u3084\u306A"
+  speakerName: "VL\u30EA\u30FC\u30EA\u30FC"
+--- !u!4 &628646941
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628646939}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &644964606
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23253,76 +23299,6 @@ Transform:
   - {fileID: 1871692897}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1687767865
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1687767868}
-  - component: {fileID: 1687767867}
-  - component: {fileID: 1687767866}
-  m_Layer: 0
-  m_Name: VLMitamaDefeatedTransitionEvent
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1687767866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687767865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c58737ea8a624f7885b077cba88d416, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  transitionEvent: {fileID: 1687767867}
-  slowTimeScale: 0.2
-  whiteFadeDuration: 1
-  bgmFadeOutDuration: 1
---- !u!114 &1687767867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687767865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fae2dcc68d28a4b38852d88da56a5585, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  sceneToLoad: 36
-  destinationSpawnPointName: A
-  fadeOutTime: 1
-  fadeWaitTime: 0.2
-  fadeInTime: 1
-  autoSaveFileName: autoSave
-  isAutoSave: 1
-  isRetryOnDestination: 0
-  isShowAreaName: 0
---- !u!4 &1687767868
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687767865}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1760034251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24442,26 +24418,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
-      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
-      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[4].m_Target
-      value:
-      objectReference: {fileID: 1687767866}
-    - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
-      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[4].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
-      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
-      value: Execute
-      objectReference: {fileID: 0}
-    - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
-      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
-      value: VLCNP.SceneManagement.VLMitamaDefeatedTransition, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 5744145134755985437, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: projectileScale.x
       value: 0.6
@@ -24485,6 +24441,10 @@ PrefabInstance:
     - target: {fileID: 7737478085877585054, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: m_Name
       value: VLMitamaBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737478085877585054, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -34547,4 +34507,4 @@ SceneRoots:
   - {fileID: 559555283}
   - {fileID: 1503980664}
   - {fileID: 218981651}
-  - {fileID: 1687767868}
+  - {fileID: 628646941}
