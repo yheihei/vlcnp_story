@@ -33498,7 +33498,6 @@ GameObject:
   - component: {fileID: 7528315950306156705}
   - component: {fileID: 7528315950306156715}
   - component: {fileID: 7528315950306156714}
-  - component: {fileID: 7528315950306156713}
   - component: {fileID: 7528315950306156712}
   - component: {fileID: 7528315950306156711}
   - component: {fileID: 7528315950306156710}
@@ -33507,6 +33506,8 @@ GameObject:
   - component: {fileID: 7528315950306156707}
   - component: {fileID: 7528315950306156706}
   - component: {fileID: 7528315950306156716}
+  - component: {fileID: 7528315950306156717}
+  - component: {fileID: 7528315950306156718}
   m_Layer: 0
   m_Name: Chat
   m_TagString: Untagged
@@ -33556,7 +33557,7 @@ MonoBehaviour:
   selectedBlocks:
   - {fileID: 7528315950306156705}
   selectedCommands:
-  - {fileID: 7528315950306156716}
+  - {fileID: 7528315950306156708}
   variables: []
   description: 
   stepPause: 0
@@ -33822,13 +33823,14 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 7528315950306156715}
   commandList:
+  - {fileID: 7528315950306156718}
   - {fileID: 7528315950306156714}
-  - {fileID: 7528315950306156713}
+  - {fileID: 7528315950306156716}
   - {fileID: 7528315950306156712}
   - {fileID: 7528315950306156710}
   - {fileID: 7528315950306156709}
   - {fileID: 7528315950306156711}
-  - {fileID: 7528315950306156716}
+  - {fileID: 7528315950306156717}
   - {fileID: 7528315950306156708}
   - {fileID: 7528315950306156707}
   - {fileID: 7528315950306156706}
@@ -33851,14 +33853,14 @@ MonoBehaviour:
   targetObject: {fileID: 1620216651}
   targetComponentAssemblyName: VLCNP.SceneManagement.TransitionEvent, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: VLCNP.SceneManagement.TransitionEvent
+  targetComponentFullname: UnityEngine.Component[]
   targetComponentText: TransitionEvent
   targetMethod: ExecuteTransition
-  targetMethodText: ExecuteTransition
+  targetMethodText: 'ExecuteTransition (): Void'
   methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 
-  returnValueType: 
+  returnValueType: System.Void
   showInherited: 0
   callMode: 0
 --- !u!114 &7528315950306156707
@@ -33879,10 +33881,10 @@ MonoBehaviour:
   targetObject: {fileID: 1313368042}
   targetComponentAssemblyName: VLCNP.Core.FlagManager, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: VLCNP.Core.FlagManager
+  targetComponentFullname: UnityEngine.Component[]
   targetComponentText: FlagManager
   targetMethod: SetFlag
-  targetMethodText: SetFlag
+  targetMethodText: 'SetFlag (Flag, Boolean): Void'
   methodParameters:
   - objValue:
       typeAssemblyname: VLCNP.Core.Flag, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -33920,7 +33922,7 @@ MonoBehaviour:
     variableKey: 
   saveReturnValue: 0
   returnValueVariableKey: 
-  returnValueType: 
+  returnValueType: System.Void
   showInherited: 0
   callMode: 0
 --- !u!114 &7528315950306156708
@@ -33941,31 +33943,14 @@ MonoBehaviour:
   targetObject: {fileID: 1313368044}
   targetComponentAssemblyName: VLCNP.Core.BGMWrapper, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: VLCNP.Core.BGMWrapper
+  targetComponentFullname: UnityEngine.Component[]
   targetComponentText: BGMWrapper
-  targetMethod: ChangeVolume
-  targetMethodText: ChangeVolume
-  methodParameters:
-  - objValue:
-      typeAssemblyname: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      typeFullname: System.Single
-      intValue: 0
-      boolValue: 0
-      floatValue: 0.1
-      stringValue: 
-      colorValue: {r: 0, g: 0, b: 0, a: 0}
-      gameObjectValue: {fileID: 0}
-      materialValue: {fileID: 0}
-      objectValue: {fileID: 0}
-      spriteValue: {fileID: 0}
-      textureValue: {fileID: 0}
-      vector2Value: {x: 0, y: 0}
-      vector3Value: {x: 0, y: 0, z: 0}
-    variableKey: 
+  targetMethod: UnmuteForSE
+  targetMethodText: 'UnmuteForSE (): Void'
+  methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 
-  returnValueType: 
+  returnValueType: System.Void
   showInherited: 0
   callMode: 0
 --- !u!114 &7528315950306156709
@@ -34005,29 +33990,12 @@ MonoBehaviour:
     Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
   targetComponentText: BGMWrapper
-  targetMethod: 
-  targetMethodText: 
-  methodParameters:
-  - objValue:
-      typeAssemblyname: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      typeFullname: System.Single
-      intValue: 0
-      boolValue: 0
-      floatValue: 0.3
-      stringValue: 
-      colorValue: {r: 0, g: 0, b: 0, a: 0}
-      gameObjectValue: {fileID: 0}
-      materialValue: {fileID: 0}
-      objectValue: {fileID: 0}
-      spriteValue: {fileID: 0}
-      textureValue: {fileID: 0}
-      vector2Value: {x: 0, y: 0}
-      vector3Value: {x: 0, y: 0, z: 0}
-    variableKey: 
+  targetMethod: MuteForSE
+  targetMethodText: 'MuteForSE (): Void'
+  methodParameters: []
   saveReturnValue: 0
   returnValueVariableKey: 
-  returnValueType: 
+  returnValueType: System.Void
   showInherited: 0
   callMode: 0
 --- !u!114 &7528315950306156711
@@ -34084,26 +34052,6 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
---- !u!114 &7528315950306156713
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 514036173588529543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 207aecf668a0345388087ccf522f9957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 2
-  indentLevel: 0
-  duration: 1
-  targetAlpha: 0
-  waitUntilFinished: 1
-  fadeColor: {r: 1, g: 1, b: 1, a: 1}
-  fadeTexture: {fileID: 0}
-  fadeTweenType: 4
 --- !u!114 &7528315950306156714
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -34163,8 +34111,46 @@ MonoBehaviour:
   indentLevel: 0
   _duration:
     floatRef: {fileID: 0}
+    floatVal: 4
+  durationOLD: 0
+--- !u!114 &7528315950306156717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514036173588529543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3315ad2ebb85443909a1203d56d9344e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 11
+  indentLevel: 0
+  _duration:
+    floatRef: {fileID: 0}
     floatVal: 1
   durationOLD: 0
+--- !u!114 &7528315950306156718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514036173588529543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 207aecf668a0345388087ccf522f9957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 12
+  indentLevel: 0
+  duration: 0
+  targetAlpha: 0
+  waitUntilFinished: 1
+  fadeColor: {r: 1, g: 1, b: 1, a: 1}
+  fadeTexture: {fileID: 0}
+  fadeTweenType: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
