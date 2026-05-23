@@ -16,7 +16,7 @@ namespace VLCNP.Core
         {
             // BGMのtagを持つオブジェクトを探して、そのStartBGMを取得する
             bgm = GameObject.FindWithTag("BGM")?.GetComponent<StartBGM>();
-            Debug.Log(bgm);
+            PerfLog.Log(bgm != null ? bgm.ToString() : "BGM not found");
         }
 
         public void Play(AudioClip clip, float volume, float pitch)

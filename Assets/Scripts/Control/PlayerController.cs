@@ -26,7 +26,7 @@ namespace VLCNP.Control
                 if (isStopped == value) return;
                 isStopped = value;
                 reportedStopped = false;
-                Debug.Log($"[PlayerController] {name} IsStopped -> {value} at t={Time.time:F3}");
+                PerfLog.Log($"[PlayerController] {name} IsStopped -> {value} at t={Time.time:F3}");
             }
         }
 
@@ -43,12 +43,12 @@ namespace VLCNP.Control
 
         private void OnEnable()
         {
-            Debug.Log($"[PlayerController] {name} enabled at t={Time.time:F3}");
+            PerfLog.Log($"[PlayerController] {name} enabled at t={Time.time:F3}");
         }
 
         private void OnDisable()
         {
-            Debug.Log($"[PlayerController] {name} disabled at t={Time.time:F3}");
+            PerfLog.Log($"[PlayerController] {name} disabled at t={Time.time:F3}");
         }
 
         void Update()
@@ -59,7 +59,7 @@ namespace VLCNP.Control
             {
                 if (!reportedStopped)
                 {
-                    Debug.Log($"[PlayerController] {name} Update skipped because IsStopped at t={Time.time:F3}");
+                    PerfLog.Log($"[PlayerController] {name} Update skipped because IsStopped at t={Time.time:F3}");
                     reportedStopped = true;
                 }
                 mover.Stop();
@@ -67,7 +67,7 @@ namespace VLCNP.Control
             }
             if (reportedStopped)
             {
-                Debug.Log($"[PlayerController] {name} Update resumed at t={Time.time:F3}");
+                PerfLog.Log($"[PlayerController] {name} Update resumed at t={Time.time:F3}");
                 reportedStopped = false;
             }
             mover.Move();

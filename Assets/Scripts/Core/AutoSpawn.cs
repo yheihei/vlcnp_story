@@ -27,7 +27,12 @@ public class AutoSpawn : MonoBehaviour, IStoppable
     void OnEnable()
     {
         partyCongroller = GameObject.FindGameObjectWithTag("Party")?.GetComponent<PartyCongroller>();
-        if (partyCongroller == null) return;
+        if (partyCongroller == null)
+        {
+            SetPlayer(GameObject.FindGameObjectWithTag("Player"));
+            return;
+        }
+        SetPlayer(partyCongroller.GetCurrentPlayer());
         partyCongroller.OnChangeCharacter += SetPlayer;
     }
 
@@ -69,8 +74,9 @@ public class AutoSpawn : MonoBehaviour, IStoppable
     bool CanSpawnRange()
     {
         if (player == null) return false;
-        if (Vector2.Distance(player.transform.position, transform.position) > spawnMaxRange) return false;
-        if (Vector2.Distance(player.transform.position, transform.position) < spawnMinRange) return false;
+        float sqrDistance = ((Vector2)player.transform.position - (Vector2)transform.position).sqrMagnitude;
+        if (sqrDistance > spawnMaxRange * spawnMaxRange) return false;
+        if (sqrDistance < spawnMinRange * spawnMinRange) return false;
         return true;
     }
 

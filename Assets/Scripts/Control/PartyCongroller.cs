@@ -48,6 +48,10 @@ namespace VLCNP.Control
         [SerializeField]
         float switchCharacterVolume = 0.3f;
 
+        PartyHealthLevel partyHealthLevel;
+        MemberRuntimeCache[] memberCaches;
+        MemberRuntimeCache currentMemberCache;
+
         bool isStopped = false;
         public bool IsStopped
         {
@@ -56,7 +60,7 @@ namespace VLCNP.Control
             {
                 if (isStopped == value) return;
                 isStopped = value;
-                Debug.Log($"[PartyCongroller] IsStopped -> {value} at t={Time.time:F3}");
+                PerfLog.Log($"[PartyCongroller] IsStopped -> {value} at t={Time.time:F3}");
             }
         }
 
@@ -89,6 +93,9 @@ namespace VLCNP.Control
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
+            partyHealthLevel = GetComponent<PartyHealthLevel>();
+            BuildMemberCaches();
+            RefreshCurrentMemberCache();
             flagManager.OnChangeFlag += OnChangeFlag;
         }
 
@@ -96,7 +103,8 @@ namespace VLCNP.Control
         {
             SetCurrentPlayerActive();
             ChangeHud();
-            Debug.Log($"[PartyCongroller] Start currentPlayer={currentPlayer?.name} at t={Time.time:F3}");
+            OnChangeCharacter?.Invoke(currentPlayer);
+            PerfLog.Log($"[PartyCongroller] Start currentPlayer={currentPlayer?.name} at t={Time.time:F3}");
         }
 
         private void SetCurrentPlayerActive()
@@ -106,14 +114,16 @@ namespace VLCNP.Control
                 if (member.gameObject != currentPlayer)
                 {
                     member.gameObject.SetActive(false);
-                    Debug.Log($"[PartyCongroller] deactivate member={member.name}");
+                    PerfLog.Log($"[PartyCongroller] deactivate member={member.name}");
                     continue;
                 }
                 member.gameObject.SetActive(true);
-                Debug.Log($"[PartyCongroller] activate current member={member.name}");
+                PerfLog.Log($"[PartyCongroller] activate current member={member.name}");
                 // player配下のIStoppableへ現在の停止状態を伝播する
-                IStoppable[] stoppables = member.GetComponentsInChildren<IStoppable>();
-                foreach (IStoppable stoppable in stoppables)
+                MemberRuntimeCache cache = GetMemberCache(member);
+                if (cache == null)
+                    continue;
+                foreach (IStoppable stoppable in cache.stoppables)
                 {
                     stoppable.IsStopped = isStopped;
                 }
@@ -127,7 +137,7 @@ namespace VLCNP.Control
                 return;
             }
             // 現在のキャラが死んでいれば受け付けない
-            if (currentPlayer.GetComponent<Health>().IsDead)
+            if (currentMemberCache.health.IsDead)
             {
                 return;
             }
@@ -162,22 +172,16 @@ namespace VLCNP.Control
         private void SwitchToPlayer(GameObject nextPlayer)
         {
             GameObject previousPlayer = currentPlayer;
+            MemberRuntimeCache previousCache = currentMemberCache;
+            MemberRuntimeCache nextCache = GetMemberCache(nextPlayer);
             Vector2 previousVelocity =
-                previousPlayer.GetComponent<Rigidbody2D>()?.velocity ?? Vector2.zero;
+                previousCache?.rigidbody2D?.velocity ?? Vector2.zero;
 
-            // 毒状態のタイマーを操作
-            PoisonStatus previousPoisonStatus = previousPlayer.GetComponent<PoisonStatus>();
-            // if (previousPoisonStatus != null)
-            // {
-            //     previousPoisonStatus.PauseTimer();
-            // }
-
-            SetNextPlayerPosition(nextPlayer);
-            nextPlayer
-                .GetComponent<Health>()
-                .InheritInvincible(previousPlayer.GetComponent<Health>());
+            SetNextPlayerPosition(nextCache, previousCache);
+            nextCache.health.InheritInvincible(previousCache.health);
 
             currentPlayer = nextPlayer;
+            currentMemberCache = nextCache;
             SetCurrentPlayerActive();
 
             ChangeHud();
@@ -187,10 +191,10 @@ namespace VLCNP.Control
             ApplyVelocityToCurrentPlayer(previousVelocity);
 
             // プレイヤーのStun状態を引き継ぐ
-            PlayerStun previousPlayerStun = previousPlayer.GetComponent<PlayerStun>();
+            PlayerStun previousPlayerStun = previousCache.playerStun;
             if (previousPlayerStun != null)
             {
-                PlayerStun currentPlayerStun = currentPlayer.GetComponent<PlayerStun>();
+                PlayerStun currentPlayerStun = currentMemberCache.playerStun;
                 if (currentPlayerStun != null)
                 {
                     currentPlayerStun.Set(previousPlayerStun);
@@ -198,23 +202,14 @@ namespace VLCNP.Control
             }
 
             // legの接地状態を切り替え前のプレイヤーから引き継ぐ
-            Leg leg = currentPlayer.GetComponent<Leg>();
-            if (leg != null)
+            Leg leg = currentMemberCache.leg;
+            if (leg != null && previousCache.leg != null)
             {
-                leg.NotifiedLanded(previousPlayer.GetComponent<Leg>().IsGround);
+                leg.NotifiedLanded(previousCache.leg.IsGround);
             }
 
             // 切り替え前のプレイヤーのジャンプ状態を解除
-            Jump jump = previousPlayer.GetComponent<Jump>();
-            if (jump != null)
-                jump.EndJump();
-
-            // 切り替え後のキャラクターの毒タイマーを再開
-            PoisonStatus currentPlayerPoisonStatus = currentPlayer.GetComponent<PoisonStatus>();
-            // if (currentPlayerPoisonStatus != null)
-            // {
-            //     currentPlayerPoisonStatus.ResumeTimer();
-            // }
+            previousCache.jump?.EndJump();
 
             OnChangeCharacter?.Invoke(currentPlayer);
         }
@@ -225,29 +220,26 @@ namespace VLCNP.Control
                 return;
             if (flagManager.GetFlag(Flag.VeryLongGunEquipped))
             {
-                currentPlayer
-                    .GetComponent<Fighter>()
-                    .EquipWeapon(Resources.Load<WeaponConfig>("VeryLongGunConfig"));
+                currentMemberCache.fighter.EquipWeapon(Resources.Load<WeaponConfig>("VeryLongGunConfig"));
             }
         }
 
         private void TransferPlayerStats(GameObject from, GameObject to)
         {
-            to.GetComponent<Health>()
-                .SetHealthPoints(from.GetComponent<Health>().GetHealthPoints());
-            BaseStats toBaseStats = to.GetComponent<BaseStats>();
-            PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
+            MemberRuntimeCache fromCache = GetMemberCache(from);
+            MemberRuntimeCache toCache = GetMemberCache(to);
+            toCache.health.SetHealthPoints(fromCache.health.GetHealthPoints());
+            BaseStats toBaseStats = toCache.baseStats;
             if (toBaseStats != null && partyHealthLevel != null)
             {
                 partyHealthLevel.SetLevel(partyHealthLevel.GetCurrentLevel(), toBaseStats);
             }
-            to.GetComponent<Experience>()
-                .SetExperiencePoints(from.GetComponent<Experience>().GetExperiencePoints());
+            toCache.experience.SetExperiencePoints(fromCache.experience.GetExperiencePoints());
         }
 
         private void ApplyVelocityToCurrentPlayer(Vector2 velocity)
         {
-            Rigidbody2D currentRigitBody = currentPlayer.GetComponent<Rigidbody2D>();
+            Rigidbody2D currentRigitBody = currentMemberCache.rigidbody2D;
             if (currentRigitBody != null)
             {
                 currentRigitBody.velocity = velocity;
@@ -256,18 +248,17 @@ namespace VLCNP.Control
 
         private void SynchronizePartyMembersHealthLevel()
         {
-            PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
             if (partyHealthLevel == null)
             {
                 Debug.LogWarning("PartyHealthLevel component not found");
                 return;
             }
-            foreach (GameObject member in members)
+            foreach (MemberRuntimeCache memberCache in memberCaches)
             {
-                BaseStats memberBaseStats = member.GetComponent<BaseStats>();
+                BaseStats memberBaseStats = memberCache.baseStats;
                 if (memberBaseStats == null)
                 {
-                    Debug.LogWarning($"BaseStats component not found on member: {member.name}");
+                    Debug.LogWarning($"BaseStats component not found on member: {memberCache.gameObject.name}");
                     continue;
                 }
                 partyHealthLevel.SetLevel(partyHealthLevel.GetCurrentLevel(), memberBaseStats);
@@ -276,14 +267,14 @@ namespace VLCNP.Control
 
         private void ChangeHud()
         {
-            virtualCamera.Follow = currentPlayer.transform;
+            virtualCamera.Follow = currentMemberCache.transform;
 
             // HP表示のプレイヤーの切り替え
             hpDisplay.SetPlayer(currentPlayer);
             hpBar.SetPlayer(currentPlayer);
             // Experience表示のプレイヤーの切り替え
             experienceBar.SetPlayerExperience(currentPlayer);
-            levelDisplay.SetBaseStats(currentPlayer.GetComponent<BaseStats>());
+            levelDisplay.SetBaseStats(currentMemberCache.baseStats);
         }
 
         private GameObject GetNextPlayer()
@@ -329,18 +320,18 @@ namespace VLCNP.Control
             }
         }
 
-        private void SetNextPlayerPosition(GameObject nextPlayer)
+        private void SetNextPlayerPosition(MemberRuntimeCache nextCache, MemberRuntimeCache previousCache)
         {
             // 位置を前のキャラに合わせる
-            nextPlayer.transform.position = currentPlayer.transform.position;
+            nextCache.transform.position = previousCache.transform.position;
             // 向きを前のキャラに合わせる
-            nextPlayer.GetComponent<Mover>().IsLeft = currentPlayer.GetComponent<Mover>().IsLeft;
+            nextCache.mover.IsLeft = previousCache.mover.IsLeft;
             // 前のキャラの足の位置の高さ取得
-            float previousFootPositionY = currentPlayer.transform.Find("Leg").localPosition.y;
+            float previousFootPositionY = previousCache.legTransform.localPosition.y;
             // 次のキャラの足の位置の高さ取得
-            float nextFootPositionY = nextPlayer.transform.Find("Leg").localPosition.y;
+            float nextFootPositionY = nextCache.legTransform.localPosition.y;
             // 高さの差分を足す
-            nextPlayer.transform.position += new Vector3(
+            nextCache.transform.position += new Vector3(
                 0,
                 previousFootPositionY - nextFootPositionY,
                 0
@@ -355,14 +346,13 @@ namespace VLCNP.Control
         public void IncrementHealthLevel()
         {
             // PartyHealthLevelを1あげる
-            PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
             if (partyHealthLevel == null)
                 return;
             int nextLevel = partyHealthLevel.GetCurrentLevel() + 1;
             // member全員のHealthLevelを1あげる
-            foreach (GameObject member in members)
+            foreach (MemberRuntimeCache memberCache in memberCaches)
             {
-                BaseStats memberBaseStats = member.GetComponent<BaseStats>();
+                BaseStats memberBaseStats = memberCache.baseStats;
                 if (memberBaseStats == null)
                     continue;
                 partyHealthLevel.SetLevel(nextLevel, memberBaseStats);
@@ -374,28 +364,28 @@ namespace VLCNP.Control
 
         public void AllMemberRestoreHealth()
         {
-            foreach (GameObject member in members)
+            foreach (MemberRuntimeCache memberCache in memberCaches)
             {
-                BaseStats memberBaseStats = member.GetComponent<BaseStats>();
+                BaseStats memberBaseStats = memberCache.baseStats;
                 if (memberBaseStats == null)
                     continue;
                 // 全回復
-                member.GetComponent<Health>().RestoreHealth();
+                memberCache.health.RestoreHealth();
             }
         }
 
         public void SetVisibility(bool isVisible)
         {
-            currentPlayer.GetComponent<SpriteRenderer>().enabled = isVisible;
+            currentMemberCache.spriteRenderer.enabled = isVisible;
             // 現在のplayerのHandの状態も変えて武器も表示、非表示する
-            currentPlayer.transform.Find("Hand").gameObject.SetActive(isVisible);
+            currentMemberCache.handTransform.gameObject.SetActive(isVisible);
             // Legも表示、非表示する
-            currentPlayer.transform.Find("Leg").gameObject.SetActive(isVisible);
+            currentMemberCache.legTransform.gameObject.SetActive(isVisible);
         }
 
         public void SetTempInvincible(bool value)
         {
-            Health health = currentPlayer.GetComponent<Health>();
+            Health health = currentMemberCache.health;
             if (health != null)
                 health.IsTempInvincible = value;
         }
@@ -404,7 +394,7 @@ namespace VLCNP.Control
         {
             if (currentPlayer == null)
                 return;
-            Mover mover = currentPlayer.GetComponent<Mover>();
+            Mover mover = currentMemberCache.mover;
             if (mover != null)
             {
                 StartCoroutine(mover.MoveToRelativePosition(position, timeout));
@@ -431,14 +421,11 @@ namespace VLCNP.Control
         {
             // HP, Experienceを保存
             StatusSaveData statusSaveData = new StatusSaveData();
-            statusSaveData.healthPoints = currentPlayer.GetComponent<Health>().GetHealthPoints();
-            statusSaveData.experiencePoints = currentPlayer
-                .GetComponent<Experience>()
-                .GetExperiencePoints();
+            statusSaveData.healthPoints = currentMemberCache.health.GetHealthPoints();
+            statusSaveData.experiencePoints = currentMemberCache.experience.GetExperiencePoints();
             statusSaveData.currentPlayerName = currentPlayer.name;
-            statusSaveData.currentPlayerPosition = currentPlayer.transform.position.ToToken();
+            statusSaveData.currentPlayerPosition = currentMemberCache.transform.position.ToToken();
             // PartyHealthLevelを保存
-            PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
             if (partyHealthLevel != null)
             {
                 statusSaveData.partyHealthLevel = partyHealthLevel.GetCurrentLevel();
@@ -455,21 +442,82 @@ namespace VLCNP.Control
                 return;
 
             currentPlayer = Array.Find(members, member => member.name == currentPlayerName);
+            RefreshCurrentMemberCache();
             // PartyHealthLevelを復元
-            PartyHealthLevel partyHealthLevel = GetComponent<PartyHealthLevel>();
             partyHealthLevel.SetLevel(
                 statusSaveData.partyHealthLevel,
-                currentPlayer.GetComponent<BaseStats>()
+                currentMemberCache.baseStats
             );
             // キャラごとにステータスを持たなかった時代のセーブデータ対応
             SynchronizePartyMembersHealthLevel();
             // HP, Experienceを復元
-            currentPlayer.GetComponent<Health>().SetHealthPoints(statusSaveData.healthPoints);
-            currentPlayer
-                .GetComponent<Experience>()
-                .SetExperiencePoints(statusSaveData.experiencePoints);
-            currentPlayer.transform.position = statusSaveData.currentPlayerPosition.ToVector3();
+            currentMemberCache.health.SetHealthPoints(statusSaveData.healthPoints);
+            currentMemberCache.experience.SetExperiencePoints(statusSaveData.experiencePoints);
+            currentMemberCache.transform.position = statusSaveData.currentPlayerPosition.ToVector3();
             SwitchToPlayer(currentPlayer);
+        }
+
+        private void BuildMemberCaches()
+        {
+            memberCaches = new MemberRuntimeCache[members.Length];
+            for (int i = 0; i < members.Length; i++)
+            {
+                memberCaches[i] = new MemberRuntimeCache(members[i]);
+            }
+        }
+
+        private MemberRuntimeCache GetMemberCache(GameObject member)
+        {
+            for (int i = 0; i < memberCaches.Length; i++)
+            {
+                if (memberCaches[i].gameObject == member)
+                    return memberCaches[i];
+            }
+
+            return null;
+        }
+
+        private void RefreshCurrentMemberCache()
+        {
+            currentMemberCache = GetMemberCache(currentPlayer);
+        }
+
+        class MemberRuntimeCache
+        {
+            public readonly GameObject gameObject;
+            public readonly Transform transform;
+            public readonly Health health;
+            public readonly BaseStats baseStats;
+            public readonly Experience experience;
+            public readonly Rigidbody2D rigidbody2D;
+            public readonly Mover mover;
+            public readonly Leg leg;
+            public readonly Jump jump;
+            public readonly PlayerStun playerStun;
+            public readonly Fighter fighter;
+            public readonly SpriteRenderer spriteRenderer;
+            public readonly Transform handTransform;
+            public readonly Transform legTransform;
+            public readonly IStoppable[] stoppables;
+
+            public MemberRuntimeCache(GameObject gameObject)
+            {
+                this.gameObject = gameObject;
+                transform = gameObject.transform;
+                health = gameObject.GetComponent<Health>();
+                baseStats = gameObject.GetComponent<BaseStats>();
+                experience = gameObject.GetComponent<Experience>();
+                rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
+                mover = gameObject.GetComponent<Mover>();
+                leg = gameObject.GetComponent<Leg>();
+                jump = gameObject.GetComponent<Jump>();
+                playerStun = gameObject.GetComponent<PlayerStun>();
+                fighter = gameObject.GetComponent<Fighter>();
+                spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+                handTransform = transform.Find("Hand");
+                legTransform = transform.Find("Leg");
+                stoppables = gameObject.GetComponentsInChildren<IStoppable>(true);
+            }
         }
     }
 }

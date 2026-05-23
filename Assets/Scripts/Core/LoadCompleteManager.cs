@@ -30,7 +30,7 @@ namespace VLCNP.Core
             }
 
             IsLoaded = true;
-            Debug.Log("All objects initialized. Load complete.");
+            PerfLog.Log("All objects initialized. Load complete.");
         }
     }    
 }
