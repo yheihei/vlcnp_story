@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Fungus;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +30,10 @@ namespace VLCNP.UI
 
         public void AddDamageText(float damagePoint)
         {
+            if (isDestroy)
+                return;
+
+            enabled = true;
             showTime = 0f;
             // Text表示
             damageText.color = new Color(
@@ -45,6 +45,7 @@ namespace VLCNP.UI
             // ダメージを合算
             damageAmount += damagePoint;
             damageText.text = damageAmount.ToString();
+            UpdateDirection();
         }
 
         // 死んだときダメージキャラクターの子オブジェクトから離脱し、その座標にとどまるようにする
@@ -69,21 +70,22 @@ namespace VLCNP.UI
             );
             damageAmount = 0f;
             damageText.text = damageAmount.ToString();
-        }
-
-        void FixedUpdate()
-        {
-            if (isDestroy)
-                return;
-            showTime += Time.deltaTime;
-            if (showTime > showTimeDuration)
-            {
-                ResetDamageText();
-            }
+            if (!isDestroy)
+                enabled = false;
         }
 
         void Update()
         {
+            if (isDestroy)
+                return;
+
+            showTime += Time.deltaTime;
+            if (showTime > showTimeDuration)
+            {
+                ResetDamageText();
+                return;
+            }
+
             UpdateDirection();
         }
 
