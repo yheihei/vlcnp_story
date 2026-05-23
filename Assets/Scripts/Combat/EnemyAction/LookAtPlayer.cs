@@ -8,6 +8,9 @@ namespace VLCNP.Combat.EnemyAction
     {
         [SerializeField] float afterWaitTimeSecond = 1f;
         DamageStun damageStun;
+        Transform cachedTransform;
+        Transform playerTransform;
+
         public enum Direction
         {
             Left,
@@ -19,6 +22,7 @@ namespace VLCNP.Combat.EnemyAction
         private void Awake()
         {
             damageStun = GetComponent<DamageStun>();
+            cachedTransform = transform;
         }
 
         public override void Execute()
@@ -32,14 +36,12 @@ namespace VLCNP.Combat.EnemyAction
         private IEnumerator Look()
         {
             damageStun.ValidStan();
-            // プレイヤーの方向を向く
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player == null)
+            if (!TryGetPlayerTransform(out Transform player))
             {
                 IsDone = true;
                 yield break;
             }
-            if (player.transform.position.x < transform.position.x)
+            if (player.position.x < cachedTransform.position.x)
             {
                 SetDirection(Direction.Left);
             }
@@ -59,14 +61,31 @@ namespace VLCNP.Combat.EnemyAction
 
         private void UpdateCharacterDirection()
         {
+            Vector3 localScale = cachedTransform.localScale;
             if (direction == Direction.Left)
             {
-                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                cachedTransform.localScale = new Vector3(Mathf.Abs(localScale.x), localScale.y, localScale.z);
             }
             else
             {
-                transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                cachedTransform.localScale = new Vector3(-1 * Mathf.Abs(localScale.x), localScale.y, localScale.z);
             }
+        }
+
+        private bool TryGetPlayerTransform(out Transform player)
+        {
+            if (
+                playerTransform == null
+                || !playerTransform.gameObject.activeInHierarchy
+                || !playerTransform.CompareTag("Player")
+            )
+            {
+                GameObject playerObject = GameObject.FindWithTag("Player");
+                playerTransform = playerObject != null ? playerObject.transform : null;
+            }
+
+            player = playerTransform;
+            return player != null;
         }
     }
 }

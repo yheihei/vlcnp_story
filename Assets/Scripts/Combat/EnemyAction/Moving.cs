@@ -7,6 +7,8 @@ namespace VLCNP.Combat.EnemyAction
 {
     public class Moving : EnemyAction
     {
+        private static readonly int VxHash = Animator.StringToHash("vx");
+
         [SerializeField] float speed = 4;
         [SerializeField] float moveX = 0;
         [SerializeField] bool keepDirection = false;
@@ -16,6 +18,7 @@ namespace VLCNP.Combat.EnemyAction
 
         Rigidbody2D rbody;
         Animator animator;
+        Transform cachedTransform;
         float vx = 0;
 
         public enum Direction
@@ -29,6 +32,7 @@ namespace VLCNP.Combat.EnemyAction
         private void Awake() {
             rbody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
+            cachedTransform = transform;
         }
 
         public override void Execute()
@@ -36,7 +40,7 @@ namespace VLCNP.Combat.EnemyAction
             if (IsExecuting) return;
             if (IsDone) return;
             IsExecuting = true;
-            Vector3 position = transform.position;
+            Vector3 position = cachedTransform.position;
             float _moveX = moveX;
             if (isTowardPlayer)
             {
@@ -56,7 +60,7 @@ namespace VLCNP.Combat.EnemyAction
             // プレイヤーの位置が指定のx位置より左にある場合は左を向く
             if (!keepDirection)
             {
-                if (position.x < transform.position.x)
+                if (position.x < cachedTransform.position.x)
                 {
                     SetDirection(Direction.Left);
                 }
@@ -68,7 +72,7 @@ namespace VLCNP.Combat.EnemyAction
             // 経過時間を格納する変数
             float elapsedTime = 0;
             // プレイヤーの位置と指定のx位置が特定の値以内になるまでループ
-            while (Mathf.Abs(position.x - transform.position.x) > 0.05f)
+            while (Mathf.Abs(position.x - cachedTransform.position.x) > 0.05f)
             {
                 if (IsDone) break;
                 // 経過時間加算
@@ -85,7 +89,7 @@ namespace VLCNP.Combat.EnemyAction
                 }
                 // 指定の位置に向かって移動（速度修正を適用）
                 float modifiedSpeed = GetModifiedSpeed(speed);
-                UpdateMoveSpeed(position.x < transform.position.x ? -modifiedSpeed : modifiedSpeed);
+                UpdateMoveSpeed(position.x < cachedTransform.position.x ? -modifiedSpeed : modifiedSpeed);
                 yield return null;
             }
             UpdateMoveSpeed(0);
@@ -96,7 +100,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             vx = _vx;
             rbody.velocity = new Vector2(vx, rbody.velocity.y);
-            animator?.SetFloat("vx", Mathf.Abs(vx));
+            animator?.SetFloat(VxHash, Mathf.Abs(vx));
         }
 
         public void SetDirection(Direction _direction)
@@ -107,13 +111,14 @@ namespace VLCNP.Combat.EnemyAction
 
         private void UpdateCharacterDirection()
         {
+            Vector3 localScale = cachedTransform.localScale;
             if (direction == Direction.Left)
             {
-                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                cachedTransform.localScale = new Vector3(Mathf.Abs(localScale.x), localScale.y, localScale.z);
             }
             else
             {
-                transform.localScale = new Vector3(-1 * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                cachedTransform.localScale = new Vector3(-1 * Mathf.Abs(localScale.x), localScale.y, localScale.z);
             }
         }
     }
