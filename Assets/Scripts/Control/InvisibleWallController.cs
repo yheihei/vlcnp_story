@@ -15,7 +15,7 @@ namespace VLCNP.Control
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.tag == "Player")
+            if (collision.CompareTag("Player"))
             {
                 StartCoroutine(Fade(0.1f));
             }
@@ -23,7 +23,7 @@ namespace VLCNP.Control
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.tag == "Player")
+            if (collision.CompareTag("Player"))
             {
                 StartCoroutine(Fade(0));
             }
