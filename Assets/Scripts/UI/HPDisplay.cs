@@ -8,27 +8,40 @@ namespace VLCNP.UI
     {
         private Text text;
         private GameObject player;
+        private Health playerHealth;
+        private float displayedHP = float.NaN;
 
         void Awake()
         {
             text = GetComponent<Text>();
-            player = GameObject.FindWithTag("Player");
+            SetPlayer(GameObject.FindWithTag("Player"));
         }
 
         void LateUpdate()
         {
-            if (player == null)
+            if (playerHealth == null)
             {
-                text.text = "0";
+                SetDisplayHP(0);
                 return;
             }
-            float currentHP = player.GetComponent<Health>().GetHealthPoints();
-            text.text = $"{currentHP}";
+
+            SetDisplayHP(playerHealth.GetHealthPoints());
         }
 
         public void SetPlayer(GameObject newPlayer)
         {
             player = newPlayer;
+            playerHealth = player != null ? player.GetComponent<Health>() : null;
+            displayedHP = float.NaN;
+        }
+
+        private void SetDisplayHP(float currentHP)
+        {
+            if (Mathf.Approximately(displayedHP, currentHP))
+                return;
+
+            displayedHP = currentHP;
+            text.text = currentHP.ToString();
         }
     }
 }

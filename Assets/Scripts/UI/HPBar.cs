@@ -9,31 +9,33 @@ namespace VLCNP.UI
     {
         private Slider slider;
         private GameObject player;
+        private Health playerHealth;
         BaseStats baseStats;
 
         void Awake()
         {
             slider = GetComponent<Slider>();
             slider.value = 1;
-            player = GameObject.FindWithTag("Player");
-            baseStats = player.GetComponent<BaseStats>();
+            SetPlayer(GameObject.FindWithTag("Player"));
         }
 
         void LateUpdate()
         {
-            if (player == null)
+            if (playerHealth == null || baseStats == null)
             {
                 slider.value = 0;
                 return;
             }
-            float hitPoints = player.GetComponent<Health>().GetHealthPoints();
+
+            float hitPoints = playerHealth.GetHealthPoints();
             slider.value = (float) hitPoints / (float) baseStats.GetStat(Stat.Health);
         }
 
         public void SetPlayer(GameObject newPlayer)
         {
             player = newPlayer;
-            baseStats = player.GetComponent<BaseStats>();
+            playerHealth = player != null ? player.GetComponent<Health>() : null;
+            baseStats = player != null ? player.GetComponent<BaseStats>() : null;
         }
     }
 }
