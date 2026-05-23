@@ -21,7 +21,7 @@ namespace VLCNP.UI
 
         private void Awake()
         {
-            cachedTransform = transform;
+            EnsureInitialized();
             ResetDamageText();
         }
 
@@ -32,6 +32,8 @@ namespace VLCNP.UI
 
         public void AddDamageText(float damagePoint)
         {
+            EnsureInitialized();
+
             if (isDestroy)
                 return;
 
@@ -53,6 +55,8 @@ namespace VLCNP.UI
         // 死んだときダメージキャラクターの子オブジェクトから離脱し、その座標にとどまるようにする
         public void WithDrawlFromCharacterAndDestroy()
         {
+            EnsureInitialized();
+
             Vector3 currentPos = cachedTransform.position;
             cachedTransform.SetParent(null);
             cachedTransform.position = currentPos;
@@ -86,8 +90,13 @@ namespace VLCNP.UI
 
         private void UpdateDirection()
         {
+            EnsureInitialized();
+
             if (isDestroy)
                 return;
+            if (damagedCharacter == null)
+                return;
+
             Vector3 scale = cachedTransform.localScale;
             if (IsCharacterDirectionLeft())
             {
@@ -98,6 +107,12 @@ namespace VLCNP.UI
                 scale.x = -1 * Mathf.Abs(scale.x);
             }
             cachedTransform.localScale = scale;
+        }
+
+        private void EnsureInitialized()
+        {
+            if (cachedTransform == null)
+                cachedTransform = transform;
         }
     }
 }
