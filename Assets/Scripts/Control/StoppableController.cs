@@ -34,7 +34,7 @@ namespace VLCNP.Control
 
         public void StopAll()
         {
-            Debug.Log("Stop All Components Called");
+            PerfLog.Log("Stop All Components Called");
             StartSafeCoroutine(StopAllCoroutine());
         }
 
@@ -48,23 +48,22 @@ namespace VLCNP.Control
                 {
                     yield return null;
                 }
-                Debug.Log("Stop All Components");
+                PerfLog.Log("Stop All Components");
                 // ゲームの中で IStoppable を実装しているものを全て取得する（非アクティブ/子も含む）
                 var seen = new System.Collections.Generic.HashSet<IStoppable>();
                 foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>(true))
                 {
-                    foreach (IStoppable stoppable in obj.GetComponentsInChildren<IStoppable>(true))
-                    {
-                        if (!seen.Add(stoppable)) continue;
-                        stoppable.IsStopped = true;
-                    }
+                    IStoppable stoppable = obj as IStoppable;
+                    if (stoppable == null) continue;
+                    if (!seen.Add(stoppable)) continue;
+                    stoppable.IsStopped = true;
                 }
             }
         }
 
         public void StartAll()
         {
-            Debug.Log("Start All Components Called");
+            PerfLog.Log("Start All Components Called");
             StartSafeCoroutine(StartAllCoroutine());
         }
 
@@ -78,15 +77,14 @@ namespace VLCNP.Control
                 {
                     yield return null;
                 }
-                Debug.Log("Start All Coroutines");
+                PerfLog.Log("Start All Coroutines");
                 var seen = new System.Collections.Generic.HashSet<IStoppable>();
                 foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>(true))
                 {
-                    foreach (IStoppable stoppable in obj.GetComponentsInChildren<IStoppable>(true))
-                    {
-                        if (!seen.Add(stoppable)) continue;
-                        stoppable.IsStopped = false;
-                    }
+                    IStoppable stoppable = obj as IStoppable;
+                    if (stoppable == null) continue;
+                    if (!seen.Add(stoppable)) continue;
+                    stoppable.IsStopped = false;
                 }
             }
         }

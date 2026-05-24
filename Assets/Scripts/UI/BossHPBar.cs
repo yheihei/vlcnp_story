@@ -11,22 +11,28 @@ namespace VLCNP.UI
         [SerializeField]
         private GameObject targetCharacter;
         BaseStats baseStats;
+        Health targetHealth;
 
         void Awake()
         {
             slider = GetComponent<Slider>();
             slider.value = 1;
-            baseStats = targetCharacter.GetComponent<BaseStats>();
+            if (targetCharacter != null)
+            {
+                baseStats = targetCharacter.GetComponent<BaseStats>();
+                targetHealth = targetCharacter.GetComponent<Health>();
+            }
         }
 
         void LateUpdate()
         {
-            if (targetCharacter == null)
+            if (targetHealth == null || baseStats == null)
             {
                 slider.value = 0;
                 return;
             }
-            float hitPoints = targetCharacter.GetComponent<Health>().GetHealthPoints();
+
+            float hitPoints = targetHealth.GetHealthPoints();
             slider.value = (float) hitPoints / (float) baseStats.GetStat(Stat.Health);
         }
     }

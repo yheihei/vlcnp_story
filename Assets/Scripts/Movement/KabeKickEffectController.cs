@@ -78,7 +78,7 @@ namespace VLCNP.Movement
         {
             if (isStopped)
                 return;
-            if (other.gameObject.tag == "Ground")
+            if (other.CompareTag("Ground"))
             {
                 SetColliding(true);
             }
@@ -88,7 +88,7 @@ namespace VLCNP.Movement
         {
             if (isStopped)
                 return;
-            if (other.gameObject.tag == "Ground")
+            if (other.CompareTag("Ground"))
             {
                 SetColliding(false);
             }

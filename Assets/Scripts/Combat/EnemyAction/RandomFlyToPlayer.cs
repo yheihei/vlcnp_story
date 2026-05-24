@@ -28,6 +28,8 @@ namespace VLCNP.Combat.EnemyAction
 
         Rigidbody2D rbody;
         Animator animator;
+        Transform cachedTransform;
+        Transform playerTransform;
         float vx = 0;
         float vy = 0;
 
@@ -43,6 +45,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             rbody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
+            cachedTransform = transform;
         }
 
         public override void Execute()
@@ -52,17 +55,16 @@ namespace VLCNP.Combat.EnemyAction
             if (IsDone)
                 return;
             IsExecuting = true;
-            Vector3 position = transform.position;
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player == null)
+            Vector3 position = cachedTransform.position;
+            if (!TryGetPlayerTransform(out Transform player))
             {
                 IsDone = true;
                 return;
             }
             // プレイヤーの方向のベクトルを計算
-            Vector3 playerDirection = player.transform.position - position;
+            Vector3 playerDirection = player.position - position;
             // プレイヤーと自分の距離がmaxApproachDistance 以下の場合は逆ベクトルに向かう
-            if (playerDirection.magnitude < maxApproachDistance)
+            if (playerDirection.sqrMagnitude < maxApproachDistance * maxApproachDistance)
             {
                 playerDirection *= -1;
             }
@@ -88,7 +90,7 @@ namespace VLCNP.Combat.EnemyAction
         private IEnumerator MoveToPosition(Vector3 position, float timeout = 0)
         {
             // プレイヤーの位置が指定のx位置より左にある場合は左を向く
-            if (position.x < transform.position.x)
+            if (position.x < cachedTransform.position.x)
             {
                 SetDirection(Direction.Left);
             }
@@ -99,7 +101,7 @@ namespace VLCNP.Combat.EnemyAction
             // 経過時間を格納する変数
             float elapsedTime = 0;
             // プレイヤーの位置と指定の位置の距離が特定の値以下になるまでループ
-            while (Mathf.Abs(Vector3.Distance(transform.position, position)) > 0.1f)
+            while ((cachedTransform.position - position).sqrMagnitude > 0.01f)
             {
                 if (IsDone)
                     break;
@@ -117,9 +119,10 @@ namespace VLCNP.Combat.EnemyAction
                 }
                 // 指定の位置に向かって移動（速度修正を適用）
                 float modifiedSpeed = GetModifiedSpeed(speed);
+                Vector3 currentPosition = cachedTransform.position;
                 UpdateMoveSpeed(
-                    position.x < transform.position.x ? -modifiedSpeed : modifiedSpeed,
-                    position.y < transform.position.y ? -modifiedSpeed : modifiedSpeed
+                    position.x < currentPosition.x ? -modifiedSpeed : modifiedSpeed,
+                    position.y < currentPosition.y ? -modifiedSpeed : modifiedSpeed
                 );
                 yield return null;
             }
@@ -143,22 +146,39 @@ namespace VLCNP.Combat.EnemyAction
 
         private void UpdateCharacterDirection()
         {
+            Vector3 localScale = cachedTransform.localScale;
             if (direction == Direction.Left)
             {
-                transform.localScale = new Vector3(
-                    Mathf.Abs(transform.localScale.x),
-                    transform.localScale.y,
-                    transform.localScale.z
+                cachedTransform.localScale = new Vector3(
+                    Mathf.Abs(localScale.x),
+                    localScale.y,
+                    localScale.z
                 );
             }
             else
             {
-                transform.localScale = new Vector3(
-                    -1 * Mathf.Abs(transform.localScale.x),
-                    transform.localScale.y,
-                    transform.localScale.z
+                cachedTransform.localScale = new Vector3(
+                    -1 * Mathf.Abs(localScale.x),
+                    localScale.y,
+                    localScale.z
                 );
             }
+        }
+
+        private bool TryGetPlayerTransform(out Transform player)
+        {
+            if (
+                playerTransform == null
+                || !playerTransform.gameObject.activeInHierarchy
+                || !playerTransform.CompareTag("Player")
+            )
+            {
+                GameObject playerObject = GameObject.FindWithTag("Player");
+                playerTransform = playerObject != null ? playerObject.transform : null;
+            }
+
+            player = playerTransform;
+            return player != null;
         }
     }
 }

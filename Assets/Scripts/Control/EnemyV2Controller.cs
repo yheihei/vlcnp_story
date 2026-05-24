@@ -1,22 +1,19 @@
 using System.Collections.Generic;
 using TNRD;
 using UnityEngine;
-using VLCNP.Combat;
 using VLCNP.Combat.EnemyAction;
 using VLCNP.Core;
 
 public class EnemyV2Controller : MonoBehaviour, IStoppable
 {
+    private static readonly int IsGroundHash = Animator.StringToHash("isGround");
+
     // 現在の行動のインデックス
     int currentActionIndex = 0;
 
     [SerializeField]
     public List<SerializableInterface<IEnemyAction>> enemyActions;
     Animator animator;
-
-    [SerializeField]
-    string attackTargetTagName = "Player";
-    Fighter fighter;
 
     private bool isStopped;
     public bool IsStopped
@@ -38,7 +35,6 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        fighter = GetComponent<Fighter>();
     }
 
     // 現在の行動を取得する
@@ -93,15 +89,15 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
     {
         if (isAlwaysGround)
         {
-            animator.SetBool("isGround", true);
+            animator.SetBool(IsGroundHash, true);
             return;
         }
 
-        if (animator.GetBool("isGround"))
+        if (animator.GetBool(IsGroundHash))
             return;
         if (other.gameObject.CompareTag("Ground"))
         {
-            animator.SetBool("isGround", true);
+            animator.SetBool(IsGroundHash, true);
         }
     }
 
@@ -109,13 +105,13 @@ public class EnemyV2Controller : MonoBehaviour, IStoppable
     {
         if (isAlwaysGround)
         {
-            animator.SetBool("isGround", true);
+            animator.SetBool(IsGroundHash, true);
             return;
         }
 
         if (other.gameObject.CompareTag("Ground"))
         {
-            animator.SetBool("isGround", false);
+            animator.SetBool(IsGroundHash, false);
         }
     }
 

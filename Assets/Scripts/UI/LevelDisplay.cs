@@ -8,25 +8,44 @@ namespace VLCNP.UI
     {
         private Text text;
         private BaseStats baseStats;
+        private int displayedLevel = int.MinValue;
+        private bool displayedMax;
 
         void Awake()
         {
             text = GetComponent<Text>();
-            baseStats = GameObject.FindWithTag("Player").GetComponent<BaseStats>();
+            GameObject player = GameObject.FindWithTag("Player");
+            baseStats = player != null ? player.GetComponent<BaseStats>() : null;
         }
 
         void LateUpdate()
         {
+            if (baseStats == null)
+                return;
+
             if (baseStats.isReachedMaxLevel()) {
-                text.text = "MAX";
+                if (!displayedMax)
+                {
+                    text.text = "MAX";
+                    displayedMax = true;
+                }
                 return;
             }
-            text.text = $"{baseStats.GetLevel()}";
+
+            int level = baseStats.GetLevel();
+            if (displayedMax || displayedLevel != level)
+            {
+                text.text = level.ToString();
+                displayedLevel = level;
+                displayedMax = false;
+            }
         }
 
         public void SetBaseStats(BaseStats newBaseStats)
         {
             baseStats = newBaseStats;
+            displayedLevel = int.MinValue;
+            displayedMax = false;
         }
     }
 }

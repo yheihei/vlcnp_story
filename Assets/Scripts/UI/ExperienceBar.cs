@@ -17,12 +17,17 @@ namespace VLCNP.UI
         {
             slider = GetComponent<Slider>();
             slider.value = 1;
-            playerExperience = GameObject.FindWithTag("Player").GetComponent<Experience>();
-            baseStats = GameObject.FindWithTag("Player").GetComponent<BaseStats>();
+            SetPlayerExperience(GameObject.FindWithTag("Player"));
         }
 
         private void LateUpdate()
         {
+            if (playerExperience == null || baseStats == null)
+            {
+                slider.value = 0;
+                return;
+            }
+
             if (baseStats.isReachedMaxLevel()) {
                 slider.value = 1;
                 return;
@@ -35,8 +40,8 @@ namespace VLCNP.UI
 
         public void SetPlayerExperience(GameObject newPlayer)
         {
-            playerExperience = newPlayer.GetComponent<Experience>();
-            baseStats = newPlayer.GetComponent<BaseStats>();
+            playerExperience = newPlayer != null ? newPlayer.GetComponent<Experience>() : null;
+            baseStats = newPlayer != null ? newPlayer.GetComponent<BaseStats>() : null;
         }
     }    
 }

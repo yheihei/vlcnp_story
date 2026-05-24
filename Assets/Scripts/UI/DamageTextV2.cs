@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Fungus;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,9 +17,11 @@ namespace VLCNP.UI
         float damageAmount = 0f;
         float showTime = 0f;
         bool isDestroy = false;
+        Transform cachedTransform;
 
         private void Awake()
         {
+            EnsureInitialized();
             ResetDamageText();
         }
 
@@ -34,25 +32,34 @@ namespace VLCNP.UI
 
         public void AddDamageText(float damagePoint)
         {
+            EnsureInitialized();
+
+            if (isDestroy)
+                return;
+
+            enabled = true;
             showTime = 0f;
-            // Text表示
+            // ダメージを合算
+            damageAmount += damagePoint;
             damageText.color = new Color(
                 damageText.color.r,
                 damageText.color.g,
                 damageText.color.b,
                 1f
             );
-            // ダメージを合算
-            damageAmount += damagePoint;
             damageText.text = damageAmount.ToString();
+            damageText.enabled = true;
+            UpdateDirection();
         }
 
         // 死んだときダメージキャラクターの子オブジェクトから離脱し、その座標にとどまるようにする
         public void WithDrawlFromCharacterAndDestroy()
         {
-            Vector3 currentPos = transform.position;
-            transform.SetParent(null);
-            transform.position = currentPos;
+            EnsureInitialized();
+
+            Vector3 currentPos = cachedTransform.position;
+            cachedTransform.SetParent(null);
+            cachedTransform.position = currentPos;
             isDestroy = true;
             // 一定時間後に消滅
             Destroy(gameObject, showTimeDuration);
@@ -60,53 +67,52 @@ namespace VLCNP.UI
 
         void ResetDamageText()
         {
-            // Textを透明にする
-            damageText.color = new Color(
-                damageText.color.r,
-                damageText.color.g,
-                damageText.color.b,
-                0f
-            );
+            damageText.enabled = false;
             damageAmount = 0f;
-            damageText.text = damageAmount.ToString();
-        }
-
-        void FixedUpdate()
-        {
-            if (isDestroy)
-                return;
-            showTime += Time.deltaTime;
-            if (showTime > showTimeDuration)
-            {
-                ResetDamageText();
-            }
+            if (!isDestroy)
+                enabled = false;
         }
 
         void Update()
         {
+            if (isDestroy)
+                return;
+
+            showTime += Time.deltaTime;
+            if (showTime > showTimeDuration)
+            {
+                ResetDamageText();
+                return;
+            }
+
             UpdateDirection();
         }
 
         private void UpdateDirection()
         {
+            EnsureInitialized();
+
             if (isDestroy)
                 return;
+            if (damagedCharacter == null)
+                return;
+
+            Vector3 scale = cachedTransform.localScale;
             if (IsCharacterDirectionLeft())
             {
-                transform.localScale = new Vector3(
-                    Mathf.Abs(transform.localScale.x),
-                    transform.localScale.y,
-                    transform.localScale.z
-                );
+                scale.x = Mathf.Abs(scale.x);
             }
             else
             {
-                transform.localScale = new Vector3(
-                    -1 * Mathf.Abs(transform.localScale.x),
-                    transform.localScale.y,
-                    transform.localScale.z
-                );
+                scale.x = -1 * Mathf.Abs(scale.x);
             }
+            cachedTransform.localScale = scale;
+        }
+
+        private void EnsureInitialized()
+        {
+            if (cachedTransform == null)
+                cachedTransform = transform;
         }
     }
 }

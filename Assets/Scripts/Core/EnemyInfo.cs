@@ -33,7 +33,7 @@ namespace VLCNP.Core
             {
                 flagManager.SetFlag(Flag.NoEnemies, noEnemies);
                 previousNoEnemies = noEnemies;
-                Debug.Log($"NoEnemiesフラグを {(noEnemies ? "ON" : "OFF")} に設定しました");
+                PerfLog.Log($"NoEnemiesフラグを {(noEnemies ? "ON" : "OFF")} に設定しました");
             }
         }
 
@@ -47,7 +47,7 @@ namespace VLCNP.Core
                 noEnemies = !noEnemies;
                 flagManager.SetFlag(Flag.NoEnemies, noEnemies);
                 previousNoEnemies = noEnemies;
-                Debug.Log(
+                PerfLog.Log(
                     $"NoEnemiesフラグを切り替えました: {(noEnemies ? "ON (敵なし)" : "OFF (敵あり)")}"
                 );
             }
@@ -64,7 +64,7 @@ namespace VLCNP.Core
                 noEnemies = value;
                 flagManager.SetFlag(Flag.NoEnemies, noEnemies);
                 previousNoEnemies = noEnemies;
-                Debug.Log(
+                PerfLog.Log(
                     $"NoEnemiesフラグを {(noEnemies ? "ON (敵なし)" : "OFF (敵あり)")} に設定しました"
                 );
             }
