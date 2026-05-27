@@ -67,6 +67,36 @@ namespace VLCNP.Combat
         int onibiSortingOrder = 0;
 
         [SerializeField]
+        Sprite aimArrowSprite = null;
+
+        [SerializeField]
+        float aimArrowRadius = 2.2f;
+
+        [SerializeField]
+        Vector3 aimArrowScale = new Vector3(0.7f, 0.7f, 1f);
+
+        [SerializeField]
+        float aimArrowMoveDegreesPerSecond = 360f;
+
+        [SerializeField]
+        string aimArrowSortingLayerName = "PlayerUpperObject";
+
+        [SerializeField]
+        int aimArrowSortingOrder = 610;
+
+        [SerializeField]
+        string aimLockAttackButton = "x";
+
+        [SerializeField]
+        float aimArrowBlinkInterval = 0.12f;
+
+        [SerializeField]
+        float aimArrowBlinkMinAlpha = 0.35f;
+
+        [SerializeField]
+        float aimConvergenceDistance = 10f;
+
+        [SerializeField]
         UnityEvent<GameObject> onTargetHit = new UnityEvent<GameObject>();
 
         static readonly HashSet<int> activeOwnerIds = new HashSet<int>();
@@ -75,6 +105,12 @@ namespace VLCNP.Combat
         GameObject owner = null;
         Transform ownerTransform = null;
         IAttackAnimationController ownerAttackAnimationController = null;
+        Transform aimArrowTransform = null;
+        SpriteRenderer aimArrowRenderer = null;
+        Vector2 aimDirection = Vector2.right;
+        float aimAngleDegrees = 0f;
+        bool isAimArrowLocked = false;
+        int aimArrowSpawnFrame = -1;
         bool isLeft = false;
         bool ownerRegistered = false;
         bool isStucking = false;
@@ -152,61 +188,61 @@ namespace VLCNP.Combat
         IEnumerator AttackRoutine()
         {
             SpawnOnibis();
+            SpawnAimArrow();
 
             float elapsed = 0f;
             while (elapsed < orbitDuration)
             {
                 elapsed += Time.deltaTime;
                 UpdateOrbitingOnibis();
+                UpdateAimArrow(Time.deltaTime);
                 UpdateSpriteAnimation();
                 yield return null;
             }
 
             ownerAttackAnimationController?.TriggerAttackAnimation();
 
-            for (int i = 0; i < onibis.Count; i++)
+            List<OnibiState> launchOrder = new List<OnibiState>(onibis);
+            Vector3 launchTargetPosition = GetAimTargetPosition();
+            for (int i = 0; i < launchOrder.Count; i++)
             {
-                OnibiState state = onibis[i];
+                OnibiState state = launchOrder[i];
                 if (state == null || state.transform == null)
                     continue;
 
-                state.Launch(GetLaunchDirection());
+                state.Launch(
+                    GetLaunchDirectionToTarget(state.transform.position, launchTargetPosition)
+                );
 
-                if (i < onibis.Count - 1 && launchInterval > 0f)
-                    yield return new WaitForSeconds(launchInterval);
+                if (i < launchOrder.Count - 1 && launchInterval > 0f)
+                    yield return WaitLaunchInterval();
             }
 
+            CleanupAimArrowImmediate();
             UnregisterOwner();
 
             bool hasAliveOnibi = true;
             while (hasAliveOnibi)
             {
-                hasAliveOnibi = false;
                 UpdateSpriteAnimation();
-
-                for (int i = onibis.Count - 1; i >= 0; i--)
-                {
-                    OnibiState state = onibis[i];
-                    if (state == null || state.transform == null)
-                    {
-                        onibis.RemoveAt(i);
-                        continue;
-                    }
-
-                    if (state.UpdateLaunched(Time.deltaTime, launchSpeed, lifetimeAfterLaunch))
-                    {
-                        DestroyOnibi(state);
-                        onibis.RemoveAt(i);
-                        continue;
-                    }
-
-                    hasAliveOnibi = true;
-                }
-
+                hasAliveOnibi = UpdateLaunchedOnibis();
                 yield return null;
             }
 
             Destroy(gameObject);
+        }
+
+        IEnumerator WaitLaunchInterval()
+        {
+            float elapsed = 0f;
+            while (elapsed < launchInterval)
+            {
+                elapsed += Time.deltaTime;
+                UpdateAimArrow(Time.deltaTime);
+                UpdateSpriteAnimation();
+                UpdateLaunchedOnibis();
+                yield return null;
+            }
         }
 
         void SpawnOnibis()
@@ -255,16 +291,162 @@ namespace VLCNP.Combat
             }
         }
 
-        int GetOnibiSortingLayerId(SpriteRenderer ownerRenderer)
+        void SpawnAimArrow()
         {
-            if (!string.IsNullOrEmpty(onibiSortingLayerName))
+            CleanupAimArrowImmediate();
+            isAimArrowLocked = false;
+            aimArrowSpawnFrame = Time.frameCount;
+
+            aimDirection = GetCurrentInputDirection();
+            if (aimDirection.sqrMagnitude <= 0.01f)
+                aimDirection = isLeft ? Vector2.left : Vector2.right;
+            aimDirection.Normalize();
+            aimAngleDegrees = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+
+            if (aimArrowSprite == null)
+                return;
+
+            GameObject aimArrow = new GameObject("VLMitamaOnibiAimArrow");
+            aimArrow.transform.SetParent(transform, false);
+            aimArrow.transform.localScale = aimArrowScale;
+
+            SpriteRenderer aimArrowRenderer = aimArrow.AddComponent<SpriteRenderer>();
+            aimArrowRenderer.sprite = aimArrowSprite;
+            aimArrowRenderer.color = Color.white;
+            aimArrowRenderer.sortingLayerID = GetSortingLayerId(aimArrowSortingLayerName, 0);
+            aimArrowRenderer.sortingOrder = aimArrowSortingOrder;
+
+            aimArrowTransform = aimArrow.transform;
+            this.aimArrowRenderer = aimArrowRenderer;
+            UpdateAimArrowPosition();
+        }
+
+        void UpdateAimArrow(float deltaTime)
+        {
+            if (!isAimArrowLocked && WasAimLockPressed())
             {
-                int layerId = SortingLayer.NameToID(onibiSortingLayerName);
-                if (SortingLayer.IsValid(layerId))
-                    return layerId;
+                isAimArrowLocked = true;
             }
 
-            return ownerRenderer != null ? ownerRenderer.sortingLayerID : 0;
+            if (!isAimArrowLocked)
+                UpdateAimArrowDirection(deltaTime);
+
+            UpdateAimArrowPosition();
+            UpdateAimArrowBlink();
+        }
+
+        void UpdateAimArrowDirection(float deltaTime)
+        {
+            Vector2 inputDirection = GetCurrentInputDirection();
+            if (inputDirection.sqrMagnitude <= 0.01f)
+                return;
+
+            float targetAngle = Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg;
+            aimAngleDegrees = Mathf.MoveTowardsAngle(
+                aimAngleDegrees,
+                targetAngle,
+                Mathf.Max(0f, aimArrowMoveDegreesPerSecond) * deltaTime
+            );
+            aimDirection = AngleToDirection(aimAngleDegrees);
+        }
+
+        bool WasAimLockPressed()
+        {
+            if (Time.frameCount <= aimArrowSpawnFrame)
+                return false;
+
+            return PlayerInputAdapter.WasAttackPressed(aimLockAttackButton);
+        }
+
+        void UpdateAimArrowBlink()
+        {
+            if (aimArrowRenderer == null)
+                return;
+
+            Color color = aimArrowRenderer.color;
+            if (!isAimArrowLocked || aimArrowBlinkInterval <= 0f)
+            {
+                aimArrowRenderer.color = new Color(color.r, color.g, color.b, 1f);
+                return;
+            }
+
+            float alpha = Mathf.PingPong(Time.time / aimArrowBlinkInterval, 1f);
+            float minAlpha = Mathf.Clamp01(aimArrowBlinkMinAlpha);
+            aimArrowRenderer.color = new Color(
+                color.r,
+                color.g,
+                color.b,
+                Mathf.Lerp(minAlpha, 1f, alpha)
+            );
+        }
+
+        void UpdateAimArrowPosition()
+        {
+            if (ownerTransform == null)
+                return;
+
+            Vector3 center = GetAimCenterPosition();
+            Vector3 offset = (Vector3)(aimDirection.normalized * aimArrowRadius);
+
+            if (aimArrowTransform != null)
+            {
+                aimArrowTransform.position = center + offset;
+                aimArrowTransform.rotation = Quaternion.Euler(0f, 0f, aimAngleDegrees + 180f);
+            }
+        }
+
+        Vector3 GetAimTargetPosition()
+        {
+            return GetAimCenterPosition()
+                + (Vector3)(aimDirection.normalized * aimConvergenceDistance);
+        }
+
+        Vector3 GetAimCenterPosition()
+        {
+            return ownerTransform != null
+                ? ownerTransform.position + (Vector3)orbitCenterOffset
+                : transform.position;
+        }
+
+        Vector2 GetLaunchDirectionToTarget(Vector3 launchPosition, Vector3 targetPosition)
+        {
+            Vector2 direction = targetPosition - launchPosition;
+            return direction.sqrMagnitude <= 0.01f ? aimDirection.normalized : direction.normalized;
+        }
+
+        Vector2 GetCurrentInputDirection()
+        {
+            float x = PlayerInputAdapter.GetMoveHorizontal();
+            float y = 0f;
+
+            if (PlayerInputAdapter.IsAimUpPressed())
+                y += 1f;
+            if (PlayerInputAdapter.IsAimDownPressed())
+                y -= 1f;
+
+            Vector2 direction = new Vector2(x, y);
+            return direction.sqrMagnitude > 0.01f ? direction.normalized : Vector2.zero;
+        }
+
+        static Vector2 AngleToDirection(float angleDegrees)
+        {
+            float radians = angleDegrees * Mathf.Deg2Rad;
+            return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)).normalized;
+        }
+
+        int GetOnibiSortingLayerId(SpriteRenderer ownerRenderer)
+        {
+            int fallbackLayerId = ownerRenderer != null ? ownerRenderer.sortingLayerID : 0;
+            return GetSortingLayerId(onibiSortingLayerName, fallbackLayerId);
+        }
+
+        int GetSortingLayerId(string sortingLayerName, int fallbackLayerId)
+        {
+            if (string.IsNullOrEmpty(sortingLayerName))
+                return fallbackLayerId;
+
+            int layerId = SortingLayer.NameToID(sortingLayerName);
+            return SortingLayer.IsValid(layerId) ? layerId : fallbackLayerId;
         }
 
         void UpdateOrbitingOnibis()
@@ -301,21 +483,29 @@ namespace VLCNP.Combat
             }
         }
 
-        Vector2 GetLaunchDirection()
+        bool UpdateLaunchedOnibis()
         {
-            float x = PlayerInputAdapter.GetMoveHorizontal();
-            float y = 0f;
+            bool hasAliveOnibi = false;
+            for (int i = onibis.Count - 1; i >= 0; i--)
+            {
+                OnibiState state = onibis[i];
+                if (state == null || state.transform == null)
+                {
+                    onibis.RemoveAt(i);
+                    continue;
+                }
 
-            if (PlayerInputAdapter.IsAimUpPressed())
-                y += 1f;
-            if (PlayerInputAdapter.IsAimDownPressed())
-                y -= 1f;
+                if (state.UpdateLaunched(Time.deltaTime, launchSpeed, lifetimeAfterLaunch))
+                {
+                    DestroyOnibi(state);
+                    onibis.RemoveAt(i);
+                    continue;
+                }
 
-            Vector2 direction = new Vector2(x, y);
-            if (direction.sqrMagnitude <= 0.01f)
-                direction = isLeft ? Vector2.left : Vector2.right;
+                hasAliveOnibi = true;
+            }
 
-            return direction.normalized;
+            return hasAliveOnibi;
         }
 
         void HandleOnibiHit(VLMitamaOnibiHitDetector hitDetector, Collider2D other)
@@ -392,6 +582,8 @@ namespace VLCNP.Combat
 
         IEnumerator FadeOutAllAndDestroy()
         {
+            CleanupAimArrowImmediate();
+
             for (int i = 0; i < onibis.Count; i++)
             {
                 if (onibis[i] != null && onibis[i].transform != null)
@@ -417,6 +609,17 @@ namespace VLCNP.Combat
             }
 
             onibis.Clear();
+        }
+
+        void CleanupAimArrowImmediate()
+        {
+            if (aimArrowTransform != null)
+                Destroy(aimArrowTransform.gameObject);
+
+            aimArrowTransform = null;
+            aimArrowRenderer = null;
+            isAimArrowLocked = false;
+            aimArrowSpawnFrame = -1;
         }
 
         void UnregisterOwner()
