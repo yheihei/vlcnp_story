@@ -7,7 +7,11 @@ using VLCNP.Control;
 
 namespace VLCNP.Combat
 {
-    public class VLMitamaOnibiAttackProjectile : MonoBehaviour, IProjectile, IProjectileOwnerReceiver
+    public class VLMitamaOnibiAttackProjectile :
+        MonoBehaviour,
+        IProjectile,
+        IProjectileOwnerReceiver,
+        IProjectileLevelReceiver
     {
         [SerializeField]
         Sprite[] onibiSprites = null;
@@ -121,6 +125,8 @@ namespace VLCNP.Combat
         bool ownerRegistered = false;
         bool isStucking = false;
         bool isImpacting = false;
+        bool hasReceivedLevel = false;
+        int attackLevel = 1;
         float damage = 1f;
 
         public bool IsStucking => isStucking;
@@ -179,6 +185,12 @@ namespace VLCNP.Combat
         public void SetDamage(float projectileDamage)
         {
             damage = projectileDamage;
+        }
+
+        public void SetLevel(int level)
+        {
+            attackLevel = Mathf.Max(1, level);
+            hasReceivedLevel = true;
         }
 
         public void ImpactAndDestroy()
@@ -258,7 +270,7 @@ namespace VLCNP.Combat
             SpriteRenderer ownerRenderer = owner != null ? owner.GetComponent<SpriteRenderer>() : null;
             int sortingLayerId = GetOnibiSortingLayerId(ownerRenderer);
             int sortingOrder = onibiSortingOrder;
-            int count = Mathf.Max(1, onibiCount);
+            int count = ResolveOnibiCount();
 
             for (int i = 0; i < count; i++)
             {
@@ -295,6 +307,19 @@ namespace VLCNP.Combat
                 );
                 onibis.Add(state);
             }
+        }
+
+        int ResolveOnibiCount()
+        {
+            if (!hasReceivedLevel)
+                return Mathf.Max(1, onibiCount);
+
+            if (attackLevel <= 1)
+                return 3;
+            if (attackLevel == 2)
+                return 5;
+
+            return 7;
         }
 
         void SpawnAimArrow()

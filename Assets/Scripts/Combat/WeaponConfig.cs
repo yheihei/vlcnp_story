@@ -88,6 +88,10 @@ namespace VLCNP.Combat
                     ownerFighter != null ? ownerFighter.gameObject : handTransform.root.gameObject;
                 ownerReceiver?.SetOwner(projectileOwner);
 
+                IProjectileLevelReceiver levelReceiver =
+                    projectileObj.GetComponent<IProjectileLevelReceiver>();
+                levelReceiver?.SetLevel(level);
+
                 projectile.SetDirection(isLeft);
                 projectile.SetDamage(_weaponLevel.damage);
             }
