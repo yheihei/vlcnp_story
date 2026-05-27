@@ -71,16 +71,23 @@ namespace VLCNP.Combat
             }
 
             // 音声処理
-            AudioClip clip = projectileObj.GetComponent<AudioSource>()?.clip;
-            if (clip != null)
+            AudioSource projectileAudioSource = projectileObj.GetComponent<AudioSource>();
+            if (projectileAudioSource != null && projectileAudioSource.clip != null)
             {
-                AudioSource.PlayClipAtPoint(clip, handTransform.position);
+                AudioSource.PlayClipAtPoint(projectileAudioSource.clip, handTransform.position);
             }
 
             // IProjectileインターフェースを通じて操作
             IProjectile projectile = projectileObj.GetComponent<IProjectile>();
             if (projectile != null)
             {
+                IProjectileOwnerReceiver ownerReceiver =
+                    projectileObj.GetComponent<IProjectileOwnerReceiver>();
+                Fighter ownerFighter = handTransform.GetComponentInParent<Fighter>();
+                GameObject projectileOwner =
+                    ownerFighter != null ? ownerFighter.gameObject : handTransform.root.gameObject;
+                ownerReceiver?.SetOwner(projectileOwner);
+
                 projectile.SetDirection(isLeft);
                 projectile.SetDamage(_weaponLevel.damage);
             }
