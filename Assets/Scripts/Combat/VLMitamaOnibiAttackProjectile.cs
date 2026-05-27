@@ -275,6 +275,7 @@ namespace VLCNP.Combat
             for (int i = 0; i < count; i++)
             {
                 GameObject onibi = new GameObject($"VLMitamaOnibi_{i + 1}");
+                onibi.tag = "Projectile";
                 onibi.transform.SetParent(transform, false);
                 onibi.transform.localScale = onibiScale;
 
@@ -296,6 +297,10 @@ namespace VLCNP.Combat
                 VLMitamaOnibiHitDetector hitDetector =
                     onibi.AddComponent<VLMitamaOnibiHitDetector>();
                 hitDetector.Initialize(this);
+
+                VLMitamaOnibiProjectileForwarder projectileForwarder =
+                    onibi.AddComponent<VLMitamaOnibiProjectileForwarder>();
+                projectileForwarder.Initialize(this);
 
                 float angle = i * (360f / count);
                 OnibiState state = new OnibiState(
@@ -586,6 +591,15 @@ namespace VLCNP.Combat
                 StartCoroutine(FadeOutAndDestroyOnibi(state));
         }
 
+        void HandleOnibiBlocked(Transform onibiTransform)
+        {
+            OnibiState state = FindState(onibiTransform);
+            if (state == null || state.IsFadingOut)
+                return;
+
+            StartCoroutine(FadeOutAndDestroyOnibi(state));
+        }
+
         OnibiState FindState(Transform onibiTransform)
         {
             for (int i = 0; i < onibis.Count; i++)
@@ -793,6 +807,33 @@ namespace VLCNP.Combat
             void OnTriggerStay2D(Collider2D other)
             {
                 owner?.HandleOnibiHit(this, other);
+            }
+        }
+
+        class VLMitamaOnibiProjectileForwarder : MonoBehaviour, IProjectile
+        {
+            VLMitamaOnibiAttackProjectile owner = null;
+            readonly UnityEvent<GameObject> onTargetHit = new UnityEvent<GameObject>();
+
+            public bool IsStucking => owner != null && owner.IsStucking;
+            public UnityEvent<GameObject> OnTargetHit => onTargetHit;
+
+            public void Initialize(VLMitamaOnibiAttackProjectile projectile)
+            {
+                owner = projectile;
+            }
+
+            public void SetDirection(bool left)
+            {
+            }
+
+            public void SetDamage(float projectileDamage)
+            {
+            }
+
+            public void ImpactAndDestroy()
+            {
+                owner?.HandleOnibiBlocked(transform);
             }
         }
     }
