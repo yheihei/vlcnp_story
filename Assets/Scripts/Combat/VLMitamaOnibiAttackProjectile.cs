@@ -43,7 +43,7 @@ namespace VLCNP.Combat
         float launchInterval = 0.12f;
 
         [SerializeField]
-        float launchSpeed = 9f;
+        float launchSpeed = 18f;
 
         [SerializeField]
         float lifetimeAfterLaunch = 3f;
@@ -95,6 +95,12 @@ namespace VLCNP.Combat
 
         [SerializeField]
         float aimConvergenceDistance = 10f;
+
+        [SerializeField]
+        AudioClip onibiLaunchSe = null;
+
+        [SerializeField]
+        float onibiLaunchSeVolume = 0.2f;
 
         [SerializeField]
         UnityEvent<GameObject> onTargetHit = new UnityEvent<GameObject>();
@@ -210,9 +216,9 @@ namespace VLCNP.Combat
                 if (state == null || state.transform == null)
                     continue;
 
-                state.Launch(
-                    GetLaunchDirectionToTarget(state.transform.position, launchTargetPosition)
-                );
+                Vector3 launchPosition = state.transform.position;
+                state.Launch(GetLaunchDirectionToTarget(launchPosition, launchTargetPosition));
+                PlayOnibiLaunchSe(launchPosition);
 
                 if (i < launchOrder.Count - 1 && launchInterval > 0f)
                     yield return WaitLaunchInterval();
@@ -412,6 +418,23 @@ namespace VLCNP.Combat
         {
             Vector2 direction = targetPosition - launchPosition;
             return direction.sqrMagnitude <= 0.01f ? aimDirection.normalized : direction.normalized;
+        }
+
+        void PlayOnibiLaunchSe(Vector3 position)
+        {
+            if (onibiLaunchSe == null || onibiLaunchSeVolume <= 0f)
+                return;
+
+            GameObject soundObject = new GameObject("VLMitamaOnibiLaunchSound");
+            soundObject.transform.position = position;
+
+            AudioSource audioSource = soundObject.AddComponent<AudioSource>();
+            audioSource.clip = onibiLaunchSe;
+            audioSource.volume = onibiLaunchSeVolume;
+            audioSource.spatialBlend = 0f;
+            audioSource.Play();
+
+            Destroy(soundObject, onibiLaunchSe.length);
         }
 
         Vector2 GetCurrentInputDirection()
