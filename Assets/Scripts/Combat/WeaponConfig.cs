@@ -49,6 +49,21 @@ namespace VLCNP.Combat
             return _weaponLevel.projectilePrefab != null;
         }
 
+        public bool CanLaunchProjectile(Transform handTransform, int level = 1)
+        {
+            WeaponLevel _weaponLevel = GetCurrentWeapon(level);
+            if (_weaponLevel == null || _weaponLevel.projectilePrefab == null)
+                return false;
+
+            IProjectileLaunchGate launchGate =
+                _weaponLevel.projectilePrefab.GetComponent<IProjectileLaunchGate>();
+            if (launchGate == null)
+                return true;
+
+            GameObject projectileOwner = GetProjectileOwner(handTransform);
+            return launchGate.CanLaunch(projectileOwner);
+        }
+
         public void LaunchProjectile(Transform handTransform, int level = 1, bool isLeft = false)
         {
             WeaponLevel _weaponLevel = GetCurrentWeapon(level);
@@ -83,9 +98,7 @@ namespace VLCNP.Combat
             {
                 IProjectileOwnerReceiver ownerReceiver =
                     projectileObj.GetComponent<IProjectileOwnerReceiver>();
-                Fighter ownerFighter = handTransform.GetComponentInParent<Fighter>();
-                GameObject projectileOwner =
-                    ownerFighter != null ? ownerFighter.gameObject : handTransform.root.gameObject;
+                GameObject projectileOwner = GetProjectileOwner(handTransform);
                 ownerReceiver?.SetOwner(projectileOwner);
 
                 IProjectileLevelReceiver levelReceiver =
@@ -95,6 +108,12 @@ namespace VLCNP.Combat
                 projectile.SetDirection(isLeft);
                 projectile.SetDamage(_weaponLevel.damage);
             }
+        }
+
+        GameObject GetProjectileOwner(Transform handTransform)
+        {
+            Fighter ownerFighter = handTransform.GetComponentInParent<Fighter>();
+            return ownerFighter != null ? ownerFighter.gameObject : handTransform.root.gameObject;
         }
 
         private WeaponLevel GetCurrentWeapon(int level = 1)

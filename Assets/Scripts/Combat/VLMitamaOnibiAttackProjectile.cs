@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using VLCNP.Attributes;
 using VLCNP.Control;
+using VLCNP.Core;
 
 namespace VLCNP.Combat
 {
@@ -11,7 +12,9 @@ namespace VLCNP.Combat
         MonoBehaviour,
         IProjectile,
         IProjectileOwnerReceiver,
-        IProjectileLevelReceiver
+        IProjectileLevelReceiver,
+        IProjectileLaunchGate,
+        IStoppable
     {
         [SerializeField]
         Sprite[] onibiSprites = null;
@@ -115,6 +118,7 @@ namespace VLCNP.Combat
         GameObject owner = null;
         Transform ownerTransform = null;
         IAttackAnimationController ownerAttackAnimationController = null;
+        AudioSource launchAudioSource = null;
         Transform aimArrowTransform = null;
         SpriteRenderer aimArrowRenderer = null;
         Vector2 aimDirection = Vector2.right;
@@ -125,11 +129,17 @@ namespace VLCNP.Combat
         bool ownerRegistered = false;
         bool isStucking = false;
         bool isImpacting = false;
+        bool isStopped = false;
         bool hasReceivedLevel = false;
         int attackLevel = 1;
         float damage = 1f;
 
         public bool IsStucking => isStucking;
+        public bool IsStopped
+        {
+            get => isStopped;
+            set => isStopped = value;
+        }
         public UnityEvent<GameObject> OnTargetHit => onTargetHit;
 
         void Start()
@@ -148,6 +158,7 @@ namespace VLCNP.Combat
             }
 
             transform.SetParent(null, true);
+            InitializeLaunchAudioSource();
             StartCoroutine(AttackRoutine());
         }
 
@@ -175,6 +186,12 @@ namespace VLCNP.Combat
 
             activeOwnerIds.Add(ownerId);
             ownerRegistered = true;
+        }
+
+        public bool CanLaunch(GameObject projectileOwner)
+        {
+            return projectileOwner != null &&
+                !activeOwnerIds.Contains(projectileOwner.GetInstanceID());
         }
 
         public void SetDirection(bool left)
@@ -211,13 +228,21 @@ namespace VLCNP.Combat
             float elapsed = 0f;
             while (elapsed < orbitDuration)
             {
-                elapsed += Time.deltaTime;
-                UpdateOrbitingOnibis();
-                UpdateAimArrow(Time.deltaTime);
+                if (isStopped)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                float deltaTime = Mathf.Min(Time.deltaTime, orbitDuration - elapsed);
+                elapsed += deltaTime;
+                UpdateOrbitingOnibis(deltaTime);
+                UpdateAimArrow(deltaTime);
                 UpdateSpriteAnimation();
                 yield return null;
             }
 
+            FreezeOrbitingOnibisForLaunch();
             ownerAttackAnimationController?.TriggerAttackAnimation();
 
             List<OnibiState> launchOrder = new List<OnibiState>(onibis);
@@ -242,6 +267,12 @@ namespace VLCNP.Combat
             bool hasAliveOnibi = true;
             while (hasAliveOnibi)
             {
+                if (isStopped)
+                {
+                    yield return null;
+                    continue;
+                }
+
                 UpdateSpriteAnimation();
                 hasAliveOnibi = UpdateLaunchedOnibis();
                 yield return null;
@@ -255,6 +286,12 @@ namespace VLCNP.Combat
             float elapsed = 0f;
             while (elapsed < launchInterval)
             {
+                if (isStopped)
+                {
+                    yield return null;
+                    continue;
+                }
+
                 elapsed += Time.deltaTime;
                 UpdateAimArrow(Time.deltaTime);
                 UpdateSpriteAnimation();
@@ -455,16 +492,21 @@ namespace VLCNP.Combat
             if (onibiLaunchSe == null || onibiLaunchSeVolume <= 0f)
                 return;
 
-            GameObject soundObject = new GameObject("VLMitamaOnibiLaunchSound");
-            soundObject.transform.position = position;
+            if (launchAudioSource == null)
+                InitializeLaunchAudioSource();
 
-            AudioSource audioSource = soundObject.AddComponent<AudioSource>();
-            audioSource.clip = onibiLaunchSe;
-            audioSource.volume = onibiLaunchSeVolume;
-            audioSource.spatialBlend = 0f;
-            audioSource.Play();
+            launchAudioSource.transform.position = position;
+            launchAudioSource.PlayOneShot(onibiLaunchSe, onibiLaunchSeVolume);
+        }
 
-            Destroy(soundObject, onibiLaunchSe.length);
+        void InitializeLaunchAudioSource()
+        {
+            if (launchAudioSource != null)
+                return;
+
+            launchAudioSource = gameObject.AddComponent<AudioSource>();
+            launchAudioSource.playOnAwake = false;
+            launchAudioSource.spatialBlend = 0f;
         }
 
         Vector2 GetCurrentInputDirection()
@@ -501,7 +543,7 @@ namespace VLCNP.Combat
             return SortingLayer.IsValid(layerId) ? layerId : fallbackLayerId;
         }
 
-        void UpdateOrbitingOnibis()
+        void UpdateOrbitingOnibis(float deltaTime)
         {
             if (ownerTransform == null)
                 return;
@@ -513,11 +555,23 @@ namespace VLCNP.Combat
                 if (state == null || state.transform == null || !state.IsOrbiting)
                     continue;
 
-                state.AngleDegrees += orbitDegreesPerSecond * Time.deltaTime;
+                state.AngleDegrees += orbitDegreesPerSecond * deltaTime;
                 float radians = state.AngleDegrees * Mathf.Deg2Rad;
                 Vector3 offset = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0f) * orbitRadius;
                 state.transform.position = center + offset;
-                state.UpdateFadeIn(Time.deltaTime, onibiColor);
+                state.UpdateFadeIn(deltaTime, onibiColor);
+            }
+        }
+
+        void FreezeOrbitingOnibisForLaunch()
+        {
+            for (int i = 0; i < onibis.Count; i++)
+            {
+                OnibiState state = onibis[i];
+                if (state == null || state.transform == null || !state.IsOrbiting)
+                    continue;
+
+                state.transform.SetParent(null, true);
             }
         }
 
@@ -562,7 +616,7 @@ namespace VLCNP.Combat
 
         void HandleOnibiHit(VLMitamaOnibiHitDetector hitDetector, Collider2D other)
         {
-            if (isImpacting || hitDetector == null || other == null)
+            if (isStopped || isImpacting || hitDetector == null || other == null)
                 return;
 
             if (!other.CompareTag(targetTagName))
@@ -592,6 +646,9 @@ namespace VLCNP.Combat
 
         void HandleOnibiBlocked(Transform onibiTransform)
         {
+            if (isStopped)
+                return;
+
             OnibiState state = FindState(onibiTransform);
             if (state == null || state.IsFadingOut)
                 return;
@@ -630,6 +687,12 @@ namespace VLCNP.Combat
             float elapsed = 0f;
             while (elapsed < hitFadeDuration && spriteRenderer != null)
             {
+                if (isStopped)
+                {
+                    yield return null;
+                    continue;
+                }
+
                 elapsed += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / hitFadeDuration);
                 Color color = startColor;
@@ -651,7 +714,16 @@ namespace VLCNP.Combat
                     StartCoroutine(FadeOutAndDestroyOnibi(onibis[i]));
             }
 
-            yield return new WaitForSeconds(Mathf.Max(hitFadeDuration, 0.01f));
+            float elapsed = 0f;
+            float waitTime = Mathf.Max(hitFadeDuration, 0.01f);
+            while (elapsed < waitTime)
+            {
+                if (!isStopped)
+                    elapsed += Time.deltaTime;
+
+                yield return null;
+            }
+
             Destroy(gameObject);
         }
 
@@ -707,6 +779,7 @@ namespace VLCNP.Combat
             readonly Dictionary<GameObject, float> nextHitTimes = new Dictionary<GameObject, float>();
             float fadeElapsed = 0f;
             float lifetimeElapsed = 0f;
+            int launchFrame = -1;
 
             public OnibiState(
                 Transform transform,
@@ -728,12 +801,16 @@ namespace VLCNP.Combat
                 IsOrbiting = false;
                 IsLaunched = true;
                 MoveDirection = direction.sqrMagnitude <= 0.01f ? Vector2.right : direction.normalized;
+                launchFrame = Time.frameCount;
                 transform.SetParent(null, true);
             }
 
             public bool UpdateLaunched(float deltaTime, float speed, float lifetime)
             {
                 if (!IsLaunched || IsFadingOut || transform == null)
+                    return false;
+
+                if (Time.frameCount <= launchFrame)
                     return false;
 
                 transform.position += (Vector3)(MoveDirection * speed * deltaTime);
@@ -832,6 +909,9 @@ namespace VLCNP.Combat
 
             public void ImpactAndDestroy()
             {
+                if (owner != null && owner.IsStopped)
+                    return;
+
                 owner?.HandleOnibiBlocked(transform);
             }
         }
