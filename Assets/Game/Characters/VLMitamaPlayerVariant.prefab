@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2904360697236049413, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: animationsPerLevels.Array.data[0].animatorOverrideController
-      value:
+      value: 
       objectReference: {fileID: 22100000, guid: e866e5d3f76f648ccb816885b3088e60, type: 2}
     - target: {fileID: 2904360697236049413, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: animationsPerLevels.Array.data[0].colliderPerLevel.legTransformY
@@ -69,13 +69,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1708229693, guid: bea90941fdcb6457faf358ce92254931, type: 3}
     - target: {fileID: 4862265004760687467, guid: 305b768f10cad4098b6aad1149350872, type: 3}
-      propertyPath: defaultWeaponConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: b5afad4c445e24e51832eecfa82e28fb, type: 2}
-    - target: {fileID: 4862265004760687467, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: canVerticalShot
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4862265004760687467, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+      propertyPath: defaultWeaponConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: b5afad4c445e24e51832eecfa82e28fb, type: 2}
     - target: {fileID: 5637234256328958599, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       propertyPath: m_Controller
       value: 
@@ -147,7 +147,21 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1699767717115717140, guid: 305b768f10cad4098b6aad1149350872, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8444819390802627064}
+    - targetCorrespondingSourceObject: {fileID: 1699767717115717140, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2699896607227664333}
   m_SourcePrefab: {fileID: 100100000, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+--- !u!114 &2142336829735332726 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3487292076679122934, guid: 305b768f10cad4098b6aad1149350872, type: 3}
+  m_PrefabInstance: {fileID: 3305152105884558464}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95d66326a866b4c6a8efeee3e9818d7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4199760513497416340 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1699767717115717140, guid: 305b768f10cad4098b6aad1149350872, type: 3}
@@ -165,3 +179,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad66a87d35afc44118f2012291984e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2699896607227664333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4199760513497416340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91beac43a1dde4be59a5e01a190f9bd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leg: {fileID: 2142336829735332726}
+  maxFuelSeconds: 1.2
+  floatVelocityY: 0.35
+  activationVelocityY: 0.05
+  jumpButton: space
+  disableInWater: 1
