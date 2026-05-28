@@ -92,15 +92,6 @@ namespace VLCNP.Combat
         int aimArrowSortingOrder = 610;
 
         [SerializeField]
-        string aimLockAttackButton = "x";
-
-        [SerializeField]
-        float aimArrowBlinkInterval = 0.12f;
-
-        [SerializeField]
-        float aimArrowBlinkMinAlpha = 0.35f;
-
-        [SerializeField]
         float aimConvergenceDistance = 10f;
 
         [SerializeField]
@@ -120,11 +111,8 @@ namespace VLCNP.Combat
         IAttackAnimationController ownerAttackAnimationController = null;
         AudioSource launchAudioSource = null;
         Transform aimArrowTransform = null;
-        SpriteRenderer aimArrowRenderer = null;
         Vector2 aimDirection = Vector2.right;
         float aimAngleDegrees = 0f;
-        bool isAimArrowLocked = false;
-        int aimArrowSpawnFrame = -1;
         bool isLeft = false;
         bool ownerRegistered = false;
         bool isStucking = false;
@@ -367,8 +355,6 @@ namespace VLCNP.Combat
         void SpawnAimArrow()
         {
             CleanupAimArrowImmediate();
-            isAimArrowLocked = false;
-            aimArrowSpawnFrame = Time.frameCount;
 
             aimDirection = GetCurrentInputDirection();
             if (aimDirection.sqrMagnitude <= 0.01f)
@@ -390,22 +376,13 @@ namespace VLCNP.Combat
             aimArrowRenderer.sortingOrder = aimArrowSortingOrder;
 
             aimArrowTransform = aimArrow.transform;
-            this.aimArrowRenderer = aimArrowRenderer;
             UpdateAimArrowPosition();
         }
 
         void UpdateAimArrow(float deltaTime)
         {
-            if (!isAimArrowLocked && WasAimLockPressed())
-            {
-                isAimArrowLocked = true;
-            }
-
-            if (!isAimArrowLocked)
-                UpdateAimArrowDirection(deltaTime);
-
+            UpdateAimArrowDirection(deltaTime);
             UpdateAimArrowPosition();
-            UpdateAimArrowBlink();
         }
 
         void UpdateAimArrowDirection(float deltaTime)
@@ -421,36 +398,6 @@ namespace VLCNP.Combat
                 Mathf.Max(0f, aimArrowMoveDegreesPerSecond) * deltaTime
             );
             aimDirection = AngleToDirection(aimAngleDegrees);
-        }
-
-        bool WasAimLockPressed()
-        {
-            if (Time.frameCount <= aimArrowSpawnFrame)
-                return false;
-
-            return PlayerInputAdapter.WasAttackPressed(aimLockAttackButton);
-        }
-
-        void UpdateAimArrowBlink()
-        {
-            if (aimArrowRenderer == null)
-                return;
-
-            Color color = aimArrowRenderer.color;
-            if (!isAimArrowLocked || aimArrowBlinkInterval <= 0f)
-            {
-                aimArrowRenderer.color = new Color(color.r, color.g, color.b, 1f);
-                return;
-            }
-
-            float alpha = Mathf.PingPong(Time.time / aimArrowBlinkInterval, 1f);
-            float minAlpha = Mathf.Clamp01(aimArrowBlinkMinAlpha);
-            aimArrowRenderer.color = new Color(
-                color.r,
-                color.g,
-                color.b,
-                Mathf.Lerp(minAlpha, 1f, alpha)
-            );
         }
 
         void UpdateAimArrowPosition()
@@ -750,9 +697,6 @@ namespace VLCNP.Combat
                 Destroy(aimArrowTransform.gameObject);
 
             aimArrowTransform = null;
-            aimArrowRenderer = null;
-            isAimArrowLocked = false;
-            aimArrowSpawnFrame = -1;
         }
 
         void UnregisterOwner()
