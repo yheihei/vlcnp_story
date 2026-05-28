@@ -306,6 +306,9 @@ namespace VLCNP.Control
             // OrochiであればVLOrochiJoinedフラグが立っていれば仲間
             if (name == "Orochi")
                 return flagManager.GetFlag(Flag.VLOrochiJoined);
+            // MitamaであればVLMitamaJoinedフラグが立っていれば仲間
+            if (name == "Mitama" || name == "VLMitama")
+                return flagManager.GetFlag(Flag.VLMitamaJoined);
             // それ以外は仲間でない
             return false;
         }
@@ -315,6 +318,10 @@ namespace VLCNP.Control
             // 離脱したキャラクターがcurrentPlayerであれば次のキャラクターに切り替える
             // リーリー使用時にリーリーが離脱したときは次のキャラクターに切り替える
             if (flag == Flag.JoinedLeelee && !value && currentPlayer.name == "Leelee")
+            {
+                SwitchNextPlayer();
+            }
+            if (flag == Flag.VLMitamaJoined && !value && (currentPlayer.name == "Mitama" || currentPlayer.name == "VLMitama"))
             {
                 SwitchNextPlayer();
             }
