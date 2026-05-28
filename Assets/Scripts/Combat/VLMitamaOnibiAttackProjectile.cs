@@ -469,7 +469,6 @@ namespace VLCNP.Combat
 
         Vector2 GetCurrentInputDirection()
         {
-            float x = PlayerInputAdapter.GetMoveHorizontal();
             float y = 0f;
 
             if (PlayerInputAdapter.IsAimUpPressed())
@@ -477,7 +476,7 @@ namespace VLCNP.Combat
             if (PlayerInputAdapter.IsAimDownPressed())
                 y -= 1f;
 
-            Vector2 direction = new Vector2(x, y);
+            Vector2 direction = new Vector2(0f, y);
             return direction.sqrMagnitude > 0.01f ? direction.normalized : Vector2.zero;
         }
 
