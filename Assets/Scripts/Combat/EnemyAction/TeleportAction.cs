@@ -19,6 +19,9 @@ namespace VLCNP.Combat.EnemyAction
         float minimumTeleportDistance = 2f;
 
         [SerializeField]
+        bool ignorePlayerRelativeY = false;
+
+        [SerializeField]
         SpriteRenderer[] targetRenderers = null;
 
         [SerializeField]
@@ -446,6 +449,10 @@ namespace VLCNP.Combat.EnemyAction
 
             Vector3 relativePosition = point.position - teleportPointsCenter.position;
             Vector3 destination = player.position + relativePosition;
+            if (ignorePlayerRelativeY)
+            {
+                destination.y = point.position.y;
+            }
             destination.z = point.position.z;
             return destination;
         }
