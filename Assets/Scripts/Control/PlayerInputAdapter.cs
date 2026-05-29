@@ -11,12 +11,19 @@ namespace VLCNP.Control
     public static class PlayerInputAdapter
     {
         private const float StickDeadZone = 0.3f;
+        private const float StickReverseBounceWindow = 0.08f;
+        private const float StickReverseConfirmDuration = 0.05f;
+        private const float StickStrongReverseThreshold = 0.65f;
         private const string LogTag = "[PlayerInputAdapter]";
         public static bool EnableDebugLogs = false;
 
         private static bool reportedNoGamepad = false;
         private static string lastGamepadId = "";
         private static float lastLoggedHorizontal = 0f;
+        private static int lastAcceptedStickDirection = 0;
+        private static int pendingReverseStickDirection = 0;
+        private static float pendingReverseStickStartedAt = 0f;
+        private static float lastStickNeutralTime = float.NegativeInfinity;
 
         private static bool IsGameplayInputBlocked()
         {
@@ -27,6 +34,7 @@ namespace VLCNP.Control
         {
             if (IsGameplayInputBlocked())
             {
+                ResetMoveStickFilter();
                 return 0f;
             }
 
@@ -43,9 +51,8 @@ namespace VLCNP.Control
             Gamepad gamepad = Gamepad.current;
             if (gamepad != null)
             {
-                ReportGamepad(gamepad);
-                float stickValue = gamepad.leftStick.ReadValue().x;
-                if (Mathf.Abs(stickValue) > StickDeadZone)
+                float stickValue = GetFilteredMoveStickHorizontal(gamepad.leftStick.ReadValue().x);
+                if (!Mathf.Approximately(stickValue, 0f))
                 {
                     horizontal = stickValue;
                 }
@@ -57,8 +64,64 @@ namespace VLCNP.Control
                 {
                     horizontal = -1f;
                 }
+                ReportGamepad(gamepad, horizontal);
             }
             return Mathf.Clamp(horizontal, -1f, 1f);
+        }
+
+        private static float GetFilteredMoveStickHorizontal(float stickValue)
+        {
+            float now = Time.unscaledTime;
+            float absoluteStickValue = Mathf.Abs(stickValue);
+
+            if (absoluteStickValue <= StickDeadZone)
+            {
+                lastStickNeutralTime = now;
+                pendingReverseStickDirection = 0;
+                return 0f;
+            }
+
+            int direction = stickValue > 0f ? 1 : -1;
+            if (lastAcceptedStickDirection == 0 || direction == lastAcceptedStickDirection)
+            {
+                AcceptMoveStickDirection(direction);
+                return stickValue;
+            }
+
+            bool recentlyNeutral = now - lastStickNeutralTime <= StickReverseBounceWindow;
+            if (!recentlyNeutral || absoluteStickValue >= StickStrongReverseThreshold)
+            {
+                AcceptMoveStickDirection(direction);
+                return stickValue;
+            }
+
+            if (pendingReverseStickDirection != direction)
+            {
+                pendingReverseStickDirection = direction;
+                pendingReverseStickStartedAt = now;
+                return 0f;
+            }
+
+            if (now - pendingReverseStickStartedAt >= StickReverseConfirmDuration)
+            {
+                AcceptMoveStickDirection(direction);
+                return stickValue;
+            }
+
+            return 0f;
+        }
+
+        private static void AcceptMoveStickDirection(int direction)
+        {
+            lastAcceptedStickDirection = direction;
+            pendingReverseStickDirection = 0;
+        }
+
+        private static void ResetMoveStickFilter()
+        {
+            lastAcceptedStickDirection = 0;
+            pendingReverseStickDirection = 0;
+            lastStickNeutralTime = float.NegativeInfinity;
         }
 
         public static bool IsAimUpPressed()
@@ -330,7 +393,7 @@ namespace VLCNP.Control
             return false;
         }
 
-        private static void ReportGamepad(Gamepad gamepad)
+        private static void ReportGamepad(Gamepad gamepad, float outputHorizontal)
         {
             if (!EnableDebugLogs)
                 return;
@@ -356,7 +419,7 @@ namespace VLCNP.Control
             {
                 lastLoggedHorizontal = horizontal;
                 Debug.Log(
-                    $"{LogTag} StickX={horizontal:F2}, DPadRight={dpadRight}, DPadLeft={dpadLeft}, DPadUp={dpadUp}, OutputHorizontal={Mathf.Clamp(horizontal, -1f, 1f):F2}"
+                    $"{LogTag} StickX={horizontal:F2}, DPadRight={dpadRight}, DPadLeft={dpadLeft}, DPadUp={dpadUp}, OutputHorizontal={Mathf.Clamp(outputHorizontal, -1f, 1f):F2}"
                 );
             }
         }
