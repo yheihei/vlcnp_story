@@ -58,6 +58,10 @@ namespace VLCNP.Combat
 
         [SerializeField]
         bool isFadeOut = false;
+
+        [SerializeField]
+        [Tooltip("左向きで発射されたとき、Transform.localScale.xを反転して見た目を左右反転する。発射元の回転で向きを作るProjectile（Zangekiなど）はOFFにする。")]
+        bool mirrorScaleWhenFacingLeft = true;
         
         [SerializeField]
         private UnityEvent<GameObject> onTargetHit = new UnityEvent<GameObject>();
@@ -75,7 +79,7 @@ namespace VLCNP.Combat
         public void SetDirection(bool isLeft)
         {
             this.isLeft = isLeft;
-            if (isLeft)
+            if (isLeft && mirrorScaleWhenFacingLeft)
             {
                 // x方向のscaleを反転させる
                 transform.localScale = new Vector3(
