@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Fungus;
 using UnityEngine;
 using VLCNP.Attributes;
 using VLCNP.Core;
@@ -22,6 +23,12 @@ namespace VLCNP.SceneManagement
 
         [SerializeField]
         AudioSource seAudioSource = null;
+
+        [SerializeField]
+        Flowchart flowchartToExecuteAfterSetFlag = null;
+
+        [SerializeField]
+        string blockNameToExecuteAfterSetFlag = "Message";
 
         FlagManager flagManager;
 
@@ -116,6 +123,7 @@ namespace VLCNP.SceneManagement
 
             flagManager?.SetFlag(flagToSet, true);
             PlaySetFlagSe();
+            ExecuteFlowchartAfterSetFlag();
 
             UnsubscribeEnemyHealths();
             enabled = false;
@@ -143,6 +151,17 @@ namespace VLCNP.SceneManagement
             }
 
             AudioSource.PlayClipAtPoint(setFlagSe, transform.position, setFlagSeVolume);
+        }
+
+        private void ExecuteFlowchartAfterSetFlag()
+        {
+            if (flowchartToExecuteAfterSetFlag == null)
+                return;
+
+            if (string.IsNullOrEmpty(blockNameToExecuteAfterSetFlag))
+                return;
+
+            flowchartToExecuteAfterSetFlag.ExecuteBlock(blockNameToExecuteAfterSetFlag);
         }
 
         private void OnDisable()
