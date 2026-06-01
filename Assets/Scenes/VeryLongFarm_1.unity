@@ -12287,6 +12287,10 @@ PrefabInstance:
       value: GameEventTrial2End
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812760, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 976885865057812760, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: InformationText
       value: 
       objectReference: {fileID: 0}
@@ -12398,6 +12402,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 976885865057812759, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 874959779}
     - targetCorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       insertIndex: -1
       addedObject: {fileID: 874959777}
@@ -12405,6 +12412,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 874959778}
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+--- !u!1 &874959774 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 976885865057812759, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+  m_PrefabInstance: {fileID: 874959773}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &874959775 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1509632038583652988, guid: fbb78368ef33c44faa030963b129d648, type: 3}
@@ -12510,6 +12522,46 @@ MonoBehaviour:
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}
+--- !u!114 &874959779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874959774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 946c7353e10334b36af7b93b8f80010f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flowChart: {fileID: 874959781}
+  flagConditionToBlockName:
+  - conditions:
+    - flag: 0
+      expectedValue: 0
+    blockName: Hoge
+    isAutoStart: 0
+    isCollisionStart: 0
+  - conditions:
+    - flag: 26
+      expectedValue: 1
+    - flag: 43
+      expectedValue: 1
+    blockName: Message
+    isAutoStart: 1
+    isCollisionStart: 0
+  InformationText: "(\u2191)\u306F\u306A\u3059"
+--- !u!114 &874959781 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+  m_PrefabInstance: {fileID: 874959773}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874959776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &892960594
 GameObject:
   m_ObjectHideFlags: 0
@@ -49487,7 +49539,8 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 1795535047}
-  selectedCommands: []
+  selectedCommands:
+  - {fileID: 1795535075}
   variables: []
   description: 
   stepPause: 0
@@ -51185,17 +51238,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1813366341}
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
---- !u!114 &1813366303 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-  m_PrefabInstance: {fileID: 1813366302}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813366304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a334fe2ffb574b3583ff3b18b4792d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1813366304 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
@@ -52557,7 +52599,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 625646515341984495, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: trueFlags.Array.size
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 625646515341984495, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: trueFlags.Array.data[0]
@@ -52593,11 +52635,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 625646515341984495, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: trueFlags.Array.data[8]
-      value: 20
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 625646515341984495, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: trueFlags.Array.data[9]
-      value: 26
+      value: 43
+      objectReference: {fileID: 0}
+    - target: {fileID: 625646515341984495, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
+      propertyPath: trueFlags.Array.data[10]
+      value: 43
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -52885,7 +52931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 1813366303}
+  selectedFlowchart: {fileID: 242621150}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
