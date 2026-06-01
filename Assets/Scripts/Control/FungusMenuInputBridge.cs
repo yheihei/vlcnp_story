@@ -12,6 +12,10 @@ namespace VLCNP.Control
     {
         const string BridgeObjectName = "[FungusMenuInputBridge]";
 
+        EventSystem suppressedEventSystem;
+        bool previousSendNavigationEvents;
+        bool hasSuppressedNavigationEvents;
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Bootstrap()
         {
@@ -27,20 +31,86 @@ namespace VLCNP.Control
         void Update()
         {
             MenuDialog menu = MenuDialog.ActiveMenuDialog;
-            if (menu == null || !menu.IsActive() || menu.DisplayedOptionsCount <= 0)
+            if (!HasDisplayedOptions(menu))
             {
+                RestoreNavigationEvents();
                 return;
             }
 
-            EventSystem eventSystem = EventSystem.current;
+            EventSystem eventSystem = GetActiveEventSystem();
             if (eventSystem == null)
             {
+                RestoreNavigationEvents();
                 return;
             }
 
+            SuppressNavigationEvents(eventSystem);
             EnsureSelection(menu, eventSystem);
             HandleNavigation(menu, eventSystem);
             HandleSubmit(eventSystem);
+        }
+
+        void OnDisable()
+        {
+            RestoreNavigationEvents();
+        }
+
+        void OnDestroy()
+        {
+            RestoreNavigationEvents();
+        }
+
+        void SuppressNavigationEvents(EventSystem eventSystem)
+        {
+            if (suppressedEventSystem == eventSystem)
+            {
+                eventSystem.sendNavigationEvents = false;
+                return;
+            }
+
+            RestoreNavigationEvents();
+            suppressedEventSystem = eventSystem;
+            previousSendNavigationEvents = eventSystem.sendNavigationEvents;
+            hasSuppressedNavigationEvents = true;
+            eventSystem.sendNavigationEvents = false;
+        }
+
+        void RestoreNavigationEvents()
+        {
+            if (!hasSuppressedNavigationEvents)
+                return;
+
+            if (suppressedEventSystem != null)
+            {
+                suppressedEventSystem.sendNavigationEvents = previousSendNavigationEvents;
+            }
+
+            suppressedEventSystem = null;
+            previousSendNavigationEvents = false;
+            hasSuppressedNavigationEvents = false;
+        }
+
+        static bool HasDisplayedOptions(MenuDialog menu)
+        {
+            if (menu == null || !menu.IsActive())
+                return false;
+
+            return menu.DisplayedOptionsCount > 0;
+        }
+
+        static EventSystem GetActiveEventSystem()
+        {
+            EventSystem current = EventSystem.current;
+            if (current != null && current.isActiveAndEnabled)
+                return current;
+
+            foreach (EventSystem eventSystem in FindObjectsOfType<EventSystem>())
+            {
+                if (eventSystem != null && eventSystem.isActiveAndEnabled)
+                    return eventSystem;
+            }
+
+            return null;
         }
 
         static void EnsureSelection(MenuDialog menu, EventSystem eventSystem)
@@ -124,7 +194,6 @@ namespace VLCNP.Control
             }
 
             ExecuteEvents.Execute(current, new BaseEventData(eventSystem), ExecuteEvents.submitHandler);
-            ExecuteEvents.Execute(current, new PointerEventData(eventSystem), ExecuteEvents.pointerClickHandler);
         }
     }
 }
