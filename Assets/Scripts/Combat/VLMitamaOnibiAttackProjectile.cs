@@ -104,6 +104,7 @@ namespace VLCNP.Combat
         UnityEvent<GameObject> onTargetHit = new UnityEvent<GameObject>();
 
         static readonly HashSet<int> activeOwnerIds = new HashSet<int>();
+        static Material spriteUnlitMaterial = null;
 
         readonly List<OnibiState> onibis = new List<OnibiState>();
         GameObject owner = null;
@@ -309,6 +310,11 @@ namespace VLCNP.Combat
                 spriteRenderer.color = new Color(onibiColor.r, onibiColor.g, onibiColor.b, 0f);
                 spriteRenderer.sortingLayerID = sortingLayerId;
                 spriteRenderer.sortingOrder = sortingOrder;
+                Material unlitMaterial = GetSpriteUnlitMaterial();
+                if (unlitMaterial != null)
+                {
+                    spriteRenderer.sharedMaterial = unlitMaterial;
+                }
 
                 Rigidbody2D body = onibi.AddComponent<Rigidbody2D>();
                 body.bodyType = RigidbodyType2D.Kinematic;
@@ -374,9 +380,34 @@ namespace VLCNP.Combat
             aimArrowRenderer.color = Color.white;
             aimArrowRenderer.sortingLayerID = GetSortingLayerId(aimArrowSortingLayerName, 0);
             aimArrowRenderer.sortingOrder = aimArrowSortingOrder;
+            Material unlitMaterial = GetSpriteUnlitMaterial();
+            if (unlitMaterial != null)
+            {
+                aimArrowRenderer.sharedMaterial = unlitMaterial;
+            }
 
             aimArrowTransform = aimArrow.transform;
             UpdateAimArrowPosition();
+        }
+
+        static Material GetSpriteUnlitMaterial()
+        {
+            if (spriteUnlitMaterial != null)
+                return spriteUnlitMaterial;
+
+            Shader shader = Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default");
+            if (shader == null)
+                shader = Shader.Find("Sprites/Default");
+
+            if (shader == null)
+                return null;
+
+            spriteUnlitMaterial = new Material(shader)
+            {
+                name = "VLMitamaOnibiAttackProjectile_SpriteUnlit",
+                hideFlags = HideFlags.HideAndDontSave,
+            };
+            return spriteUnlitMaterial;
         }
 
         void UpdateAimArrow(float deltaTime)
