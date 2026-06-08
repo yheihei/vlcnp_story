@@ -9,6 +9,9 @@ namespace VLCNP.Combat.EnemyAction
         float enemyDetectionRange = 12f;
 
         [SerializeField]
+        float chaseRange = 15f;
+
+        [SerializeField]
         bool enableUndetectedAnimation = false;
 
         [SerializeField]
@@ -90,9 +93,15 @@ namespace VLCNP.Combat.EnemyAction
             if (player == null)
                 return false;
             float distance = Vector2.Distance(player.transform.position, transform.position);
-            // 一度発見状態になったら常に発見状態を維持する
+            // 一度発見状態になったら、追跡範囲外に出るまで発見状態を維持する
             if (isDetected)
             {
+                if (distance > GetEffectiveChaseRange())
+                {
+                    isDetected = false;
+                    SetIsUndetected(true);
+                    return false;
+                }
                 SetIsUndetected(false);
                 return true;
             }
@@ -120,6 +129,11 @@ namespace VLCNP.Combat.EnemyAction
             return isDetected;
         }
 
+        private float GetEffectiveChaseRange()
+        {
+            return Mathf.Max(chaseRange, enemyDetectionRange);
+        }
+
         // AnimationからEventで必ず呼び出すこと
         public void OnUndetectedAnimationFinished()
         {
@@ -135,6 +149,8 @@ namespace VLCNP.Combat.EnemyAction
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, enemyDetectionRange);
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(transform.position, GetEffectiveChaseRange());
         }
     }
 }
