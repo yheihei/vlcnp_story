@@ -22020,7 +22020,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2515792094813851658, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_audioClip
-      value: 
+      value:
       objectReference: {fileID: 8300000, guid: 405d4e719a7b1420fa2d67b1bdb29773, type: 3}
     - target: {fileID: 2515792094813851658, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_PlayOnAwake
@@ -22028,7 +22028,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2844739774771900405, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: bgm
-      value: 
+      value:
       objectReference: {fileID: 8300000, guid: a46eccd7ada9040ecb95d269487643b5, type: 3}
     - target: {fileID: 2844739774771900405, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: volume
@@ -22220,7 +22220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8104223883752621172, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.0800018
+      value: 1.0800018
       objectReference: {fileID: 0}
     - target: {fileID: 8104223883752621172, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22276,7 +22276,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8104223884404486430, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.0800018
+      value: 1.0800018
       objectReference: {fileID: 0}
     - target: {fileID: 8104223884749801956, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_ScreenY
@@ -22296,7 +22296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8104223884749801956, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_TrackedObjectOffset.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8287768797098745213, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: uniqueIdentifier
@@ -23332,6 +23332,8 @@ MonoBehaviour:
   slowTimeScale: 0.2
   whiteFadeDuration: 1
   bgmFadeOutDuration: 1
+  defeatSoundClip: {fileID: 8300000, guid: 8fd4bda8318ea4aa395f359d0c8611ea, type: 3}
+  defeatSoundVolume: 0.7
 --- !u!114 &1687767867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24356,10 +24358,6 @@ PrefabInstance:
       value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 847125930020299353, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
-      propertyPath: projectileDamage
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 847125930020299353, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: projectileScale.x
       value: 0.8
       objectReference: {fileID: 0}
@@ -24497,8 +24495,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 1687767866}
     - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
@@ -24508,12 +24514,28 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: Execute
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: Execute
       objectReference: {fileID: 0}
     - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: VLCNP.SceneManagement.VLMitamaDefeatedTransition, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
       value: VLCNP.SceneManagement.VLMitamaDefeatedTransition, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923125718308601296, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: dieEvent.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5744145134755985437, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      propertyPath: projectileDamage
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5744145134755985437, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
       propertyPath: projectileScale.x

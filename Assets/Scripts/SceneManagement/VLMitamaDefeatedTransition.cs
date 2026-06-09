@@ -20,6 +20,12 @@ namespace VLCNP.SceneManagement
         [SerializeField]
         float bgmFadeOutDuration = 1f;
 
+        [SerializeField]
+        AudioClip defeatSoundClip;
+
+        [SerializeField]
+        float defeatSoundVolume = 0.7f;
+
         bool isRunning;
 
         public void Execute(GameObject defeatedBoss)
@@ -36,6 +42,9 @@ namespace VLCNP.SceneManagement
 
             PartyCongroller.FindInScene()?.SetTempInvincible(true);
             Time.timeScale = slowTimeScale;
+
+            if (defeatSoundClip != null)
+                FungusManager.Instance.MusicManager.PlaySound(defeatSoundClip, defeatSoundVolume);
 
             BGMWrapper bgmWrapper = FindObjectOfType<BGMWrapper>();
             bgmWrapper?.FadeOut(bgmFadeOutDuration);
