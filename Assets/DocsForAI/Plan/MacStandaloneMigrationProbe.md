@@ -37,10 +37,10 @@
   - 10 秒以上プロセスが継続稼働することを確認
   - Player.log の `exception|error|crash|failed|dllnotfound|missingmethod|nullreference|abort|fatal` 検索はヒットなし
 - 基本操作スモーク確認: 成功
-  - windowed 起動後に Right / Left / Space / X / Z / Up / Down 相当のキー入力を送信
-  - キー入力後も Player プロセスが継続稼働することを確認
+  - windowed 起動後にタイトル画面を確認し、`Return` でゲーム画面へ遷移することを確認
+  - ゲーム画面で `Right` 入力によりキャラクター位置が変わることを画面確認
+  - `Left` / `Space` / `X` / `Z` 相当のキー入力後も Player プロセスが継続稼働することを確認
   - Player.log の `exception|error|crash|failed|dllnotfound|missingmethod|nullreference|abort|fatal` 検索はヒットなし
-  - この実行環境では `screencapture` が `could not create image from display` で失敗したため、画面目視・スクリーンショットによる操作結果確認は未実施
 
 ## WebGL 依存コード
 - `Assets/Scripts/Saving/JsonSavingSystem.cs`
@@ -91,6 +91,6 @@
 - `StandaloneOSX` 向けスクリプトコンパイルが成功している。
 - Mac Standalone Development Build が成功している。
 - 起動確認できる範囲で致命的な Player.log エラーがない。
-- キー入力後に Player が継続稼働し、致命的な Player.log エラーがない。
+- タイトルからゲーム画面へ遷移でき、基本キー入力後も Player が継続稼働し、致命的な Player.log エラーがない。
 - WebGL 依存コードと Thirdweb / WalletConnect / WebGL Template の削除候補が整理されている。
 - Windows 実機検証へ渡す未確認事項が整理されている。
