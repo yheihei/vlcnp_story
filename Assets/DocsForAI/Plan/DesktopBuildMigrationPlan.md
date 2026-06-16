@@ -17,6 +17,10 @@
   - Mac Player 起動、タイトルからゲーム画面への遷移、基本キー入力後の継続稼働を確認済み。
   - 詳細: `Assets/DocsForAI/Plan/MacStandaloneMigrationProbe.md`
 - 2026-06-16 に `main` 上でも `StandaloneWindows64` 向けスクリプトコンパイルを再確認し、50 assemblies / error 0 / warning 0。
+- 2026-06-16 に Mac から `StandaloneWindows64` Development Build 生成も試行したが、現在の Editor 環境では build target unsupported で失敗。
+  - 出力先: `/tmp/vlcnpStory_WindowsProbe/VlcnpStory.exe`
+  - 結果: `Error building player because build target was unsupported`
+  - この環境では Windows Build Support が使えないため、#637 は Windows 実機または Windows Build Support 導入済み環境で続行する。
 
 ## プロジェクト設定メモ
 - `companyName`: `YheiWebDesign`
@@ -87,6 +91,7 @@
 - Unity 2022.3.62f3 で Windows 環境からプロジェクトを開ける。
 - Windows Build Support / IL2CPP モジュールの有無を確認する。
 - Windows x86_64 / Standalone へ切り替える。
+- Mac 側では `StandaloneWindows64` 向けスクリプトコンパイルは成功しているが、Windows player build は build target unsupported で失敗しているため、この項目は Windows Build Support 導入済み環境で再実行する。
 - Development Build の `.exe` を作成する。
 - `.exe` を単体起動し、Player.log に致命的な例外がない。
 - キーボードで開始、移動、ジャンプ、攻撃、メニュー決定ができる。
