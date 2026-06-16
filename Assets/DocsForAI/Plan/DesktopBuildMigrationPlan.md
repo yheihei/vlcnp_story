@@ -17,17 +17,18 @@
   - Mac Player 起動、タイトルからゲーム画面への遷移、基本キー入力後の継続稼働を確認済み。
   - 詳細: `Assets/DocsForAI/Plan/MacStandaloneMigrationProbe.md`
 - 2026-06-16 に `main` 上でも `StandaloneWindows64` 向けスクリプトコンパイルを再確認し、50 assemblies / error 0 / warning 0。
-- 2026-06-16 に Mac から `StandaloneWindows64` Development Build 生成も試行したが、現在の Editor 環境では build target unsupported で失敗。
-  - 出力先: `/tmp/vlcnpStory_WindowsProbe/VlcnpStory.exe`
-  - 結果: `Error building player because build target was unsupported`
-  - この環境では Windows Build Support が使えないため、#637 は Windows 実機または Windows Build Support 導入済み環境で続行する。
+- 2026-06-16 に Unity 2022.3.62f3 へ Windows Build Support (Mono) を追加し、Mac から `StandaloneWindows64` Steam Demo Release Build の作成を確認済み。
+  - 出力先: `/tmp/vlcnpStory_SteamDemoWindowsBatch/VlcnpStory.exe`
+  - 結果: 成功。`VlcnpStory.exe`, `UnityPlayer.dll`, `VlcnpStory_Data/` を確認済み。
+  - Steamworks native plugin: `VlcnpStory_Data/Plugins/x86_64/steam_api64.dll`
+  - 既存 Editor プロセスでは module 追加前の状態が残り `Build target 'StandaloneWindows64' not supported` になったため、module 追加後は Unity 再起動または fresh batchmode で実行する。
 
 ## プロジェクト設定メモ
 - `companyName`: `YheiWebDesign`
 - `productName`: `VlcnpStory`
 - `bundleVersion`: `0.2.1`
-- `applicationIdentifier`: `com.DefaultCompany.2DProject`
-  - Steam / Standalone 配布前に `com.yheiwebdesign.vlcnpstory` などの固定 ID へ変更する。
+- `applicationIdentifier`: `com.yheiwebdesign.vlcnpstory`
+  - Steam / Standalone 配布に向けて固定済み。
 - Standalone 画面設定:
   - `defaultScreenWidth`: 1920
   - `defaultScreenHeight`: 1080
@@ -48,14 +49,14 @@
 - Windows 実機では Xbox 系コントローラーを優先して、移動、ジャンプ、攻撃、メニュー決定、キャラ切り替えを確認する。
 
 ## Steamworks ラッパー方針
-- 初回 Steam 対応の採用候補は Steamworks.NET とする。
+- 初回 Steam 対応は Steamworks.NET を採用する。
 - 理由:
   - Unity Package Manager から導入でき、リポジトリ管理しやすい。
   - Valve の Steamworks C++ API に近い wrapper で、後続の実績 #605 / クラウドセーブ #627 に繋げやすい。
   - Windows / macOS / Linux Standalone 対応が明記されている。
   - Steamworks.NET 公式ドキュメントに SteamManager の開始点と `steam_appid.txt` のローカル確認手順がある。
 - 2026-06-16 時点の GitHub latest release は `2025.163.0`。
-- 導入する場合は、Package Manager の git URL を release tag で固定する。
+- Package Manager の git URL を release tag で固定済み。
   - `https://github.com/rlabrecque/Steamworks.NET.git?path=/com.rlabrecque.steamworks.net#2025.163.0`
 - 参考:
   - https://steamworks.github.io/
@@ -64,11 +65,16 @@
 - Facepunch.Steamworks は C# らしい API が利点だが、初回の起動確認、Overlay、実績、クラウド保存に寄せる段階では Steamworks.NET の方が既存の導入資料と Valve API 対応を追いやすい。
 
 ## 最小 Steam 起動実装の範囲
+- ストアページは作成済みのため、その App ID を Base App ID として扱う。
+- デモ版だけを先行公開する場合も、Steamworks では Base App に紐づく Demo App ID を別途作成する。
+- Demo App ID は `1223071`。
+- Windows Depot ID / Mac Depot ID が確定したら、`Assets/DocsForAI/Plan/SteamDemoReleasePlan.md` と SteamPipe template に反映する。
 - Steamworks.NET 導入後、最初に実装する範囲は起動と終了だけに絞る。
 - 起動時:
-  - 最初のシーンに Steam 初期化用 GameObject を置く。
+  - `RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)` で Steam 初期化用 GameObject を作る。
   - `DontDestroyOnLoad` でシーン遷移後も維持する。
   - `SteamAPI.Init()` に失敗しても、Steam 経由ではないローカル起動を即終了させず警告ログに留める。
+  - Player.log に `Application.persistentDataPath` を出す。
 - 終了時:
   - `OnApplicationQuit` で `SteamAPI.Shutdown()` を呼ぶ。
 - ローカル確認:
@@ -91,8 +97,17 @@
 - Unity 2022.3.62f3 で Windows 環境からプロジェクトを開ける。
 - Windows Build Support / IL2CPP モジュールの有無を確認する。
 - Windows x86_64 / Standalone へ切り替える。
-- Mac 側では `StandaloneWindows64` 向けスクリプトコンパイルは成功しているが、Windows player build は build target unsupported で失敗しているため、この項目は Windows Build Support 導入済み環境で再実行する。
+- Mac 側でも Windows Build Support 追加後に `StandaloneWindows64` release build は作成できている。
+- ただし Windows 実機での起動、基本操作、セーブ/ロード、Steam Overlay は未確認。
 - Development Build の `.exe` を作成する。
+  - Editor メニュー: `Tools/VLCNP/Build/Windows Development Build`
+  - batchmode:
+    - `Unity.exe -quit -batchmode -projectPath <repo> -executeMethod VLCNP.Editor.DesktopBuildUtility.BuildWindowsDevelopmentFromCommandLine -vlcnpBuildPath <output>/VlcnpStory.exe`
+  - `-vlcnpBuildPath` を省略した場合は `Builds/Windows/VlcnpStory.exe` に出力する。
+- Steam デモ用 Release Build を作成する。
+  - Editor メニュー: `Tools/VLCNP/Build/Steam Demo Windows Release Build`
+  - batchmode:
+    - `Unity.exe -quit -batchmode -projectPath <repo> -executeMethod VLCNP.Editor.DesktopBuildUtility.BuildSteamDemoWindowsReleaseFromCommandLine -vlcnpBuildPath <output>/VlcnpStory.exe -vlcnpSteamAppId <Demo App ID>`
 - `.exe` を単体起動し、Player.log に致命的な例外がない。
 - キーボードで開始、移動、ジャンプ、攻撃、メニュー決定ができる。
 - ゲームパッドが認識され、基本操作ができる。
