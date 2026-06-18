@@ -37,11 +37,80 @@
   - macOS: `4861252`
 - Demo App の packages:
   - Developer Comp `1688384` / Beta Testing `1688385` / Public Demo package `1688386` に depot `4861251` と `4861252` が含まれていることを確認済み。
-- Steam Cloud を今回入れる場合:
-  - Demo App 側で Steam Cloud を有効化する。
+- Steam Cloud:
+  - Demo App 側で Steam Cloud を有効化済み。
   - Windows は `%USERPROFILE%\AppData\LocalLow\YheiWebDesign\VlcnpStory` 相当を対象にする。
   - macOS は `~/Library/Application Support/YheiWebDesign/VlcnpStory` 相当を対象にする。
   - 実際のパスは Player.log に `Application.persistentDataPath` を出して確認する。
+
+## Steam Cloud / Auto-Cloud 設定
+- 対象 App ID: Demo App `4861250`
+- 2026-06-18 Steamworks 保存・公開済み:
+  - Steam Cloud ページ: `https://partner.steamgames.com/apps/cloud/4861250`
+  - `Byte quota per user`: `10485760`
+  - `Number of files allowed per user`: `32`
+  - Developer-only Cloud support: off
+  - Dynamic Cloud Sync: off
+  - `Shared cloud APP ID`: `0`
+  - Publishing diff で `ufs` section の新規追加を確認し、`Steam に公開` まで完了。
+- 初回体験版では Steam Auto-Cloud を使う。
+  - ゲーム側は `Application.persistentDataPath` 配下の JSON を通常のファイル I/O で読み書きする。
+  - Steamworks 側で Auto-Cloud の対象パスを設定し、Steam クライアントに同期させる。
+  - Steam RemoteStorage API による直接の `FileWrite` / `FileRead` は、Auto-Cloud で不足が出た場合の後続対応にする。
+  - Steamworks 公式ドキュメントでは、Auto-Cloud 対象ファイルはゲーム終了後にアップロードされ、別端末では起動前にダウンロードされる。Unity の `Application.persistentDataPath` 例では OS ごとの差分を Root Override で揃える方針が示されている。
+- 推奨 quota:
+  - `Byte quota per user`: `10485760` bytes
+  - `Number of files allowed per user`: `32`
+  - 現在の想定ファイルは `autoSave.json` と手動保存の `save.json` 程度なので、体験版では十分な余裕を持たせる。
+- Root Path:
+  - `Root`: `WinAppDataLocalLow`
+  - `Subdirectory`: `YheiWebDesign/VlcnpStory`
+  - `Pattern`: `*.json`
+  - `OS`: `All OSes`
+  - `Recursive`: off
+- Root Override:
+  - `Original Root`: `WinAppDataLocalLow`
+  - `OS`: `macOS`
+  - `New Root`: `MacAppSupport`
+  - `Add/Replace Path`: `YheiWebDesign/VlcnpStory`
+  - `Replace Path`: on
+- Preview で確認する同期対象:
+  - Windows: `%USERPROFILE%\AppData\LocalLow\YheiWebDesign\VlcnpStory\autoSave.json`
+  - macOS: `~/Library/Application Support/YheiWebDesign/VlcnpStory/autoSave.json`
+- `Shared cloud APP ID` は初回体験版では `0` のままにする。
+  - 本編 App と demo の共有セーブが必要になったら、本編側の公開状態と同期方針を確認して別 issue で扱う。
+- Steamworks 側の Save / Publish は完了済み。以後の変更時も必ず Publish する。
+
+## Steam Cloud / ゲーム側実装
+- `Assets/Scripts/Saving/JsonSavingSystem.cs` は引き続き `Application.persistentDataPath/<saveFile>.json` を読み書きする。
+- `Assets/Scripts/Steam/SteamCloudSaveSync.cs` で、Steam 初期化済みの Standalone 起動時だけ以下を行う。
+  - 起動時に Steam Cloud の account/app enabled と quota を Player.log へ出す。
+  - 保存・削除時のローカルファイル操作を `SteamRemoteStorage.BeginFileWriteBatch()` / `EndFileWriteBatch()` で囲む。
+  - Steam 未起動、Steam 初期化失敗、Editor、WebGL では no-op。
+- `BeginFileWriteBatch()` / `EndFileWriteBatch()` は、Auto-Cloud でローカルディスクへ直接書く場合にも使用でき、Steam に 1 回の状態変更として扱うヒントを与える。
+- Auto-Cloud 対象は `*.json` なので、`autoSave.json` 以外の JSON 保存ファイルも同期候補になる。
+
+## Steam Cloud / 競合方針
+- 初回体験版ではゲーム内の競合 UI は実装しない。
+- ゲーム起動前・終了後の同期と競合解決は Steam クライアントの既定挙動に寄せる。
+- ゲーム側は起動時にローカルディスク上の `autoSave.json` を読み込む。複数端末で更新が競合した場合は、Steam が最終的にローカルへ配置した JSON を正とする。
+- 複数スロット、バックアップ、明示的なタイムスタンプ選択 UI が必要になったら、体験版公開後の別 issue で扱う。
+
+## Steam Cloud / 検証手順
+- Demo App ID `4861250` を使って Steam 経由で起動する。
+  - ローカル確認用 `steam_appid.txt` も `4861250` にする。
+- Steam Console:
+  - `steam://open/console`
+  - `testappcloudpaths 4861250`
+  - `set_spew_level 4 4`
+- macOS で最低限確認する。
+  - Steam クライアントを起動した状態で demo build を起動する。
+  - Player.log に `[SteamCloudSaveSync] Cloud status ... appEnabled=True ...` が出る。
+  - ゲーム内で `autoSave.json` を作成する。
+  - アプリ終了後、Steam Console または `%Steam Install%/logs/cloud_log.txt` 相当で upload 対象になっていることを確認する。
+  - 再起動してロードできることを確認する。
+- 複数端末 / 別 OS 同期確認は #627 の最終確認として残す。
+- Windows 実機での起動・基本操作・Overlay 確認は #637 側に残し、#603 / #637 はこの作業では閉じない。
 
 ## Unity ビルド
 - Windows:
@@ -57,6 +126,25 @@
   - 今後のローカル Steam テストでは `-vlcnpSteamAppId 4861250` を使う。
 
 ## ローカル検証結果
+- 2026-06-18: macOS demo build をヘッドレス起動して Player.log を確認。
+  - コマンド: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app/Contents/MacOS/VlcnpStory -batchmode -nographics -quit -logFile /tmp/vlcnp_cloud_player.log`
+  - `persistentDataPath`: `/Users/yhei/Library/Application Support/YheiWebDesign/VlcnpStory`
+  - 既存の同期候補: `autoSave.json` / `save.json`
+  - `autoSave.json` / `save.json` は JSON object として読み込み可能で、それぞれ約 `4.0K`。
+  - Steam.app は存在するが起動しておらず、`SteamAPI.Init` は `SteamAPI_IsSteamRunning() did not locate a running instance of Steam.` で失敗。Steam クライアント経由の Cloud 確認は未実施。
+- 2026-06-18: Steam クライアント起動後、同じ macOS demo build を再確認。
+  - Steam クライアント更新前は `SteamAPI_Init(): No SteamClient023` で `SteamAPI.Init` が失敗。
+  - Steam クライアント更新後は `ConnectToGlobalUser: Steam denied appID 4861250` で `SteamAPI.Init` が失敗。
+  - `SteamCloudSaveSync` の Cloud status ログはまだ出ていない。Steam アカウントのログイン状態、Developer Comp / release-state override package、Steam からの起動経路を確認して再テストする。
+  - `cloud_log.txt` に AppID `4861250` の同期ログはまだ出ていない。
+- 2026-06-18: macOS Steam Demo Release Build を Demo App ID `4861250` で再作成。
+  - 出力: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app`
+  - サイズ: `321M`
+  - Bundle ID: `com.yheiwebdesign.vlcnpstory`
+  - Bundle version: `0.2.1`
+  - `steam_appid.txt`: `/tmp/vlcnpStory_SteamDemoMacCloud/steam_appid.txt` と `.app/Contents/MacOS/steam_appid.txt` に `4861250`
+  - Steamworks.NET が Standalone scripting define に `STEAMWORKS_NET` を追加した。
+  - Steamworks Cloud 設定は保存・公開済み。Steam クライアント経由の Cloud upload / download 確認は未実施。
 - 2026-06-16: macOS Steam Demo Release Build 成功。
   - 出力: `/tmp/vlcnpStory_SteamDemoMac/VlcnpStory.app`
   - サイズ: `321M`
@@ -94,3 +182,6 @@
 - Demo macOS Depot ID `4861252` はテンプレートへ反映済み。
 - Developer Comp `1688384` / Beta Testing `1688385` / Public Demo package `1688386` は両 depot を参照している。
 - Demo App の Steam Cloud 方針が決まっている。
+- `Application.persistentDataPath` 配下の `*.json` を Auto-Cloud 対象にする Steamworks 設定が公開済み。
+- 保存・削除時に Steam write batch を通知するゲーム側実装が入っている。
+- Steam クライアント経由の Cloud upload / download、複数端末同期、Windows 実機確認は未完了。

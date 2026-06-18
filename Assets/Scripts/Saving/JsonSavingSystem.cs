@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VLCNP.Steam;
 
 namespace VLCNP.Saving
 {
@@ -52,7 +53,11 @@ namespace VLCNP.Saving
         /// </summary>
         public void Delete(string saveFile)
         {
-            File.Delete(GetPathFromSaveFile(saveFile));
+            string path = GetPathFromSaveFile(saveFile);
+            using (SteamCloudSaveSync.BeginFileWriteBatch(path))
+            {
+                File.Delete(path);
+            }
         }
 
         public void LoadOnlyState(string saveFile)
@@ -96,12 +101,15 @@ namespace VLCNP.Saving
         {
             string path = GetPathFromSaveFile(saveFile);
             print("Saving to " + path);
-            using (var textWriter = File.CreateText(path))
+            using (SteamCloudSaveSync.BeginFileWriteBatch(path))
             {
-                using (var writer = new JsonTextWriter(textWriter))
+                using (var textWriter = File.CreateText(path))
                 {
-                    writer.Formatting = Formatting.Indented;
-                    state.WriteTo(writer);
+                    using (var writer = new JsonTextWriter(textWriter))
+                    {
+                        writer.Formatting = Formatting.Indented;
+                        state.WriteTo(writer);
+                    }
                 }
             }
         }

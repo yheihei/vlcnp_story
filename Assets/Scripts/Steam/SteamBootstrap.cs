@@ -14,6 +14,18 @@ namespace VLCNP.Steam
         private bool initialized;
 #endif
 
+        public static bool IsInitialized
+        {
+            get
+            {
+#if !UNITY_WEBGL
+                return instance != null && instance.initialized;
+#else
+                return false;
+#endif
+            }
+        }
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Create()
         {
@@ -52,6 +64,7 @@ namespace VLCNP.Steam
 
             initialized = true;
             Debug.Log($"[SteamBootstrap] Steam initialized. AppID={SteamUtils.GetAppID()}");
+            SteamCloudSaveSync.LogStatus(Application.persistentDataPath);
 #endif
         }
 
