@@ -143,6 +143,14 @@
   - `loginusers.vdf` は `AccountName=yhei_hei`, `RememberPassword=1`, `AllowAutoLogin=0`。
   - `connection_log.txt` は現行 client version `1781041600` で `Logged Off`。Steam へ手動ログインするまで `SteamAPI.Init` 成功条件を満たせない。
   - Codex から Steam UI を操作するには macOS のアクセシビリティ許可が必要。システム設定変更はユーザー操作で行う。
+- 2026-06-18: Steam へログイン後、macOS demo build を再起動して Steam Cloud 初期化と upload を確認。
+  - コマンド: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app/Contents/MacOS/VlcnpStory -batchmode -nographics -quit -logFile /tmp/vlcnp_cloud_player_logged_in.log`
+  - `connection_log.txt`: `RecvMsgClientLogOnResponse() : [U:1:1858851324] 'OK'`
+  - Player.log: `[SteamBootstrap] Steam initialized. AppID=4861250`
+  - Player.log: `[SteamCloudSaveSync] Cloud status accountEnabled=True appEnabled=True quotaTotalBytes=10485760 quotaAvailableBytes=10485760 saveDirectory=/Users/yhei/Library/Application Support/YheiWebDesign/VlcnpStory pattern=*.json`
+  - `cloud_log.txt`: AppID `4861250` が Auto-Cloud rule `root="WinAppDataLocalLow" path="YheiWebDesign/VlcnpStory" pattern="*.json"` を評価し、`/Users/yhei/Library/Application Support/YheiWebDesign/VlcnpStory/*.json` に一致する 2 files を検出。
+  - `cloud_log.txt`: `YheiWebDesign/VlcnpStory/autoSave.json` と `YheiWebDesign/VlcnpStory/save.json` が `Upload OK`、`Upload complete, result OK`。
+  - ヘッドレス起動ではゲーム内 save 操作までは行っていないため、`BeginFileWriteBatch` の runtime ログと Cloud download / 複数端末同期は未確認。
 - 2026-06-18: macOS Steam Demo Release Build を Demo App ID `4861250` で再作成。
   - 出力: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app`
   - サイズ: `321M`
@@ -190,4 +198,5 @@
 - Demo App の Steam Cloud 方針が決まっている。
 - `Application.persistentDataPath` 配下の `*.json` を Auto-Cloud 対象にする Steamworks 設定が公開済み。
 - 保存・削除時に Steam write batch を通知するゲーム側実装が入っている。
-- Steam クライアント経由の Cloud upload / download、複数端末同期、Windows 実機確認は未完了。
+- Steam クライアント経由の Cloud status と Auto-Cloud upload は macOS で確認済み。
+- Cloud download、複数端末同期、Windows 実機確認は未完了。

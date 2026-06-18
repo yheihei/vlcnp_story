@@ -102,6 +102,8 @@
   - Steam クライアント起動後の再確認では、クライアント更新前は `No SteamClient023`、更新後は `ConnectToGlobalUser: Steam denied appID 4861250` で失敗。Steam アカウントのログイン状態、Developer Comp / release-state override package、Steam からの起動経路を確認してから再テストする。
   - 追加確認では Steam UI はプレイヤー選択画面まで表示されたが、`connection_log.txt` は `Logged Off`、`loginusers.vdf` は `AllowAutoLogin=0`。この端末ではまず Steam へ手動ログインし、Developer Comp `1688384` または release-state override package で Demo App `4861250` の起動権限がある状態にする必要がある。
   - Codex から Steam UI を操作するには macOS のアクセシビリティ許可ダイアログが出る。システム設定変更はユーザー操作で行う。
+  - 2026-06-18 15:40 JST に Steam へログイン後、同じ macOS demo build を起動して `SteamAPI.Init` 成功を確認。Player.log に `Steam initialized. AppID=4861250` と `[SteamCloudSaveSync] Cloud status accountEnabled=True appEnabled=True quotaTotalBytes=10485760 quotaAvailableBytes=10485760 ... pattern=*.json` が出た。
+  - 同起動の終了後、`cloud_log.txt` に AppID `4861250` の Auto-Cloud upload 成功を確認。`YheiWebDesign/VlcnpStory/save.json` と `YheiWebDesign/VlcnpStory/autoSave.json` が `Upload OK`、`Upload complete, result OK`。
 - Steamworks Auto-Cloud の公開済み設定:
   - Demo App ID: `4861250`
   - 2026-06-18 に Steam Cloud ページで保存し、Steamworks publishing で公開済み。
@@ -121,8 +123,8 @@
 1. #627 を実装・確認する。
    - Steamworks Demo App `4861250` で Steam Cloud を有効化済み。
    - Auto-Cloud の root / path / pattern は公開済み。
-   - Steam クライアントへログインし、Demo App `4861250` の起動権限を持つ状態にする。
-   - macOS build で save 作成、終了、再起動 load を確認する。
+   - Steam クライアントへログインした状態で、macOS build の `SteamAPI.Init` / Cloud status / Auto-Cloud upload は確認済み。
+   - macOS build で再起動 load と Cloud download を確認する。
    - 可能なら別端末または別 OS で同期確認する。
 2. Demo App ID `4861250` で Windows / macOS Steam Demo Release Build を作り直す。
    - `steam_appid.txt` はローカル確認用だけに使い、SteamPipe upload には含めない。
