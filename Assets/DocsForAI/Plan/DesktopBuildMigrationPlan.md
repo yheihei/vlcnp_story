@@ -67,8 +67,11 @@
 ## 最小 Steam 起動実装の範囲
 - ストアページは作成済みのため、その App ID を Base App ID として扱う。
 - デモ版だけを先行公開する場合も、Steamworks では Base App に紐づく Demo App ID を別途作成する。
-- Demo App ID は `1223071`。
-- Windows Depot ID / Mac Depot ID が確定したら、`Assets/DocsForAI/Plan/SteamDemoReleasePlan.md` と SteamPipe template に反映する。
+- Base App ID は `4829520`。
+- Demo App ID は `4861250`。
+- Store item ID は `1223071`。
+- 現在の Demo App depot は `4861251` で、Windows / macOS 個別ではなく `すべてのOS` の単一 depot。
+- OS 別 download にしたい場合は Windows Depot / Mac Depot を Steamworks 上で追加し、`Assets/DocsForAI/Plan/SteamDemoReleasePlan.md` と SteamPipe template を 2 depot 構成へ戻す。
 - Steamworks.NET 導入後、最初に実装する範囲は起動と終了だけに絞る。
 - 起動時:
   - `RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)` で Steam 初期化用 GameObject を作る。
