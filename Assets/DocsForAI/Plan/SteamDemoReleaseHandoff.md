@@ -100,6 +100,8 @@
   - 2026-06-18 の macOS demo build 起動ログでは `/Users/yhei/Library/Application Support/YheiWebDesign/VlcnpStory`。既存の `autoSave.json` / `save.json` は JSON object として読み込み可能。
   - Steam クライアント未起動時は `SteamAPI_IsSteamRunning() did not locate a running instance of Steam.` で `SteamAPI.Init` が失敗。
   - Steam クライアント起動後の再確認では、クライアント更新前は `No SteamClient023`、更新後は `ConnectToGlobalUser: Steam denied appID 4861250` で失敗。Steam アカウントのログイン状態、Developer Comp / release-state override package、Steam からの起動経路を確認してから再テストする。
+  - 追加確認では Steam UI はプレイヤー選択画面まで表示されたが、`connection_log.txt` は `Logged Off`、`loginusers.vdf` は `AllowAutoLogin=0`。この端末ではまず Steam へ手動ログインし、Developer Comp `1688384` または release-state override package で Demo App `4861250` の起動権限がある状態にする必要がある。
+  - Codex から Steam UI を操作するには macOS のアクセシビリティ許可ダイアログが出る。システム設定変更はユーザー操作で行う。
 - Steamworks Auto-Cloud の公開済み設定:
   - Demo App ID: `4861250`
   - 2026-06-18 に Steam Cloud ページで保存し、Steamworks publishing で公開済み。
@@ -119,6 +121,7 @@
 1. #627 を実装・確認する。
    - Steamworks Demo App `4861250` で Steam Cloud を有効化済み。
    - Auto-Cloud の root / path / pattern は公開済み。
+   - Steam クライアントへログインし、Demo App `4861250` の起動権限を持つ状態にする。
    - macOS build で save 作成、終了、再起動 load を確認する。
    - 可能なら別端末または別 OS で同期確認する。
 2. Demo App ID `4861250` で Windows / macOS Steam Demo Release Build を作り直す。

@@ -104,6 +104,7 @@
   - `testappcloudpaths 4861250`
   - `set_spew_level 4 4`
 - macOS で最低限確認する。
+  - Steam クライアントへログインし、Developer Comp `1688384` または release-state override package で Demo App `4861250` の起動権限があることを確認する。
   - Steam クライアントを起動した状態で demo build を起動する。
   - Player.log に `[SteamCloudSaveSync] Cloud status ... appEnabled=True ...` が出る。
   - ゲーム内で `autoSave.json` を作成する。
@@ -137,6 +138,11 @@
   - Steam クライアント更新後は `ConnectToGlobalUser: Steam denied appID 4861250` で `SteamAPI.Init` が失敗。
   - `SteamCloudSaveSync` の Cloud status ログはまだ出ていない。Steam アカウントのログイン状態、Developer Comp / release-state override package、Steam からの起動経路を確認して再テストする。
   - `cloud_log.txt` に AppID `4861250` の同期ログはまだ出ていない。
+- 2026-06-18: 追加で Steam クライアント状態を確認。
+  - Steam UI はプレイヤー選択画面まで表示された。
+  - `loginusers.vdf` は `AccountName=yhei_hei`, `RememberPassword=1`, `AllowAutoLogin=0`。
+  - `connection_log.txt` は現行 client version `1781041600` で `Logged Off`。Steam へ手動ログインするまで `SteamAPI.Init` 成功条件を満たせない。
+  - Codex から Steam UI を操作するには macOS のアクセシビリティ許可が必要。システム設定変更はユーザー操作で行う。
 - 2026-06-18: macOS Steam Demo Release Build を Demo App ID `4861250` で再作成。
   - 出力: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app`
   - サイズ: `321M`
