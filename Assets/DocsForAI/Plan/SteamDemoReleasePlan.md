@@ -18,9 +18,13 @@
 ## Steamworks で確認する ID
 - Base App ID: `4829520`
 - Demo App ID: `4861250`
-- Demo Content Depot ID: `4861251`
-  - 現在は Windows / macOS 個別 depot ではなく、オペレーティングシステム `すべてのOS` の単一 depot。
+- Demo Windows Depot ID: `4861251`
   - depot 名: `Very Long CNP物語 Demo Content`
+  - オペレーティングシステム: `Windows`
+  - 3 個の package から参照されている。
+- Demo macOS Depot ID: `4861252`
+  - depot 名: `Very Long CNP Demo macOS Content`
+  - オペレーティングシステム: `macOS`
   - 3 個の package から参照されている。
 
 ## Steamworks 側の設定
@@ -29,11 +33,10 @@
   - Windows: `VlcnpStory.exe`
   - macOS: `VlcnpStory.app`
 - Demo App の Depots:
-  - 現在の depot: `4861251` / `すべてのOS`。
-  - このまま進める場合は Windows build と macOS app bundle の両方を同じ depot root に置く。
-  - OS 別 download にしたい場合は Steamworks 上で Windows 用 / macOS 用 depot を追加し、SteamPipe template を 2 depot 構成へ戻す。
+  - Windows: `4861251`
+  - macOS: `4861252`
 - Demo App の packages:
-  - Developer Comp / Beta Testing / Public Demo package に depot `4861251` が含まれていることを確認する。
+  - Developer Comp `1688384` / Beta Testing `1688385` / Public Demo package `1688386` に depot `4861251` と `4861252` が含まれていることを確認済み。
 - Steam Cloud を今回入れる場合:
   - Demo App 側で Steam Cloud を有効化する。
   - Windows は `%USERPROFILE%\AppData\LocalLow\YheiWebDesign\VlcnpStory` 相当を対象にする。
@@ -74,12 +77,12 @@
 ## SteamPipe アップロード準備
 - Steamworks SDK の `tools/ContentBuilder/scripts` に以下のテンプレートをコピーする。
   - `Assets/DocsForAI/Plan/SteamPipe/app_build_demo_template.vdf`
-  - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_content_template.vdf`
+  - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_windows_template.vdf`
+  - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_macos_template.vdf`
 - `ContentRoot` は Steamworks SDK の `tools/ContentBuilder/content` を指す。
 - ビルド成果物を以下へ配置する。
-  - Windows: `content/all/VlcnpStory.exe` と関連ファイル一式
-  - macOS: `content/all/VlcnpStory.app`
-  - 単一 depot のため、現設定では Windows / macOS 両方の成果物を同じ depot に含める。
+  - Windows: `content/windows/VlcnpStory.exe` と関連ファイル一式
+  - macOS: `content/macos/VlcnpStory.app`
 - steamcmd 実行例:
   - `steamcmd +login <builder_account> +run_app_build ../scripts/app_build_demo_template.vdf +quit`
 
@@ -87,5 +90,7 @@
 - Mac release build が作成できている。
 - Windows release build が作成できている。
 - Demo App ID `4861250` はテンプレートへ反映済み。
-- Demo Content Depot ID `4861251` はテンプレートへ反映済み。
+- Demo Windows Depot ID `4861251` はテンプレートへ反映済み。
+- Demo macOS Depot ID `4861252` はテンプレートへ反映済み。
+- Developer Comp `1688384` / Beta Testing `1688385` / Public Demo package `1688386` は両 depot を参照している。
 - Demo App の Steam Cloud 方針が決まっている。

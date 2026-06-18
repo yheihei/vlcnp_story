@@ -3,7 +3,7 @@
 ## 背景と目的
 - 対象 issue: #603
 - 子 issue: #636 / #637
-- 更新日: 2026-06-16
+- 更新日: 2026-06-18
 - WebGL から Windows / macOS Standalone と Steam 配信へ移行するため、親チケットとしての現状、判断、残作業を整理する。
 - クラウドセーブは #627、実績は #605、Next Fest 提出管理は #635 で扱う。
 
@@ -70,8 +70,10 @@
 - Base App ID は `4829520`。
 - Demo App ID は `4861250`。
 - Store item ID は `1223071`。
-- 現在の Demo App depot は `4861251` で、Windows / macOS 個別ではなく `すべてのOS` の単一 depot。
-- OS 別 download にしたい場合は Windows Depot / Mac Depot を Steamworks 上で追加し、`Assets/DocsForAI/Plan/SteamDemoReleasePlan.md` と SteamPipe template を 2 depot 構成へ戻す。
+- Demo App depots は OS 別 download 構成。
+  - Windows Depot ID: `4861251`
+  - macOS Depot ID: `4861252`
+- Developer Comp `1688384` / Beta Testing `1688385` / Public Demo package `1688386` は両 depot を参照している。
 - Steamworks.NET 導入後、最初に実装する範囲は起動と終了だけに絞る。
 - 起動時:
   - `RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)` で Steam 初期化用 GameObject を作る。
