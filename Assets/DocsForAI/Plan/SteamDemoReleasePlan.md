@@ -151,6 +151,13 @@
   - `cloud_log.txt`: AppID `4861250` が Auto-Cloud rule `root="WinAppDataLocalLow" path="YheiWebDesign/VlcnpStory" pattern="*.json"` を評価し、`/Users/yhei/Library/Application Support/YheiWebDesign/VlcnpStory/*.json` に一致する 2 files を検出。
   - `cloud_log.txt`: `YheiWebDesign/VlcnpStory/autoSave.json` と `YheiWebDesign/VlcnpStory/save.json` が `Upload OK`、`Upload complete, result OK`。
   - ヘッドレス起動ではゲーム内 save 操作までは行っていないため、`BeginFileWriteBatch` の runtime ログと Cloud download / 複数端末同期は未確認。
+- 2026-06-19: 同一 Mac で local JSON を退避し、直接バイナリ起動で Cloud download を試した。
+  - 事前に `/tmp/vlcnp_cloud_download_backup_20260619_180712` へ `autoSave.json` / `save.json` / `remotecache.vdf` をバックアップ。
+  - ローカルの `autoSave.json` / `save.json` を退避してから `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app/Contents/MacOS/VlcnpStory -batchmode -nographics -quit -logFile /tmp/vlcnp_cloud_player_download_test.log` を起動。
+  - Player.log は `Steam initialized. AppID=4861250` と Cloud status 成功。ただし 10 秒待っても local JSON は復元されず、AppID `4861250` の download ログも出なかった。
+  - アプリ終了前にバックアップから JSON を復元し、SHA-1 が remote cache の `c442ffb91a5cd26bedeaf4e574a39118999a7f45` / `8e579af009257b19c2ee28107ddcac495f642834` と一致することを確認。
+  - 終了後の `cloud_log.txt` は `No launch record found`、`Skipping un-modified file ... autoSave.json/save.json`、`Currently already synced to global change number '1'`。直接バイナリ起動では Steam launch record が無く、download 確認には不十分。
+  - Cloud download / 再起動ロード確認は、SteamPipe upload 後に Steam クライアントの package / build から Demo App `4861250` を起動して行う。
 - 2026-06-18: macOS Steam Demo Release Build を Demo App ID `4861250` で再作成。
   - 出力: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app`
   - サイズ: `321M`
@@ -199,4 +206,5 @@
 - `Application.persistentDataPath` 配下の `*.json` を Auto-Cloud 対象にする Steamworks 設定が公開済み。
 - 保存・削除時に Steam write batch を通知するゲーム側実装が入っている。
 - Steam クライアント経由の Cloud status と Auto-Cloud upload は macOS で確認済み。
-- Cloud download、複数端末同期、Windows 実機確認は未完了。
+- 直接バイナリ起動での Cloud download は未確認。SteamPipe upload 後に Steam クライアント起動で確認する。
+- 複数端末同期、Windows 実機確認は未完了。

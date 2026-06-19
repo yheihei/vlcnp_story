@@ -104,6 +104,8 @@
   - Codex から Steam UI を操作するには macOS のアクセシビリティ許可ダイアログが出る。システム設定変更はユーザー操作で行う。
   - 2026-06-18 15:40 JST に Steam へログイン後、同じ macOS demo build を起動して `SteamAPI.Init` 成功を確認。Player.log に `Steam initialized. AppID=4861250` と `[SteamCloudSaveSync] Cloud status accountEnabled=True appEnabled=True quotaTotalBytes=10485760 quotaAvailableBytes=10485760 ... pattern=*.json` が出た。
   - 同起動の終了後、`cloud_log.txt` に AppID `4861250` の Auto-Cloud upload 成功を確認。`YheiWebDesign/VlcnpStory/save.json` と `YheiWebDesign/VlcnpStory/autoSave.json` が `Upload OK`、`Upload complete, result OK`。
+  - 2026-06-19 に同一 Mac で local JSON を退避して Cloud download を試したが、直接バイナリ起動では download は発火しなかった。Player.log は `SteamAPI.Init` / Cloud status 成功、終了時の `cloud_log.txt` は `No launch record found` のまま Auto-Cloud upload 側を評価し、既存ファイルは `Skipping un-modified file` だった。退避した `autoSave.json` / `save.json` はバックアップから復元済みで SHA-1 は remote cache と一致。
+  - Cloud download / 再起動ロード確認は、SteamPipe upload 後に Steam クライアントの package / build から Demo App `4861250` を起動して行う。
 - Steamworks Auto-Cloud の公開済み設定:
   - Demo App ID: `4861250`
   - 2026-06-18 に Steam Cloud ページで保存し、Steamworks publishing で公開済み。
@@ -124,7 +126,7 @@
    - Steamworks Demo App `4861250` で Steam Cloud を有効化済み。
    - Auto-Cloud の root / path / pattern は公開済み。
    - Steam クライアントへログインした状態で、macOS build の `SteamAPI.Init` / Cloud status / Auto-Cloud upload は確認済み。
-   - macOS build で再起動 load と Cloud download を確認する。
+   - SteamPipe upload 後に Steam クライアントから起動し、再起動 load と Cloud download を確認する。
    - 可能なら別端末または別 OS で同期確認する。
 2. Demo App ID `4861250` で Windows / macOS Steam Demo Release Build を作り直す。
    - `steam_appid.txt` はローカル確認用だけに使い、SteamPipe upload には含めない。
