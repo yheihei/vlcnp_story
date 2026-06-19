@@ -35,7 +35,7 @@ Assets/DocsForAI/Plan/SteamCloudCompareSyncEvidence.sh \
   /tmp/vlcnp_steam_cloud_sync_evidence/device-b_YYYYMMDD_HHMMSS.txt
 ```
 
-The compare script exits with status `0` only when upload evidence, download evidence, and matching save hashes are all present.
+The compare script exits with status `0` only when upload evidence, download evidence, and at least one common save file hash match are all present. If both reports include the same save file and the hashes differ, the result fails.
 
 Useful environment overrides:
 
@@ -49,7 +49,7 @@ Assets/DocsForAI/Plan/SteamCloudCollectSyncEvidence.sh device-a
 ## Pass Criteria
 - Device A report contains AppID `4861250` upload success in the Steam Cloud log excerpt.
 - Device B report contains AppID `4861250` download success in the Steam Cloud log excerpt.
-- `autoSave.json` or `save.json` SHA-256 is identical between the two reports.
+- At least one of `autoSave.json` or `save.json` has the same SHA-256 in both reports, and no common save file has a mismatched hash.
 - `Assets/DocsForAI/Plan/SteamCloudCompareSyncEvidence.sh <device-a-report> <device-b-report>` prints `result: pass`.
 - #627 can then check off `複数端末で同期できることを動作確認`.
 

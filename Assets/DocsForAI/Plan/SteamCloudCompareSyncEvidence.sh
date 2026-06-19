@@ -75,13 +75,13 @@ else
 fi
 
 matching_files=0
+mismatched_files=0
 for filename in autoSave.json save.json; do
   hash_a="$(extract_hash "$device_a_report" "$filename")"
   hash_b="$(extract_hash "$device_b_report" "$filename")"
 
   if [[ -z "$hash_a" || -z "$hash_b" ]]; then
     echo "$filename: missing hash"
-    status=1
     continue
   fi
 
@@ -90,11 +90,15 @@ for filename in autoSave.json save.json; do
     matching_files=$((matching_files + 1))
   else
     echo "$filename: hash mismatch device_a=$hash_a device_b=$hash_b"
-    status=1
+    mismatched_files=$((mismatched_files + 1))
   fi
 done
 
 if [[ "$matching_files" -eq 0 ]]; then
+  status=1
+fi
+
+if [[ "$mismatched_files" -gt 0 ]]; then
   status=1
 fi
 
