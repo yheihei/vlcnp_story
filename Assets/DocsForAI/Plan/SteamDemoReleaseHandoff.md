@@ -29,17 +29,23 @@
 - Demo App の depot / package / OS 別 download 設定は Steamworks 上で公開済み。
 - Demo App の Steam Cloud / Auto-Cloud 設定は Steamworks 上で保存・公開済み。
 - 注意: `1223071` は store item ID。Unity の `steam_appid.txt` や SteamPipe の `AppID` に使うのは Demo App ID `4861250`。
+- SteamPipe upload と build live 化は完了済み。
+  - BuildID: `23819735`
+  - default branch: `23819735` を live 設定済み
+  - Windows manifest: `5795665032736831212`
+  - macOS manifest: `1137948321395811809`
 - まだ未完了または未確認:
-  - SteamPipe で実際の Windows / macOS build を upload したかは未完了扱い。SteamCMD は `/tmp/steamcmd_osx_20260619/steamcmd.sh` で起動確認済みだが、upload には builder account の対話ログイン / Steam Guard が必要。
-  - upload 後の build live 化、Steam クライアントからの install / 起動確認は未完了扱い。
-  - Steam クライアント経由の Cloud upload は macOS で確認済み。Cloud download は SteamPipe upload 後に Steam クライアント起動で確認する。
+  - Steam クライアントからの install / 起動確認は、通常 Steam クライアントの再ログイン待ち。
+  - Steam クライアント経由の Cloud upload は macOS で確認済み。Cloud download / 再起動ロード / 複数端末同期は未確認。
 
 ## リポジトリの状態
 - 作業ブランチ: `main`
 - 直近の反映済み commit:
-  - `8eb26663` `SteamデモをOS別Depot構成にする #603`
-  - `7dc5c241` `SteamデモのDepot IDを反映 #603`
-  - `584b9103` `Steamデモ向けビルド準備を追加 #603`
+  - `260f64da` `SteamPipeアップロード手順を補助する #627`
+  - `800528fb` `SteamPipeステージング作成を再現可能にする #627`
+  - `b20ea2e3` `SteamPipe向けデモビルド準備を追記 #627`
+  - `167b1420` `Steam Cloudダウンロード検証メモを追記 #627`
+  - `9159431a` `Steam Cloudアップロード検証を追記 #627`
 - 重要ファイル:
   - `Assets/DocsForAI/Plan/DesktopBuildMigrationPlan.md`
   - `Assets/DocsForAI/Plan/SteamDemoReleasePlan.md`
@@ -78,6 +84,15 @@
   - SteamCMD は公式配布 archive から `/tmp/steamcmd_osx_20260619` に展開し、`+quit` で自己更新・起動確認済み。
   - repo 内の `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh` で upload command を実行できる。パスワードは受け取らず保存しない。
     - dry-run 検証済み: `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh /tmp/vlcnpStory_SteamPipeDemo_20260619 yhei_hei --dry-run`
+- 2026-06-19: SteamPipe upload 完了。
+  - 初回 upload は SteamCMD の作業ディレクトリ差分により `../scripts/app_build_demo_template.vdf` が見つからず失敗した。
+  - `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh` を、`builder/generated` に絶対パス入り runtime VDF を生成して `+run_app_build` に渡す方式へ修正済み。
+  - upload command は `/tmp/vlcnpStory_SteamPipeDemo_20260619/output/app_build_4861250.log` で `Successfully finished AppID 4861250 build (BuildID 23819735)` を確認済み。
+  - Windows depot `4861251`: manifest `5795665032736831212`
+  - macOS depot `4861252`: manifest `1137948321395811809`
+- 2026-06-19: Steamworks で Demo App `4861250` の default branch を BuildID `23819735` に live 設定済み。
+  - Steamworks の build ページで recent build の current column に `default` が付いていることを確認済み。
+  - Steamworks history に `ライブに設定 BuildID 23819735 for branch "default"` が残っている。
 - 2026-06-18: macOS Steam Demo Release Build を Demo App ID `4861250` で再作成済み。
   - 出力: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app`
   - `steam_appid.txt`: `/tmp/vlcnpStory_SteamDemoMacCloud/steam_appid.txt` と `.app/Contents/MacOS/steam_appid.txt` に `4861250`
@@ -132,7 +147,9 @@
   - 2026-06-18 15:40 JST に Steam へログイン後、同じ macOS demo build を起動して `SteamAPI.Init` 成功を確認。Player.log に `Steam initialized. AppID=4861250` と `[SteamCloudSaveSync] Cloud status accountEnabled=True appEnabled=True quotaTotalBytes=10485760 quotaAvailableBytes=10485760 ... pattern=*.json` が出た。
   - 同起動の終了後、`cloud_log.txt` に AppID `4861250` の Auto-Cloud upload 成功を確認。`YheiWebDesign/VlcnpStory/save.json` と `YheiWebDesign/VlcnpStory/autoSave.json` が `Upload OK`、`Upload complete, result OK`。
   - 2026-06-19 に同一 Mac で local JSON を退避して Cloud download を試したが、直接バイナリ起動では download は発火しなかった。Player.log は `SteamAPI.Init` / Cloud status 成功、終了時の `cloud_log.txt` は `No launch record found` のまま Auto-Cloud upload 側を評価し、既存ファイルは `Skipping un-modified file` だった。退避した `autoSave.json` / `save.json` はバックアップから復元済みで SHA-1 は remote cache と一致。
-  - Cloud download / 再起動ロード確認は、SteamPipe upload 後に Steam クライアントの package / build から Demo App `4861250` を起動して行う。
+  - 2026-06-19 に default branch live 後、`steam://rungameid/4861250` は Steam client の `LaunchApp -> SynchronizingCloud` まで進んだが、`cloud_log.txt` は `[login=false][offlineMode=false]` で sync failed。Auto-Cloud は `autoSave.json` / `save.json` を watch している。
+  - 同日、通常 Steam クライアント再起動後も `connection_log.txt` は `Access Denied`、`loginusers.vdf` は `RememberPassword=0` / `AllowAutoLogin=0`、Steam process は `steamid=0`。再実行した `steam://rungameid/4861250` は `not allowed yet` で Cloud ログ更新なし。
+  - Cloud download / 再起動ロード確認は、通常 Steam クライアントへ再ログイン後に Steam クライアントの package / build から Demo App `4861250` を起動して行う。
 - Steamworks Auto-Cloud の公開済み設定:
   - Demo App ID: `4861250`
   - 2026-06-18 に Steam Cloud ページで保存し、Steamworks publishing で公開済み。
@@ -153,20 +170,23 @@
    - Steamworks Demo App `4861250` で Steam Cloud を有効化済み。
    - Auto-Cloud の root / path / pattern は公開済み。
    - Steam クライアントへログインした状態で、macOS build の `SteamAPI.Init` / Cloud status / Auto-Cloud upload は確認済み。
-   - SteamPipe upload 後に Steam クライアントから起動し、再起動 load と Cloud download を確認する。
+   - SteamPipe upload と default branch live は完了済み。
+   - 通常 Steam クライアントへ再ログイン後に Steam クライアントから起動し、再起動 load と Cloud download を確認する。
    - 可能なら別端末または別 OS で同期確認する。
 2. Demo App ID `4861250` で Windows / macOS Steam Demo Release Build を作り直す。
    - 2026-06-19 に作成済み。`steam_appid.txt` はローカル確認用だけに使い、SteamPipe upload には含めない。
 3. SteamPipe で upload する。
+   - 2026-06-19 に BuildID `23819735` として upload 済み。
    - SteamCMD は `/tmp/steamcmd_osx_20260619/steamcmd.sh` で起動確認済み。
    - `/tmp/vlcnpStory_SteamPipeDemo_20260619` は `tools/ContentBuilder` 互換の staging 済み。
    - staging を作り直す場合: `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh [mac_build_dir] [windows_build_dir] [stage_dir]`
    - upload helper: `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh /tmp/vlcnpStory_SteamPipeDemo_20260619 <builder_account>`
-   - 実行例: `cd /tmp/vlcnpStory_SteamPipeDemo_20260619/builder && /tmp/steamcmd_osx_20260619/steamcmd.sh +login <builder_account> +run_app_build ../scripts/app_build_demo_template.vdf +quit`
+   - helper は `builder/generated` に絶対パス入り runtime VDF を生成する。SteamCMD を手動で呼ぶ場合も相対 `../scripts/...` には依存しない。
    - builder account のパスワード / Steam Guard は SteamCMD の対話プロンプトで入力する。
 4. Steamworks で build を live にする。
-   - 少なくとも Beta Testing package で install / launch を確認する。
-   - Public Demo package を live にする前に、macOS 側だけでも Steam クライアント経由の起動確認をする。
+   - default branch は BuildID `23819735` で live 済み。
+   - 次は通常 Steam クライアントへ再ログインし、少なくとも Beta Testing package で install / launch / Cloud download を確認する。
+   - Public Demo 公開前に、macOS 側だけでも Steam クライアント経由の起動確認を完了する。
 5. 公開後も #603 / #637 は open のままにする。
    - Windows 実機確認は後追いで完了させる。
 
@@ -176,5 +196,5 @@
 ```text
 Assets/DocsForAI/Plan/SteamDemoReleaseHandoff.md と #627 を読んで、体験版先行公開に必要な Steam Cloud 対応を進めてください。
 Windows 実機確認は後回しでよいです。#603 / #637 はまだ閉じないでください。
-まずは Steam Auto-Cloud で Application.persistentDataPath 配下の autoSave.json を同期する方針で、Steamworks 設定と必要なコード・ドキュメント更新を整理してください。
+SteamPipe upload と default branch live は完了済みです。通常 Steam クライアントへ再ログインしたうえで Demo App 4861250 を Steam クライアントから起動し、Cloud download / 再起動ロード / 複数端末同期の確認を進めてください。
 ```

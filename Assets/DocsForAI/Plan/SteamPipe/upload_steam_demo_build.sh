@@ -25,6 +25,10 @@ if [[ -z "$stage_dir" || -z "$builder_account" || "$mode" != "" && "$mode" != "-
     exit 1
 fi
 
+if [[ -d "$stage_dir" ]]; then
+    stage_dir="$(cd "$stage_dir" && pwd -P)"
+fi
+
 resolve_steamcmd() {
     if [[ -n "${STEAMCMD:-}" ]]; then
         echo "$STEAMCMD"
@@ -57,6 +61,77 @@ require_path() {
     fi
 }
 
+vdf_escape() {
+    local value="$1"
+    value="${value//\\/\\\\}"
+    value="${value//\"/\\\"}"
+    printf '%s' "$value"
+}
+
+write_runtime_vdfs() {
+    local runtime_dir="$stage_dir/builder/generated"
+    mkdir -p "$runtime_dir"
+
+    local app_build_vdf="$runtime_dir/app_build_demo_runtime.vdf"
+    local windows_depot_vdf="$runtime_dir/depot_build_demo_windows_runtime.vdf"
+    local macos_depot_vdf="$runtime_dir/depot_build_demo_macos_runtime.vdf"
+
+    cat > "$windows_depot_vdf" <<EOF
+"DepotBuildConfig"
+{
+    "DepotID" "4861251"
+    "ContentRoot" "$(vdf_escape "$stage_dir/content/windows")"
+
+    "FileMapping"
+    {
+        "LocalPath" "*"
+        "DepotPath" "."
+        "recursive" "1"
+    }
+
+    "FileExclusion" "steam_appid.txt"
+}
+EOF
+
+    cat > "$macos_depot_vdf" <<EOF
+"DepotBuildConfig"
+{
+    "DepotID" "4861252"
+    "ContentRoot" "$(vdf_escape "$stage_dir/content/macos")"
+
+    "FileMapping"
+    {
+        "LocalPath" "*"
+        "DepotPath" "."
+        "recursive" "1"
+    }
+
+    "FileExclusion" "steam_appid.txt"
+}
+EOF
+
+    cat > "$app_build_vdf" <<EOF
+"AppBuild"
+{
+    "AppID" "4861250"
+    "Desc" "VLCNP Story demo build"
+    "Preview" "0"
+    "Local" ""
+    "SetLive" ""
+    "ContentRoot" "$(vdf_escape "$stage_dir/content")"
+    "BuildOutput" "$(vdf_escape "$stage_dir/output")"
+
+    "Depots"
+    {
+        "4861251" "$(vdf_escape "$windows_depot_vdf")"
+        "4861252" "$(vdf_escape "$macos_depot_vdf")"
+    }
+}
+EOF
+
+    printf '%s' "$app_build_vdf"
+}
+
 steamcmd_path="$(resolve_steamcmd || true)"
 if [[ -z "$steamcmd_path" || ! -x "$steamcmd_path" ]]; then
     echo "steamcmd not found. Set STEAMCMD=/path/to/steamcmd or install SteamCMD." >&2
@@ -81,13 +156,14 @@ echo "SteamCMD: $steamcmd_path"
 echo "Stage: $stage_dir"
 echo "Builder account: $builder_account"
 
+app_build_vdf="$(write_runtime_vdfs)"
+echo "Runtime app build VDF: $app_build_vdf"
+
 if [[ "$mode" == "--dry-run" ]]; then
     echo
     echo "Dry run only. Upload command:"
-    echo "  cd '$stage_dir/builder'"
-    echo "  '$steamcmd_path' +login '$builder_account' +run_app_build ../scripts/app_build_demo_template.vdf +quit"
+    echo "  '$steamcmd_path' +login '$builder_account' +run_app_build '$app_build_vdf' +quit"
     exit 0
 fi
 
-cd "$stage_dir/builder"
-exec "$steamcmd_path" +login "$builder_account" +run_app_build ../scripts/app_build_demo_template.vdf +quit
+exec "$steamcmd_path" +login "$builder_account" +run_app_build "$app_build_vdf" +quit

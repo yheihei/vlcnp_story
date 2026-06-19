@@ -158,6 +158,17 @@
   - アプリ終了前にバックアップから JSON を復元し、SHA-1 が remote cache の `c442ffb91a5cd26bedeaf4e574a39118999a7f45` / `8e579af009257b19c2ee28107ddcac495f642834` と一致することを確認。
   - 終了後の `cloud_log.txt` は `No launch record found`、`Skipping un-modified file ... autoSave.json/save.json`、`Currently already synced to global change number '1'`。直接バイナリ起動では Steam launch record が無く、download 確認には不十分。
   - Cloud download / 再起動ロード確認は、SteamPipe upload 後に Steam クライアントの package / build から Demo App `4861250` を起動して行う。
+- 2026-06-19: SteamPipe upload と default branch live 化を完了。
+  - App BuildID: `23819735`
+  - Windows depot `4861251`: manifest `5795665032736831212`
+  - macOS depot `4861252`: manifest `1137948321395811809`
+  - Steamworks の build ページで Demo App `4861250` の default branch が BuildID `23819735` になっていることを確認済み。
+- 2026-06-19: default branch live 後に Steam クライアント起動を試した。
+  - `steam://rungameid/4861250` で `LaunchApp -> SynchronizingCloud` までは進んだ。
+  - `cloud_log.txt` は `[AppID 4861250] Starting sync (AC Launch,down,)` 後に `[login=false][offlineMode=false]` で失敗。
+  - Auto-Cloud は `/Users/yhei/Library/Application Support/YheiWebDesign/VlcnpStory/autoSave.json` と `save.json` を watch している。
+  - 通常 Steam クライアント再起動後の `connection_log.txt` は `Access Denied`、`loginusers.vdf` は `RememberPassword=0` / `AllowAutoLogin=0`、Steam process は `steamid=0`。
+  - 再実行した `steam://rungameid/4861250` は `not allowed yet` で Cloud ログ更新なし。Cloud download / 再起動ロード確認は通常 Steam クライアントへ再ログイン後に行う。
 - 2026-06-19: 現在の Steam Cloud 実装入りで Steam Demo Release Build を再作成。
   - macOS: `/tmp/vlcnpStory_SteamDemoMacSteamPipe/VlcnpStory.app`
     - サイズ: `321M`
@@ -196,7 +207,7 @@
   - 2026-06-18 の Chrome 確認で正しい Demo App ID は `4861250` と判明したため、ローカル Steam テスト時は `steam_appid.txt` を `4861250` に差し替える。
   - Windows 実機起動確認は未実施。今回の範囲では Windows はビルド成果物の作成確認まで。
 
-## SteamPipe アップロード準備
+## SteamPipe アップロード
 - SteamCMD は公式配布 archive から `/tmp/steamcmd_osx_20260619` に展開し、`+quit` で自己更新・起動確認済み。
 - 2026-06-19 に ContentBuilder 互換 staging を作成済み。
   - staging: `/tmp/vlcnpStory_SteamPipeDemo_20260619`
@@ -213,18 +224,15 @@
   - `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh`
   - パスワードは受け取らず保存しない。SteamCMD の対話プロンプトで builder account のパスワード / Steam Guard を入力する。
   - dry-run 検証済み: `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh /tmp/vlcnpStory_SteamPipeDemo_20260619 yhei_hei --dry-run`
-- Steamworks SDK の `tools/ContentBuilder/scripts` に以下のテンプレートをコピーする。
-  - `Assets/DocsForAI/Plan/SteamPipe/app_build_demo_template.vdf`
-  - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_windows_template.vdf`
-  - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_macos_template.vdf`
-- `ContentRoot` は Steamworks SDK の `tools/ContentBuilder/content` を指す。
-- ビルド成果物を以下へ配置する。
-  - Windows: `content/windows/VlcnpStory.exe` と関連ファイル一式
-  - macOS: `content/macos/VlcnpStory.app`
-- steamcmd 実行例:
-  - `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh /tmp/vlcnpStory_SteamPipeDemo_20260619 <builder_account>`
-  - または `cd /tmp/vlcnpStory_SteamPipeDemo_20260619/builder`
-  - `/tmp/steamcmd_osx_20260619/steamcmd.sh +login <builder_account> +run_app_build ../scripts/app_build_demo_template.vdf +quit`
+  - 初回 upload は SteamCMD の作業ディレクトリ差分により `../scripts/app_build_demo_template.vdf` が見つからず失敗した。
+  - helper は現在、`builder/generated` に絶対パス入り runtime VDF を生成し、その app VDF を `+run_app_build` に渡す。
+  - 実行例: `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh /tmp/vlcnpStory_SteamPipeDemo_20260619 <builder_account>`
+- 2026-06-19 に SteamPipe upload 完了。
+  - `/tmp/vlcnpStory_SteamPipeDemo_20260619/output/app_build_4861250.log`: `Successfully finished AppID 4861250 build (BuildID 23819735)`
+  - Windows depot `4861251`: manifest `5795665032736831212`
+  - macOS depot `4861252`: manifest `1137948321395811809`
+- 2026-06-19 に Steamworks で default branch を BuildID `23819735` に live 設定済み。
+  - Steamworks の build ページで current column の `default` 表示を確認済み。
 
 ## 完了判定
 - Mac release build が作成できている。
@@ -237,7 +245,8 @@
 - `Application.persistentDataPath` 配下の `*.json` を Auto-Cloud 対象にする Steamworks 設定が公開済み。
 - 保存・削除時に Steam write batch を通知するゲーム側実装が入っている。
 - Steam クライアント経由の Cloud status と Auto-Cloud upload は macOS で確認済み。
-- 直接バイナリ起動での Cloud download は未確認。SteamPipe upload 後に Steam クライアント起動で確認する。
+- 直接バイナリ起動での Cloud download は未確認。Steam クライアント起動で確認する。
 - 現在の Cloud 実装入り Windows / macOS release build と SteamPipe staging は作成済み。
-- SteamCMD 起動確認と upload helper の dry-run は完了。SteamPipe upload は builder account の対話ログイン待ち。
+- SteamPipe upload は BuildID `23819735` で完了し、Demo App `4861250` の default branch へ live 設定済み。
+- Steam クライアント launch path は `LaunchApp -> SynchronizingCloud` まで到達したが、通常 Steam クライアントが `login=false` / `Access Denied` のため Cloud download と再起動ロードは未確認。
 - 複数端末同期、Windows 実機確認は未完了。
