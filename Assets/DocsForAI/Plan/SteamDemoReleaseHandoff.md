@@ -34,9 +34,12 @@
   - default branch: `23819735` を live 設定済み
   - Windows manifest: `5795665032736831212`
   - macOS manifest: `1137948321395811809`
+- Demo App の Installation > General Installation launch options は Steamworks 上で保存・公開済み。
+  - Launch option 0: `VlcnpStory.exe` / Windows
+  - Launch option 1: `VlcnpStory.app` / macOS
 - まだ未完了または未確認:
-  - Steam クライアントからの install / 起動確認は、通常 Steam クライアントの再ログイン待ち。
-  - Steam クライアント経由の Cloud upload は macOS で確認済み。Cloud download / 再起動ロード / 複数端末同期は未確認。
+  - Steam クライアント経由の install / 起動 / Cloud upload / Cloud download / 再起動ロードは macOS で確認済み。
+  - 複数端末同期は未確認。
 
 ## リポジトリの状態
 - 作業ブランチ: `main`
@@ -93,6 +96,11 @@
 - 2026-06-19: Steamworks で Demo App `4861250` の default branch を BuildID `23819735` に live 設定済み。
   - Steamworks の build ページで recent build の current column に `default` が付いていることを確認済み。
   - Steamworks history に `ライブに設定 BuildID 23819735 for branch "default"` が残っている。
+- 2026-06-19: Steamworks で Demo App `4861250` の launch options を保存・公開済み。
+  - `VlcnpStory.exe` / Windows
+  - `VlcnpStory.app` / macOS
+  - Steamworks publishing で `Publish to steam OK` / `Publishing successful!` を確認済み。
+  - SteamCMD `app_info_print 4861250` で server appinfo の change number `36699390` に `launch` / `executable` / `oslist` が反映されていることを確認済み。
 - 2026-06-18: macOS Steam Demo Release Build を Demo App ID `4861250` で再作成済み。
   - 出力: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app`
   - `steam_appid.txt`: `/tmp/vlcnpStory_SteamDemoMacCloud/steam_appid.txt` と `.app/Contents/MacOS/steam_appid.txt` に `4861250`
@@ -149,7 +157,9 @@
   - 2026-06-19 に同一 Mac で local JSON を退避して Cloud download を試したが、直接バイナリ起動では download は発火しなかった。Player.log は `SteamAPI.Init` / Cloud status 成功、終了時の `cloud_log.txt` は `No launch record found` のまま Auto-Cloud upload 側を評価し、既存ファイルは `Skipping un-modified file` だった。退避した `autoSave.json` / `save.json` はバックアップから復元済みで SHA-1 は remote cache と一致。
   - 2026-06-19 に default branch live 後、`steam://rungameid/4861250` は Steam client の `LaunchApp -> SynchronizingCloud` まで進んだが、`cloud_log.txt` は `[login=false][offlineMode=false]` で sync failed。Auto-Cloud は `autoSave.json` / `save.json` を watch している。
   - 同日、通常 Steam クライアント再起動後も `connection_log.txt` は `Access Denied`、`loginusers.vdf` は `RememberPassword=0` / `AllowAutoLogin=0`、Steam process は `steamid=0`。再実行した `steam://rungameid/4861250` は `not allowed yet` で Cloud ログ更新なし。
-  - Cloud download / 再起動ロード確認は、通常 Steam クライアントへ再ログイン後に Steam クライアントの package / build から Demo App `4861250` を起動して行う。
+  - 2026-06-19 20:33 JST に通常 Steam クライアントへ再ログイン後、Steamworks launch options を保存・公開し、Steam クライアントを再起動。`steam://rungameid/4861250` で `LaunchApp -> CreatingProcess -> Completed` まで進み、`VlcnpStory.app` が tracked process として起動した。
+  - Player.log に `Steam initialized. AppID=4861250` と `[SteamCloudSaveSync] Cloud status accountEnabled=True appEnabled=True quotaTotalBytes=10485760 quotaAvailableBytes=10481615 ... pattern=*.json` を確認。
+  - Cloud download 確認として、ローカルの `autoSave.json` / `save.json` を `/tmp/vlcnp_cloud_download_backup_20260619_203826` へ退避して削除し、Steam クライアントから再起動した。`cloud_log.txt` に missing 検知、`Need to download file ...`, `HTTP download ... - Success`, `Download complete, result OK`, `Successfully synced to ChangeNumber 1` を確認。復元後の SHA-256 はバックアップと一致。
 - Steamworks Auto-Cloud の公開済み設定:
   - Demo App ID: `4861250`
   - 2026-06-18 に Steam Cloud ページで保存し、Steamworks publishing で公開済み。
@@ -171,8 +181,8 @@
    - Auto-Cloud の root / path / pattern は公開済み。
    - Steam クライアントへログインした状態で、macOS build の `SteamAPI.Init` / Cloud status / Auto-Cloud upload は確認済み。
    - SteamPipe upload と default branch live は完了済み。
-   - 通常 Steam クライアントへ再ログイン後に Steam クライアントから起動し、再起動 load と Cloud download を確認する。
-   - 可能なら別端末または別 OS で同期確認する。
+   - Steamworks launch options は公開済み。Steam クライアントからの install / 起動 / 再起動 load / Cloud download は macOS で確認済み。
+   - 残りは別端末または別 OS での同期確認。
 2. Demo App ID `4861250` で Windows / macOS Steam Demo Release Build を作り直す。
    - 2026-06-19 に作成済み。`steam_appid.txt` はローカル確認用だけに使い、SteamPipe upload には含めない。
 3. SteamPipe で upload する。
@@ -197,4 +207,5 @@
 Assets/DocsForAI/Plan/SteamDemoReleaseHandoff.md と #627 を読んで、体験版先行公開に必要な Steam Cloud 対応を進めてください。
 Windows 実機確認は後回しでよいです。#603 / #637 はまだ閉じないでください。
 SteamPipe upload と default branch live は完了済みです。通常 Steam クライアントへ再ログインしたうえで Demo App 4861250 を Steam クライアントから起動し、Cloud download / 再起動ロード / 複数端末同期の確認を進めてください。
+Steam クライアントからの macOS install / 起動 / Cloud download / 再起動ロードは確認済みです。次は複数端末同期と Windows 実機確認を進めてください。
 ```

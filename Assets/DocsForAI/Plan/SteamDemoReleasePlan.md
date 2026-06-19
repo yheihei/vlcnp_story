@@ -169,6 +169,19 @@
   - Auto-Cloud は `/Users/yhei/Library/Application Support/YheiWebDesign/VlcnpStory/autoSave.json` と `save.json` を watch している。
   - 通常 Steam クライアント再起動後の `connection_log.txt` は `Access Denied`、`loginusers.vdf` は `RememberPassword=0` / `AllowAutoLogin=0`、Steam process は `steamid=0`。
   - 再実行した `steam://rungameid/4861250` は `not allowed yet` で Cloud ログ更新なし。Cloud download / 再起動ロード確認は通常 Steam クライアントへ再ログイン後に行う。
+- 2026-06-19: Steamworks の Installation > General Installation launch options を保存・公開。
+  - Launch option 0: `VlcnpStory.exe` / Windows
+  - Launch option 1: `VlcnpStory.app` / macOS
+  - Steamworks publishing で `Publish to steam OK` / `Publishing successful!` を確認。
+  - SteamCMD `app_info_print 4861250` で server appinfo change number `36699390` に `launch` / `executable` / `oslist` が反映されていることを確認。
+- 2026-06-19: 通常 Steam クライアントへ再ログインし、Steam クライアント経由の macOS install / 起動 / Cloud download を確認。
+  - Steam クライアント再起動後、`steam://rungameid/4861250` で `LaunchApp -> CreatingProcess -> Completed` まで進み、`VlcnpStory.app` が tracked process として起動。
+  - Player.log: `Steam initialized. AppID=4861250`
+  - Player.log: `[SteamCloudSaveSync] Cloud status accountEnabled=True appEnabled=True quotaTotalBytes=10485760 quotaAvailableBytes=10481615 saveDirectory=/Users/yhei/Library/Application Support/YheiWebDesign/VlcnpStory pattern=*.json`
+  - Cloud download 確認では、ローカルの `autoSave.json` / `save.json` を `/tmp/vlcnp_cloud_download_backup_20260619_203826` へ退避して削除し、Steam クライアントから再起動。
+  - `cloud_log.txt` に missing 検知、`Need to download file ...`, `HTTP download ... - Success`, `Download complete, result OK`, `Successfully synced to ChangeNumber 1` を確認。
+  - 復元後の SHA-256 はバックアップと一致。`autoSave.json`: `14f9965a1edc52413eb6ce1503d0e6e21bf7df170c7c82c11bd0e6ef98b87506`、`save.json`: `119173b4783f53d8dc6f2e09cf34920832b660aaf9eb0926b03e75d3c9d77a52`。
+  - 終了時 sync では 2 JSON が `Skipping un-modified file` となり、追加 upload は発生しないことを確認。
 - 2026-06-19: 現在の Steam Cloud 実装入りで Steam Demo Release Build を再作成。
   - macOS: `/tmp/vlcnpStory_SteamDemoMacSteamPipe/VlcnpStory.app`
     - サイズ: `321M`
@@ -189,7 +202,7 @@
   - Bundle version: `0.2.1`
   - `steam_appid.txt`: `/tmp/vlcnpStory_SteamDemoMacCloud/steam_appid.txt` と `.app/Contents/MacOS/steam_appid.txt` に `4861250`
   - Steamworks.NET が Standalone scripting define に `STEAMWORKS_NET` を追加した。
-  - Steamworks Cloud 設定は保存・公開済み。後続の Steam ログイン後検証で Cloud status / Auto-Cloud upload は確認済み。Cloud download は SteamPipe upload 後に確認する。
+  - Steamworks Cloud 設定は保存・公開済み。後続の Steam ログイン後検証で Cloud status / Auto-Cloud upload を確認し、SteamPipe upload 後の Steam クライアント起動で Cloud download も確認済み。
 - 2026-06-16: macOS Steam Demo Release Build 成功。
   - 出力: `/tmp/vlcnpStory_SteamDemoMac/VlcnpStory.app`
   - サイズ: `321M`
@@ -233,6 +246,10 @@
   - macOS depot `4861252`: manifest `1137948321395811809`
 - 2026-06-19 に Steamworks で default branch を BuildID `23819735` に live 設定済み。
   - Steamworks の build ページで current column の `default` 表示を確認済み。
+- 2026-06-19 に Steamworks で launch options を保存・公開済み。
+  - `VlcnpStory.exe` / Windows
+  - `VlcnpStory.app` / macOS
+  - SteamCMD `app_info_print 4861250` で server appinfo change number `36699390` への反映を確認済み。
 
 ## 完了判定
 - Mac release build が作成できている。
@@ -245,8 +262,9 @@
 - `Application.persistentDataPath` 配下の `*.json` を Auto-Cloud 対象にする Steamworks 設定が公開済み。
 - 保存・削除時に Steam write batch を通知するゲーム側実装が入っている。
 - Steam クライアント経由の Cloud status と Auto-Cloud upload は macOS で確認済み。
-- 直接バイナリ起動での Cloud download は未確認。Steam クライアント起動で確認する。
 - 現在の Cloud 実装入り Windows / macOS release build と SteamPipe staging は作成済み。
 - SteamPipe upload は BuildID `23819735` で完了し、Demo App `4861250` の default branch へ live 設定済み。
-- Steam クライアント launch path は `LaunchApp -> SynchronizingCloud` まで到達したが、通常 Steam クライアントが `login=false` / `Access Denied` のため Cloud download と再起動ロードは未確認。
+- Steamworks launch options は `VlcnpStory.exe` / Windows、`VlcnpStory.app` / macOS で保存・公開済み。
+- Steam クライアント経由の macOS install / 起動 / Cloud download / 再起動ロードは確認済み。
+- Cloud download 確認ではローカル JSON 削除後に Steam Cloud から `autoSave.json` / `save.json` が復元され、SHA-256 がバックアップと一致した。
 - 複数端末同期、Windows 実機確認は未完了。
