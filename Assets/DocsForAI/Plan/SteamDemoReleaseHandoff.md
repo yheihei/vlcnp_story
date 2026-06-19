@@ -44,13 +44,15 @@
 ## リポジトリの状態
 - 作業ブランチ: `main`
 - 直近の反映済み commit:
+  - `17587d8e` `Steam Cloud同期確認条件を整理 #627`
   - `4627a86d` `Steamクライアント検証結果を追記 #627`
   - `f75fba9f` `SteamPipeアップロード完了状況を記録 #627`
   - `260f64da` `SteamPipeアップロード手順を補助する #627`
   - `800528fb` `SteamPipeステージング作成を再現可能にする #627`
-  - `b20ea2e3` `SteamPipe向けデモビルド準備を追記 #627`
 - 重要ファイル:
   - `Assets/DocsForAI/Plan/DesktopBuildMigrationPlan.md`
+  - `Assets/DocsForAI/Plan/SteamCloudCollectSyncEvidence.sh`
+  - `Assets/DocsForAI/Plan/SteamCloudMultiDeviceVerification.md`
   - `Assets/DocsForAI/Plan/SteamDemoReleasePlan.md`
   - `Assets/DocsForAI/Plan/SteamPipe/app_build_demo_template.vdf`
   - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_windows_template.vdf`
@@ -180,6 +182,11 @@
   - 端末 B または別 OS の同一 Steam アカウントで Demo App `4861250` を Steam クライアントから起動する。
   - 端末 B の `cloud_log.txt` で launch 時の download 成功を確認し、Player.log または実ファイルの hash で端末 A の保存内容が反映されたことを確認する。
   - この確認が取れたら #627 の `複数端末で同期できることを動作確認` を完了にできる。Windows 実機確認は #637 側に残す。
+- 複数端末同期の証跡採取補助:
+  - 手順: `Assets/DocsForAI/Plan/SteamCloudMultiDeviceVerification.md`
+  - macOS 用採取スクリプト: `Assets/DocsForAI/Plan/SteamCloudCollectSyncEvidence.sh`
+  - 2026-06-19 にこの Mac で `Assets/DocsForAI/Plan/SteamCloudCollectSyncEvidence.sh current-mac` を実行し、`/tmp/vlcnp_steam_cloud_sync_evidence/current-mac_20260619_205031.txt` の生成を確認済み。
+  - report には `autoSave.json` / `save.json` の SHA-256、AppID `4861250` の `cloud_log.txt` 抜粋、Player.log の `SteamBootstrap` / `SteamCloudSaveSync` 行が含まれる。
 
 ## 体験版先行公開までの推奨順
 1. #627 を実装・確認する。
