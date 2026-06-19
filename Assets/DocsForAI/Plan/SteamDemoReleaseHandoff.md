@@ -1,7 +1,7 @@
 # Steam Demo Release Handoff
 
 ## 目的
-- 更新日: 2026-06-18
+- 更新日: 2026-06-19
 - 対象: #603 / #627 / #637
 - 他の AI セッションが、Steam 体験版を先に出すための現状と次アクションを把握できるようにする。
 - 方針: Windows 実機確認は後回しにする。#603 はまだ閉じないが、体験版先行公開の次ゲートは #627 の Steam クラウドセーブ対応と見る。
@@ -30,9 +30,9 @@
 - Demo App の Steam Cloud / Auto-Cloud 設定は Steamworks 上で保存・公開済み。
 - 注意: `1223071` は store item ID。Unity の `steam_appid.txt` や SteamPipe の `AppID` に使うのは Demo App ID `4861250`。
 - まだ未完了または未確認:
-  - SteamPipe で実際の Windows / macOS build を upload したかは未完了扱い。
+  - SteamPipe で実際の Windows / macOS build を upload したかは未完了扱い。この端末では `steamcmd` / Steamworks SDK `ContentBuilder` は未検出。
   - upload 後の build live 化、Steam クライアントからの install / 起動確認は未完了扱い。
-  - Steam クライアント経由の Cloud upload / download 確認は未完了扱い。
+  - Steam クライアント経由の Cloud upload は macOS で確認済み。Cloud download は SteamPipe upload 後に Steam クライアント起動で確認する。
 
 ## リポジトリの状態
 - 作業ブランチ: `main`
@@ -51,11 +51,31 @@
   - `Assets/Scripts/Saving/JsonSavingSystem.cs`
 
 ## Build / SteamPipe の状態
+- 2026-06-19: 現在の Steam Cloud 実装入りで Steam Demo Release Build を再作成済み。
+  - macOS: `/tmp/vlcnpStory_SteamDemoMacSteamPipe/VlcnpStory.app`
+    - サイズ: `321M`
+    - Bundle ID: `com.yheiwebdesign.vlcnpstory`
+    - Version: `0.2.1`
+    - `steam_appid.txt`: root と `.app/Contents/MacOS/` に `4861250`
+    - Steamworks native plugin: `.app/Contents/PlugIns/steam_api.bundle/Contents/MacOS/libsteam_api.dylib`
+  - Windows: `/tmp/vlcnpStory_SteamDemoWindowsSteamPipe/VlcnpStory.exe`
+    - サイズ: `297M`
+    - `steam_appid.txt`: `4861250`
+    - 必須ファイル: `VlcnpStory.exe`, `UnityPlayer.dll`, `VlcnpStory_Data/`
+    - Steamworks native plugin: `VlcnpStory_Data/Plugins/x86_64/steam_api64.dll`
+  - `unicli exec Compile`、`BuildPlayer.Compile --target StandaloneOSX`、`BuildPlayer.Compile --target StandaloneWindows64` は error 0 / warning 0。
+- 2026-06-19: SteamPipe upload 用 staging を作成済み。
+  - staging: `/tmp/vlcnpStory_SteamPipeDemo_20260619`
+  - `scripts/`: SteamPipe VDF 3 ファイル
+  - `content/windows`: Windows build 一式
+  - `content/macos`: `VlcnpStory.app`
+  - `builder/` / `output/`: ContentBuilder 互換の作業ディレクトリ
+  - upload 対象内に `steam_appid.txt` が存在しないことを確認済み。
 - 2026-06-18: macOS Steam Demo Release Build を Demo App ID `4861250` で再作成済み。
   - 出力: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app`
   - `steam_appid.txt`: `/tmp/vlcnpStory_SteamDemoMacCloud/steam_appid.txt` と `.app/Contents/MacOS/steam_appid.txt` に `4861250`
   - Steamworks Cloud 設定は保存・公開済み。
-  - ローカル Steam クライアント経由の Cloud upload / download 確認は未完了。更新前は `No SteamClient023`、更新後は `Steam denied appID 4861250` で `SteamAPI.Init` が失敗した。
+  - 当初は Steam クライアント未ログイン/更新前で `SteamAPI.Init` が失敗したが、ログイン後に `SteamAPI.Init` / Cloud status / Auto-Cloud upload は確認済み。
 - macOS Steam Demo Release Build は 2026-06-16 に成功済み。
   - 出力: `/tmp/vlcnpStory_SteamDemoMac/VlcnpStory.app`
   - ただし当時の `steam_appid.txt` は `1223071` だったため、ローカル Steam テストでは `4861250` で再ビルドするか差し替える。
@@ -129,12 +149,11 @@
    - SteamPipe upload 後に Steam クライアントから起動し、再起動 load と Cloud download を確認する。
    - 可能なら別端末または別 OS で同期確認する。
 2. Demo App ID `4861250` で Windows / macOS Steam Demo Release Build を作り直す。
-   - `steam_appid.txt` はローカル確認用だけに使い、SteamPipe upload には含めない。
+   - 2026-06-19 に作成済み。`steam_appid.txt` はローカル確認用だけに使い、SteamPipe upload には含めない。
 3. SteamPipe で upload する。
-   - Steamworks SDK の `tools/ContentBuilder/scripts` に `Assets/DocsForAI/Plan/SteamPipe/*.vdf` をコピーする。
-   - `content/windows` に Windows build 一式を配置する。
-   - `content/macos` に `VlcnpStory.app` を配置する。
-   - 実行例: `steamcmd +login <builder_account> +run_app_build ../scripts/app_build_demo_template.vdf +quit`
+   - この端末では `steamcmd` / Steamworks SDK `ContentBuilder` は未検出。
+   - `/tmp/vlcnpStory_SteamPipeDemo_20260619` は `tools/ContentBuilder` 互換の staging 済み。Steamworks SDK がある環境ではこの内容を `tools/ContentBuilder` に配置する。
+   - 実行例: `cd <Steamworks SDK>/tools/ContentBuilder/builder && steamcmd +login <builder_account> +run_app_build ../scripts/app_build_demo_template.vdf +quit`
 4. Steamworks で build を live にする。
    - 少なくとも Beta Testing package で install / launch を確認する。
    - Public Demo package を live にする前に、macOS 側だけでも Steam クライアント経由の起動確認をする。

@@ -158,6 +158,19 @@
   - アプリ終了前にバックアップから JSON を復元し、SHA-1 が remote cache の `c442ffb91a5cd26bedeaf4e574a39118999a7f45` / `8e579af009257b19c2ee28107ddcac495f642834` と一致することを確認。
   - 終了後の `cloud_log.txt` は `No launch record found`、`Skipping un-modified file ... autoSave.json/save.json`、`Currently already synced to global change number '1'`。直接バイナリ起動では Steam launch record が無く、download 確認には不十分。
   - Cloud download / 再起動ロード確認は、SteamPipe upload 後に Steam クライアントの package / build から Demo App `4861250` を起動して行う。
+- 2026-06-19: 現在の Steam Cloud 実装入りで Steam Demo Release Build を再作成。
+  - macOS: `/tmp/vlcnpStory_SteamDemoMacSteamPipe/VlcnpStory.app`
+    - サイズ: `321M`
+    - Bundle ID: `com.yheiwebdesign.vlcnpstory`
+    - Bundle version: `0.2.1`
+    - `steam_appid.txt`: `/tmp/vlcnpStory_SteamDemoMacSteamPipe/steam_appid.txt` と `.app/Contents/MacOS/steam_appid.txt` に `4861250`
+    - Steamworks native plugin: `.app/Contents/PlugIns/steam_api.bundle/Contents/MacOS/libsteam_api.dylib`
+  - Windows: `/tmp/vlcnpStory_SteamDemoWindowsSteamPipe/VlcnpStory.exe`
+    - サイズ: `297M`
+    - `steam_appid.txt`: `/tmp/vlcnpStory_SteamDemoWindowsSteamPipe/steam_appid.txt` に `4861250`
+    - 必須ファイル: `VlcnpStory.exe`, `UnityPlayer.dll`, `VlcnpStory_Data/`
+    - Steamworks native plugin: `VlcnpStory_Data/Plugins/x86_64/steam_api64.dll`
+  - `unicli exec Compile`、`BuildPlayer.Compile --target StandaloneOSX`、`BuildPlayer.Compile --target StandaloneWindows64` は error 0 / warning 0。
 - 2026-06-18: macOS Steam Demo Release Build を Demo App ID `4861250` で再作成。
   - 出力: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app`
   - サイズ: `321M`
@@ -165,7 +178,7 @@
   - Bundle version: `0.2.1`
   - `steam_appid.txt`: `/tmp/vlcnpStory_SteamDemoMacCloud/steam_appid.txt` と `.app/Contents/MacOS/steam_appid.txt` に `4861250`
   - Steamworks.NET が Standalone scripting define に `STEAMWORKS_NET` を追加した。
-  - Steamworks Cloud 設定は保存・公開済み。Steam クライアント経由の Cloud upload / download 確認は未実施。
+  - Steamworks Cloud 設定は保存・公開済み。後続の Steam ログイン後検証で Cloud status / Auto-Cloud upload は確認済み。Cloud download は SteamPipe upload 後に確認する。
 - 2026-06-16: macOS Steam Demo Release Build 成功。
   - 出力: `/tmp/vlcnpStory_SteamDemoMac/VlcnpStory.app`
   - サイズ: `321M`
@@ -184,6 +197,14 @@
   - Windows 実機起動確認は未実施。今回の範囲では Windows はビルド成果物の作成確認まで。
 
 ## SteamPipe アップロード準備
+- この端末では `steamcmd` / Steamworks SDK `ContentBuilder` は未検出。
+- 2026-06-19 に ContentBuilder 互換 staging を作成済み。
+  - staging: `/tmp/vlcnpStory_SteamPipeDemo_20260619`
+  - `scripts/`: SteamPipe VDF 3 ファイル
+  - `content/windows`: Windows build 一式
+  - `content/macos`: `VlcnpStory.app`
+  - `builder/` / `output/`: ContentBuilder 互換の作業ディレクトリ
+  - upload 対象内に `steam_appid.txt` が存在しないことを確認済み。
 - Steamworks SDK の `tools/ContentBuilder/scripts` に以下のテンプレートをコピーする。
   - `Assets/DocsForAI/Plan/SteamPipe/app_build_demo_template.vdf`
   - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_windows_template.vdf`
@@ -193,6 +214,7 @@
   - Windows: `content/windows/VlcnpStory.exe` と関連ファイル一式
   - macOS: `content/macos/VlcnpStory.app`
 - steamcmd 実行例:
+  - `cd <Steamworks SDK>/tools/ContentBuilder/builder`
   - `steamcmd +login <builder_account> +run_app_build ../scripts/app_build_demo_template.vdf +quit`
 
 ## 完了判定
@@ -207,4 +229,5 @@
 - 保存・削除時に Steam write batch を通知するゲーム側実装が入っている。
 - Steam クライアント経由の Cloud status と Auto-Cloud upload は macOS で確認済み。
 - 直接バイナリ起動での Cloud download は未確認。SteamPipe upload 後に Steam クライアント起動で確認する。
+- 現在の Cloud 実装入り Windows / macOS release build と SteamPipe staging は作成済み。
 - 複数端末同期、Windows 実機確認は未完了。
