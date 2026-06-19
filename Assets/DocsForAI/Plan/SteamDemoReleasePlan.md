@@ -197,7 +197,7 @@
   - Windows 実機起動確認は未実施。今回の範囲では Windows はビルド成果物の作成確認まで。
 
 ## SteamPipe アップロード準備
-- この端末では `steamcmd` / Steamworks SDK `ContentBuilder` は未検出。
+- SteamCMD は公式配布 archive から `/tmp/steamcmd_osx_20260619` に展開し、`+quit` で自己更新・起動確認済み。
 - 2026-06-19 に ContentBuilder 互換 staging を作成済み。
   - staging: `/tmp/vlcnpStory_SteamPipeDemo_20260619`
   - `scripts/`: SteamPipe VDF 3 ファイル
@@ -209,6 +209,10 @@
   - `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh`
   - 実行例: `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh /tmp/vlcnpStory_SteamDemoMacSteamPipe /tmp/vlcnpStory_SteamDemoWindowsSteamPipe /tmp/vlcnpStory_SteamPipeDemo_YYYYMMDD`
   - 2026-06-19 に `/tmp/vlcnpStory_SteamPipeDemo_script_test_20260619` の作成で検証済み。
+- upload helper:
+  - `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh`
+  - パスワードは受け取らず保存しない。SteamCMD の対話プロンプトで builder account のパスワード / Steam Guard を入力する。
+  - dry-run 検証済み: `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh /tmp/vlcnpStory_SteamPipeDemo_20260619 yhei_hei --dry-run`
 - Steamworks SDK の `tools/ContentBuilder/scripts` に以下のテンプレートをコピーする。
   - `Assets/DocsForAI/Plan/SteamPipe/app_build_demo_template.vdf`
   - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_windows_template.vdf`
@@ -218,8 +222,9 @@
   - Windows: `content/windows/VlcnpStory.exe` と関連ファイル一式
   - macOS: `content/macos/VlcnpStory.app`
 - steamcmd 実行例:
-  - `cd <Steamworks SDK>/tools/ContentBuilder/builder`
-  - `steamcmd +login <builder_account> +run_app_build ../scripts/app_build_demo_template.vdf +quit`
+  - `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh /tmp/vlcnpStory_SteamPipeDemo_20260619 <builder_account>`
+  - または `cd /tmp/vlcnpStory_SteamPipeDemo_20260619/builder`
+  - `/tmp/steamcmd_osx_20260619/steamcmd.sh +login <builder_account> +run_app_build ../scripts/app_build_demo_template.vdf +quit`
 
 ## 完了判定
 - Mac release build が作成できている。
@@ -234,4 +239,5 @@
 - Steam クライアント経由の Cloud status と Auto-Cloud upload は macOS で確認済み。
 - 直接バイナリ起動での Cloud download は未確認。SteamPipe upload 後に Steam クライアント起動で確認する。
 - 現在の Cloud 実装入り Windows / macOS release build と SteamPipe staging は作成済み。
+- SteamCMD 起動確認と upload helper の dry-run は完了。SteamPipe upload は builder account の対話ログイン待ち。
 - 複数端末同期、Windows 実機確認は未完了。

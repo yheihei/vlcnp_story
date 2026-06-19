@@ -30,7 +30,7 @@
 - Demo App の Steam Cloud / Auto-Cloud 設定は Steamworks 上で保存・公開済み。
 - 注意: `1223071` は store item ID。Unity の `steam_appid.txt` や SteamPipe の `AppID` に使うのは Demo App ID `4861250`。
 - まだ未完了または未確認:
-  - SteamPipe で実際の Windows / macOS build を upload したかは未完了扱い。この端末では `steamcmd` / Steamworks SDK `ContentBuilder` は未検出。
+  - SteamPipe で実際の Windows / macOS build を upload したかは未完了扱い。SteamCMD は `/tmp/steamcmd_osx_20260619/steamcmd.sh` で起動確認済みだが、upload には builder account の対話ログイン / Steam Guard が必要。
   - upload 後の build live 化、Steam クライアントからの install / 起動確認は未完了扱い。
   - Steam クライアント経由の Cloud upload は macOS で確認済み。Cloud download は SteamPipe upload 後に Steam クライアント起動で確認する。
 
@@ -47,6 +47,7 @@
   - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_windows_template.vdf`
   - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_macos_template.vdf`
   - `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh`
+  - `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh`
   - `Assets/Scripts/Editor/DesktopBuildUtility.cs`
   - `Assets/Scripts/Steam/SteamBootstrap.cs`
   - `Assets/Scripts/Saving/JsonSavingSystem.cs`
@@ -74,6 +75,9 @@
   - upload 対象内に `steam_appid.txt` が存在しないことを確認済み。
   - repo 内の `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh` で同じ staging を再作成できる。
     - 検証済みコマンド: `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh /tmp/vlcnpStory_SteamDemoMacSteamPipe /tmp/vlcnpStory_SteamDemoWindowsSteamPipe /tmp/vlcnpStory_SteamPipeDemo_script_test_20260619`
+  - SteamCMD は公式配布 archive から `/tmp/steamcmd_osx_20260619` に展開し、`+quit` で自己更新・起動確認済み。
+  - repo 内の `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh` で upload command を実行できる。パスワードは受け取らず保存しない。
+    - dry-run 検証済み: `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh /tmp/vlcnpStory_SteamPipeDemo_20260619 yhei_hei --dry-run`
 - 2026-06-18: macOS Steam Demo Release Build を Demo App ID `4861250` で再作成済み。
   - 出力: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app`
   - `steam_appid.txt`: `/tmp/vlcnpStory_SteamDemoMacCloud/steam_appid.txt` と `.app/Contents/MacOS/steam_appid.txt` に `4861250`
@@ -154,10 +158,12 @@
 2. Demo App ID `4861250` で Windows / macOS Steam Demo Release Build を作り直す。
    - 2026-06-19 に作成済み。`steam_appid.txt` はローカル確認用だけに使い、SteamPipe upload には含めない。
 3. SteamPipe で upload する。
-   - この端末では `steamcmd` / Steamworks SDK `ContentBuilder` は未検出。
-   - `/tmp/vlcnpStory_SteamPipeDemo_20260619` は `tools/ContentBuilder` 互換の staging 済み。Steamworks SDK がある環境ではこの内容を `tools/ContentBuilder` に配置する。
+   - SteamCMD は `/tmp/steamcmd_osx_20260619/steamcmd.sh` で起動確認済み。
+   - `/tmp/vlcnpStory_SteamPipeDemo_20260619` は `tools/ContentBuilder` 互換の staging 済み。
    - staging を作り直す場合: `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh [mac_build_dir] [windows_build_dir] [stage_dir]`
-   - 実行例: `cd <Steamworks SDK>/tools/ContentBuilder/builder && steamcmd +login <builder_account> +run_app_build ../scripts/app_build_demo_template.vdf +quit`
+   - upload helper: `Assets/DocsForAI/Plan/SteamPipe/upload_steam_demo_build.sh /tmp/vlcnpStory_SteamPipeDemo_20260619 <builder_account>`
+   - 実行例: `cd /tmp/vlcnpStory_SteamPipeDemo_20260619/builder && /tmp/steamcmd_osx_20260619/steamcmd.sh +login <builder_account> +run_app_build ../scripts/app_build_demo_template.vdf +quit`
+   - builder account のパスワード / Steam Guard は SteamCMD の対話プロンプトで入力する。
 4. Steamworks で build を live にする。
    - 少なくとも Beta Testing package で install / launch を確認する。
    - Public Demo package を live にする前に、macOS 側だけでも Steam クライアント経由の起動確認をする。
