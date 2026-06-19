@@ -44,11 +44,11 @@
 ## リポジトリの状態
 - 作業ブランチ: `main`
 - 直近の反映済み commit:
+  - `4627a86d` `Steamクライアント検証結果を追記 #627`
+  - `f75fba9f` `SteamPipeアップロード完了状況を記録 #627`
   - `260f64da` `SteamPipeアップロード手順を補助する #627`
   - `800528fb` `SteamPipeステージング作成を再現可能にする #627`
   - `b20ea2e3` `SteamPipe向けデモビルド準備を追記 #627`
-  - `167b1420` `Steam Cloudダウンロード検証メモを追記 #627`
-  - `9159431a` `Steam Cloudアップロード検証を追記 #627`
 - 重要ファイル:
   - `Assets/DocsForAI/Plan/DesktopBuildMigrationPlan.md`
   - `Assets/DocsForAI/Plan/SteamDemoReleasePlan.md`
@@ -174,6 +174,12 @@
   - 初回は Steam Auto-Cloud の既定挙動に寄せる。
   - 仕様としては「最後に更新された `autoSave.json` を採用。競合 UI は初回体験版では持たない」と明記する。
   - 将来、複数スロットや明示的な競合 UI が必要なら別 issue に分ける。
+- 複数端末同期の完了条件:
+  - 端末 A で Demo App `4861250` を Steam クライアントから起動し、`autoSave.json` または `save.json` を更新して終了する。
+  - 端末 A の `cloud_log.txt` で AppID `4861250` の upload 成功を確認する。
+  - 端末 B または別 OS の同一 Steam アカウントで Demo App `4861250` を Steam クライアントから起動する。
+  - 端末 B の `cloud_log.txt` で launch 時の download 成功を確認し、Player.log または実ファイルの hash で端末 A の保存内容が反映されたことを確認する。
+  - この確認が取れたら #627 の `複数端末で同期できることを動作確認` を完了にできる。Windows 実機確認は #637 側に残す。
 
 ## 体験版先行公開までの推奨順
 1. #627 を実装・確認する。
@@ -195,8 +201,9 @@
    - builder account のパスワード / Steam Guard は SteamCMD の対話プロンプトで入力する。
 4. Steamworks で build を live にする。
    - default branch は BuildID `23819735` で live 済み。
-   - 次は通常 Steam クライアントへ再ログインし、少なくとも Beta Testing package で install / launch / Cloud download を確認する。
-   - Public Demo 公開前に、macOS 側だけでも Steam クライアント経由の起動確認を完了する。
+   - launch options は保存・公開済み。
+   - macOS 側の Steam クライアント経由 install / launch / Cloud download / 再起動ロードは確認済み。
+   - Public Demo 公開前に残っている #627 の確認は複数端末同期のみ。
 5. 公開後も #603 / #637 は open のままにする。
    - Windows 実機確認は後追いで完了させる。
 
@@ -206,6 +213,6 @@
 ```text
 Assets/DocsForAI/Plan/SteamDemoReleaseHandoff.md と #627 を読んで、体験版先行公開に必要な Steam Cloud 対応を進めてください。
 Windows 実機確認は後回しでよいです。#603 / #637 はまだ閉じないでください。
-SteamPipe upload と default branch live は完了済みです。通常 Steam クライアントへ再ログインしたうえで Demo App 4861250 を Steam クライアントから起動し、Cloud download / 再起動ロード / 複数端末同期の確認を進めてください。
-Steam クライアントからの macOS install / 起動 / Cloud download / 再起動ロードは確認済みです。次は複数端末同期と Windows 実機確認を進めてください。
+SteamPipe upload / default branch live / launch options 公開 / macOS Steam クライアント経由の install・起動・Cloud download・再起動ロードは完了済みです。
+次は複数端末同期を確認してください。Windows 実機確認は #637 側に残してください。
 ```
