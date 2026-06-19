@@ -52,6 +52,7 @@
 - 重要ファイル:
   - `Assets/DocsForAI/Plan/DesktopBuildMigrationPlan.md`
   - `Assets/DocsForAI/Plan/SteamCloudCollectSyncEvidence.sh`
+  - `Assets/DocsForAI/Plan/SteamCloudCompareSyncEvidence.sh`
   - `Assets/DocsForAI/Plan/SteamCloudMultiDeviceVerification.md`
   - `Assets/DocsForAI/Plan/SteamDemoReleasePlan.md`
   - `Assets/DocsForAI/Plan/SteamPipe/app_build_demo_template.vdf`
@@ -185,6 +186,7 @@
 - 複数端末同期の証跡採取補助:
   - 手順: `Assets/DocsForAI/Plan/SteamCloudMultiDeviceVerification.md`
   - macOS 用採取スクリプト: `Assets/DocsForAI/Plan/SteamCloudCollectSyncEvidence.sh`
+  - 端末 A/B report 比較スクリプト: `Assets/DocsForAI/Plan/SteamCloudCompareSyncEvidence.sh`
   - 2026-06-19 にこの Mac で `Assets/DocsForAI/Plan/SteamCloudCollectSyncEvidence.sh current-mac` を実行し、`/tmp/vlcnp_steam_cloud_sync_evidence/current-mac_20260619_205031.txt` の生成を確認済み。
   - report には `autoSave.json` / `save.json` の SHA-256、AppID `4861250` の `cloud_log.txt` 抜粋、Player.log の `SteamBootstrap` / `SteamCloudSaveSync` 行が含まれる。
 
