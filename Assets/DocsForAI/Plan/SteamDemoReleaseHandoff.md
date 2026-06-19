@@ -44,11 +44,11 @@
 ## リポジトリの状態
 - 作業ブランチ: `main`
 - 直近の反映済み commit:
+  - `ae536a3d` `Steam Cloud同期比較条件を調整 #627`
   - `6ce10bca` `Steam Cloud同期証跡比較を追加 #627`
   - `23255be2` `Steam Cloud複数端末検証手順を追加 #627`
   - `17587d8e` `Steam Cloud同期確認条件を整理 #627`
   - `4627a86d` `Steamクライアント検証結果を追記 #627`
-  - `f75fba9f` `SteamPipeアップロード完了状況を記録 #627`
 - 重要ファイル:
   - `Assets/DocsForAI/Plan/DesktopBuildMigrationPlan.md`
   - `Assets/DocsForAI/Plan/SteamCloudCollectSyncEvidence.sh`
