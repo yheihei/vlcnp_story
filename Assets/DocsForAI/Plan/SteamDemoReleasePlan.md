@@ -205,6 +205,10 @@
   - `content/macos`: `VlcnpStory.app`
   - `builder/` / `output/`: ContentBuilder 互換の作業ディレクトリ
   - upload 対象内に `steam_appid.txt` が存在しないことを確認済み。
+- staging 作成スクリプト:
+  - `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh`
+  - 実行例: `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh /tmp/vlcnpStory_SteamDemoMacSteamPipe /tmp/vlcnpStory_SteamDemoWindowsSteamPipe /tmp/vlcnpStory_SteamPipeDemo_YYYYMMDD`
+  - 2026-06-19 に `/tmp/vlcnpStory_SteamPipeDemo_script_test_20260619` の作成で検証済み。
 - Steamworks SDK の `tools/ContentBuilder/scripts` に以下のテンプレートをコピーする。
   - `Assets/DocsForAI/Plan/SteamPipe/app_build_demo_template.vdf`
   - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_windows_template.vdf`

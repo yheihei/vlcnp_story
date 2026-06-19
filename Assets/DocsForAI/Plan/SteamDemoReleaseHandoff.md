@@ -46,6 +46,7 @@
   - `Assets/DocsForAI/Plan/SteamPipe/app_build_demo_template.vdf`
   - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_windows_template.vdf`
   - `Assets/DocsForAI/Plan/SteamPipe/depot_build_demo_macos_template.vdf`
+  - `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh`
   - `Assets/Scripts/Editor/DesktopBuildUtility.cs`
   - `Assets/Scripts/Steam/SteamBootstrap.cs`
   - `Assets/Scripts/Saving/JsonSavingSystem.cs`
@@ -71,6 +72,8 @@
   - `content/macos`: `VlcnpStory.app`
   - `builder/` / `output/`: ContentBuilder 互換の作業ディレクトリ
   - upload 対象内に `steam_appid.txt` が存在しないことを確認済み。
+  - repo 内の `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh` で同じ staging を再作成できる。
+    - 検証済みコマンド: `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh /tmp/vlcnpStory_SteamDemoMacSteamPipe /tmp/vlcnpStory_SteamDemoWindowsSteamPipe /tmp/vlcnpStory_SteamPipeDemo_script_test_20260619`
 - 2026-06-18: macOS Steam Demo Release Build を Demo App ID `4861250` で再作成済み。
   - 出力: `/tmp/vlcnpStory_SteamDemoMacCloud/VlcnpStory.app`
   - `steam_appid.txt`: `/tmp/vlcnpStory_SteamDemoMacCloud/steam_appid.txt` と `.app/Contents/MacOS/steam_appid.txt` に `4861250`
@@ -153,6 +156,7 @@
 3. SteamPipe で upload する。
    - この端末では `steamcmd` / Steamworks SDK `ContentBuilder` は未検出。
    - `/tmp/vlcnpStory_SteamPipeDemo_20260619` は `tools/ContentBuilder` 互換の staging 済み。Steamworks SDK がある環境ではこの内容を `tools/ContentBuilder` に配置する。
+   - staging を作り直す場合: `Assets/DocsForAI/Plan/SteamPipe/prepare_steam_demo_staging.sh [mac_build_dir] [windows_build_dir] [stage_dir]`
    - 実行例: `cd <Steamworks SDK>/tools/ContentBuilder/builder && steamcmd +login <builder_account> +run_app_build ../scripts/app_build_demo_template.vdf +quit`
 4. Steamworks で build を live にする。
    - 少なくとも Beta Testing package で install / launch を確認する。
