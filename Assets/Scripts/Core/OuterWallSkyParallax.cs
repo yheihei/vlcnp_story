@@ -142,7 +142,7 @@ namespace VLCNP.Core
                 CloudLayer layer = cloudLayers[i];
                 if (layer == null || layer.runtimeMaterial == null) continue;
 
-                layer.offsetX = Mathf.Repeat(layer.offsetX - layer.speed * Time.deltaTime, 1f);
+                layer.offsetX = Mathf.Repeat(layer.offsetX + layer.speed * Time.deltaTime, 1f);
                 Vector2 offset = new Vector2(layer.offsetX, 0f);
                 Vector2 scale = new Vector2(layer.tilingX, layer.tilingY);
 
