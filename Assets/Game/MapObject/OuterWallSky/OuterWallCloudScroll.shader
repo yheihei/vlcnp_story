@@ -4,6 +4,7 @@ Shader "VLCNP/OuterWallCloudScroll"
     {
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
+        _Tiling ("Tiling", Vector) = (1,1,0,0)
         _HorizontalOffset ("Horizontal Offset", Float) = 0
     }
 
@@ -46,13 +47,14 @@ Shader "VLCNP/OuterWallCloudScroll"
 
             sampler2D _MainTex;
             fixed4 _Color;
+            float4 _Tiling;
             float _HorizontalOffset;
 
             v2f vert(appdata_t input)
             {
                 v2f output;
                 output.vertex = UnityObjectToClipPos(input.vertex);
-                output.texcoord = input.texcoord + float2(_HorizontalOffset, 0);
+                output.texcoord = input.texcoord * _Tiling.xy + float2(_HorizontalOffset, 0);
                 output.color = input.color * _Color;
                 return output;
             }

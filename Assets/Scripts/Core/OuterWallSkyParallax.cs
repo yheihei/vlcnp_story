@@ -26,6 +26,7 @@ namespace VLCNP.Core
 
         private static readonly int BaseMapId = Shader.PropertyToID("_BaseMap");
         private static readonly int MainTexId = Shader.PropertyToID("_MainTex");
+        private static readonly int TilingId = Shader.PropertyToID("_Tiling");
         private static readonly int HorizontalOffsetId = Shader.PropertyToID("_HorizontalOffset");
 
         private void Awake()
@@ -89,8 +90,27 @@ namespace VLCNP.Core
                 float localY = (moonViewportPosition.y - 0.5f) * height;
                 float moonSize = height * moonScreenHeightRatio;
                 moonTransform.localPosition = new Vector3(localX, localY, moonTransform.localPosition.z);
-                moonTransform.localScale = new Vector3(moonSize, moonSize, 1f);
+                FitTransformToSquare(moonTransform, moonSize);
             }
+        }
+
+        private static void FitTransformToSquare(Transform target, float size)
+        {
+            SpriteRenderer spriteRenderer = target.GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null || spriteRenderer.sprite == null)
+            {
+                target.localScale = new Vector3(size, size, 1f);
+                return;
+            }
+
+            Vector2 spriteSize = spriteRenderer.sprite.bounds.size;
+            if (spriteSize.x <= Mathf.Epsilon || spriteSize.y <= Mathf.Epsilon)
+            {
+                target.localScale = new Vector3(size, size, 1f);
+                return;
+            }
+
+            target.localScale = new Vector3(size / spriteSize.x, size / spriteSize.y, 1f);
         }
 
         private static void FitRenderer(Renderer renderer, float width, float height)
@@ -141,6 +161,11 @@ namespace VLCNP.Core
                 if (layer.runtimeMaterial.HasProperty(HorizontalOffsetId))
                 {
                     layer.runtimeMaterial.SetFloat(HorizontalOffsetId, layer.offsetX);
+                }
+
+                if (layer.runtimeMaterial.HasProperty(TilingId))
+                {
+                    layer.runtimeMaterial.SetVector(TilingId, new Vector4(layer.tilingX, layer.tilingY, 0f, 0f));
                 }
             }
         }
