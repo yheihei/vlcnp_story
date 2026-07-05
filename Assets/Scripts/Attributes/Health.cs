@@ -179,6 +179,15 @@ namespace VLCNP.Attributes
             DeadEffectAndDestroy();
         }
 
+        // 落下ミスなど、無敵時間や停止状態に関係なく即死させる
+        public void Kill()
+        {
+            if (isDead)
+                return;
+            healthPoints = 0;
+            Die();
+        }
+
         public void DeadEffectAndDestroy()
         {
             isDead = true;
