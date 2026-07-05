@@ -11,7 +11,7 @@ description: Git workflow rules for /Users/yhei/unity/vlcnpStory2022. Use when C
 
 ## Project Context
 
-- Unity: 2021.3
+- Unity: 2022.3
 - Target: WebGL
 - Genre: Metroidvania-style 2D action
 - Goal: year-end release and 1,000 monthly active users
