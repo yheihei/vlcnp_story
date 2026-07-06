@@ -1,0 +1,150 @@
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using VLCNP.Combat;
+
+/** 窓の銃ギミック(WindowGun)のプレハブ生成とシーン配置を行うエディタツール */
+public static class WindowGunBuilder
+{
+    private const string BarrelSpritePath =
+        "Assets/Game/Projectiles/Sprite/window_gun_barrel.png";
+    private const string BulletSpritePath =
+        "Assets/Game/Projectiles/Sprite/window_gun_bullet.png";
+    private const string FireEffectPath = "Assets/Game/Projectiles/Effect/WhiteHitEffect.prefab";
+    private const string BulletPrefabPath = "Assets/Game/Projectiles/WindowGunBullet.prefab";
+    private const string GunPrefabPath = "Assets/Game/Characters/Enemy/WindowGun.prefab";
+
+    [MenuItem("Tools/WindowGun/Build Prefabs", false, 3000)]
+    public static void BuildPrefabs()
+    {
+        ConfigureSpriteImporter(BarrelSpritePath);
+        ConfigureSpriteImporter(BulletSpritePath);
+
+        GameObject bulletPrefab = BuildBulletPrefab();
+        BuildGunPrefab(bulletPrefab);
+        AssetDatabase.SaveAssets();
+        Debug.Log("WindowGun prefabs built.");
+    }
+
+    private static void ConfigureSpriteImporter(string path)
+    {
+        TextureImporter importer = (TextureImporter)AssetImporter.GetAtPath(path);
+        importer.textureType = TextureImporterType.Sprite;
+        importer.spriteImportMode = SpriteImportMode.Single;
+        importer.spritePixelsPerUnit = 32;
+        importer.filterMode = FilterMode.Point;
+        importer.textureCompression = TextureImporterCompression.Uncompressed;
+        importer.SaveAndReimport();
+    }
+
+    private static GameObject BuildBulletPrefab()
+    {
+        Sprite bulletSprite = AssetDatabase.LoadAssetAtPath<Sprite>(BulletSpritePath);
+        GameObject fireEffect = AssetDatabase.LoadAssetAtPath<GameObject>(FireEffectPath);
+
+        GameObject bullet = new GameObject("WindowGunBullet");
+        SpriteRenderer renderer = bullet.AddComponent<SpriteRenderer>();
+        renderer.sprite = bulletSprite;
+        renderer.sortingOrder = 10;
+
+        CircleCollider2D collider = bullet.AddComponent<CircleCollider2D>();
+        collider.isTrigger = true;
+        collider.radius = 0.14f;
+
+        Projectile projectile = bullet.AddComponent<Projectile>();
+        SerializedObject so = new SerializedObject(projectile);
+        so.FindProperty("speed").floatValue = 3.5f;
+        so.FindProperty("deleteTime").floatValue = 4f;
+        so.FindProperty("targetTagName").stringValue = "Player";
+        so.FindProperty("IsPenetration").boolValue = false;
+        so.FindProperty("isFadeOut").boolValue = true;
+        so.FindProperty("hitEffect").objectReferenceValue = fireEffect;
+        so.ApplyModifiedPropertiesWithoutUndo();
+
+        GameObject prefab = PrefabUtility.SaveAsPrefabAsset(bullet, BulletPrefabPath);
+        Object.DestroyImmediate(bullet);
+        return prefab;
+    }
+
+    private static void BuildGunPrefab(GameObject bulletPrefab)
+    {
+        Sprite barrelSprite = AssetDatabase.LoadAssetAtPath<Sprite>(BarrelSpritePath);
+        GameObject fireEffect = AssetDatabase.LoadAssetAtPath<GameObject>(FireEffectPath);
+
+        GameObject gun = new GameObject("WindowGun");
+        gun.tag = "Enemy";
+
+        SpriteRenderer renderer = gun.AddComponent<SpriteRenderer>();
+        renderer.sprite = barrelSprite;
+        renderer.sortingOrder = 5;
+
+        BoxCollider2D collider = gun.AddComponent<BoxCollider2D>();
+        collider.isTrigger = true;
+        collider.size = new Vector2(0.8f, 0.36f);
+
+        GameObject muzzle = new GameObject("Muzzle");
+        muzzle.transform.SetParent(gun.transform);
+        muzzle.transform.localPosition = new Vector3(-0.45f, 0f, 0f);
+
+        WindowGun windowGun = gun.AddComponent<WindowGun>();
+        SerializedObject so = new SerializedObject(windowGun);
+        so.FindProperty("projectilePrefab").objectReferenceValue =
+            bulletPrefab.GetComponent<Projectile>();
+        so.FindProperty("fireEffect").objectReferenceValue = fireEffect;
+        so.FindProperty("muzzleTransform").objectReferenceValue = muzzle.transform;
+        so.FindProperty("fireInterval").floatValue = 3f;
+        so.FindProperty("damage").floatValue = 1f;
+        so.FindProperty("isLeft").boolValue = true;
+        so.ApplyModifiedPropertiesWithoutUndo();
+
+        PrefabUtility.SaveAsPrefabAsset(gun, GunPrefabPath);
+        Object.DestroyImmediate(gun);
+    }
+
+    [MenuItem("Tools/WindowGun/Place In Kaze1 Windows 5-7", false, 3001)]
+    public static void PlaceInKaze1()
+    {
+        GameObject gunPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(GunPrefabPath);
+        if (gunPrefab == null)
+        {
+            Debug.LogError("WindowGun.prefab not found. Run Build Prefabs first.");
+            return;
+        }
+
+        string[] windowNames =
+        {
+            "round_window_lattice_02_32x32_5",
+            "round_window_lattice_02_32x32_6",
+            "round_window_lattice_02_32x32_7",
+        };
+        float firstDelay = 0f;
+        foreach (string windowName in windowNames)
+        {
+            GameObject window = GameObject.Find(windowName);
+            if (window == null)
+            {
+                Debug.LogError($"Window not found: {windowName}");
+                continue;
+            }
+            string gunName = $"WindowGun_{windowName}";
+            if (GameObject.Find(gunName) != null)
+            {
+                Debug.Log($"Already placed: {gunName}");
+                continue;
+            }
+            GameObject gun = (GameObject)PrefabUtility.InstantiatePrefab(gunPrefab);
+            gun.name = gunName;
+            // 右向きに設置する。プレハブは左向きが基準なので localScale.x を反転する
+            gun.transform.position =
+                window.transform.position + new Vector3(0.45f, -0.02f, 0f);
+            gun.transform.localScale = new Vector3(-1f, 1f, 1f);
+            SerializedObject so = new SerializedObject(gun.GetComponent<WindowGun>());
+            so.FindProperty("firstDelay").floatValue = firstDelay;
+            so.FindProperty("isLeft").boolValue = false;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            firstDelay += 1f;
+        }
+        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+        Debug.Log("WindowGun placed at Kaze1 windows 5-7.");
+    }
+}
