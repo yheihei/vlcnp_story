@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1804888746656712228}
   - component: {fileID: 9102565575391013397}
   - component: {fileID: 3067015846569077305}
+  - component: {fileID: 1748442171165868137}
   m_Layer: 0
   m_Name: WindowGunBullet
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -135,14 +136,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3.5
   hitEffect: {fileID: 8901418655622939187, guid: 7bd1d1431d67846d8877b37a4c572a45, type: 3}
-  deleteTime: 4
+  deleteTime: -1
   targetTagName: Player
   IsPenetration: 0
   isStuckInGround: 0
   groundTagName: Ground
   isBreakOnGround: 0
-  isFadeOut: 1
+  isFadeOut: 0
   mirrorScaleWhenFacingLeft: 1
   onTargetHit:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1748442171165868137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6432059842694117724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a3e78e4a70e4127a3bf0249c698936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 8

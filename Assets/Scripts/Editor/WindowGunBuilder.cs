@@ -43,6 +43,7 @@ public static class WindowGunBuilder
         GameObject fireEffect = AssetDatabase.LoadAssetAtPath<GameObject>(FireEffectPath);
 
         GameObject bullet = new GameObject("WindowGunBullet");
+        bullet.transform.localScale = new Vector3(1.5f, 1.5f, 1f);
         SpriteRenderer renderer = bullet.AddComponent<SpriteRenderer>();
         renderer.sprite = bulletSprite;
         renderer.sortingOrder = 10;
@@ -54,12 +55,18 @@ public static class WindowGunBuilder
         Projectile projectile = bullet.AddComponent<Projectile>();
         SerializedObject so = new SerializedObject(projectile);
         so.FindProperty("speed").floatValue = 3.5f;
-        so.FindProperty("deleteTime").floatValue = 4f;
+        // 時間ではなく飛距離(DestroyAfterMovedDistance)で消す
+        so.FindProperty("deleteTime").floatValue = -1f;
         so.FindProperty("targetTagName").stringValue = "Player";
         so.FindProperty("IsPenetration").boolValue = false;
-        so.FindProperty("isFadeOut").boolValue = true;
         so.FindProperty("hitEffect").objectReferenceValue = fireEffect;
         so.ApplyModifiedPropertiesWithoutUndo();
+
+        DestroyAfterMovedDistance destroyAfterMovedDistance =
+            bullet.AddComponent<DestroyAfterMovedDistance>();
+        SerializedObject soDistance = new SerializedObject(destroyAfterMovedDistance);
+        soDistance.FindProperty("maxDistance").floatValue = 8f;
+        soDistance.ApplyModifiedPropertiesWithoutUndo();
 
         GameObject prefab = PrefabUtility.SaveAsPrefabAsset(bullet, BulletPrefabPath);
         Object.DestroyImmediate(bullet);
