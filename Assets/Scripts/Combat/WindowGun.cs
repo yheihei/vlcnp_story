@@ -25,8 +25,11 @@ namespace VLCNP.Combat
         [SerializeField]
         float damage = 1f;
 
+        [Header("プレイヤーが見つからないときの発射方向")]
         [SerializeField]
         bool isLeft = true;
+
+        private Transform playerTransform;
 
         private void Start()
         {
@@ -47,6 +50,12 @@ namespace VLCNP.Combat
         {
             if (projectilePrefab == null)
                 return;
+            // 発射のたび(fireInterval ごと)にプレイヤーのいる側へ向きを変える
+            if (TryGetPlayerTransform(out Transform player))
+            {
+                isLeft = player.position.x < transform.position.x;
+            }
+            UpdateFacing();
             Transform muzzle = muzzleTransform != null ? muzzleTransform : transform;
             Projectile projectile = Instantiate(
                 projectilePrefab,
@@ -60,6 +69,29 @@ namespace VLCNP.Combat
                 GameObject effect = Instantiate(fireEffect, muzzle.position, Quaternion.identity);
                 Destroy(effect, 1f);
             }
+        }
+
+        private void UpdateFacing()
+        {
+            // スプライトは左向きが基準。右向きは localScale.x を反転して表現する
+            Vector3 scale = transform.localScale;
+            float scaleX = Mathf.Abs(scale.x);
+            transform.localScale = new Vector3(isLeft ? scaleX : -scaleX, scale.y, scale.z);
+        }
+
+        private bool TryGetPlayerTransform(out Transform player)
+        {
+            if (
+                playerTransform == null
+                || !playerTransform.gameObject.activeInHierarchy
+                || !playerTransform.CompareTag("Player")
+            )
+            {
+                GameObject playerObject = GameObject.FindWithTag("Player");
+                playerTransform = playerObject != null ? playerObject.transform : null;
+            }
+            player = playerTransform;
+            return player != null;
         }
     }
 }

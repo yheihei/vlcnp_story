@@ -17,8 +17,9 @@ public static class WindowGunBuilder
     [MenuItem("Tools/WindowGun/Build Prefabs", false, 3000)]
     public static void BuildPrefabs()
     {
-        ConfigureSpriteImporter(BarrelSpritePath);
-        ConfigureSpriteImporter(BulletSpritePath);
+        // 銃身は左右反転の軸にするため銃尻(右端)をピボットにする
+        ConfigureSpriteImporter(BarrelSpritePath, new Vector2(1f, 0.5f));
+        ConfigureSpriteImporter(BulletSpritePath, null);
 
         GameObject bulletPrefab = BuildBulletPrefab();
         BuildGunPrefab(bulletPrefab);
@@ -26,7 +27,7 @@ public static class WindowGunBuilder
         Debug.Log("WindowGun prefabs built.");
     }
 
-    private static void ConfigureSpriteImporter(string path)
+    private static void ConfigureSpriteImporter(string path, Vector2? customPivot)
     {
         TextureImporter importer = (TextureImporter)AssetImporter.GetAtPath(path);
         importer.textureType = TextureImporterType.Sprite;
@@ -34,6 +35,16 @@ public static class WindowGunBuilder
         importer.spritePixelsPerUnit = 32;
         importer.filterMode = FilterMode.Point;
         importer.textureCompression = TextureImporterCompression.Uncompressed;
+        TextureImporterSettings settings = new TextureImporterSettings();
+        importer.ReadTextureSettings(settings);
+        settings.spriteAlignment = (int)(
+            customPivot.HasValue ? SpriteAlignment.Custom : SpriteAlignment.Center
+        );
+        importer.SetTextureSettings(settings);
+        if (customPivot.HasValue)
+        {
+            importer.spritePivot = customPivot.Value;
+        }
         importer.SaveAndReimport();
     }
 
@@ -85,13 +96,15 @@ public static class WindowGunBuilder
         renderer.sprite = barrelSprite;
         renderer.sortingOrder = 5;
 
+        // ピボットが銃尻(右端)なのでコライダーと銃口は左側にオフセットする
         BoxCollider2D collider = gun.AddComponent<BoxCollider2D>();
         collider.isTrigger = true;
         collider.size = new Vector2(0.8f, 0.36f);
+        collider.offset = new Vector2(-0.4f, 0f);
 
         GameObject muzzle = new GameObject("Muzzle");
         muzzle.transform.SetParent(gun.transform);
-        muzzle.transform.localPosition = new Vector3(-0.45f, 0f, 0f);
+        muzzle.transform.localPosition = new Vector3(-0.75f, 0f, 0f);
 
         WindowGun windowGun = gun.AddComponent<WindowGun>();
         SerializedObject so = new SerializedObject(windowGun);
@@ -141,13 +154,10 @@ public static class WindowGunBuilder
             }
             GameObject gun = (GameObject)PrefabUtility.InstantiatePrefab(gunPrefab);
             gun.name = gunName;
-            // 右向きに設置する。プレハブは左向きが基準なので localScale.x を反転する
-            gun.transform.position =
-                window.transform.position + new Vector3(0.45f, -0.02f, 0f);
-            gun.transform.localScale = new Vector3(-1f, 1f, 1f);
+            // 銃尻ピボットを窓の中心に置く。向きは実行時にプレイヤー位置で切り替わる
+            gun.transform.position = window.transform.position + new Vector3(0f, -0.02f, 0f);
             SerializedObject so = new SerializedObject(gun.GetComponent<WindowGun>());
             so.FindProperty("firstDelay").floatValue = firstDelay;
-            so.FindProperty("isLeft").boolValue = false;
             so.ApplyModifiedPropertiesWithoutUndo();
             firstDelay += 1f;
         }
