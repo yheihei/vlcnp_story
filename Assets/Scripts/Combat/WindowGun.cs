@@ -25,6 +25,10 @@ namespace VLCNP.Combat
         [SerializeField]
         float damage = 1f;
 
+        [Header("弾が消えるまでの飛距離")]
+        [SerializeField]
+        float bulletMaxDistance = 8f;
+
         [Header("プレイヤーが見つからないときの発射方向")]
         [SerializeField]
         bool isLeft = true;
@@ -64,6 +68,14 @@ namespace VLCNP.Combat
             );
             projectile.SetDirection(isLeft);
             projectile.SetDamage(damage);
+            if (
+                projectile.TryGetComponent(
+                    out DestroyAfterMovedDistance destroyAfterMovedDistance
+                )
+            )
+            {
+                destroyAfterMovedDistance.MaxDistance = bulletMaxDistance;
+            }
             if (fireEffect != null)
             {
                 GameObject effect = Instantiate(fireEffect, muzzle.position, Quaternion.identity);

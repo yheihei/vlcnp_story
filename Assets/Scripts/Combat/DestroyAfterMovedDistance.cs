@@ -7,6 +7,11 @@ namespace VLCNP.Combat
     {
         [SerializeField]
         float maxDistance = 8f;
+        public float MaxDistance
+        {
+            get => maxDistance;
+            set => maxDistance = value;
+        }
 
         private Vector3 startPosition;
 
