@@ -136,6 +136,10 @@ namespace VLCNP.Control
             {
                 return;
             }
+            if (currentMemberCache?.health == null)
+            {
+                return;
+            }
             // 現在のキャラが死んでいれば受け付けない
             if (currentMemberCache.health.IsDead)
             {
@@ -448,7 +452,30 @@ namespace VLCNP.Control
             if (currentPlayerName == null)
                 return;
 
-            currentPlayer = Array.Find(members, member => member.name == currentPlayerName);
+            currentPlayer = Array.Find(
+                members,
+                member => member != null && member.name == currentPlayerName
+            );
+            if (currentPlayer == null)
+            {
+                currentPlayer = Array.Find(
+                    members,
+                    member => member != null && member.name == "Akim"
+                );
+                if (currentPlayer == null)
+                {
+                    currentPlayer = Array.Find(members, member => member != null);
+                }
+
+                Debug.LogError(
+                    $"Party member '{currentPlayerName}' was not found. " +
+                    $"Falling back to '{currentPlayer?.name ?? "none"}'."
+                );
+                if (currentPlayer == null)
+                {
+                    return;
+                }
+            }
             RefreshCurrentMemberCache();
             // PartyHealthLevelを復元
             partyHealthLevel.SetLevel(
