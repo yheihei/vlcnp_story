@@ -13,6 +13,8 @@ public static class WindowGunBuilder
     private const string FireEffectPath = "Assets/Game/Projectiles/Effect/WhiteHitEffect.prefab";
     private const string BulletPrefabPath = "Assets/Game/Projectiles/WindowGunBullet.prefab";
     private const string GunPrefabPath = "Assets/Game/Characters/Enemy/WindowGun.prefab";
+    private const string DownGunPrefabPath =
+        "Assets/Game/Characters/Enemy/DownWindowGun.prefab";
 
     [MenuItem("Tools/WindowGun/Build Prefabs", false, 3000)]
     public static void BuildPrefabs()
@@ -22,7 +24,8 @@ public static class WindowGunBuilder
         ConfigureSpriteImporter(BulletSpritePath, null);
 
         GameObject bulletPrefab = BuildBulletPrefab();
-        BuildGunPrefab(bulletPrefab);
+        GameObject gunPrefab = BuildGunPrefab(bulletPrefab);
+        BuildDownGunPrefab(gunPrefab);
         AssetDatabase.SaveAssets();
         Debug.Log("WindowGun prefabs built.");
     }
@@ -84,7 +87,7 @@ public static class WindowGunBuilder
         return prefab;
     }
 
-    private static void BuildGunPrefab(GameObject bulletPrefab)
+    private static GameObject BuildGunPrefab(GameObject bulletPrefab)
     {
         Sprite barrelSprite = AssetDatabase.LoadAssetAtPath<Sprite>(BarrelSpritePath);
         GameObject fireEffect = AssetDatabase.LoadAssetAtPath<GameObject>(FireEffectPath);
@@ -117,7 +120,22 @@ public static class WindowGunBuilder
         so.FindProperty("isLeft").boolValue = true;
         so.ApplyModifiedPropertiesWithoutUndo();
 
-        PrefabUtility.SaveAsPrefabAsset(gun, GunPrefabPath);
+        GameObject prefab = PrefabUtility.SaveAsPrefabAsset(gun, GunPrefabPath);
+        Object.DestroyImmediate(gun);
+        return prefab;
+    }
+
+    private static void BuildDownGunPrefab(GameObject gunPrefab)
+    {
+        GameObject gun = (GameObject)PrefabUtility.InstantiatePrefab(gunPrefab);
+        gun.name = "DownWindowGun";
+        gun.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+
+        SerializedObject so = new SerializedObject(gun.GetComponent<WindowGun>());
+        so.FindProperty("isDownward").boolValue = true;
+        so.ApplyModifiedPropertiesWithoutUndo();
+
+        PrefabUtility.SaveAsPrefabAsset(gun, DownGunPrefabPath);
         Object.DestroyImmediate(gun);
     }
 

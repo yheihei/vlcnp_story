@@ -33,6 +33,10 @@ namespace VLCNP.Combat
         [SerializeField]
         bool isLeft = true;
 
+        [Header("プレイヤー位置を見ず、下方向へ固定して発射する")]
+        [SerializeField]
+        bool isDownward = false;
+
         private Transform playerTransform;
 
         private void Start()
@@ -54,8 +58,8 @@ namespace VLCNP.Combat
         {
             if (projectilePrefab == null)
                 return;
-            // 発射のたび(fireInterval ごと)にプレイヤーのいる側へ向きを変える
-            if (TryGetPlayerTransform(out Transform player))
+            // 横向きの場合は、発射のたび(fireInterval ごと)にプレイヤーのいる側へ向きを変える
+            if (!isDownward && TryGetPlayerTransform(out Transform player))
             {
                 isLeft = player.position.x < transform.position.x;
             }
@@ -64,9 +68,10 @@ namespace VLCNP.Combat
             Projectile projectile = Instantiate(
                 projectilePrefab,
                 muzzle.position,
-                Quaternion.identity
+                isDownward ? Quaternion.Euler(0f, 0f, 90f) : Quaternion.identity
             );
-            projectile.SetDirection(isLeft);
+            // Projectile はローカルX方向へ進む。90度回転 + 左向きでワールド下方向になる。
+            projectile.SetDirection(isDownward || isLeft);
             projectile.SetDamage(damage);
             if (
                 projectile.TryGetComponent(
@@ -85,6 +90,9 @@ namespace VLCNP.Combat
 
         private void UpdateFacing()
         {
+            if (isDownward)
+                return;
+
             // スプライトは左向きが基準。右向きは localScale.x を反転して表現する
             Vector3 scale = transform.localScale;
             float scaleX = Mathf.Abs(scale.x);
