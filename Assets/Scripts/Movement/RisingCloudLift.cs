@@ -167,7 +167,9 @@ namespace VLCNP.Movement
 
             foreach (var rider in riderBodies)
             {
-                rider.MovePosition(rider.position + delta);
+                // MovePosition はプレイヤー自身の横移動・ジャンプ速度を上書きするため、
+                // 雲が移動した分だけ位置を加算して物理速度は保持する。
+                rider.position += delta;
             }
         }
     }
