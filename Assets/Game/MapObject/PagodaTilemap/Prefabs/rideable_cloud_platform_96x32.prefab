@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4837824625682889976}
   - component: {fileID: 6333920516254353944}
   - component: {fileID: 9089333420742520662}
+  - component: {fileID: 698723162699611358}
+  - component: {fileID: 7500756278823088836}
   m_Layer: 0
   m_Name: rideable_cloud_platform_96x32
   m_TagString: Ground
@@ -130,3 +132,49 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.875, y: 0.28}
   m_EdgeRadius: 0
+--- !u!50 &698723162699611358
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3265177511988194024}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!114 &7500756278823088836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3265177511988194024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8833a2db9b2649ddb6c4174053822cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upwardSpeed: 1.25
+  travelDistance: 6
+  floatAmplitude: 0.08
+  floatFrequency: 1.5
+  blinkStartRate: 0.95
+  blinkInterval: 0.08
+  carryRiders: 1

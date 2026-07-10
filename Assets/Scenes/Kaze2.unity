@@ -10394,3 +10394,60 @@ SceneRoots:
   - {fileID: 2005345498}
   - {fileID: 1469283012}
   - {fileID: 314848164}
+--- !u!1 &1807623985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1807623987}
+  - component: {fileID: 1807623986}
+  m_Layer: 0
+  m_Name: RideableCloudLiftSpawner_Verify
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1807623986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807623985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630c1361a78e1425c98dcff5a1cdee46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cloudLiftPrefab: {fileID: 3265177511988194024, guid: abb98280776784d588b171dbad445819, type: 3}
+  spawnInterval: 2.5
+  initialDelay: 0
+  spawnOnStart: 1
+  liftSettings:
+    upwardSpeed: 1.25
+    travelDistance: 30
+    floatAmplitude: 0.08
+    floatFrequency: 1.5
+    blinkStartRate: 0.95
+    blinkInterval: 0.08
+    carryRiders: 1
+--- !u!4 &1807623987
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807623985}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 12.95, y: -6.46, z: 0.086483896}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  - {fileID: 1807623987}
