@@ -1,6 +1,6 @@
 ---
 name: unity-editor-automation
-description: Operate the Unity Editor for vlcnpStory2022 through the UniCli CLI. Use whenever a task touches files under Assets/ (C# scripts, scenes, prefabs, tiles, ScriptableObjects), needs compilation, tests, Play Mode, GameObject or component changes, or Editor menu execution. Covers exec syntax, the edit-import-compile loop, Eval rules, and the Play Mode Eval deadlock pitfall.
+description: Operate the Unity Editor for vlcnpStory2022 through the UniCli CLI. Use when a task needs asset import, compilation, tests, Play Mode, scene or prefab operations, GameObject or component changes, or Editor menu execution. Covers safe command usage, Eval rules, and the Play Mode Eval deadlock pitfall.
 ---
 
 # Unity エディタ操作(UniCli)
@@ -19,15 +19,15 @@ unicli exec Console.GetLog '{"logType":"Error","maxCount":10}'   # 例
 - パラメータは第2引数に **JSON 文字列** で渡す。パラメータ無しなら省略可。
 - 機械可読な出力が欲しいときは `--json` を付ける。
 
-## 鉄則(順序を守る)
+## 安全ルール
 
-1. `Assets/` 配下のファイルを CLI 外(テキスト編集等)で作成・変更したら、必ず `AssetDatabase.Import` を実行する。しないと Unity に認識されない。
+1. `Assets/` 配下のファイルを CLI 外(テキスト編集等)で作成・変更した場合は、コンパイルや Unity 上の操作の前に `AssetDatabase.Import` を実行する。
    ```bash
    unicli exec AssetDatabase.Import '{"path":"Assets/Scripts/Combat/Foo.cs"}'
    ```
-2. C# を変更したら `unicli exec Compile` を実行し、**エラー 0 を確認するまで次に進まない**。エラー詳細は結果と `Console.GetLog` で見る。
+2. C# のまとまった変更後と完了報告前に `unicli exec Compile` を実行し、エラー 0 を確認する。編集途中の保存ごとには必要ない。エラー詳細は結果と `Console.GetLog` で見る。
 3. シーンを変更したら `Scene.Save`、プレハブは `Prefab.Save` / `Prefab.Apply`。未保存の変更は `Editor.Status` の "Dirty scenes" で分かる。
-4. 完了報告の前に `unity-playmode-verification` skill に従って動作検証する。
+4. `implementation-workflow` skill に従い、変更種別に応じて検証を選ぶ。プレイモード検証が必要な場合だけ `unity-playmode-verification` skill を使う。
 
 ## よく使うコマンド
 
@@ -41,12 +41,12 @@ unicli exec Console.GetLog '{"logType":"Error","maxCount":10}'   # 例
 | アセット | `AssetDatabase.Find`, `AssetDatabase.GetPath`, `AssetDatabase.Import`, `Search` |
 | メニュー実行 | `Menu.List`, `Menu.Execute`(`[MenuItem]` 付きエディタスクリプトの起動に使う) |
 | テスト | `TestRunner.RunEditMode`, `TestRunner.RunPlayMode` |
-| スクリーンショット | `Screenshot.Capture`(**プレイモード必須**。path 指定で PNG 保存) |
+| スクリーンショット | `Screenshot.Capture`(ユーザーが明示的に依頼した場合のみ。**プレイモード必須**) |
 
 ## Eval の掟(重要)
 
 - `Eval` は **エディットモード専用**。**プレイモード中に Eval を実行するとコンパイルが保留され、サーバー全体が「Server is busy executing 'Eval'」で固まる(タイムアウトしない)**。復旧にはエディタ側でプレイモードを止めるしかない。
-- プレイモード中の確認・操作は非 Eval コマンドのみ使う: `PlayMode.*`, `GameObject.Find`, `GameObject.GetComponents`, `Component.SetProperty`, `Console.GetLog`, `Screenshot.Capture`。
+- プレイモード中の確認・操作は非 Eval コマンドのみ使う: `PlayMode.*`, `GameObject.Find`, `GameObject.GetComponents`, `Component.SetProperty`, `Console.GetLog`。`Screenshot.Capture` はユーザーが明示的に依頼した場合だけ使う。
 - Eval のコード内では `Object` が曖昧になるため `UnityEngine.Object` のように**完全修飾**する。
 - 複雑・反復的な処理は Eval に長いコードを渡すより、`Assets/Scripts/Editor/` に `[MenuItem]` 付きエディタスクリプトを書き、`Compile` → `Menu.Execute` で実行するほうが安全で再利用できる(例: `Assets/Scripts/Editor/Kaze1MapBuilder.cs`)。
 
