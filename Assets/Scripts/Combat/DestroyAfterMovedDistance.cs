@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace VLCNP.Combat
@@ -13,7 +14,12 @@ namespace VLCNP.Combat
             set => maxDistance = value;
         }
 
+        [SerializeField]
+        [Min(0f)]
+        float fadeOutDuration = 0f;
+
         private Vector3 startPosition;
+        private bool isDisappearing;
 
         private void Start()
         {
@@ -22,10 +28,51 @@ namespace VLCNP.Combat
 
         private void Update()
         {
-            if (Vector3.Distance(startPosition, transform.position) >= maxDistance)
+            if (
+                !isDisappearing
+                && Vector3.Distance(startPosition, transform.position) >= maxDistance
+            )
+            {
+                StartCoroutine(Disappear());
+            }
+        }
+
+        private IEnumerator Disappear()
+        {
+            isDisappearing = true;
+            if (TryGetComponent(out Collider2D collider))
+            {
+                collider.enabled = false;
+            }
+
+            if (fadeOutDuration <= 0f)
             {
                 Destroy(gameObject);
+                yield break;
             }
+
+            SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
+            Color[] startColors = new Color[renderers.Length];
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                startColors[i] = renderers[i].color;
+            }
+
+            float elapsed = 0f;
+            while (elapsed < fadeOutDuration)
+            {
+                elapsed += Time.deltaTime;
+                float alphaRate = 1f - Mathf.Clamp01(elapsed / fadeOutDuration);
+                for (int i = 0; i < renderers.Length; i++)
+                {
+                    Color color = startColors[i];
+                    color.a *= alphaRate;
+                    renderers[i].color = color;
+                }
+                yield return null;
+            }
+
+            Destroy(gameObject);
         }
     }
 }

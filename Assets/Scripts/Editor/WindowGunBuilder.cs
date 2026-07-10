@@ -80,6 +80,7 @@ public static class WindowGunBuilder
             bullet.AddComponent<DestroyAfterMovedDistance>();
         SerializedObject soDistance = new SerializedObject(destroyAfterMovedDistance);
         soDistance.FindProperty("maxDistance").floatValue = 8f;
+        soDistance.FindProperty("fadeOutDuration").floatValue = 0.8f;
         soDistance.ApplyModifiedPropertiesWithoutUndo();
 
         GameObject prefab = PrefabUtility.SaveAsPrefabAsset(bullet, BulletPrefabPath);
