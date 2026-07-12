@@ -21205,6 +21205,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9072807208709021889, guid: 431e51c0b410e5548b0c958cf3d15a71, type: 3}
   m_PrefabInstance: {fileID: 1224388064}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1304559082 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 601067145859904097, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 1313368041}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c291fb3305c043418fb0c912fe30358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1305590058
 GameObject:
   m_ObjectHideFlags: 0
@@ -22079,6 +22090,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 9115671147885805727, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: noEnemies
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -22109,8 +22124,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 127111461581275700, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: characterToExperiences.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 127111461581275700, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
+      propertyPath: characterToExperiences.Array.data[0].experience
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 127111461581275700, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
+      propertyPath: characterToExperiences.Array.data[0].characterExperience
+      value: 
+      objectReference: {fileID: 1304559082}
     - target: {fileID: 625646515341984492, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: m_Name
       value: Debug
