@@ -41,24 +41,17 @@ namespace VLCNP.Control
         private IEnumerator StopAllCoroutine()
         {
             LoadCompleteManager loadCompleteManager = LoadCompleteManager.Instance;
+            bool hadManager = loadCompleteManager != null;
             // LoadCompleteManagerが存在し、ロードが完了していない場合は待つ
-            if (loadCompleteManager != null)
+            while (loadCompleteManager != null && !loadCompleteManager.IsLoaded)
             {
-                while (!loadCompleteManager.IsLoaded)
-                {
-                    yield return null;
-                }
-                PerfLog.Log("Stop All Components");
-                // ゲームの中で IStoppable を実装しているものを全て取得する（非アクティブ/子も含む）
-                var seen = new System.Collections.Generic.HashSet<IStoppable>();
-                foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>(true))
-                {
-                    IStoppable stoppable = obj as IStoppable;
-                    if (stoppable == null) continue;
-                    if (!seen.Add(stoppable)) continue;
-                    stoppable.IsStopped = true;
-                }
+                yield return null;
             }
+            // 待機中にシーン遷移でLoadCompleteManagerが破棄された場合は、停止対象のシーンごと消えているため中止
+            if (hadManager && loadCompleteManager == null) yield break;
+            // LoadCompleteManagerが無い場合でも停止は必ず実行する（以前は何もせず終了し、イベント中に操作できてしまった）
+            PerfLog.Log("Stop All Components");
+            SetAllStoppables(true);
         }
 
         public void StartAll()
@@ -69,23 +62,29 @@ namespace VLCNP.Control
 
         private IEnumerator StartAllCoroutine()
         {
-            // Loadが完了するのを待つ
             LoadCompleteManager loadCompleteManager = LoadCompleteManager.Instance;
-            if (loadCompleteManager != null)
+            bool hadManager = loadCompleteManager != null;
+            // Loadが完了するのを待つ
+            while (loadCompleteManager != null && !loadCompleteManager.IsLoaded)
             {
-                while (!loadCompleteManager.IsLoaded)
-                {
-                    yield return null;
-                }
-                PerfLog.Log("Start All Coroutines");
-                var seen = new System.Collections.Generic.HashSet<IStoppable>();
-                foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>(true))
-                {
-                    IStoppable stoppable = obj as IStoppable;
-                    if (stoppable == null) continue;
-                    if (!seen.Add(stoppable)) continue;
-                    stoppable.IsStopped = false;
-                }
+                yield return null;
+            }
+            // 待機中にシーン遷移でLoadCompleteManagerが破棄された場合は中止
+            if (hadManager && loadCompleteManager == null) yield break;
+            PerfLog.Log("Start All Coroutines");
+            SetAllStoppables(false);
+        }
+
+        // ゲームの中で IStoppable を実装しているものを全て取得し停止状態を設定する（非アクティブ/子も含む）
+        private void SetAllStoppables(bool isStopped)
+        {
+            var seen = new System.Collections.Generic.HashSet<IStoppable>();
+            foreach (MonoBehaviour obj in FindObjectsOfType<MonoBehaviour>(true))
+            {
+                IStoppable stoppable = obj as IStoppable;
+                if (stoppable == null) continue;
+                if (!seen.Add(stoppable)) continue;
+                stoppable.IsStopped = isStopped;
             }
         }
 
