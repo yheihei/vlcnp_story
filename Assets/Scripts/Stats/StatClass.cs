@@ -25,5 +25,6 @@ namespace VLCNP.Stats
         SkullKnightBoss,
         SkullArcher,
         VLMitamaBoss,
+        VeryShortSwallow,
     }
 }
