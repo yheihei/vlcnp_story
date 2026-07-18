@@ -51,6 +51,8 @@ Default building dimensions:
 
 ## Image Generation And Extraction
 
+To generate new source PNGs, delegate to Codex CLI following the `generate-2d-sprite` skill (Claude cannot generate images itself).
+
 When generating new building assets, ask for a contact sheet only if it helps review; extract final individual PNGs with deterministic pixel crops. Name files with dimensions:
 
 ```text
