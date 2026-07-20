@@ -19,7 +19,11 @@ namespace VLCNP.Projectiles
 
         [SerializeField]
         [Min(0f)]
-        private float maxLifetime = 8f;
+        private float maxLifetime = 16f;
+
+        [SerializeField]
+        [Min(0f)]
+        private float lifetimeFadeDuration = 0.3f;
 
         [SerializeField]
         private string targetTagName = "Player";
@@ -46,6 +50,8 @@ namespace VLCNP.Projectiles
         private float endX;
         private bool hasEndX;
         private bool hasImpacted;
+        private bool isFadingOut;
+        private Coroutine lifetimeCoroutine;
 
         public bool IsStopped { get; set; }
         public bool IsStucking => false;
@@ -62,7 +68,7 @@ namespace VLCNP.Projectiles
         {
             if (maxLifetime > 0f)
             {
-                Destroy(gameObject, maxLifetime);
+                lifetimeCoroutine = StartCoroutine(FadeOutAfterLifetime());
             }
         }
 
@@ -100,7 +106,7 @@ namespace VLCNP.Projectiles
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!other.CompareTag(targetTagName))
+            if (hasImpacted || isFadingOut || !other.CompareTag(targetTagName))
                 return;
 
             Health health = other.GetComponent<Health>();
@@ -115,10 +121,16 @@ namespace VLCNP.Projectiles
 
         public void ImpactAndDestroy()
         {
-            if (hasImpacted)
+            if (hasImpacted || isFadingOut)
                 return;
 
             hasImpacted = true;
+            if (lifetimeCoroutine != null)
+            {
+                StopCoroutine(lifetimeCoroutine);
+                lifetimeCoroutine = null;
+            }
+
             IsStopped = true;
             if (hitCollider != null)
             {
@@ -137,26 +149,49 @@ namespace VLCNP.Projectiles
                 Destroy(effect, 1f);
             }
 
-            if (spriteRenderer == null || hitFadeDuration <= 0f)
+            StartFadeOut(hitFadeDuration, hitScaleMultiplier);
+        }
+
+        private IEnumerator FadeOutAfterLifetime()
+        {
+            yield return new WaitForSeconds(maxLifetime);
+            lifetimeCoroutine = null;
+            if (hasImpacted)
+                yield break;
+
+            if (hitCollider != null)
+            {
+                hitCollider.enabled = false;
+            }
+            StartFadeOut(lifetimeFadeDuration, 1f);
+        }
+
+        private void StartFadeOut(float duration, float scaleMultiplier)
+        {
+            if (isFadingOut)
+                return;
+
+            isFadingOut = true;
+            if (spriteRenderer == null || duration <= 0f)
             {
                 Destroy(gameObject);
                 return;
             }
 
-            StartCoroutine(FadeOutAndDestroy());
+            StartCoroutine(FadeOutAndDestroy(duration, scaleMultiplier));
         }
 
-        private IEnumerator FadeOutAndDestroy()
+        private IEnumerator FadeOutAndDestroy(float duration, float scaleMultiplier)
         {
             Color startColor = spriteRenderer.color;
             Vector3 startScale = transform.localScale;
-            Vector3 endScale = startScale * hitScaleMultiplier;
+            Vector3 endScale = startScale * scaleMultiplier;
             float elapsedTime = 0f;
 
-            while (elapsedTime < hitFadeDuration)
+            while (elapsedTime < duration)
             {
                 elapsedTime += Time.deltaTime;
-                float progress = Mathf.Clamp01(elapsedTime / hitFadeDuration);
+                float progress = Mathf.Clamp01(elapsedTime / duration);
                 Color color = startColor;
                 color.a = startColor.a * (1f - progress);
                 spriteRenderer.color = color;
