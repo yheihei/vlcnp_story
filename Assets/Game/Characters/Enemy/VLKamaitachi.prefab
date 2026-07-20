@@ -39,7 +39,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1228306787870343435}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -162,7 +162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3690509389296582359, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3690509389296582359, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: m_Interpolate
@@ -363,7 +363,7 @@ PrefabInstance:
     - target: {fileID: 7728333157217015110, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: enemyActions.Array.data[8].unityReference
       value: 
-      objectReference: {fileID: 7874435268559343938}
+      objectReference: {fileID: 5879930266842479764}
     - target: {fileID: 7840673169103091083, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: chaseRange
       value: 16
@@ -413,7 +413,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 794816729013472116, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7874435268559343938}
+      addedObject: {fileID: 5879930266842479764}
   m_SourcePrefab: {fileID: 100100000, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
 --- !u!4 &771150025566640665 stripped
 Transform:
@@ -453,11 +453,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d5e6a6eb83e249568665110696b06be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &4807332786964785898 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 927446361278598795, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
-  m_PrefabInstance: {fileID: 5650293765682930785}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4848831148546683157 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 946708111783875956, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
@@ -474,7 +469,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 794816729013472116, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
   m_PrefabInstance: {fileID: 5650293765682930785}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7874435268559343938
+--- !u!114 &5879930266842479764
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -483,15 +478,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 5002973227908099861}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e00f74b095de549cca9b934ea80ee016, type: 3}
+  m_Script: {fileID: 11500000, guid: ce4aef35b40f542ae8c2e1f029610f0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponConfig: {fileID: 11400000, guid: bceec6d915507422faf5cbbc4b313048, type: 2}
-  launchTransform: {fileID: 4807332786964785898}
+  tornadoPrefab: {fileID: 5218313809165478685, guid: efb17c9aa26ba46e1b051e209b6649d7, type: 3}
   triggerName: attack
-  minProjectileCount: 3
-  maxProjectileCount: 4
-  totalSpreadAngle: 36
+  tornadoCount: 8
+  damage: 2
+  verticalRange: 5
+  minimumVerticalSpacing: 0
+  screenEdgePadding: 0.5
+  minimumHorizontalSpacing: 1.5
+  maximumHorizontalSpacing: 2.5
   fallbackLaunchDelay: 0.54
   waitAfterAttack: 3.05
   fireDistanceThreshold: 12
