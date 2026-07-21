@@ -8,7 +8,7 @@ using VLCNP.Core;
 namespace VLCNP.Projectiles
 {
     /**
-     * 画面端から反対側へ直進するカマイタチの竜巻。
+     * カマイタチの後方から前方へ直進する竜巻。
      */
     [RequireComponent(typeof(Rigidbody2D))]
     public class KamaitachiTornadoProjectile : MonoBehaviour, IProjectile, IStoppable
@@ -23,7 +23,15 @@ namespace VLCNP.Projectiles
 
         [SerializeField]
         [Min(0f)]
+        private float spawnFadeDuration = 0.3f;
+
+        [SerializeField]
+        [Min(0f)]
         private float lifetimeFadeDuration = 0.3f;
+
+        [SerializeField]
+        [Min(0f)]
+        private float endFadeDuration = 0.3f;
 
         [SerializeField]
         private string targetTagName = "Player";
@@ -45,12 +53,14 @@ namespace VLCNP.Projectiles
         private Rigidbody2D rbody;
         private Collider2D hitCollider;
         private SpriteRenderer spriteRenderer;
+        private Color spawnTargetColor;
         private bool isLeft;
         private float damage;
         private float endX;
         private bool hasEndX;
         private bool hasImpacted;
         private bool isFadingOut;
+        private Coroutine fadeInCoroutine;
         private Coroutine lifetimeCoroutine;
 
         public bool IsStopped { get; set; }
@@ -62,10 +72,25 @@ namespace VLCNP.Projectiles
             rbody = GetComponent<Rigidbody2D>();
             hitCollider = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                spawnTargetColor = spriteRenderer.color;
+                if (spawnFadeDuration > 0f)
+                {
+                    Color transparentColor = spawnTargetColor;
+                    transparentColor.a = 0f;
+                    spriteRenderer.color = transparentColor;
+                }
+            }
         }
 
         private void Start()
         {
+            if (spriteRenderer != null && spawnFadeDuration > 0f)
+            {
+                fadeInCoroutine = StartCoroutine(FadeIn());
+            }
+
             if (maxLifetime > 0f)
             {
                 lifetimeCoroutine = StartCoroutine(FadeOutAfterLifetime());
@@ -84,7 +109,7 @@ namespace VLCNP.Projectiles
 
             if (hasEndX && (isLeft ? nextPosition.x <= endX : nextPosition.x >= endX))
             {
-                Destroy(gameObject);
+                FadeOutAtDestination();
             }
         }
 
@@ -102,6 +127,24 @@ namespace VLCNP.Projectiles
         {
             endX = destinationX;
             hasEndX = true;
+        }
+
+        private IEnumerator FadeIn()
+        {
+            Color color = spriteRenderer.color;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < spawnFadeDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                color.a = spawnTargetColor.a
+                    * Mathf.Clamp01(elapsedTime / spawnFadeDuration);
+                spriteRenderer.color = color;
+                yield return null;
+            }
+
+            spriteRenderer.color = spawnTargetColor;
+            fadeInCoroutine = null;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -166,12 +209,44 @@ namespace VLCNP.Projectiles
             StartFadeOut(lifetimeFadeDuration, 1f);
         }
 
+        private void FadeOutAtDestination()
+        {
+            if (isFadingOut)
+                return;
+
+            if (lifetimeCoroutine != null)
+            {
+                StopCoroutine(lifetimeCoroutine);
+                lifetimeCoroutine = null;
+            }
+
+            IsStopped = true;
+            if (hitCollider != null)
+            {
+                hitCollider.enabled = false;
+            }
+
+            if (rbody != null)
+            {
+                rbody.velocity = Vector2.zero;
+                rbody.simulated = false;
+            }
+
+            StartFadeOut(endFadeDuration, 1f);
+        }
+
         private void StartFadeOut(float duration, float scaleMultiplier)
         {
             if (isFadingOut)
                 return;
 
             isFadingOut = true;
+            if (fadeInCoroutine != null)
+            {
+                StopCoroutine(fadeInCoroutine);
+                fadeInCoroutine = null;
+            }
+
             if (spriteRenderer == null || duration <= 0f)
             {
                 Destroy(gameObject);

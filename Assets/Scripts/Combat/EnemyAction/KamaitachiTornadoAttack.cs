@@ -6,7 +6,7 @@ using VLCNP.Projectiles;
 namespace VLCNP.Combat.EnemyAction
 {
     /**
-     * カマイタチの向きに応じた画面端から、プレイヤーの高さを含む複数の竜巻を発生させる。
+     * カマイタチの後方から、プレイヤーの高さを含む複数の竜巻を発生させる。
      */
     public class KamaitachiTornadoAttack : EnemyAction
     {
@@ -35,6 +35,10 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         [Min(0f)]
         private float screenEdgePadding = 0.5f;
+
+        [SerializeField]
+        [Min(0f)]
+        private float spawnDistanceBehind = 10f;
 
         [SerializeField]
         [Min(0f)]
@@ -191,8 +195,6 @@ namespace VLCNP.Combat.EnemyAction
             List<float> spawnHeights = CreateSpawnHeights(player.position.y);
             List<float> spawnXPositions = CreateSpawnXPositions(
                 shouldMoveLeft,
-                leftEdge,
-                rightEdge,
                 spawnHeights.Count
             );
             for (int i = 0; i < spawnHeights.Count; i++)
@@ -211,18 +213,14 @@ namespace VLCNP.Combat.EnemyAction
                 tornado.SetDamage(damage);
                 tornado.SetEndX(endX);
                 activeTornadoes.Add(tornado);
+                tornado.gameObject.SetActive(true);
             }
 
             hasLaunched = true;
             launchedAt = Time.time;
         }
 
-        private List<float> CreateSpawnXPositions(
-            bool shouldMoveLeft,
-            float leftEdge,
-            float rightEdge,
-            int count
-        )
+        private List<float> CreateSpawnXPositions(bool shouldMoveLeft, int count)
         {
             int positionCount = Mathf.Max(1, count);
             float minimumSpacing = Mathf.Min(
@@ -233,15 +231,14 @@ namespace VLCNP.Combat.EnemyAction
                 Mathf.Abs(minimumHorizontalSpacing),
                 Mathf.Abs(maximumHorizontalSpacing)
             );
-            float outsideDirection = shouldMoveLeft ? 1f : -1f;
-            float currentX = shouldMoveLeft
-                ? rightEdge + screenEdgePadding
-                : leftEdge - screenEdgePadding;
+            float behindDirection = shouldMoveLeft ? 1f : -1f;
+            float currentX = cachedTransform.position.x
+                + behindDirection * Mathf.Abs(spawnDistanceBehind);
             var positions = new List<float>(positionCount) { currentX };
 
             for (int i = 1; i < positionCount; i++)
             {
-                currentX += outsideDirection * Random.Range(minimumSpacing, maximumSpacing);
+                currentX += behindDirection * Random.Range(minimumSpacing, maximumSpacing);
                 positions.Add(currentX);
             }
 
