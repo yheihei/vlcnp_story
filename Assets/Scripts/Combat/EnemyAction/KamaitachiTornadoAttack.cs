@@ -38,7 +38,7 @@ namespace VLCNP.Combat.EnemyAction
 
         [SerializeField]
         [Min(0f)]
-        private float spawnDistanceBehind = 10f;
+        private float spawnDistanceBehind = 3f;
 
         [SerializeField]
         [Min(0f)]

@@ -49,5 +49,6 @@ namespace VLCNP.Core
         Yami3FDoorClosed, // おひるねべや(闇)の3Fで閉じ込められた
         VLMitamaJoined, // VLミタマが仲間になった
         Yami2FTobiraZakoDefeated, // おひるねべや(闇)の2Fの扉を守るザコを倒した
+        VLKamaitachi1Defeated,  // 風のVLかまいたち1人目を倒した
     }
 }

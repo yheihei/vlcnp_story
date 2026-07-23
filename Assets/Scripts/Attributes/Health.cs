@@ -10,9 +10,13 @@ using VLCNP.Combat;
 using VLCNP.Core;
 using VLCNP.Saving;
 using VLCNP.Stats;
+using VLCNP.UI;
 
 namespace VLCNP.Attributes
 {
+    /**
+     * キャラクターの体力と死亡時の処理を管理する
+     */
     public class Health : MonoBehaviour, IStoppable
     {
         float healthPoints = -1f;
@@ -33,6 +37,20 @@ namespace VLCNP.Attributes
 
         [SerializeField]
         public bool IsGameOverEventExecute = false;
+
+        [Header("ボス撃破時の制御")]
+        [SerializeField]
+        private Flag defeatedFlag = Flag.None;
+
+        [SerializeField]
+        private bool hideBossStatusOnDeath = false;
+
+        [SerializeField]
+        private AudioClip defeatedFlagSe = null;
+
+        [SerializeField]
+        [Range(0f, 1f)]
+        private float defeatedFlagSeVolume = 0.5f;
 
         // 一時的な無敵状態かどうか
         private bool isTempInvincible = false;
@@ -170,13 +188,61 @@ namespace VLCNP.Attributes
         {
             if (isDead)
                 return;
+
+            isDead = true;
+            HideBossStatusOnDeath();
+
             if (dieEvent.GetPersistentEventCount() > 0)
             {
-                isDead = true;
                 dieEvent.Invoke(gameObject);
                 return;
             }
             DeadEffectAndDestroy();
+        }
+
+        private void HideBossStatusOnDeath()
+        {
+            if (!hideBossStatusOnDeath)
+                return;
+
+            if (!BossStatusVisibility.SetVisible(false))
+            {
+                Debug.LogWarning(
+                    $"[{nameof(Health)}] BossStatus が見つからないため、非表示にできません。",
+                    this
+                );
+            }
+        }
+
+        private void SetDefeatedFlag()
+        {
+            if (defeatedFlag == Flag.None)
+                return;
+
+            FlagManager flagManager = FlagManager.FindInScene();
+            if (flagManager != null)
+            {
+                flagManager.SetFlag(defeatedFlag, true);
+                PlayDefeatedFlagSe();
+                return;
+            }
+
+            Debug.LogWarning(
+                $"[{nameof(Health)}] FlagManager が見つからないため、{defeatedFlag} を設定できません。",
+                this
+            );
+        }
+
+        private void PlayDefeatedFlagSe()
+        {
+            if (defeatedFlagSe == null)
+                return;
+
+            AudioSource.PlayClipAtPoint(
+                defeatedFlagSe,
+                transform.position,
+                defeatedFlagSeVolume
+            );
         }
 
         // 落下ミスなど、無敵時間や停止状態に関係なく即死させる
@@ -222,6 +288,7 @@ namespace VLCNP.Attributes
                 yield return null;
             }
             Destroy(gameObject);
+            SetDefeatedFlag();
         }
 
         public float GetHealthPoints()
