@@ -38,10 +38,20 @@ namespace VLCNP.Combat
         bool isDownward = false;
 
         private Transform playerTransform;
+        private Coroutine fireLoopCoroutine;
 
-        private void Start()
+        private void OnEnable()
         {
-            StartCoroutine(FireLoop());
+            fireLoopCoroutine = StartCoroutine(FireLoop());
+        }
+
+        private void OnDisable()
+        {
+            if (fireLoopCoroutine == null)
+                return;
+
+            StopCoroutine(fireLoopCoroutine);
+            fireLoopCoroutine = null;
         }
 
         private IEnumerator FireLoop()
