@@ -30,7 +30,7 @@ Use it as a decision checklist. Confirm important changes with Profiler, Memory 
 
 - Use `MaterialPropertyBlock` for per-object renderer property changes instead of touching `renderer.material` during gameplay.
 - Confirm camera/layer culling for off-screen or irrelevant objects. Use `Culling Mask`, renderer enable/disable, chunk activation, or simple visibility systems when the Profiler/Frame Debugger shows avoidable rendering work.
-- Consider LOD only when object scale, camera distance, or large scene counts make it worthwhile. For 2D/WebGL projects, prefer simpler culling or activation boundaries before adding LOD complexity.
+- Consider LOD only when object scale, camera distance, or large scene counts make it worthwhile. For 2D projects, prefer simpler culling or activation boundaries before adding LOD complexity.
 - Split uGUI Canvas objects by update frequency. Static HUD, dynamic gauges, and rapidly changing text should not force one large Canvas rebuild.
 - Remove or disable `GraphicRaycaster` on Canvas objects that do not need pointer interaction.
 - Disable `Raycast Target` on decorative or non-interactive `Image`, `Text`, and TMP graphics.
@@ -49,7 +49,7 @@ Use it as a decision checklist. Confirm important changes with Profiler, Memory 
 - Replace heavy `Resources.Load` runtime paths with Addressables or explicit serialized references. `Resources` also increases build size when unused assets remain under Resources folders.
 - Run save/load, network, and other IO asynchronously. For Unity async work, use project-standard async patterns such as `Task`, coroutines, or UniTask if already installed.
 - Load independent assets in parallel with `Task.WhenAll` or `UniTask.WhenAll`, but keep dependency order explicit when assets depend on one another.
-- For WebGL, account for single-threaded constraints, browser memory ceilings, compressed build settings, asset bundle size, and main-thread stalls from synchronous work.
+- For standalone builds, account for first-load stalls from synchronous work on the main thread, build size, and IL2CPP build settings.
 
 ## Animator and Input
 
@@ -61,7 +61,7 @@ Use it as a decision checklist. Confirm important changes with Profiler, Memory 
 
 1. Reproduce the slow scene or action.
 2. Capture baseline frame time, GC alloc per frame, spikes, draw calls, memory snapshot, or loading duration.
-3. Isolate the bottleneck category: scripts, rendering, UI, physics, animation, loading, memory, or browser/WebGL.
+3. Isolate the bottleneck category: scripts, rendering, UI, physics, animation, loading, or memory.
 4. Apply one focused fix.
 5. Re-measure the same path and compare.
 6. Keep a note of any tradeoff, behavior risk, or editor-only limitation.

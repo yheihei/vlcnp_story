@@ -40,4 +40,4 @@ description: Code, asset, and scene conventions for vlcnpStory2022. Use when cre
 ## その他
 
 - 会話・イベント演出は Fungus を使う。
-- Unity 2022.3 / ビルドターゲットは WebGL。WebGL で動かない API(スレッド、`System.IO` の一部など)に注意する。
+- Unity 2022.3 / ビルドターゲットは Windows・macOS Standalone(Steam 配信)。

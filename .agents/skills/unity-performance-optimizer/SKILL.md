@@ -1,6 +1,6 @@
 ---
 name: unity-performance-optimizer
-description: "Unity projects performance diagnosis and optimization guidance for gameplay code, UI, assets, physics, memory/GC, WebGL builds, and profiling. Use when asked to make a Unity game lighter or faster, reduce frame drops, improve FPS, remove GC allocations, optimize Update/FixedUpdate hot paths, improve uGUI/TMP/Animator/Input/physics usage, replace synchronous loading, investigate WebGL performance, or review Unity C# code for performance risks."
+description: "Unity projects performance diagnosis and optimization guidance for gameplay code, UI, assets, physics, memory/GC, Windows/macOS standalone builds, and profiling. Use when asked to make a Unity game lighter or faster, reduce frame drops, improve FPS, remove GC allocations, optimize Update/FixedUpdate hot paths, improve uGUI/TMP/Animator/Input/physics usage, replace synchronous loading, investigate standalone build performance, or review Unity C# code for performance risks."
 ---
 
 # Unity Performance Optimizer
@@ -10,7 +10,7 @@ description: "Unity projects performance diagnosis and optimization guidance for
 Optimize only after building a small evidence loop:
 
 1. Identify the target: platform, scene, symptom, target FPS, reproduction path, and whether the issue is CPU, GPU, memory, GC, loading, or input latency.
-2. Measure first when possible: Unity Profiler, Memory Profiler, Frame Debugger, Physics Profiler, build logs, browser devtools for WebGL, or a focused static scan.
+2. Measure first when possible: Unity Profiler, Memory Profiler, Frame Debugger, Physics Profiler, build logs, standalone player attach/profiling, or a focused static scan.
 3. Make the smallest high-confidence change that targets the measured bottleneck.
 4. Re-run the same measurement and report before/after evidence. If measurement is unavailable, state the assumption and residual risk.
 
@@ -52,7 +52,7 @@ Load `references/unity-performance-checklist.md` when you need specific patterns
 - Distance comparisons, Animator hashes, `CompareTag`, Input System migration.
 - uGUI Canvas splitting, GraphicRaycaster removal, Raycast Target cleanup, TMP migration.
 - `MaterialPropertyBlock`, culling/LOD checks, Addressables, async IO, parallel independent loads.
-- Profiling loop and WebGL-specific verification notes.
+- Profiling loop and standalone build verification notes.
 
 ## Reporting
 

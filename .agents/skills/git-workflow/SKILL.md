@@ -12,9 +12,10 @@ description: Git workflow rules for /Users/yhei/unity/vlcnpStory2022. Use when C
 ## Project Context
 
 - Unity: 2022.3
-- Target: WebGL
+- Target: Windows / macOS Standalone (Steam)
 - Genre: Metroidvania-style 2D action
-- Goal: year-end release and 1,000 monthly active users
+- Goal: Steam release at the end of December 2026 (JPY 980, Japanese only at launch); 2,500 wishlists at launch, 1,000 copies sold in the first year
+- Near-term milestone: Steam Next Fest in October 2026 — demo quality is the priority
 
 ## Directory Scope
 
