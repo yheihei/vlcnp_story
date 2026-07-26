@@ -73,7 +73,6 @@ namespace VLCNP.Combat
                 handTransform.rotation
             );
             // 射出パワーがある場合、生成した射出物にRigidBodyで力を加える
-            Debug.Log("launchPower: " + _weaponLevel.launchPower);
             if (_weaponLevel.launchPower > 0)
             {
                 Rigidbody2D rb = projectileObj.GetComponent<Rigidbody2D>();
