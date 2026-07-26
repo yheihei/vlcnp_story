@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VLCNP.Core;
@@ -53,11 +54,23 @@ namespace VLCNP.SceneManagement
         [SerializeField]
         bool isShowAreaName = false;
 
+        [Header("遷移開始時にプレイヤーを固定するか（フェードアウト中の落下を防ぐ）")]
+        [SerializeField]
+        bool isFreezePlayerOnStart = true;
+
         private AudioSource BGM;
         private AreaBGM areaBGM;
 
         bool isTransitioning = false;
         bool isRegisteredSharedState = false;
+
+        private class FrozenPlayer
+        {
+            public Rigidbody2D Rigidbody;
+            public RigidbodyConstraints2D Constraints;
+        }
+
+        private readonly List<FrozenPlayer> frozenPlayers = new List<FrozenPlayer>();
 
         public void ExecuteTransition()
         {
@@ -82,6 +95,9 @@ namespace VLCNP.SceneManagement
             try
             {
                 DontDestroyOnLoad(gameObject);
+
+                // フェードアウト中にプレイヤーが落下・移動しないよう固定する
+                FreezePlayers();
 
                 // SceneFaderタグでFaderを取得
                 Fader fader = GameObject.FindWithTag("SceneFader").GetComponent<Fader>();
@@ -111,6 +127,9 @@ namespace VLCNP.SceneManagement
                     ?? throw new System.Exception("Transition spawn point not found");
                 print("transition spawn point found");
                 UpdatePlayerPosition(transitionSpawnPoint);
+
+                // 遷移前のプレイヤーが残っている場合に備えて固定を解除する
+                UnfreezePlayers();
 
                 yield return new WaitForSeconds(fadeWaitTime / 2);
 
@@ -144,13 +163,62 @@ namespace VLCNP.SceneManagement
             }
             finally
             {
+                UnfreezePlayers();
                 UnregisterSharedState();
             }
         }
 
         private void OnDestroy()
         {
+            UnfreezePlayers();
             UnregisterSharedState();
+        }
+
+        /// <summary>
+        /// 遷移開始時にPlayerタグのオブジェクトを物理的に固定する。
+        /// フェードアウト中に壁キック中のプレイヤーが落下して見えるのを防ぐ。
+        /// </summary>
+        private void FreezePlayers()
+        {
+            if (!isFreezePlayerOnStart)
+                return;
+            foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                if (player == null)
+                    continue;
+                // 歩行アニメーションが流れ続けないように止める
+                var mover = player.GetComponent<Movement.Mover>();
+                if (mover != null)
+                    mover.Stop();
+
+                Rigidbody2D rbody = player.GetComponent<Rigidbody2D>();
+                if (rbody == null)
+                    continue;
+                if (frozenPlayers.Exists(frozen => frozen.Rigidbody == rbody))
+                    continue;
+                frozenPlayers.Add(
+                    new FrozenPlayer { Rigidbody = rbody, Constraints = rbody.constraints }
+                );
+                rbody.velocity = Vector2.zero;
+                rbody.angularVelocity = 0f;
+                rbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            }
+        }
+
+        private void UnfreezePlayers()
+        {
+            if (frozenPlayers.Count == 0)
+                return;
+            foreach (FrozenPlayer frozen in frozenPlayers)
+            {
+                // シーン遷移で元のプレイヤーごと破棄されている場合は何もしない
+                if (frozen.Rigidbody == null)
+                    continue;
+                frozen.Rigidbody.constraints = frozen.Constraints;
+                frozen.Rigidbody.velocity = Vector2.zero;
+                frozen.Rigidbody.angularVelocity = 0f;
+            }
+            frozenPlayers.Clear();
         }
 
         private void RegisterSharedState()
