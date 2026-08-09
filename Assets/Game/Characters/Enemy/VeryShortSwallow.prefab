@@ -88,6 +88,18 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4651594929069687807, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651594929069687807, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.73999995
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651594929069687807, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.73999995
+      objectReference: {fileID: 0}
     - target: {fileID: 4665941611301516859, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -106,11 +118,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961362475234393720, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 15.318148
       objectReference: {fileID: 0}
     - target: {fileID: 4961362475234393720, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 5.43
       objectReference: {fileID: 0}
     - target: {fileID: 4961362475234393720, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -152,6 +164,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6667187310596001339, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
+      propertyPath: experiences.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6667187310596001339, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
+      propertyPath: experiences.Array.data[1]
+      value: 
+      objectReference: {fileID: 9160499032431620066, guid: 437fa99437b6b43a4b003571f5e33d78, type: 3}
+    - target: {fileID: 6667187310596001339, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
+      propertyPath: experiences.Array.data[2]
+      value: 
+      objectReference: {fileID: 9160499032431620066, guid: 437fa99437b6b43a4b003571f5e33d78, type: 3}
     - target: {fileID: 6679269501749362022, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -183,7 +207,7 @@ PrefabInstance:
     - target: {fileID: 7728333157217015110, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: enemyActions.Array.data[1].unityReference
       value: 
-      objectReference: {fileID: 1317981977719048013}
+      objectReference: {fileID: 5552662101301297857}
     - target: {fileID: 7728333157217015110, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: enemyActions.Array.data[2].unityReference
       value: 
@@ -236,7 +260,7 @@ PrefabInstance:
       addedObject: {fileID: 2020116618049571286}
     - targetCorrespondingSourceObject: {fileID: 794816729013472116, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1317981977719048013}
+      addedObject: {fileID: 5552662101301297857}
   m_SourcePrefab: {fileID: 100100000, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
 --- !u!114 &4019982881515073440 stripped
 MonoBehaviour:
@@ -286,7 +310,7 @@ MonoBehaviour:
   riseDuration: 1.6
   swayAmplitude: 0.25
   animationStateName: Hover
---- !u!114 &1317981977719048013
+--- !u!114 &5552662101301297857
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,10 +319,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 4164685145193542229}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e74da9be6302743139ca0cd47f553703, type: 3}
+  m_Script: {fileID: 11500000, guid: 04704099d803f46df8bccb741d80cf2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTimeSecond: 1
+  waitTimeSecond: 3
+  startShakeAmplitude: 0.03
+  endShakeAmplitude: 0.12
+  startShakeFrequency: 6
+  endShakeFrequency: 16
+  verticalBobAmplitude: 0.05
+  verticalBobCycles: 2
+  animationStateName: Hover
 --- !u!114 &7961702996879295559 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6679269501749362022, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
