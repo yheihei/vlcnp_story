@@ -123,6 +123,11 @@ namespace VLCNP.Projectiles
             damage = projectileDamage;
         }
 
+        public void SetSpeed(float projectileSpeed)
+        {
+            speed = Mathf.Max(0f, projectileSpeed);
+        }
+
         public void SetEndX(float destinationX)
         {
             endX = destinationX;
