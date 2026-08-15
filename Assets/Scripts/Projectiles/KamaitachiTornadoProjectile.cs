@@ -62,6 +62,8 @@ namespace VLCNP.Projectiles
         private bool isFadingOut;
         private Coroutine fadeInCoroutine;
         private Coroutine lifetimeCoroutine;
+        private RigidbodyInterpolation2D initialInterpolation;
+        private bool hasRestoredInterpolation;
 
         public bool IsStopped { get; set; }
         public bool IsStucking => false;
@@ -70,6 +72,10 @@ namespace VLCNP.Projectiles
         private void Awake()
         {
             rbody = GetComponent<Rigidbody2D>();
+            // 生成直後は補間バッファが生成位置を知らず、原点付近に1フレーム描画されるため
+            // 最初の物理ステップまで補間を無効にする
+            initialInterpolation = rbody.interpolation;
+            rbody.interpolation = RigidbodyInterpolation2D.None;
             hitCollider = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             if (spriteRenderer != null)
@@ -99,6 +105,13 @@ namespace VLCNP.Projectiles
 
         private void FixedUpdate()
         {
+            if (!hasRestoredInterpolation)
+            {
+                // 物理ステップ開始後なら現在位置から補間が始まるため元の設定へ戻す
+                rbody.interpolation = initialInterpolation;
+                hasRestoredInterpolation = true;
+            }
+
             if (IsStopped)
                 return;
 
