@@ -17,6 +17,8 @@ public static class NarukamiHomingShockwaveBuilder
 {
     private const string SpritePath = "Assets/Game/Projectiles/Sprite/narukami_shockwave_128.png";
     private const string HitEffectPath = "Assets/Game/Projectiles/Effect/WhiteHitEffect.prefab";
+    // 敵キャラの被弾音(TakeDamageSe)と同じクリップ
+    private const string TakeDamageSePath = "Assets/Game/SE/powerup03 1.mp3";
     private const string ProgressionPath = "Assets/Game/Stats/Progression.asset";
     private const string ShockwavePrefabPath = "Assets/Game/Projectiles/NarukamiHomingShockwave.prefab";
     private const string BossPrefabPath = "Assets/Game/Characters/Enemy/VLNarukamiBoss.prefab";
@@ -77,8 +79,13 @@ public static class NarukamiHomingShockwaveBuilder
         NarukamiHomingShockwave projectile = root.GetComponent<NarukamiHomingShockwave>();
         if (projectile == null)
             projectile = root.AddComponent<NarukamiHomingShockwave>();
+        AudioClip damageSe = AssetDatabase.LoadAssetAtPath<AudioClip>(TakeDamageSePath);
+        if (damageSe == null)
+            throw new System.InvalidOperationException($"SE load failed: {TakeDamageSePath}");
+
         SerializedObject serializedProjectile = new SerializedObject(projectile);
         serializedProjectile.FindProperty("hitEffect").objectReferenceValue = hitEffect;
+        serializedProjectile.FindProperty("takeDamageSe").objectReferenceValue = damageSe;
         serializedProjectile.ApplyModifiedPropertiesWithoutUndo();
 
         BaseStats baseStats = root.GetComponent<BaseStats>();

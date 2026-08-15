@@ -164,14 +164,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialSpeed: 3
-  maxSpeed: 4.5
-  homingAcceleration: 5
-  selfRotationSpeed: 540
+  maxSpeed: 8
+  homingAcceleration: 2
+  selfRotationSpeed: 720
   homingDuration: 5
   maxLifetime: 8
+  fadeOutDuration: 0.5
+  spawnFadeDuration: 0.3
   targetTagName: Player
   groundTagName: Ground
   hitEffect: {fileID: 8901418655622939187, guid: 7bd1d1431d67846d8877b37a4c572a45, type: 3}
+  takeDamageSe: {fileID: 8300000, guid: 9da2d82947f934c388e0f9816e5b5acf, type: 3}
+  takeDamageSeVolume: 0.5
   onTargetHit:
     m_PersistentCalls:
       m_Calls: []

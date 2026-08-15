@@ -62,6 +62,14 @@ namespace VLCNP.Projectiles
         private GameObject hitEffect = null;
 
         [SerializeField]
+        [Tooltip("プレイヤーの攻撃を受けたときのSE。敵キャラの被弾音と同じものを指定する")]
+        private AudioClip takeDamageSe = null;
+
+        [SerializeField]
+        [Range(0f, 1f)]
+        private float takeDamageSeVolume = 0.5f;
+
+        [SerializeField]
         private UnityEvent<GameObject> onTargetHit = new UnityEvent<GameObject>();
 
         private Rigidbody2D rbody;
@@ -99,6 +107,12 @@ namespace VLCNP.Projectiles
 
         private void Start()
         {
+            Health health = GetComponent<Health>();
+            if (health != null)
+            {
+                health.takeDamage.AddListener(PlayTakeDamageSe);
+            }
+
             if (spriteRenderer != null && spawnFadeDuration > 0f)
             {
                 StartCoroutine(FadeIn());
@@ -107,6 +121,20 @@ namespace VLCNP.Projectiles
             {
                 StartCoroutine(FadeOutAfterLifetime());
             }
+        }
+
+        private void PlayTakeDamageSe(float damageAmount)
+        {
+            if (takeDamageSe == null || damageAmount <= 0f)
+                return;
+
+            // 破壊(Destroy)と同フレームでも鳴り切るよう、自身から独立したAudioSourceで再生する
+            GameObject seObject = new GameObject("NarukamiShockwaveDamageSe");
+            seObject.transform.position = transform.position;
+            AudioSource audioSource = seObject.AddComponent<AudioSource>();
+            audioSource.spatialBlend = 0f;
+            audioSource.PlayOneShot(takeDamageSe, takeDamageSeVolume);
+            Destroy(seObject, takeDamageSe.length + 0.1f);
         }
 
         private IEnumerator FadeIn()
