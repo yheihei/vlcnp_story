@@ -43,7 +43,7 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         [Min(0f)]
         [Tooltip("プレイヤーから最低この距離だけ離れた位置で生成する(近すぎて避けられないのを防ぐ)")]
-        private float minSpawnDistanceFromPlayer = 4f;
+        private float minSpawnDistanceFromPlayer = 7f;
 
         [SerializeField]
         [Min(0f)]
