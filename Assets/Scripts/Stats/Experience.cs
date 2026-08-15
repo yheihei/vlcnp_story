@@ -8,7 +8,7 @@ namespace VLCNP.Stats
     public class Experience : MonoBehaviour, IJsonSaveable
     {
         [SerializeField] float experiencePoints = 0;
-        [SerializeField] float loseExperienceModifier = 2f;
+        [SerializeField] float loseExperienceModifier = 3f;
         [SerializeField] float SEVolume = 0.3f;
         AudioSource audioSource;
         [SerializeField] AudioClip getSeSound = null;
