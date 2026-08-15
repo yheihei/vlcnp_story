@@ -42,6 +42,11 @@ namespace VLCNP.Combat.EnemyAction
 
         [SerializeField]
         [Min(0f)]
+        [Tooltip("プレイヤーから最低この距離だけ離れた位置で生成する(近すぎて避けられないのを防ぐ)")]
+        private float minSpawnDistanceFromPlayer = 4f;
+
+        [SerializeField]
+        [Min(0f)]
         [Tooltip("竜巻の速度。0ならPrefabの速度を使う")]
         private float projectileSpeed = 0f;
 
@@ -120,6 +125,13 @@ namespace VLCNP.Combat.EnemyAction
             float directionX = shouldMoveLeft ? -1f : 1f;
             float endX = GetScreenEndX(shouldMoveLeft);
 
+            float spawnX = cachedTransform.position.x + directionX * spawnOffsetX;
+            // プレイヤーに近すぎる場合は、進行方向の手前側へ最低距離だけ離す
+            if (Mathf.Abs(spawnX - player.position.x) < minSpawnDistanceFromPlayer)
+            {
+                spawnX = player.position.x - directionX * minSpawnDistanceFromPlayer;
+            }
+
             for (int i = 0; i < tornadoCount; i++)
             {
                 // プレイヤー高さを起点に上下交互へ広げる
@@ -127,7 +139,7 @@ namespace VLCNP.Combat.EnemyAction
                 float sign = i % 2 == 1 ? 1f : -1f;
                 float spawnY = player.position.y + (i == 0 ? 0f : sign * step * verticalSpacing);
                 Vector3 spawnPosition = new Vector3(
-                    cachedTransform.position.x + directionX * spawnOffsetX,
+                    spawnX,
                     spawnY,
                     cachedTransform.position.z
                 );
