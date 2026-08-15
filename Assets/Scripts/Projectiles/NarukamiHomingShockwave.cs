@@ -48,6 +48,11 @@ namespace VLCNP.Projectiles
         private float fadeOutDuration = 0.5f;
 
         [SerializeField]
+        [Min(0f)]
+        [Tooltip("発生時のフェードイン時間")]
+        private float spawnFadeDuration = 0.3f;
+
+        [SerializeField]
         private string targetTagName = "Player";
 
         [SerializeField]
@@ -65,6 +70,8 @@ namespace VLCNP.Projectiles
         private float elapsedTime = 0f;
         private bool hasImpacted = false;
         private float damage = 0;
+        private SpriteRenderer spriteRenderer;
+        private Color spawnTargetColor = Color.white;
         private RigidbodyInterpolation2D initialInterpolation;
         private bool hasRestoredInterpolation = false;
 
@@ -79,14 +86,53 @@ namespace VLCNP.Projectiles
             // 最初の物理ステップまで補間を無効にする
             initialInterpolation = rbody.interpolation;
             rbody.interpolation = RigidbodyInterpolation2D.None;
+
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null && spawnFadeDuration > 0f)
+            {
+                spawnTargetColor = spriteRenderer.color;
+                Color transparentColor = spawnTargetColor;
+                transparentColor.a = 0f;
+                spriteRenderer.color = transparentColor;
+            }
         }
 
         private void Start()
         {
+            if (spriteRenderer != null && spawnFadeDuration > 0f)
+            {
+                StartCoroutine(FadeIn());
+            }
             if (maxLifetime > 0f)
             {
                 StartCoroutine(FadeOutAfterLifetime());
             }
+        }
+
+        private IEnumerator FadeIn()
+        {
+            // HealthはFixedUpdateでスプライトのalphaを毎回1に戻すため、フェード中は無効化する
+            // (無効化中もTakeDamage自体は呼べるので破壊は可能)
+            Health health = GetComponent<Health>();
+            if (health != null)
+                health.enabled = false;
+
+            Color color = spriteRenderer.color;
+            float elapsedTime = 0f;
+            while (elapsedTime < spawnFadeDuration)
+            {
+                if (hasImpacted)
+                    yield break;
+
+                elapsedTime += Time.deltaTime;
+                color.a = spawnTargetColor.a * Mathf.Clamp01(elapsedTime / spawnFadeDuration);
+                spriteRenderer.color = color;
+                yield return null;
+            }
+            spriteRenderer.color = spawnTargetColor;
+
+            if (health != null)
+                health.enabled = true;
         }
 
         private IEnumerator FadeOutAfterLifetime()
@@ -104,7 +150,6 @@ namespace VLCNP.Projectiles
             if (health != null)
                 health.enabled = false;
 
-            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
             if (spriteRenderer != null && fadeOutDuration > 0f)
             {
                 Color color = spriteRenderer.color;
