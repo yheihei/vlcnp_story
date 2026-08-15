@@ -360,10 +360,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseBeforeCharge: 0.35
   speed: 12
-  diveDepthBelowPlayer: 1.2
-  overshootDistanceX: 3
+  minDiveDepth: 0.5
   maxDuration: 4
   animationStateName: Jump
+  stopOnGroundHit: 0
 --- !u!114 &7026001605983064452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,6 +385,7 @@ MonoBehaviour:
   useRandomPositionAroundPlayer: 1
   randomOffsetMin: {x: -4, y: 0.5}
   randomOffsetMax: {x: 4, y: 3}
+  horizontalMoveOnly: 1
   arrivalDistance: 0.15
 --- !u!114 &7790724215621535101
 MonoBehaviour:

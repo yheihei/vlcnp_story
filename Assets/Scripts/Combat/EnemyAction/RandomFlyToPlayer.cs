@@ -41,6 +41,10 @@ namespace VLCNP.Combat.EnemyAction
         private Vector2 randomOffsetMax = new Vector2(4f, 3f);
 
         [SerializeField]
+        [Tooltip("ランダム移動時にY軸は動かさず、現在の高さを維持してX軸のみ移動する")]
+        private bool horizontalMoveOnly = false;
+
+        [SerializeField]
         [Min(0.01f)]
         private float arrivalDistance = 0.15f;
 
@@ -103,9 +107,13 @@ namespace VLCNP.Combat.EnemyAction
             float minY = Mathf.Min(randomOffsetMin.y, randomOffsetMax.y);
             float maxY = Mathf.Max(randomOffsetMin.y, randomOffsetMax.y);
 
+            float destinationY = horizontalMoveOnly
+                ? cachedTransform.position.y
+                : player.position.y + UnityEngine.Random.Range(minY, maxY);
+
             return new Vector3(
                 player.position.x + UnityEngine.Random.Range(minX, maxX),
-                player.position.y + UnityEngine.Random.Range(minY, maxY),
+                destinationY,
                 cachedTransform.position.z
             );
         }
