@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using TNRD;
 using UnityEditor;
+using UnityEditor.Events;
 using UnityEngine;
 using VLCNP.Combat.EnemyAction;
+using VLCNP.Pickups;
 using VLCNP.Projectiles;
 using VLCNP.Stats;
 
@@ -19,6 +21,8 @@ public static class NarukamiHomingShockwaveBuilder
     private const string HitEffectPath = "Assets/Game/Projectiles/Effect/WhiteHitEffect.prefab";
     // 敵キャラの被弾音(TakeDamageSe)と同じクリップ
     private const string TakeDamageSePath = "Assets/Game/SE/powerup03 1.mp3";
+    private const string ExperiencePickupPath = "Assets/Game/Pickups/RainbowSeedSmall.prefab";
+    private const string DropItemPickupPath = "Assets/Game/Pickups/HartRecover.prefab";
     private const string ProgressionPath = "Assets/Game/Stats/Progression.asset";
     private const string ShockwavePrefabPath = "Assets/Game/Projectiles/NarukamiHomingShockwave.prefab";
     private const string BossPrefabPath = "Assets/Game/Characters/Enemy/VLNarukamiBoss.prefab";
@@ -104,6 +108,8 @@ public static class NarukamiHomingShockwaveBuilder
         serializedHealth.FindProperty("deadEffect").objectReferenceValue = hitEffect;
         serializedHealth.ApplyModifiedPropertiesWithoutUndo();
 
+        SetupDrops(root, health);
+
         GameObject saved = PrefabUtility.SaveAsPrefabAsset(root, ShockwavePrefabPath);
         if (existing != null)
             PrefabUtility.UnloadPrefabContents(root);
@@ -111,6 +117,55 @@ public static class NarukamiHomingShockwaveBuilder
             Object.DestroyImmediate(root);
 
         return saved.GetComponent<NarukamiHomingShockwave>();
+    }
+
+    /**
+     * 通常敵と同じ撃破時ドロップ構成にする。
+     * dieEventに登録があるとHealthが自動でDeadEffectAndDestroyを呼ばなくなるため、
+     * DeadEffectAndDestroyも明示的にdieEventへ登録する。
+     */
+    private static void SetupDrops(GameObject root, VLCNP.Attributes.Health health)
+    {
+        GameObject experiencePrefab =
+            AssetDatabase.LoadAssetAtPath<GameObject>(ExperiencePickupPath);
+        if (experiencePrefab == null)
+            throw new System.InvalidOperationException(
+                $"Experience pickup load failed: {ExperiencePickupPath}"
+            );
+        BasePickup itemPickup = AssetDatabase
+            .LoadAssetAtPath<GameObject>(DropItemPickupPath)
+            ?.GetComponent<BasePickup>();
+        if (itemPickup == null)
+            throw new System.InvalidOperationException(
+                $"Drop item pickup load failed: {DropItemPickupPath}"
+            );
+
+        DropExperience dropExperience = root.GetComponent<DropExperience>();
+        if (dropExperience == null)
+            dropExperience = root.AddComponent<DropExperience>();
+        SerializedObject serializedDropExperience = new SerializedObject(dropExperience);
+        SerializedProperty experiences = serializedDropExperience.FindProperty("experiences");
+        experiences.arraySize = 1;
+        experiences.GetArrayElementAtIndex(0).objectReferenceValue = experiencePrefab;
+        serializedDropExperience.ApplyModifiedPropertiesWithoutUndo();
+
+        DropItem dropItem = root.GetComponent<DropItem>();
+        if (dropItem == null)
+            dropItem = root.AddComponent<DropItem>();
+        SerializedObject serializedDropItem = new SerializedObject(dropItem);
+        serializedDropItem.FindProperty("dropItem").objectReferenceValue = itemPickup;
+        serializedDropItem.FindProperty("dropRate").floatValue = 0.2f;
+        serializedDropItem.ApplyModifiedPropertiesWithoutUndo();
+
+        if (health.dieEvent.GetPersistentEventCount() == 0)
+        {
+            UnityEventTools.AddVoidPersistentListener(health.dieEvent, dropExperience.Drop);
+            UnityEventTools.AddVoidPersistentListener(health.dieEvent, dropItem.Drop);
+            UnityEventTools.AddVoidPersistentListener(
+                health.dieEvent,
+                health.DeadEffectAndDestroy
+            );
+        }
     }
 
     private static bool AddActionAndReplaceFirstInBossPrefab(NarukamiHomingShockwave shockwave)

@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 5837635406184631722}
   - component: {fileID: 3248480218292177734}
   - component: {fileID: 6154840021769152761}
+  - component: {fileID: 6629070664208462710}
+  - component: {fileID: 3501400601822744795}
   m_Layer: 0
   m_Name: NarukamiHomingShockwave
   m_TagString: Enemy
@@ -212,7 +214,43 @@ MonoBehaviour:
       m_Calls: []
   dieEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6629070664208462710}
+        m_TargetAssemblyTypeName: VLCNP.Pickups.DropExperience, Assembly-CSharp
+        m_MethodName: Drop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3501400601822744795}
+        m_TargetAssemblyTypeName: VLCNP.Pickups.DropItem, Assembly-CSharp
+        m_MethodName: Drop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6154840021769152761}
+        m_TargetAssemblyTypeName: VLCNP.Attributes.Health, Assembly-CSharp
+        m_MethodName: DeadEffectAndDestroy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   IsGameOverEventExecute: 0
   defeatedFlag: 0
   hideBossStatusOnDeath: 0
@@ -221,3 +259,31 @@ MonoBehaviour:
   zeroDamageSe: {fileID: 0}
   isBlowAway: 0
   guardPower: 0
+--- !u!114 &6629070664208462710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424656710350881023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac51f0affca449d3aefe6df453d32ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  experiences:
+  - {fileID: 8575966937552474532, guid: 724cc44e667d846e19b7088062dcc428, type: 3}
+--- !u!114 &3501400601822744795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424656710350881023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ce3014d0a7aa46f6b4c2c526f84e407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItem: {fileID: 5950036589878435561, guid: 672f44934bcc94005a8656df182f68c5, type: 3}
+  dropRate: 0.2
