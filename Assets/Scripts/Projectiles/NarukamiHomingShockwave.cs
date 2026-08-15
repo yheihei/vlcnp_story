@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using VLCNP.Attributes;
@@ -42,6 +43,11 @@ namespace VLCNP.Projectiles
         private float maxLifetime = 8f;
 
         [SerializeField]
+        [Min(0f)]
+        [Tooltip("自然消滅時のフェードアウト時間")]
+        private float fadeOutDuration = 0.5f;
+
+        [SerializeField]
         private string targetTagName = "Player";
 
         [SerializeField]
@@ -79,8 +85,45 @@ namespace VLCNP.Projectiles
         {
             if (maxLifetime > 0f)
             {
-                Destroy(gameObject, maxLifetime);
+                StartCoroutine(FadeOutAfterLifetime());
             }
+        }
+
+        private IEnumerator FadeOutAfterLifetime()
+        {
+            yield return new WaitForSeconds(Mathf.Max(0f, maxLifetime - fadeOutDuration));
+            if (hasImpacted)
+                yield break;
+
+            // 消滅中は当たらないようにする。HealthはFixedUpdateでスプライトのalphaを
+            // 毎回1に戻すため、フェードが上書きされないよう無効化する
+            Collider2D hitCollider = GetComponent<Collider2D>();
+            if (hitCollider != null)
+                hitCollider.enabled = false;
+            Health health = GetComponent<Health>();
+            if (health != null)
+                health.enabled = false;
+
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null && fadeOutDuration > 0f)
+            {
+                Color color = spriteRenderer.color;
+                float startAlpha = color.a;
+                float elapsedTime = 0f;
+                while (elapsedTime < fadeOutDuration)
+                {
+                    elapsedTime += Time.deltaTime;
+                    color.a = Mathf.Lerp(
+                        startAlpha,
+                        0f,
+                        Mathf.Clamp01(elapsedTime / fadeOutDuration)
+                    );
+                    spriteRenderer.color = color;
+                    yield return null;
+                }
+            }
+
+            Destroy(gameObject);
         }
 
         /** 発射方向を指定して初速を与える */
