@@ -37,6 +37,11 @@ namespace VLCNP.Projectiles
         private string targetTagName = "Player";
 
         [SerializeField]
+        [Min(0f)]
+        [Tooltip("発生からこの時間はターゲットにヒットしない")]
+        private float noHitDuration = 0f;
+
+        [SerializeField]
         private GameObject hitEffect = null;
 
         [SerializeField]
@@ -64,6 +69,7 @@ namespace VLCNP.Projectiles
         private Coroutine lifetimeCoroutine;
         private RigidbodyInterpolation2D initialInterpolation;
         private bool hasRestoredInterpolation;
+        private float activatedTime;
 
         public bool IsStopped { get; set; }
         public bool IsStucking => false;
@@ -147,6 +153,16 @@ namespace VLCNP.Projectiles
             hasEndX = true;
         }
 
+        public void SetNoHitDuration(float duration)
+        {
+            noHitDuration = Mathf.Max(0f, duration);
+        }
+
+        private void OnEnable()
+        {
+            activatedTime = Time.time;
+        }
+
         private IEnumerator FadeIn()
         {
             Color color = spriteRenderer.color;
@@ -167,7 +183,21 @@ namespace VLCNP.Projectiles
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            HandleTargetHit(other);
+        }
+
+        // 無ヒット時間中に重なったままのターゲットへ、時間経過後にヒットさせるためStayでも判定する
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            HandleTargetHit(other);
+        }
+
+        private void HandleTargetHit(Collider2D other)
+        {
             if (hasImpacted || isFadingOut || !other.CompareTag(targetTagName))
+                return;
+
+            if (Time.time - activatedTime < noHitDuration)
                 return;
 
             Health health = other.GetComponent<Health>();

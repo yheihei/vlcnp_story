@@ -51,6 +51,11 @@ namespace VLCNP.Combat.EnemyAction
 
         [SerializeField]
         [Min(0f)]
+        [Tooltip("竜巻が発生からこの時間はプレイヤーにヒットしない")]
+        private float tornadoNoHitDuration = 0.8f;
+
+        [SerializeField]
+        [Min(0f)]
         private float screenEdgePadding = 1f;
 
         [SerializeField]
@@ -147,6 +152,7 @@ namespace VLCNP.Combat.EnemyAction
                 );
                 tornado.SetDirection(shouldMoveLeft);
                 tornado.SetDamage(damage);
+                tornado.SetNoHitDuration(tornadoNoHitDuration);
                 if (tornadoSpeed > 0f)
                 {
                     tornado.SetSpeed(tornadoSpeed);
