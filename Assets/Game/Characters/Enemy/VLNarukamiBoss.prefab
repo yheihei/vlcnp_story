@@ -127,7 +127,7 @@ PrefabInstance:
     - target: {fileID: 544694468188286105, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: enemyActions.Array.data[3].unityReference
       value: 
-      objectReference: {fileID: 8672268890773468715}
+      objectReference: {fileID: 7214982477017875078}
     - target: {fileID: 544694468188286105, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       propertyPath: enemyActions.Array.data[4].unityReference
       value: 
@@ -401,6 +401,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7478345028051563179, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8672268890773468715}
+    - targetCorrespondingSourceObject: {fileID: 7478345028051563179, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7214982477017875078}
   m_SourcePrefab: {fileID: 100100000, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
 --- !u!114 &2386338235572345906 stripped
 MonoBehaviour:
@@ -572,3 +575,23 @@ MonoBehaviour:
   damage: 1
   launchOffset: {x: 0, y: 0}
   waitAfterLaunch: 0.8
+--- !u!114 &7214982477017875078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5104147197881574090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c41205e8df94f27a241d8af32b0a4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shockwavePrefab: {fileID: 5837635406184631722, guid: 35ab1b7bce84a454f9c386a34b0b0305, type: 3}
+  flapBoolName: isMagic
+  launchDelay: 0.6
+  shockwaveCount: 8
+  firstAngleOffset: 0
+  spawnRadius: 0.8
+  damage: 1
+  waitAfterLaunch: 1.5

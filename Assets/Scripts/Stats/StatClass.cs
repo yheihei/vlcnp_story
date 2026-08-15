@@ -28,5 +28,6 @@ namespace VLCNP.Stats
         VeryShortSwallow,
         VLKamaitachi,
         VLNarukamiBoss,
+        NarukamiShockwave,
     }
 }
