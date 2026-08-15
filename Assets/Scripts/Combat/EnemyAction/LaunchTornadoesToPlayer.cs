@@ -37,13 +37,8 @@ namespace VLCNP.Combat.EnemyAction
 
         [SerializeField]
         [Min(0f)]
-        [Tooltip("自分からプレイヤー方向への発生位置オフセット")]
-        private float spawnOffsetX = 1.2f;
-
-        [SerializeField]
-        [Min(0f)]
-        [Tooltip("プレイヤーから最低この距離だけ離れた位置で生成する(近すぎて避けられないのを防ぐ)")]
-        private float minSpawnDistanceFromPlayer = 7f;
+        [Tooltip("プレイヤーと反対側(自分の後方)へどれだけ離れた位置で生成するか")]
+        private float spawnBehindDistance = 10f;
 
         [SerializeField]
         [Min(0f)]
@@ -125,12 +120,8 @@ namespace VLCNP.Combat.EnemyAction
             float directionX = shouldMoveLeft ? -1f : 1f;
             float endX = GetScreenEndX(shouldMoveLeft);
 
-            float spawnX = cachedTransform.position.x + directionX * spawnOffsetX;
-            // プレイヤーに近すぎる場合は、進行方向の手前側へ最低距離だけ離す
-            if (Mathf.Abs(spawnX - player.position.x) < minSpawnDistanceFromPlayer)
-            {
-                spawnX = player.position.x - directionX * minSpawnDistanceFromPlayer;
-            }
+            // プレイヤーと反対側(自分の後方)から発生させ、自分を追い越してプレイヤーへ向かわせる
+            float spawnX = cachedTransform.position.x - directionX * spawnBehindDistance;
 
             for (int i = 0; i < tornadoCount; i++)
             {
