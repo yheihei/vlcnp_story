@@ -4,7 +4,8 @@ using UnityEngine;
 namespace VLCNP.Combat.EnemyAction
 {
     /**
-     * 一瞬静止した後、プレイヤーの下を通る弧(下弦)を描いて反対側へ突撃する。
+     * 一瞬静止した後、プレイヤー位置を最下点(下弦の頂点)とする円弧を描いて突撃し、
+     * プレイヤーを過ぎたらそのまま円弧に沿って開始時と同じ高さへ戻る。
      */
     public class CrescentSwoopCharge : EnemyAction
     {
@@ -18,14 +19,9 @@ namespace VLCNP.Combat.EnemyAction
         private float speed = 12f;
 
         [SerializeField]
-        [Min(0f)]
-        [Tooltip("弧の最下点がプレイヤーの何m下を通るか")]
-        private float diveDepthBelowPlayer = 1.2f;
-
-        [SerializeField]
-        [Min(0f)]
-        [Tooltip("プレイヤーを追い越して反対側へ抜ける距離")]
-        private float overshootDistanceX = 3f;
+        [Min(0.1f)]
+        [Tooltip("プレイヤーが開始高さより上にいる場合に確保する最低降下量")]
+        private float minDiveDepth = 0.5f;
 
         [SerializeField]
         [Min(0.1f)]
@@ -34,16 +30,19 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         private string animationStateName = "Jump";
 
-        private const int ArcLengthSampleCount = 32;
+        [SerializeField]
+        [Tooltip("Ground接触で突撃を打ち切るか。無効なら弧の終点まで飛び切る")]
+        private bool stopOnGroundHit = false;
 
         private Rigidbody2D rbody;
         private Animator animator;
         private Transform cachedTransform;
         private Transform playerTransform;
         private Coroutine chargeCoroutine;
-        private Vector2 bezierStart;
-        private Vector2 bezierControl;
-        private Vector2 bezierEnd;
+        private Vector2 arcCenter;
+        private float arcRadius;
+        private float arcStartAngle;
+        private float arcTotalAngle;
 
         private void Awake()
         {
@@ -102,8 +101,8 @@ namespace VLCNP.Combat.EnemyAction
                 yield break;
             }
 
-            SetupBezier(player);
-            float arcLength = EstimateArcLength();
+            SetupArc(player);
+            float arcLength = arcRadius * Mathf.Abs(arcTotalAngle);
             float duration = Mathf.Max(0.05f, arcLength / Mathf.Max(0.1f, GetModifiedSpeed(speed)));
 
             float t = 0f;
@@ -112,7 +111,7 @@ namespace VLCNP.Combat.EnemyAction
             {
                 float deltaTime = Time.fixedDeltaTime;
                 t = Mathf.Min(1f, t + deltaTime / duration);
-                Vector2 targetPosition = EvaluateBezier(t);
+                Vector2 targetPosition = EvaluateArc(t);
                 Vector2 velocity = (targetPosition - rbody.position) / deltaTime;
                 float maxSpeed = GetModifiedSpeed(speed) * 3f;
                 if (velocity.sqrMagnitude > maxSpeed * maxSpeed)
@@ -132,42 +131,46 @@ namespace VLCNP.Combat.EnemyAction
             Complete();
         }
 
-        private void SetupBezier(Transform player)
+        private void SetupArc(Transform player)
         {
-            bezierStart = rbody.position;
-            float directionX = player.position.x < bezierStart.x ? -1f : 1f;
-            float endX = player.position.x + directionX * overshootDistanceX;
-            bezierEnd = new Vector2(endX, bezierStart.y);
-            // t=0.5で最下点(プレイヤーの下)を通るよう制御点を決める
-            Vector2 lowestPoint = new Vector2(
+            Vector2 start = rbody.position;
+            // 最下点はプレイヤー位置。開始高さより上にいる場合だけ最低降下量を確保する
+            Vector2 lowest = new Vector2(
                 player.position.x,
-                player.position.y - diveDepthBelowPlayer
+                Mathf.Min(player.position.y, start.y - minDiveDepth)
             );
-            bezierControl = 2f * lowestPoint - 0.5f * (bezierStart + bezierEnd);
-        }
+            float halfWidth = lowest.x - start.x;
+            float depth = start.y - lowest.y;
+            // 開始点・最下点・対称な終点(開始と同じ高さ)の3点を通る円
+            arcRadius = (halfWidth * halfWidth + depth * depth) / (2f * depth);
+            arcCenter = new Vector2(lowest.x, lowest.y + arcRadius);
 
-        private float EstimateArcLength()
-        {
-            float length = 0f;
-            Vector2 previousPoint = bezierStart;
-            for (int i = 1; i <= ArcLengthSampleCount; i++)
+            bool movesRight = halfWidth >= 0f;
+            arcStartAngle = Mathf.Atan2(start.y - arcCenter.y, start.x - arcCenter.x);
+            // 右向きは開始角を最下点(-90°)より小さく、左向きは大きく正規化し、
+            // 弧が必ず最下点を経由するようにする
+            if (movesRight && arcStartAngle > -Mathf.PI / 2f)
             {
-                Vector2 point = EvaluateBezier((float)i / ArcLengthSampleCount);
-                length += Vector2.Distance(previousPoint, point);
-                previousPoint = point;
+                arcStartAngle -= Mathf.PI * 2f;
             }
-            return length;
+            else if (!movesRight && arcStartAngle < -Mathf.PI / 2f)
+            {
+                arcStartAngle += Mathf.PI * 2f;
+            }
+            // 終点角は最下点(-90°)に対して開始角と対称
+            float endAngle = -Mathf.PI - arcStartAngle;
+            arcTotalAngle = endAngle - arcStartAngle;
         }
 
-        private Vector2 EvaluateBezier(float t)
+        private Vector2 EvaluateArc(float t)
         {
-            float u = 1f - t;
-            return u * u * bezierStart + 2f * u * t * bezierControl + t * t * bezierEnd;
+            float angle = arcStartAngle + arcTotalAngle * t;
+            return arcCenter + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * arcRadius;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (!IsExecuting || IsDone || !collision.collider.CompareTag("Ground"))
+            if (!stopOnGroundHit || !IsExecuting || IsDone || !collision.collider.CompareTag("Ground"))
                 return;
 
             if (chargeCoroutine != null)
