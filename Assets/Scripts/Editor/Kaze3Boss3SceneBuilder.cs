@@ -28,6 +28,7 @@ public static class Kaze3Boss3SceneBuilder
     private static readonly string[] KarmaEventRoots =
     {
         "Flowchart",
+        "NPCKarma",
         "NPCVLDarkNarukamiVariant",
         "DarkRainbowSeed",
         "Kaze3BossTransitionEvent",
@@ -69,6 +70,8 @@ public static class Kaze3Boss3SceneBuilder
             Debug.LogError("Kaze3_boss3 に VLNarukami または TransitionSpawnPoint が見つかりません。");
             return;
         }
+
+        AddEventCameraCenteredOn(target, narukami);
 
         var source = EditorSceneManager.OpenScene(SourceScenePath, OpenSceneMode.Additive);
         try
@@ -130,6 +133,29 @@ public static class Kaze3Boss3SceneBuilder
             var child = core.transform.Find(name);
             if (child != null) UnityEngine.Object.DestroyImmediate(child.gameObject);
         }
+    }
+
+    /**
+     * イベント中 VLNarukami が画面中央になるよう、追従なしの固定バーチャルカメラを
+     * Core 配下に追加する(通常の追従カメラ priority=10 より高い 20 で常時勝たせる)。
+     */
+    private static void AddEventCameraCenteredOn(Scene target, GameObject narukami)
+    {
+        var core = FindRoot(target, "Core");
+        var baseCam = core != null ? core.transform.Find("CMCamera") : null;
+        var baseVcam = baseCam != null ? baseCam.GetComponent<Cinemachine.CinemachineVirtualCamera>() : null;
+        if (baseVcam == null)
+        {
+            Debug.LogWarning("Core/CMCamera が見つからないため、イベントカメラの追加をスキップします。");
+            return;
+        }
+        var go = new GameObject("CMCamera_1");
+        go.transform.SetParent(core.transform, false);
+        var p = narukami.transform.position;
+        go.transform.position = new Vector3(p.x, p.y, -10f);
+        var vcam = go.AddComponent<Cinemachine.CinemachineVirtualCamera>();
+        vcam.m_Lens = baseVcam.m_Lens;
+        vcam.Priority = 20;
     }
 
     /**
