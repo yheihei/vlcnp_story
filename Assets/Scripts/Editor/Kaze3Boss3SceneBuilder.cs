@@ -89,6 +89,8 @@ public static class Kaze3Boss3SceneBuilder
             var moved = new List<GameObject> { joinedEvent, doorTransition };
 
             RewriteFlowchart(joinedEvent, narukami);
+            SetupNarukamiLyingPose(joinedEvent, narukami, FindRoot(target, "NPCAkim"));
+            SetupBgmSameAsYami5F3(target);
             RemapSceneReferences(moved, source, target);
 
             joinedEvent.name = "VLNarukamiJoinedGameEvent";
@@ -268,6 +270,75 @@ public static class Kaze3Boss3SceneBuilder
             UnityEngine.Object.DestroyImmediate(cmd);
         }
         EditorUtility.SetDirty(block);
+    }
+
+    /**
+     * VLNarukami を倒れた状態(90度回転・床置き)で開始させ、Bikkuri の直前に
+     * 起き上がり(RotateTo)と浮遊位置への復帰(MoveTo)を挿入する。VLOrochi 加入と同じ演出。
+     */
+    private static void SetupNarukamiLyingPose(GameObject joinedEvent, GameObject narukami, GameObject akim)
+    {
+        var chat = joinedEvent.transform.Find("Chat");
+        var flowchart = chat != null ? chat.GetComponent<Flowchart>() : null;
+        var block = chat != null ? chat.GetComponent<Block>() : null;
+        var akimRenderer = akim != null ? akim.GetComponent<SpriteRenderer>() : null;
+        if (flowchart == null || block == null || akimRenderer == null)
+        {
+            Debug.LogWarning("倒れポーズの設定に必要なオブジェクトが見つからないためスキップします。");
+            return;
+        }
+
+        Vector3 floatPos = narukami.transform.position;
+        narukami.transform.rotation = Quaternion.Euler(0, 0, 90);
+        var renderer = narukami.GetComponent<SpriteRenderer>();
+        float groundTop = akimRenderer.bounds.min.y;
+        narukami.transform.position += new Vector3(0, groundTop - renderer.bounds.min.y, 0);
+
+        var rot = chat.gameObject.AddComponent<RotateTo>();
+        rot.ItemId = flowchart.NextItemId();
+        var soR = new SerializedObject(rot);
+        soR.FindProperty("_targetObject.gameObjectVal").objectReferenceValue = narukami;
+        soR.FindProperty("_toRotation.vector3Val").vector3Value = Vector3.zero;
+        soR.FindProperty("_duration.floatVal").floatValue = 0.4f;
+        soR.ApplyModifiedPropertiesWithoutUndo();
+
+        var mv = chat.gameObject.AddComponent<MoveTo>();
+        mv.ItemId = flowchart.NextItemId();
+        var soM = new SerializedObject(mv);
+        soM.FindProperty("_targetObject.gameObjectVal").objectReferenceValue = narukami;
+        soM.FindProperty("_toPosition.vector3Val").vector3Value = floatPos;
+        soM.FindProperty("_duration.floatVal").floatValue = 0.6f;
+        soM.ApplyModifiedPropertiesWithoutUndo();
+
+        int bikkuriIndex = block.CommandList.FindIndex(c =>
+            c is InvokeMethod
+            && new SerializedObject(c).FindProperty("targetMethod").stringValue == "Bikkuri");
+        if (bikkuriIndex < 0)
+        {
+            Debug.LogWarning("Bikkuri コマンドが見つからないため、起き上がりコマンドは末尾に追加します。");
+            bikkuriIndex = block.CommandList.Count;
+        }
+        block.CommandList.Insert(bikkuriIndex, mv);
+        block.CommandList.Insert(bikkuriIndex, rot);
+        EditorUtility.SetDirty(block);
+    }
+
+    // Yami5F-3 と同じ BGM(MusMus-BGM-043 morinokioku, volume 0.3)にする
+    private static void SetupBgmSameAsYami5F3(Scene target)
+    {
+        var core = FindRoot(target, "Core");
+        var areaBgm = core != null ? core.GetComponentInChildren<VLCNP.Core.AreaBGM>(true) : null;
+        var clipPath = AssetDatabase.GUIDToAssetPath("211cc4e35d0824fcab6f1be3ebbe3eff");
+        var clip = AssetDatabase.LoadAssetAtPath<AudioClip>(clipPath);
+        if (areaBgm == null || clip == null)
+        {
+            Debug.LogWarning("AreaBGM または BGM クリップが見つからないため、BGM 設定をスキップします。");
+            return;
+        }
+        var so = new SerializedObject(areaBgm);
+        so.FindProperty("bgm").objectReferenceValue = clip;
+        so.FindProperty("volume").floatValue = 0.3f;
+        so.ApplyModifiedPropertiesWithoutUndo();
     }
 
     private static Character FindCharacterInScene(Scene scene, string name)
