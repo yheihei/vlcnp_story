@@ -51,6 +51,7 @@ namespace VLCNP.Core
         Yami2FTobiraZakoDefeated, // おひるねべや(闇)の2Fの扉を守るザコを倒した
         VLKamaitachi1Defeated,  // 風のVLかまいたち1人目を倒した
         VLKamaitachi1Defeated2,  // 風のVLかまいたち2人目を倒した
-        HPUpKaze1,  // 
+        HPUpKaze1,  //
+        VLNarukamiJoined, // VLナルカミが仲間になった
     }
 }

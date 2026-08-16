@@ -313,6 +313,9 @@ namespace VLCNP.Control
             // MitamaであればVLMitamaJoinedフラグが立っていれば仲間
             if (name == "Mitama" || name == "VLMitama")
                 return flagManager.GetFlag(Flag.VLMitamaJoined);
+            // NarukamiであればVLNarukamiJoinedフラグが立っていれば仲間
+            if (name == "Narukami" || name == "VLNarukami")
+                return flagManager.GetFlag(Flag.VLNarukamiJoined);
             // それ以外は仲間でない
             return false;
         }
