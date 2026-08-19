@@ -272,54 +272,81 @@ public static class Kaze3Boss3SceneBuilder
         EditorUtility.SetDirty(block);
     }
 
+    // 祭壇上の倒れ位置(手調整済みの値)
+    private static readonly Vector3 NarukamiLyingPosition = new Vector3(3.26f, 0.26f, 0f);
+    private const string NarukamiControllerPath = "Assets/Game/Characters/Npc/NPCVLNarukamiController.controller";
+
     /**
-     * VLNarukami を倒れた状態(90度回転・床置き)で開始させ、Bikkuri の直前に
-     * 起き上がり(RotateTo)と浮遊位置への復帰(MoveTo)を挿入する。VLOrochi 加入と同じ演出。
+     * VLNarukami を祭壇の上で倒れた状態(90度回転)で開始させ、Bikkuri とその後の Wait の直後に
+     * NPCController.Defeated(-90) を挿入してその場で起き上がらせる。VLOrochi 加入と同じ演出。
+     * NPCController は Animator 前提(無いと FixedUpdate が毎フレーム警告を出す)ため、
+     * 空ステートの専用 AnimatorController も割り当てる。
      */
     private static void SetupNarukamiLyingPose(GameObject joinedEvent, GameObject narukami, GameObject akim)
     {
         var chat = joinedEvent.transform.Find("Chat");
         var flowchart = chat != null ? chat.GetComponent<Flowchart>() : null;
         var block = chat != null ? chat.GetComponent<Block>() : null;
-        var akimRenderer = akim != null ? akim.GetComponent<SpriteRenderer>() : null;
-        if (flowchart == null || block == null || akimRenderer == null)
+        if (flowchart == null || block == null)
         {
             Debug.LogWarning("倒れポーズの設定に必要なオブジェクトが見つからないためスキップします。");
             return;
         }
 
-        Vector3 floatPos = narukami.transform.position;
         narukami.transform.rotation = Quaternion.Euler(0, 0, 90);
-        var renderer = narukami.GetComponent<SpriteRenderer>();
-        float groundTop = akimRenderer.bounds.min.y;
-        narukami.transform.position += new Vector3(0, groundTop - renderer.bounds.min.y, 0);
+        narukami.transform.position = NarukamiLyingPosition;
 
-        var rot = chat.gameObject.AddComponent<RotateTo>();
-        rot.ItemId = flowchart.NextItemId();
-        var soR = new SerializedObject(rot);
-        soR.FindProperty("_targetObject.gameObjectVal").objectReferenceValue = narukami;
-        soR.FindProperty("_toRotation.vector3Val").vector3Value = Vector3.zero;
-        soR.FindProperty("_duration.floatVal").floatValue = 0.4f;
-        soR.ApplyModifiedPropertiesWithoutUndo();
+        if (narukami.GetComponent<NPCController>() == null)
+        {
+            // RequireComponent で Rigidbody2D と BoxCollider2D も追加される
+            narukami.AddComponent<NPCController>();
+        }
+        var rigidbody2D = narukami.GetComponent<Rigidbody2D>();
+        rigidbody2D.gravityScale = 0;
+        var animator = narukami.GetComponent<Animator>();
+        if (animator == null)
+            animator = narukami.AddComponent<Animator>();
+        animator.runtimeAnimatorController =
+            AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(NarukamiControllerPath);
 
-        var mv = chat.gameObject.AddComponent<MoveTo>();
-        mv.ItemId = flowchart.NextItemId();
-        var soM = new SerializedObject(mv);
-        soM.FindProperty("_targetObject.gameObjectVal").objectReferenceValue = narukami;
-        soM.FindProperty("_toPosition.vector3Val").vector3Value = floatPos;
-        soM.FindProperty("_duration.floatVal").floatValue = 0.6f;
-        soM.ApplyModifiedPropertiesWithoutUndo();
+        var inv = chat.gameObject.AddComponent<InvokeMethod>();
+        inv.ItemId = flowchart.NextItemId();
+        var so = new SerializedObject(inv);
+        so.FindProperty("targetObject").objectReferenceValue = narukami;
+        so.FindProperty("targetComponentAssemblyName").stringValue =
+            "VLCNP.Movie.NPCController, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
+        so.FindProperty("targetComponentFullname").stringValue = "UnityEngine.Component[]";
+        so.FindProperty("targetComponentText").stringValue = "NPCController";
+        so.FindProperty("targetMethod").stringValue = "Defeated";
+        so.FindProperty("targetMethodText").stringValue = "Defeated (Single): Void";
+        so.FindProperty("returnValueType").stringValue = "System.Void";
+        var parameters = so.FindProperty("methodParameters");
+        parameters.arraySize = 1;
+        var p0 = parameters.GetArrayElementAtIndex(0);
+        p0.FindPropertyRelative("objValue.typeAssemblyname").stringValue =
+            "System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089";
+        p0.FindPropertyRelative("objValue.typeFullname").stringValue = "System.Single";
+        p0.FindPropertyRelative("objValue.floatValue").floatValue = -90f;
+        p0.FindPropertyRelative("variableKey").stringValue = "";
+        so.ApplyModifiedPropertiesWithoutUndo();
 
         int bikkuriIndex = block.CommandList.FindIndex(c =>
             c is InvokeMethod
             && new SerializedObject(c).FindProperty("targetMethod").stringValue == "Bikkuri");
+        int insertIndex;
         if (bikkuriIndex < 0)
         {
             Debug.LogWarning("Bikkuri コマンドが見つからないため、起き上がりコマンドは末尾に追加します。");
-            bikkuriIndex = block.CommandList.Count;
+            insertIndex = block.CommandList.Count;
         }
-        block.CommandList.Insert(bikkuriIndex, mv);
-        block.CommandList.Insert(bikkuriIndex, rot);
+        else
+        {
+            // Bikkuri → Wait → 起き上がり、の順にする
+            insertIndex = bikkuriIndex + 1;
+            if (insertIndex < block.CommandList.Count && block.CommandList[insertIndex] is Wait)
+                insertIndex++;
+        }
+        block.CommandList.Insert(insertIndex, inv);
         EditorUtility.SetDirty(block);
     }
 
