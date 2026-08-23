@@ -59,6 +59,14 @@ namespace VLCNP.Combat.EnemyAction
         private float screenEdgePadding = 1f;
 
         [SerializeField]
+        [Tooltip("竜巻発生開始時に一度だけ鳴らすSE")]
+        private AudioClip spawnSe = null;
+
+        [SerializeField]
+        [Min(0f)]
+        private float spawnSeVolume = 1f;
+
+        [SerializeField]
         [Range(0f, 0.4f)]
         [Tooltip("画面端から発生位置を離すViewport比率")]
         private float viewportPadding = 0.1f;
@@ -139,6 +147,8 @@ namespace VLCNP.Combat.EnemyAction
                 new Vector2(maxCorner.x, maxCorner.y)
             );
 
+            PlaySpawnSe();
+
             foreach (Vector2 spawnPosition in spawnPositions)
             {
                 if (IsDone)
@@ -215,6 +225,20 @@ namespace VLCNP.Combat.EnemyAction
             }
 
             return positions;
+        }
+
+        private void PlaySpawnSe()
+        {
+            if (spawnSe == null)
+                return;
+
+            // 本体にAudioSourceが無くても鳴らせるよう、独立したAudioSourceで再生する
+            GameObject seObject = new GameObject("ScreenWideTornadoBurstSpawnSe");
+            seObject.transform.position = cachedTransform.position;
+            AudioSource audioSource = seObject.AddComponent<AudioSource>();
+            audioSource.spatialBlend = 0f;
+            audioSource.PlayOneShot(spawnSe, spawnSeVolume);
+            Destroy(seObject, spawnSe.length + 0.1f);
         }
 
         private void SetFlap(bool value)
