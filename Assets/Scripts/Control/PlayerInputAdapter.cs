@@ -11,9 +11,8 @@ namespace VLCNP.Control
     public static class PlayerInputAdapter
     {
         private const float StickDeadZone = 0.3f;
-        private const float StickReverseBounceWindow = 0.08f;
         private const float StickReverseConfirmDuration = 0.05f;
-        private const float StickStrongReverseThreshold = 0.65f;
+        private const float StickNeutralResetDuration = 0.15f;
         private const string LogTag = "[PlayerInputAdapter]";
         public static bool EnableDebugLogs = false;
 
@@ -23,7 +22,8 @@ namespace VLCNP.Control
         private static int lastAcceptedStickDirection = 0;
         private static int pendingReverseStickDirection = 0;
         private static float pendingReverseStickStartedAt = 0f;
-        private static float lastStickNeutralTime = float.NegativeInfinity;
+        private static bool isStickNeutral = false;
+        private static float stickNeutralStartedAt = float.NegativeInfinity;
 
         private static bool IsGameplayInputBlocked()
         {
@@ -76,10 +76,21 @@ namespace VLCNP.Control
 
             if (absoluteStickValue <= StickDeadZone)
             {
-                lastStickNeutralTime = now;
+                if (!isStickNeutral)
+                {
+                    isStickNeutral = true;
+                    stickNeutralStartedAt = now;
+                }
+                // ニュートラルが一定時間続いたら方向履歴をリセットし、静止からの入力はどの方向でも即受理する
+                if (now - stickNeutralStartedAt >= StickNeutralResetDuration)
+                {
+                    lastAcceptedStickDirection = 0;
+                }
                 pendingReverseStickDirection = 0;
                 return 0f;
             }
+
+            isStickNeutral = false;
 
             int direction = stickValue > 0f ? 1 : -1;
             if (lastAcceptedStickDirection == 0 || direction == lastAcceptedStickDirection)
@@ -88,13 +99,9 @@ namespace VLCNP.Control
                 return stickValue;
             }
 
-            bool recentlyNeutral = now - lastStickNeutralTime <= StickReverseBounceWindow;
-            if (!recentlyNeutral || absoluteStickValue >= StickStrongReverseThreshold)
-            {
-                AcceptMoveStickDirection(direction);
-                return stickValue;
-            }
-
+            // 方向反転はバネ戻りバウンスの可能性がある。バウンスはデッドゾーン帯を
+            // 1フレームで飛び越えることがある(実測: 8msで-1.0→+0.571)ため、
+            // ニュートラル観測や入力の強さに頼らず、反転が一定時間継続したときだけ受理する。
             if (pendingReverseStickDirection != direction)
             {
                 pendingReverseStickDirection = direction;
@@ -121,7 +128,8 @@ namespace VLCNP.Control
         {
             lastAcceptedStickDirection = 0;
             pendingReverseStickDirection = 0;
-            lastStickNeutralTime = float.NegativeInfinity;
+            isStickNeutral = false;
+            stickNeutralStartedAt = float.NegativeInfinity;
         }
 
         public static bool IsAimUpPressed()
@@ -411,7 +419,7 @@ namespace VLCNP.Control
             bool dpadLeft = gamepad.dpad.left.isPressed;
             bool dpadUp = gamepad.dpad.up.isPressed;
             if (
-                Mathf.Abs(horizontal - lastLoggedHorizontal) > 0.05f
+                Mathf.Abs(horizontal - lastLoggedHorizontal) > 0.02f
                 || dpadRight
                 || dpadLeft
                 || dpadUp
@@ -419,7 +427,7 @@ namespace VLCNP.Control
             {
                 lastLoggedHorizontal = horizontal;
                 Debug.Log(
-                    $"{LogTag} StickX={horizontal:F2}, DPadRight={dpadRight}, DPadLeft={dpadLeft}, DPadUp={dpadUp}, OutputHorizontal={Mathf.Clamp(outputHorizontal, -1f, 1f):F2}"
+                    $"{LogTag} t={Time.unscaledTime:F4} StickX={horizontal:F3}, DPadRight={dpadRight}, DPadLeft={dpadLeft}, DPadUp={dpadUp}, OutputHorizontal={Mathf.Clamp(outputHorizontal, -1f, 1f):F2}"
                 );
             }
         }
