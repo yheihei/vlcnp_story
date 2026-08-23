@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VLCNP.Projectiles;
 
 namespace VLCNP.Combat.EnemyAction
 {
     /**
-     * 羽ばたきAnimationを再生しながら、プレイヤーへ向けて衝撃波を複数回発射する。
+     * 羽ばたきAnimationを再生しながら、プレイヤーへ向けて壊せる衝撃波を複数回発射する。
      */
     public class FlapAndLaunchShockwaves : EnemyAction
     {
         [SerializeField]
-        private Projectile shockwavePrefab = null;
+        private NarukamiHomingShockwave shockwavePrefab = null;
 
         [SerializeField]
         [Tooltip("羽ばたき中にtrueにするAnimator Bool。空なら変更しない")]
@@ -43,7 +44,8 @@ namespace VLCNP.Combat.EnemyAction
         [Min(0f)]
         private float waitAfterLaunch = 0.8f;
 
-        private readonly List<Projectile> activeShockwaves = new List<Projectile>();
+        private readonly List<NarukamiHomingShockwave> activeShockwaves =
+            new List<NarukamiHomingShockwave>();
 
         private Animator animator;
         private Rigidbody2D rbody;
@@ -124,19 +126,12 @@ namespace VLCNP.Combat.EnemyAction
                 toPlayer = new Vector2(directionX, 0f);
             }
 
-            float angle = Mathf.Atan2(toPlayer.y, toPlayer.x) * Mathf.Rad2Deg;
-            // 左向きのときはProjectileがローカル-X方向へ進むため、逆向きの回転で相殺する
-            if (isLeft)
-            {
-                angle += 180f;
-            }
-
-            Projectile shockwave = Instantiate(
+            NarukamiHomingShockwave shockwave = Instantiate(
                 shockwavePrefab,
                 spawnPosition,
-                Quaternion.Euler(0f, 0f, angle)
+                Quaternion.identity
             );
-            shockwave.SetDirection(isLeft);
+            shockwave.Launch(toPlayer.normalized);
             shockwave.SetDamage(damage);
             activeShockwaves.Add(shockwave);
         }

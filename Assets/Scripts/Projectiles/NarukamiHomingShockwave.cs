@@ -59,6 +59,10 @@ namespace VLCNP.Projectiles
         private string groundTagName = "Ground";
 
         [SerializeField]
+        [Tooltip("地面に接触したとき消滅するか。falseなら地形を通過する")]
+        private bool breakOnGround = true;
+
+        [SerializeField]
         private GameObject hitEffect = null;
 
         [SerializeField]
@@ -256,7 +260,7 @@ namespace VLCNP.Projectiles
             if (hasImpacted || IsStopped)
                 return;
 
-            if (other.CompareTag(groundTagName))
+            if (breakOnGround && other.CompareTag(groundTagName))
             {
                 ImpactAndDestroy();
                 return;

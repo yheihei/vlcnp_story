@@ -10,11 +10,16 @@ GameObject:
   m_Component:
   - component: {fileID: 6932650970840407312}
   - component: {fileID: 8851283981985740118}
-  - component: {fileID: 9038650987075269263}
-  - component: {fileID: 6870728061884924861}
+  - component: {fileID: 3567671495068870345}
+  - component: {fileID: 3921098565047095670}
+  - component: {fileID: 2025401590505405159}
+  - component: {fileID: 1967976219101848399}
+  - component: {fileID: 630985292850210042}
+  - component: {fileID: 4090219533475810738}
+  - component: {fileID: 3448203422650562891}
   m_Layer: 0
   m_Name: NarukamiShockwave
-  m_TagString: Projectile
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -86,8 +91,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &9038650987075269263
-BoxCollider2D:
+--- !u!58 &3567671495068870345
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -118,20 +123,37 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.128, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
-    newSize: {x: 1.28, y: 1.28}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.576, y: 1.024}
-  m_EdgeRadius: 0
---- !u!114 &6870728061884924861
+  m_Radius: 0.3584
+--- !u!50 &3921098565047095670
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305638809351161942}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &2025401590505405159
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,19 +162,130 @@ MonoBehaviour:
   m_GameObject: {fileID: 4305638809351161942}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f220fe57dd5e1490c8b46e8df4da2288, type: 3}
+  m_Script: {fileID: 11500000, guid: cd5927f06febb45608beb4bf3b6c82b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
-  hitEffect: {fileID: 0}
-  deleteTime: 3
+  initialSpeed: 8
+  maxSpeed: 8
+  homingAcceleration: 0
+  selfRotationSpeed: 1080
+  homingDuration: 0
+  maxLifetime: 3
+  fadeOutDuration: 0.5
+  spawnFadeDuration: 0
   targetTagName: Player
-  IsPenetration: 0
-  isStuckInGround: 0
   groundTagName: Ground
-  isBreakOnGround: 0
-  isFadeOut: 1
-  mirrorScaleWhenFacingLeft: 1
+  breakOnGround: 0
+  hitEffect: {fileID: 8901418655622939187, guid: 7bd1d1431d67846d8877b37a4c572a45, type: 3}
+  takeDamageSe: {fileID: 8300000, guid: 9da2d82947f934c388e0f9816e5b5acf, type: 3}
+  takeDamageSeVolume: 0.5
   onTargetHit:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1967976219101848399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305638809351161942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf1ae46a9efb4cd6b0546447925f8b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statClass: 26
+  progression: {fileID: 11400000, guid: 6dc96e98c41634f2a80b80569ee11d3f, type: 2}
+--- !u!114 &630985292850210042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305638809351161942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bda1aad7f86b442f39ec6ee852e0d469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invincibleTime: 0.1
+  deadEffect: {fileID: 8901418655622939187, guid: 7bd1d1431d67846d8877b37a4c572a45, type: 3}
+  takeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  dieEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4090219533475810738}
+        m_TargetAssemblyTypeName: VLCNP.Pickups.DropExperience, Assembly-CSharp
+        m_MethodName: Drop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3448203422650562891}
+        m_TargetAssemblyTypeName: VLCNP.Pickups.DropItem, Assembly-CSharp
+        m_MethodName: Drop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 630985292850210042}
+        m_TargetAssemblyTypeName: VLCNP.Attributes.Health, Assembly-CSharp
+        m_MethodName: DeadEffectAndDestroy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  IsGameOverEventExecute: 0
+  defeatedFlag: 0
+  hideBossStatusOnDeath: 0
+  defeatedFlagSe: {fileID: 0}
+  defeatedFlagSeVolume: 0.5
+  zeroDamageSe: {fileID: 0}
+  isBlowAway: 0
+  guardPower: 0
+--- !u!114 &4090219533475810738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305638809351161942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac51f0affca449d3aefe6df453d32ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  experiences:
+  - {fileID: 8575966937552474532, guid: 724cc44e667d846e19b7088062dcc428, type: 3}
+  - {fileID: 8575966937552474532, guid: 724cc44e667d846e19b7088062dcc428, type: 3}
+--- !u!114 &3448203422650562891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305638809351161942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ce3014d0a7aa46f6b4c2c526f84e407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItem: {fileID: 5950036589878435561, guid: 672f44934bcc94005a8656df182f68c5, type: 3}
+  dropRate: 0.4
