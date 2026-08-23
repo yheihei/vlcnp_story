@@ -207,7 +207,7 @@ PrefabInstance:
     - target: {fileID: 7728333157217015110, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: enemyActions.Array.data[1].unityReference
       value: 
-      objectReference: {fileID: 5552662101301297857}
+      objectReference: {fileID: 1213396573756665430}
     - target: {fileID: 7728333157217015110, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       propertyPath: enemyActions.Array.data[2].unityReference
       value: 
@@ -260,7 +260,7 @@ PrefabInstance:
       addedObject: {fileID: 2020116618049571286}
     - targetCorrespondingSourceObject: {fileID: 794816729013472116, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5552662101301297857}
+      addedObject: {fileID: 1213396573756665430}
   m_SourcePrefab: {fileID: 100100000, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
 --- !u!114 &4019982881515073440 stripped
 MonoBehaviour:
@@ -310,7 +310,7 @@ MonoBehaviour:
   riseDuration: 1.6
   swayAmplitude: 0.25
   animationStateName: Hover
---- !u!114 &5552662101301297857
+--- !u!114 &1213396573756665430
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,17 +319,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4164685145193542229}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04704099d803f46df8bccb741d80cf2e, type: 3}
+  m_Script: {fileID: 11500000, guid: bf642d49a590940e682d05597df3e8c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTimeSecond: 3
-  startShakeAmplitude: 0.03
-  endShakeAmplitude: 0.12
-  startShakeFrequency: 6
-  endShakeFrequency: 16
-  verticalBobAmplitude: 0.05
-  verticalBobCycles: 2
-  animationStateName: Hover
+  duration: 0.8
+  radius: 0.3
+  startTowardFacing: 1
 --- !u!114 &7961702996879295559 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6679269501749362022, guid: eaf8a142a28fb477c8becf93be666ba9, type: 3}
