@@ -107,6 +107,19 @@ namespace VLCNP.UI
                 scale.x = -1 * Mathf.Abs(scale.x);
             }
             cachedTransform.localScale = scale;
+            KeepUpright();
+        }
+
+        // キャラクターが回転しても表記は正立を維持する
+        // 左右反転はX負スケールで行われるため、反転時は補正角の符号が逆になる
+        private void KeepUpright()
+        {
+            Transform parent = cachedTransform.parent;
+            if (parent == null)
+                return;
+            float parentAngle = parent.eulerAngles.z;
+            float localAngle = IsCharacterDirectionLeft() ? -parentAngle : parentAngle;
+            cachedTransform.localRotation = Quaternion.Euler(0f, 0f, localAngle);
         }
 
         private void EnsureInitialized()
