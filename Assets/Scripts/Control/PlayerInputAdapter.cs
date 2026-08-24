@@ -25,9 +25,13 @@ namespace VLCNP.Control
         private static bool isStickNeutral = false;
         private static float stickNeutralStartedAt = float.NegativeInfinity;
 
+        // 全画面UI(チュートリアルスライド等)表示中にゲームプレイ入力を遮断するためのフラグ。
+        // メニュー系入力(WasMenu*)は遮断しないので、UI側の操作はそのまま使える
+        public static bool IsUIOverlayBlocking = false;
+
         private static bool IsGameplayInputBlocked()
         {
-            return TransitionEvent.IsAnyTransitionRunning;
+            return TransitionEvent.IsAnyTransitionRunning || IsUIOverlayBlocking;
         }
 
         public static float GetMoveHorizontal()

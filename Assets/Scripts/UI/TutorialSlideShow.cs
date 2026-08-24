@@ -68,8 +68,16 @@ namespace VLCNP.UI
             currentIndex = 0;
             openedTime = Time.unscaledTime;
             IsOpen = true;
+            // スライド表示中は移動・攻撃などのゲームプレイ入力を遮断する(左右キーはスライド送りに使う)
+            PlayerInputAdapter.IsUIOverlayBlocking = true;
             panelRoot.SetActive(true);
             ShowSlide(currentIndex);
+        }
+
+        void OnDisable()
+        {
+            // 表示中にシーン遷移等で破棄された場合に入力遮断が残らないようにする
+            if (IsOpen) PlayerInputAdapter.IsUIOverlayBlocking = false;
         }
 
         void Update()
@@ -150,6 +158,7 @@ namespace VLCNP.UI
             if (videoPlayer != null) videoPlayer.Stop();
             panelRoot.SetActive(false);
             IsOpen = false;
+            PlayerInputAdapter.IsUIOverlayBlocking = false;
             slides = null;
             Action callback = onClosed;
             onClosed = null;
