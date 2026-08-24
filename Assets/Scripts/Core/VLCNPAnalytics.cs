@@ -8,6 +8,8 @@ namespace VLCNP.Core
     {
         public void ReachedTrial1End()
         {
+            // Developmentビルド・エディタでは収集を開始していないため送信しない
+            if (Debug.isDebugBuild) return;
             AnalyticsService.Instance.RecordEvent("trial1End");
             Debug.Log("Trial completion event recorded");
         }

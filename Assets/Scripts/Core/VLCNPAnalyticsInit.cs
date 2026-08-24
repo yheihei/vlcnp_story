@@ -12,6 +12,12 @@ namespace VLCNP.Core
             {
                 await UnityServices.InitializeAsync();
                 Debug.Log("Unity Services initialized successfully");
+                // Developmentビルド・エディタでは開発者自身のプレイを計測から除外する
+                if (Debug.isDebugBuild)
+                {
+                    Debug.Log("Development build: Analytics data collection skipped");
+                    return;
+                }
                 // データ収集を開始
                 AnalyticsService.Instance.StartDataCollection();
                 Debug.Log("Data collection started");
