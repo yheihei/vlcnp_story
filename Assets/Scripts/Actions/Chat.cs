@@ -130,12 +130,19 @@ namespace VLCNP.Actions
             StopAll();
             (Flag currentFlag, string currentBlockName, Flag afterChatSetFlag) = GetCurrentBlockNameFromFlag();
             flowChart.ExecuteBlock(currentBlockName);
-            yield return new WaitUntil(() => flowChart.HasExecutingBlocks() == false);
-            // メニューが開いていたら閉じるまで待つ
-            MenuDialog menuDialog = MenuDialog.ActiveMenuDialog;
-            if (menuDialog != null)
+            while (true)
             {
-                yield return new WaitUntil(() => menuDialog.gameObject.activeSelf == false);
+                yield return new WaitUntil(() => flowChart.HasExecutingBlocks() == false);
+                // メニューが開いていたら閉じるまで待つ
+                MenuDialog menuDialog = MenuDialog.ActiveMenuDialog;
+                if (menuDialog != null && menuDialog.gameObject.activeSelf)
+                {
+                    yield return new WaitUntil(() => menuDialog.gameObject.activeSelf == false);
+                    // 選択肢で選んだブロックの実行が始まるので、終わるまで待ち直す
+                    yield return null;
+                    continue;
+                }
+                break;
             }
             StartAll();
             isAction = true;

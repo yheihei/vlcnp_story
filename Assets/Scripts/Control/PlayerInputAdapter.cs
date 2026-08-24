@@ -311,6 +311,52 @@ namespace VLCNP.Control
             return false;
         }
 
+        public static bool WasMenuLeftPressed()
+        {
+            if (Input.GetKeyDown("left"))
+            {
+                return true;
+            }
+
+            Gamepad gamepad = Gamepad.current;
+            if (gamepad != null)
+            {
+                if (gamepad.dpad.left.wasPressedThisFrame)
+                {
+                    return true;
+                }
+
+                if (gamepad.leftStick.left.wasPressedThisFrame)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool WasMenuRightPressed()
+        {
+            if (Input.GetKeyDown("right"))
+            {
+                return true;
+            }
+
+            Gamepad gamepad = Gamepad.current;
+            if (gamepad != null)
+            {
+                if (gamepad.dpad.right.wasPressedThisFrame)
+                {
+                    return true;
+                }
+
+                if (gamepad.leftStick.right.wasPressedThisFrame)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static bool WasMenuSubmitPressed()
         {
             if (Input.GetKeyDown("return"))
