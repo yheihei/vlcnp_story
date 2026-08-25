@@ -353,6 +353,7 @@ GameObject:
   - component: {fileID: 71814700}
   - component: {fileID: 71814699}
   - component: {fileID: 71814698}
+  - component: {fileID: 71814710}
   m_Layer: 0
   m_Name: UnikiTutorialChat
   m_TagString: Untagged
@@ -385,7 +386,7 @@ MonoBehaviour:
     width: 0
     height: 0
   selectedBlocks:
-  - {fileID: 71814708}
+  - {fileID: 71814706}
   selectedCommands:
   - {fileID: 0}
   variables: []
@@ -718,6 +719,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &71814710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71814696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4eb8b6fa435c48729aca57c84b6b44f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &106998168
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13271,12 +13284,24 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6310595414258977201, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310595414258977201, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310595414258977201, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310595414258977201, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.1172857
       objectReference: {fileID: 0}
     - target: {fileID: 6310595414258977201, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.62
+      value: -1.06
       objectReference: {fileID: 0}
     - target: {fileID: 6310595414258977201, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13309,6 +13334,10 @@ PrefabInstance:
     - target: {fileID: 6310595414258977201, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6310595414258977201, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6310595414258977203, guid: 1f1f77daf42324f128d5ed5216b39b32, type: 3}
       propertyPath: m_Name
