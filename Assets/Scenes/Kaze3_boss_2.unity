@@ -131,12 +131,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 127111461581275700, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 127111461581275700, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: characterToExperiences.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 625646515341984492, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: m_Name
       value: Debug
+      objectReference: {fileID: 0}
+    - target: {fileID: 625646515341984492, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 625646515341984494, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: m_LocalPosition.x
@@ -195,8 +203,12 @@ PrefabInstance:
       value: 43
       objectReference: {fileID: 0}
     - target: {fileID: 3124803689963868652, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3124803689963868652, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: healthLevel
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8166,7 +8178,7 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 2147483649
-  - first: {x: 1, y: 1, z: 0}
+  - first: {x: -2, y: 1, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 5
@@ -8176,7 +8188,7 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 2147483649
-  - first: {x: 22, y: 1, z: 0}
+  - first: {x: 25, y: 1, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 5
