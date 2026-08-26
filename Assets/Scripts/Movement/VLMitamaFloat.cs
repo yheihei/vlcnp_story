@@ -27,6 +27,7 @@ namespace VLCNP.Movement
 
         Rigidbody2D rBody;
         KabeKickEffectController kabeKickEffectController;
+        ThrusterFlight thrusterFlight;
         float fuelSeconds;
         bool isFloating = false;
         bool isStopped = false;
@@ -56,6 +57,7 @@ namespace VLCNP.Movement
                 leg = GetComponentInChildren<Leg>();
             }
             kabeKickEffectController = GetComponentInChildren<KabeKickEffectController>();
+            thrusterFlight = GetComponent<ThrusterFlight>();
             fuelSeconds = maxFuelSeconds;
 
             if (leg != null)
@@ -98,6 +100,10 @@ namespace VLCNP.Movement
 
             if (CanFloat() && PlayerInputAdapter.IsJumpHeld(jumpButton))
             {
+                if (!isFloating)
+                {
+                    PerfLog.Log($"[VLMitamaFloat] 浮遊開始 fuel={fuelSeconds:F2}");
+                }
                 isFloating = true;
             }
         }
@@ -128,6 +134,7 @@ namespace VLCNP.Movement
                 && !IsGround()
                 && !IsWaterBlocking()
                 && !IsKabeBlocking()
+                && !IsThrusterBlocking()
                 && rBody.velocity.y <= activationVelocityY;
         }
 
@@ -140,6 +147,7 @@ namespace VLCNP.Movement
                     || !PlayerInputAdapter.IsJumpHeld(jumpButton)
                     || IsWaterBlocking()
                     || IsKabeBlocking()
+                    || IsThrusterBlocking()
                 );
         }
 
@@ -157,6 +165,13 @@ namespace VLCNP.Movement
         {
             return kabeKickEffectController != null
                 && (kabeKickEffectController.IsKabekick() || kabeKickEffectController.IsGrabbing());
+        }
+
+        // スラスター優先。スラスターの燃料が切れているときのみ浮遊できる
+        private bool IsThrusterBlocking()
+        {
+            return thrusterFlight != null
+                && (thrusterFlight.IsThrusting || (thrusterFlight.IsUnlocked() && thrusterFlight.HasFuel));
         }
 
         private void RecoverFuel()

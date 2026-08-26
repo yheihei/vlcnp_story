@@ -32,6 +32,7 @@ namespace VLCNP.Movement
         Animator animator;
         PlayerStun playerStun;
         Dash dash;
+        ThrusterFlight thrusterFlight;
         bool isInWater = false;
         float defaultGravityScale = 0;
 
@@ -41,6 +42,7 @@ namespace VLCNP.Movement
             animator = GetComponent<Animator>();
             playerStun = GetComponent<PlayerStun>();
             dash = GetComponent<Dash>();
+            thrusterFlight = GetComponent<ThrusterFlight>();
             defaultGravityScale = rbody.gravityScale;
             speedInWater = speed / 2;
         }
@@ -128,6 +130,9 @@ namespace VLCNP.Movement
                 return;
             // カベをつかんでいたら移動不可
             if (kabeKickEffectController != null && kabeKickEffectController.IsGrabbing())
+                return;
+            // スラスター水平噴射中は噴射速度を上書きしない
+            if (thrusterFlight != null && thrusterFlight.IsHorizontalThrusting)
                 return;
             UpdateMoveSpeed();
             UpdateCharacterDirection();

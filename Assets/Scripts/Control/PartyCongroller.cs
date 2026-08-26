@@ -215,6 +215,12 @@ namespace VLCNP.Control
             // 切り替え前のプレイヤーのジャンプ状態を解除
             previousCache.jump?.EndJump();
 
+            // スラスター燃料を切り替え前のプレイヤーから引き継ぐ(キャラ切替による燃料回復を防ぐ)
+            if (previousCache.thrusterFlight != null && nextCache.thrusterFlight != null)
+            {
+                nextCache.thrusterFlight.SetFuelSeconds(previousCache.thrusterFlight.FuelSeconds);
+            }
+
             OnChangeCharacter?.Invoke(currentPlayer);
         }
 
@@ -530,6 +536,7 @@ namespace VLCNP.Control
             public readonly Mover mover;
             public readonly Leg leg;
             public readonly Jump jump;
+            public readonly ThrusterFlight thrusterFlight;
             public readonly PlayerStun playerStun;
             public readonly Fighter fighter;
             public readonly SpriteRenderer spriteRenderer;
@@ -548,6 +555,7 @@ namespace VLCNP.Control
                 mover = gameObject.GetComponent<Mover>();
                 leg = gameObject.GetComponent<Leg>();
                 jump = gameObject.GetComponent<Jump>();
+                thrusterFlight = gameObject.GetComponent<ThrusterFlight>();
                 playerStun = gameObject.GetComponent<PlayerStun>();
                 fighter = gameObject.GetComponent<Fighter>();
                 spriteRenderer = gameObject.GetComponent<SpriteRenderer>();

@@ -17,3 +17,6 @@
 
 * https://dova-s.jp/se/play1334.html
   * ゾンビ・モンスターの鳴き声
+
+* ノタの森 (Nota no Mori) http://notanomori.net/
+  * thruster(スラスター噴射音。CC BY 3.0)
