@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using VLCNP.Movement;
 
@@ -15,6 +16,21 @@ public static class Issue649ThrusterSetup
     const string WindPuffTexturePath = "Assets/Game/Effect/wind_puff_sheet_48x16.png";
     const string ThrusterSePath = "Assets/Game/SE/thruster.wav";
     const string EffectObjectName = "ThrusterWindEffect";
+    const string NarukamiTexturePath = "Assets/Game/Characters/Sprite/VLNarukami.png";
+    const string NarukamiAnimPath = "Assets/Game/Characters/Animations/VLNarukamiCarry.anim";
+    const string NarukamiControllerPath =
+        "Assets/Game/Characters/Animations/VLNarukamiCarryController.controller";
+    const string NarukamiObjectName = "ThrusterNarukami";
+    const float NarukamiScale = 0.4f;
+
+    // 頭上オフセット計算用(いちばん背の高いキャラに合わせる)
+    static readonly string[] PlayerVariantPaths =
+    {
+        PlayerPrefabPath,
+        "Assets/Game/Characters/LeeleePlayerVariant.prefab",
+        "Assets/Game/Characters/OrochiPlayerVariant.prefab",
+        "Assets/Game/Characters/VLMitamaPlayerVariant.prefab",
+    };
 
     [MenuItem("Tools/Issue649/Setup Thruster")]
     public static void Setup()
@@ -38,6 +54,149 @@ public static class Issue649ThrusterSetup
         {
             PrefabUtility.UnloadPrefabContents(root);
         }
+    }
+
+    [MenuItem("Tools/Issue649/Setup Narukami Carry")]
+    public static void SetupNarukamiCarry()
+    {
+        Sprite[] narukamiSprites = LoadNarukamiSprites();
+        if (narukamiSprites.Length < 2)
+        {
+            Debug.LogError($"[Issue649] ナルカミのスプライトが不足しています: {NarukamiTexturePath}");
+            return;
+        }
+
+        AnimationClip clip = CreateCarryAnimation(narukamiSprites);
+        AnimatorController controller = CreateCarryController(clip);
+
+        GameObject root = PrefabUtility.LoadPrefabContents(PlayerPrefabPath);
+        try
+        {
+            SetupNarukamiChild(root, narukamiSprites[0], controller);
+            PrefabUtility.SaveAsPrefabAsset(root, PlayerPrefabPath);
+            Debug.Log("[Issue649] Player.prefab に ThrusterNarukami をセットアップしました");
+        }
+        finally
+        {
+            PrefabUtility.UnloadPrefabContents(root);
+        }
+    }
+
+    static Sprite[] LoadNarukamiSprites()
+    {
+        // VLNarukami_0(翼上), VLNarukami_1(翼中)。VLNarukami_2 は非飛行ポーズなので使わない
+        return AssetDatabase
+            .LoadAllAssetsAtPath(NarukamiTexturePath)
+            .OfType<Sprite>()
+            .Where(s => s.name == "VLNarukami_0" || s.name == "VLNarukami_1")
+            .OrderBy(s => s.name)
+            .ToArray();
+    }
+
+    static AnimationClip CreateCarryAnimation(Sprite[] sprites)
+    {
+        AnimationClip clip = new() { frameRate = 8f };
+        EditorCurveBinding binding = new()
+        {
+            type = typeof(SpriteRenderer),
+            path = "",
+            propertyName = "m_Sprite",
+        };
+        // 2コマループ(0→1→0)。最後のキーはループの継ぎ目用
+        ObjectReferenceKeyframe[] keyframes =
+        {
+            new() { time = 0f, value = sprites[0] },
+            new() { time = 0.125f, value = sprites[1] },
+            new() { time = 0.25f, value = sprites[0] },
+        };
+        AnimationUtility.SetObjectReferenceCurve(clip, binding, keyframes);
+
+        AnimationClipSettings settings = AnimationUtility.GetAnimationClipSettings(clip);
+        settings.loopTime = true;
+        AnimationUtility.SetAnimationClipSettings(clip, settings);
+
+        AssetDatabase.CreateAsset(clip, NarukamiAnimPath);
+        return clip;
+    }
+
+    static AnimatorController CreateCarryController(AnimationClip clip)
+    {
+        AssetDatabase.DeleteAsset(NarukamiControllerPath);
+        AnimatorController controller = AnimatorController.CreateAnimatorControllerAtPath(
+            NarukamiControllerPath
+        );
+        controller.AddMotion(clip);
+        return controller;
+    }
+
+    static void SetupNarukamiChild(GameObject root, Sprite sprite, AnimatorController controller)
+    {
+        Transform existing = root.transform.Find(NarukamiObjectName);
+        GameObject narukamiObject =
+            existing != null ? existing.gameObject : new GameObject(NarukamiObjectName);
+        narukamiObject.transform.SetParent(root.transform, false);
+        narukamiObject.transform.localPosition = new Vector3(0f, CalculateHeadOffsetY(), 0f);
+        narukamiObject.transform.localScale = Vector3.one * NarukamiScale;
+
+        SpriteRenderer renderer = narukamiObject.GetComponent<SpriteRenderer>();
+        if (renderer == null)
+        {
+            renderer = narukamiObject.AddComponent<SpriteRenderer>();
+        }
+        renderer.sprite = sprite;
+
+        // プレイヤーの背面に表示
+        SpriteRenderer playerRenderer = root.GetComponent<SpriteRenderer>();
+        if (playerRenderer != null)
+        {
+            renderer.sortingLayerID = playerRenderer.sortingLayerID;
+            renderer.sortingOrder = playerRenderer.sortingOrder - 1;
+        }
+
+        Animator animator = narukamiObject.GetComponent<Animator>();
+        if (animator == null)
+        {
+            animator = narukamiObject.AddComponent<Animator>();
+        }
+        animator.runtimeAnimatorController = controller;
+
+        ThrusterNarukamiVisual visual = narukamiObject.GetComponent<ThrusterNarukamiVisual>();
+        if (visual == null)
+        {
+            visual = narukamiObject.AddComponent<ThrusterNarukamiVisual>();
+        }
+
+        ThrusterFlight thruster = root.GetComponent<ThrusterFlight>();
+        if (thruster != null)
+        {
+            SerializedObject so = new(thruster);
+            so.FindProperty("narukamiVisual").objectReferenceValue = visual;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+        else
+        {
+            Debug.LogWarning("[Issue649] ThrusterFlight が見つからないため narukamiVisual を配線できません");
+        }
+    }
+
+    // いちばん背の高いキャラの頭上にナルカミの足元が少し重なる高さを求める
+    static float CalculateHeadOffsetY()
+    {
+        float maxTop = 0f;
+        foreach (string path in PlayerVariantPaths)
+        {
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            SpriteRenderer sr = prefab != null ? prefab.GetComponent<SpriteRenderer>() : null;
+            if (sr == null || sr.sprite == null)
+                continue;
+            maxTop = Mathf.Max(maxTop, sr.sprite.bounds.max.y);
+        }
+
+        Sprite narukamiSprite = LoadNarukamiSprites().FirstOrDefault();
+        float narukamiExtentY =
+            narukamiSprite != null ? narukamiSprite.bounds.extents.y * NarukamiScale : 0.5f;
+        const float overlap = 0.15f;
+        return maxTop + narukamiExtentY - overlap;
     }
 
     static void ConfigureWindPuffSprite()

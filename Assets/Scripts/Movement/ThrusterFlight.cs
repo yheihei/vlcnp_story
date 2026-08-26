@@ -40,6 +40,9 @@ namespace VLCNP.Movement
         ParticleSystem thrustEffect = null;
 
         [SerializeField]
+        ThrusterNarukamiVisual narukamiVisual = null;
+
+        [SerializeField]
         AudioSource audioSource = null;
 
         [SerializeField]
@@ -195,6 +198,7 @@ namespace VLCNP.Movement
             ApplyThrustVelocity();
             PlayThrustSound();
             PlayThrustEffect();
+            narukamiVisual?.Show();
             PerfLog.Log(
                 $"[ThrusterFlight] 噴射開始 name={gameObject.name} dir={thrustDirection} fuel={fuelSeconds:F2}"
             );
@@ -309,6 +313,7 @@ namespace VLCNP.Movement
             }
             isThrusting = false;
             StopThrustEffect();
+            narukamiVisual?.Hide();
         }
 
         private void PlayThrustSound()
