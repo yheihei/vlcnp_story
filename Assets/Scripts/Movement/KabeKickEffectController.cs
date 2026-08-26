@@ -20,6 +20,7 @@ namespace VLCNP.Movement
         Rigidbody2D playerRigidbody2D;
         Mover playerMover;
         Animator animator;
+        ThrusterFlight thrusterFlight;
 
         // エフェクトが最後に発生した後の経過時間
         float effectElapsedTime = 0f;
@@ -72,6 +73,7 @@ namespace VLCNP.Movement
             originalGravity = playerRigidbody2D.gravityScale;
             playerMover = player.GetComponent<Mover>();
             animator = player.GetComponent<Animator>();
+            thrusterFlight = player.GetComponent<ThrusterFlight>();
         }
 
         void OnTriggerStay2D(Collider2D other)
@@ -175,6 +177,11 @@ namespace VLCNP.Movement
 
         private void GravityChange()
         {
+            // スラスター噴射中は重力制御をThrusterFlightに任せる(FixedUpdateの実行順によらず上書きしない)
+            if (thrusterFlight != null && thrusterFlight.IsThrusting)
+            {
+                return;
+            }
             // カベキック中でないか、上昇中の場合は重力は元に戻す
             if (!IsKabekick() || playerRigidbody2D.velocity.y >= 0)
             {
