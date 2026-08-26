@@ -162,6 +162,8 @@ namespace VLCNP.Movement
                 return;
 
             fuelSeconds = Mathf.Max(0f, fuelSeconds - Time.fixedDeltaTime);
+            // KabeKickEffectControllerが毎フレームgravityScaleを元に戻すため、噴射中は毎回0を再設定する
+            rBody.gravityScale = 0f;
             ApplyThrustVelocity();
 
             if (fuelSeconds <= 0f)
