@@ -5174,6 +5174,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeSeconds: 0.15
+--- !u!1 &8191421476591598704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9196497515445436042}
+  - component: {fileID: 9142881662429865278}
+  m_Layer: 0
+  m_Name: Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9196497515445436042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8191421476591598704}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.61, y: -0.66, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6362254506045297432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9142881662429865278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8191421476591598704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fc3bf95fb4f341e8989119349ee7e08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poisonEffectPrefab: {fileID: 1120707855470642170, guid: 80340402fa9954567834497e59b89166, type: 3}
+  effectParent: {fileID: 9196497515445436042}
 --- !u!1001 &8426694926020718296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5498,6 +5544,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3223142059203919296, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3005072651890730603}
+    - targetCorrespondingSourceObject: {fileID: 3223142059203919296, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9196497515445436042}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7162812308406061260, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       insertIndex: -1
@@ -5526,6 +5575,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7162812308406061260, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1670967485601872432}
+    - targetCorrespondingSourceObject: {fileID: 7162812308406061260, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3459686809202055492}
   m_SourcePrefab: {fileID: 100100000, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
 --- !u!114 &191257858950457016 stripped
 MonoBehaviour:
@@ -5808,6 +5860,19 @@ MonoBehaviour:
   audioSource: {fileID: 5442026635392498819}
   thrustSe: {fileID: 8300000, guid: f87dd2b66a3cf4e00bd054870ff2d9da, type: 3}
   thrustSeVolume: 0.2
+--- !u!114 &3459686809202055492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699767717115717140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f2a85ee935474aa594779424271dc32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poisonDuration: 8
 --- !u!82 &5442026635392498819 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: -4651000122689875365, guid: b53f7de505ed44dce9641241aeeba081, type: 3}
