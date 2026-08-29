@@ -53,5 +53,6 @@ namespace VLCNP.Core
         VLKamaitachi1Defeated2,  // 風のVLかまいたち2人目を倒した
         HPUpKaze1,  //
         VLNarukamiJoined, // VLナルカミが仲間になった
+        ReturnedToVLFarm, // 全員加入後にベリーロングファームに帰ってきた
     }
 }
