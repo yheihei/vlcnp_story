@@ -13,6 +13,10 @@ namespace VLCNP.Control
     [RequireComponent(typeof(Flowchart))]
     public class FlowchartStopAllGuard : MonoBehaviour
     {
+        // 実行監視中のガード数。イベントがInvokeMethod:Executeで別Flowchartのイベントを連鎖起動したとき、
+        // 先に終わったガードのStartAllが連鎖先ガードのStopAllを上書きしないよう、最後の1つだけがStartAllする
+        static int activeGuards = 0;
+
         Flowchart flowchart;
         Coroutine watching;
 
@@ -33,7 +37,7 @@ namespace VLCNP.Control
             if (watching != null)
             {
                 watching = null;
-                StoppableController.FindInScene()?.StartAll();
+                ReleaseGuard(StoppableController.FindInScene());
             }
         }
 
@@ -43,6 +47,7 @@ namespace VLCNP.Control
             if (block == null || block.GetFlowchart() != flowchart) return;
             StoppableController controller = StoppableController.FindInScene();
             if (controller == null) return;
+            activeGuards++;
             controller.StopAll();
             watching = StartCoroutine(WatchUntilFinished(controller));
         }
@@ -63,7 +68,14 @@ namespace VLCNP.Control
                 break;
             }
             watching = null;
-            controller.StartAll();
+            ReleaseGuard(controller);
+        }
+
+        static void ReleaseGuard(StoppableController controller)
+        {
+            activeGuards = Mathf.Max(0, activeGuards - 1);
+            if (activeGuards > 0) return;
+            controller?.StartAll();
         }
     }
 }
