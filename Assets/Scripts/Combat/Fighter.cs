@@ -77,8 +77,21 @@ namespace VLCNP.Combat
             if (weaponConfig == null)
                 return;
             currentWeaponConfig = weaponConfig;
-            currentWeaponConfig.Spawn(handTransform);
+            Weapon weapon = currentWeaponConfig.Spawn(handTransform);
+            if (weapon != null)
+                HideHandIfCharacterInvisible();
             WeaponHorizontal();
+        }
+
+        // イベントシーンは本体のSpriteRendererを無効化してキャラクターを隠す運用のため、
+        // 本体が非表示のまま装備の見た目が生成されたときはHandごと隠す(隠す方向のみ)
+        private void HideHandIfCharacterInvisible()
+        {
+            if (handTransform == null)
+                return;
+            SpriteRenderer characterSprite = GetComponent<SpriteRenderer>();
+            if (characterSprite != null && !characterSprite.enabled)
+                handTransform.gameObject.SetActive(false);
         }
 
         public void Attack()
