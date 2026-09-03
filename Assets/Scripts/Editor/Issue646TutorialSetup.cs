@@ -263,7 +263,7 @@ public static class Issue646TutorialSetup
     public static void DebugAdvanceDialog()
     {
         DialogInput input = Object.FindObjectOfType<DialogInput>();
-        if (input == null) { Debug.LogError("[Issue646] DialogInputが見つかりません"); return; }
+        if (input == null) { Debug.Log("[Issue646] DialogInputが見つかりません(会話枠が出ていない)"); return; }
         input.SetNextLineFlag();
         Debug.Log("[Issue646] SetNextLineFlagを呼び出しました");
     }
