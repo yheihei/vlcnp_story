@@ -47,9 +47,13 @@ public static class Issue641YamaRevengeSetup
     const string OrochiName = "NPCOrochi";
     const string MitamaName = "NPCVLMitama";
     const string NarukamiName = "VLNarukamiNPC";
+    const string YamaCameraName = "CMCameraYama";
+    const int YamaCameraPriority = 20;
+    const int LeeleeCameraIdlePriority = 5;
+    const int LeeleeCameraPanPriority = 30;
 
-    // 配置(x)。カメラは開始時プレイヤー(スポーン地点 x≈-7.2)を映しているので、
-    // 画面内は x≈-16〜+1.7。右側の画面外から歩いて入ってくる。
+    // 配置(x)。カメラは開始時ヤーマ(x=-8.3)を中心に映しているので、
+    // 画面内は x≈-17〜+0.6。右側の画面外から歩いて入ってくる。
     const float GroundY = -16.23f;
     const float MillcoX = -11.0f;
     const float YamaX = -8.3f;
@@ -158,7 +162,7 @@ public static class Issue641YamaRevengeSetup
 
     static void RemoveGenerated(UnityEngine.SceneManagement.Scene scene)
     {
-        foreach (string name in new[] { EventObjectName, MillcoName, KarmaName, OrochiName, MitamaName, NarukamiName })
+        foreach (string name in new[] { EventObjectName, MillcoName, KarmaName, OrochiName, MitamaName, NarukamiName, YamaCameraName })
         {
             GameObject go = FindInScene(scene, name);
             if (go != null) Object.DestroyImmediate(go);
@@ -286,7 +290,8 @@ public static class Issue641YamaRevengeSetup
         go.transform.localScale = scale;
     }
 
-    // CMCamera2 をリーリー追従にしておき、一行到着時に SetPriority でパンする
+    // 開始時はヤーマ追従の CMCameraYama(優先度 20)がプレイヤー追従の CMCamera(10)に勝つ。
+    // CMCamera2 はリーリー追従にしておき、一行到着時に SetPriority(30) でパンする
     static GameObject SetupCamera(UnityEngine.SceneManagement.Scene scene, Npcs npcs)
     {
         GameObject cameraGo = FindInScene(scene, "CMCamera2");
@@ -295,12 +300,21 @@ public static class Issue641YamaRevengeSetup
             Debug.LogError("[Issue641] CMCamera2 が見つかりません。");
             return null;
         }
+        SetVirtualCamera(cameraGo, npcs.leelee.transform, LeeleeCameraIdlePriority);
+
+        GameObject yamaCameraGo = Object.Instantiate(cameraGo, cameraGo.transform.parent);
+        yamaCameraGo.name = YamaCameraName;
+        SetVirtualCamera(yamaCameraGo, npcs.yama.transform, YamaCameraPriority);
+        return cameraGo;
+    }
+
+    static void SetVirtualCamera(GameObject cameraGo, Transform follow, int priority)
+    {
         CinemachineVirtualCamera vcam = cameraGo.GetComponent<CinemachineVirtualCamera>();
         SerializedObject so = new SerializedObject(vcam);
-        so.FindProperty("m_Follow").objectReferenceValue = npcs.leelee.transform;
-        so.FindProperty("m_Priority").intValue = 5;
+        so.FindProperty("m_Follow").objectReferenceValue = follow;
+        so.FindProperty("m_Priority").intValue = priority;
         so.ApplyModifiedPropertiesWithoutUndo();
-        return cameraGo;
     }
 
     static void SetupEvent(UnityEngine.SceneManagement.Scene scene, Npcs n, GameObject cameraGo)
@@ -417,7 +431,7 @@ public static class Issue641YamaRevengeSetup
         AddWait(flowchart, block, 0.5f);
         if (cameraGo != null)
         {
-            AddInvokeMethod(flowchart, block, cameraGo, typeof(CMCameraSetFollow), "SetPriority", 15);
+            AddInvokeMethod(flowchart, block, cameraGo, typeof(CMCameraSetFollow), "SetPriority", LeeleeCameraPanPriority);
         }
         AddWait(flowchart, block, 2.5f);
         AddSay(flowchart, block, leelee, "聞いたで。つまり千載一遇の\nチャンスってわけやな？ ウニ");
