@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Reflection;
 using Cinemachine;
 using Fungus;
@@ -9,6 +10,7 @@ using UnityEngine.Events;
 using VLCNP.Control;
 using VLCNP.Core;
 using VLCNP.Movie;
+using VLCNP.SceneManagement;
 using VLCNP.UI;
 
 /**
@@ -16,8 +18,8 @@ using VLCNP.UI;
  * Tools/Issue641/Setup Sakusen Kaigi Event で実行する(シーンは自動で開く)。
  * - UnikiRoom の位置マーカー UnikiSakusenKaigi を、話しかけ可能なウニキNPCとして構築する
  * - 3人(オロチ・ミタマ・ナルカミ)加入済みのときだけ表示され、話しかけると作戦会議の会話が発動する
- * - 末尾の「次のイベントシーンへの遷移」は次シーン実装後に差し替える(Comment コマンドで明示)
- * 再実行可能(生成物は毎回作り直す)。
+ * - 末尾で VeryLongFarm_Yama_Revenge(ヤーマ襲来)へ遷移する(専用の GameEventTransition を置く)
+ * 再実行可能(生成物は毎回作り直す。Wait の秒数などの手直しはこのスクリプトに反映すること)。
  */
 public static class Issue641SakusenKaigiSetup
 {
@@ -27,6 +29,8 @@ public static class Issue641SakusenKaigiSetup
     const string BlockName = "SakusenKaigi";
     const string AllFacesPrefabPath = "Assets/Game/Characters/Face/AllFaces.prefab";
     const string EmotionSeGuid = "d186235e0361445b8affabe74e632c81";
+    const string TransitionPrefabPath = "Assets/Game/Core/GameEventTransition.prefab";
+    const string TransitionName = "ToYamaRevengeGameEventTransition";
 
     [MenuItem("Tools/Issue641/Setup Sakusen Kaigi Event")]
     public static void Setup()
@@ -45,7 +49,9 @@ public static class Issue641SakusenKaigiSetup
         Clean(target);
         CopyTemplateComponents(target, template);
         GameObject emotionGo = CreateEmotionChild(target);
-        Flowchart flowchart = CreateChat(scene, target, emotionGo);
+        GameObject transitionGo = SetupTransition(scene);
+        if (transitionGo == null) return;
+        Flowchart flowchart = CreateChat(scene, target, emotionGo, transitionGo);
         SetupGameEvent(target, flowchart);
         SetupVisibility(target);
 
@@ -57,7 +63,8 @@ public static class Issue641SakusenKaigiSetup
     // 再実行できるよう、Transform 以外のコンポーネントと子を全て削除する
     static void Clean(GameObject target)
     {
-        foreach (Component c in target.GetComponents<Component>())
+        // MultiFlagGameEvent は InformationTextSpawner に依存(RequireComponent)するので先に消す
+        foreach (Component c in target.GetComponents<Component>().OrderByDescending(c => c is MultiFlagGameEvent))
         {
             if (c is Transform) continue;
             Object.DestroyImmediate(c);
@@ -110,7 +117,7 @@ public static class Issue641SakusenKaigiSetup
         return go;
     }
 
-    static Flowchart CreateChat(UnityEngine.SceneManagement.Scene scene, GameObject target, GameObject emotionGo)
+    static Flowchart CreateChat(UnityEngine.SceneManagement.Scene scene, GameObject target, GameObject emotionGo, GameObject transitionGo)
     {
         GameObject chatGo = new GameObject("Chat");
         chatGo.transform.SetParent(target.transform, false);
@@ -155,13 +162,42 @@ public static class Issue641SakusenKaigiSetup
         AddSay(flowchart, block, uniki, "だとしても作戦を立てていこうよ！\nあっちはVLヤーマの他にシモーヌや\nその手下たちもいるんだ");
         AddSay(flowchart, block, uniki, "うかつに突っ込んだら\n死にに行くようなもんだよ");
         AddSay(flowchart, block, leelee, "しかしなあ。そうこうしてるうちに、やつら、\nもっかいここに来るかもしれんで");
+        AddWait(flowchart, block, 1f);
         AddScreamEffects(flowchart, block, target);
         AddSay(flowchart, block, null, "きゃーーーーー！！");
-        AddWait(flowchart, block, 1f);
+        AddWait(flowchart, block, 2f);
         AddSay(flowchart, block, uniki, "デジャブ...！！ Millcoさん！！！");
-        AddComment(flowchart, block, "TODO(#641): 次のイベントシーン(ヤーマ襲来)実装後、ここに ExecuteTransition を追加する");
+        AddInvokeMethod(flowchart, block, transitionGo, typeof(TransitionEvent), "ExecuteTransition");
 
         return flowchart;
+    }
+
+    // ヤーマ襲来シーンへの遷移。既存 ToBossGameEventTransition と同じプレハブで、遷移先だけ新シーンにする
+    static GameObject SetupTransition(UnityEngine.SceneManagement.Scene scene)
+    {
+        int buildIndex = Issue641YamaRevengeSetup.GetBuildIndex();
+        if (buildIndex < 0)
+        {
+            Debug.LogError("[Issue641] VeryLongFarm_Yama_Revenge が Build Settings にありません。先に Tools/Issue641/Setup Yama Revenge Scene を実行してください。");
+            return null;
+        }
+        GameObject existing = FindInScene(scene, TransitionName);
+        if (existing != null) Object.DestroyImmediate(existing);
+        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(TransitionPrefabPath);
+        if (prefab == null)
+        {
+            Debug.LogError($"[Issue641] プレハブが見つかりません: {TransitionPrefabPath}");
+            return null;
+        }
+        GameObject go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, scene);
+        go.name = TransitionName;
+        TransitionEvent transition = go.GetComponent<TransitionEvent>();
+        SerializedObject so = new SerializedObject(transition);
+        so.FindProperty("sceneToLoad").intValue = buildIndex;
+        so.FindProperty("isAutoSave").boolValue = false;
+        so.FindProperty("fadeWaitTime").floatValue = 1f;
+        so.ApplyModifiedPropertiesWithoutUndo();
+        return go;
     }
 
     // 既存 Uni の悲鳴演出と同じ: カメラ揺れ + BGMフェードアウト
