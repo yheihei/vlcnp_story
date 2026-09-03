@@ -51,6 +51,7 @@ public static class Issue641YamaRevengeSetup
     const int YamaCameraPriority = 20;
     const int LeeleeCameraIdlePriority = 5;
     const int LeeleeCameraPanPriority = 30;
+    const string YamaAnchorName = "CameraAnchorYama";
     const string AnchorName = "CameraAnchorUniki";
     const string AnchorCameraName = "CMCameraAnchor";
     const int AnchorCameraPanPriority = 40;
@@ -166,7 +167,7 @@ public static class Issue641YamaRevengeSetup
 
     static void RemoveGenerated(UnityEngine.SceneManagement.Scene scene)
     {
-        foreach (string name in new[] { EventObjectName, MillcoName, KarmaName, OrochiName, MitamaName, NarukamiName, YamaCameraName, AnchorName, AnchorCameraName })
+        foreach (string name in new[] { EventObjectName, MillcoName, KarmaName, OrochiName, MitamaName, NarukamiName, YamaCameraName, YamaAnchorName, AnchorName, AnchorCameraName })
         {
             GameObject go = FindInScene(scene, name);
             if (go != null) Object.DestroyImmediate(go);
@@ -294,7 +295,8 @@ public static class Issue641YamaRevengeSetup
         go.transform.localScale = scale;
     }
 
-    // 開始時はヤーマ追従の CMCameraYama(優先度 20)がプレイヤー追従の CMCamera(10)に勝つ。
+    // 開始時はヤーマの初期位置に置いた空アンカーを追う CMCameraYama(優先度 20)が
+    // プレイヤー追従の CMCamera(10)に勝つ。ヤーマ本人を追うと殴りの踏み込みで画角が動くため。
     // CMCamera2 はリーリー追従にしておき、一行到着時に SetPriority(30) でパンする
     static GameObject SetupCamera(UnityEngine.SceneManagement.Scene scene, Npcs npcs)
     {
@@ -306,18 +308,26 @@ public static class Issue641YamaRevengeSetup
         }
         SetVirtualCamera(cameraGo, npcs.leelee.transform, LeeleeCameraIdlePriority);
 
+        GameObject yamaAnchor = CreateAnchor(scene, YamaAnchorName, YamaX);
         GameObject yamaCameraGo = Object.Instantiate(cameraGo, cameraGo.transform.parent);
         yamaCameraGo.name = YamaCameraName;
-        SetVirtualCamera(yamaCameraGo, npcs.yama.transform, YamaCameraPriority);
+        SetVirtualCamera(yamaCameraGo, yamaAnchor.transform, YamaCameraPriority);
 
         // 固定位置用の空アンカー(ヤーマとリーリーの中間)を追従させる。誰かを追う訳ではない
-        GameObject anchor = new GameObject(AnchorName);
-        MoveToScene(anchor, scene);
-        anchor.transform.position = new Vector3(AnchorX, GroundY, 0);
+        GameObject anchor = CreateAnchor(scene, AnchorName, AnchorX);
         GameObject anchorCameraGo = Object.Instantiate(cameraGo, cameraGo.transform.parent);
         anchorCameraGo.name = AnchorCameraName;
         SetVirtualCamera(anchorCameraGo, anchor.transform, LeeleeCameraIdlePriority);
         return cameraGo;
+    }
+
+    // カメラの固定位置用の空アンカー(誰も追従しない画角を作る)
+    static GameObject CreateAnchor(UnityEngine.SceneManagement.Scene scene, string name, float x)
+    {
+        GameObject anchor = new GameObject(name);
+        MoveToScene(anchor, scene);
+        anchor.transform.position = new Vector3(x, GroundY, 0);
+        return anchor;
     }
 
     static void SetVirtualCamera(GameObject cameraGo, Transform follow, int priority)
