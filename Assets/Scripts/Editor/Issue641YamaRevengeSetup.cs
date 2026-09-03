@@ -51,6 +51,10 @@ public static class Issue641YamaRevengeSetup
     const int YamaCameraPriority = 20;
     const int LeeleeCameraIdlePriority = 5;
     const int LeeleeCameraPanPriority = 30;
+    const string AnchorName = "CameraAnchorUniki";
+    const string AnchorCameraName = "CMCameraAnchor";
+    const int AnchorCameraPanPriority = 40;
+    const float AnchorX = (YamaX + LeeleeStopX) / 2f;
 
     // 配置(x)。カメラは開始時ヤーマ(x=-8.3)を中心に映しているので、
     // 画面内は x≈-17〜+0.6。右側の画面外から歩いて入ってくる。
@@ -162,7 +166,7 @@ public static class Issue641YamaRevengeSetup
 
     static void RemoveGenerated(UnityEngine.SceneManagement.Scene scene)
     {
-        foreach (string name in new[] { EventObjectName, MillcoName, KarmaName, OrochiName, MitamaName, NarukamiName, YamaCameraName })
+        foreach (string name in new[] { EventObjectName, MillcoName, KarmaName, OrochiName, MitamaName, NarukamiName, YamaCameraName, AnchorName, AnchorCameraName })
         {
             GameObject go = FindInScene(scene, name);
             if (go != null) Object.DestroyImmediate(go);
@@ -305,6 +309,14 @@ public static class Issue641YamaRevengeSetup
         GameObject yamaCameraGo = Object.Instantiate(cameraGo, cameraGo.transform.parent);
         yamaCameraGo.name = YamaCameraName;
         SetVirtualCamera(yamaCameraGo, npcs.yama.transform, YamaCameraPriority);
+
+        // 固定位置用の空アンカー(ヤーマとリーリーの中間)を追従させる。誰かを追う訳ではない
+        GameObject anchor = new GameObject(AnchorName);
+        MoveToScene(anchor, scene);
+        anchor.transform.position = new Vector3(AnchorX, GroundY, 0);
+        GameObject anchorCameraGo = Object.Instantiate(cameraGo, cameraGo.transform.parent);
+        anchorCameraGo.name = AnchorCameraName;
+        SetVirtualCamera(anchorCameraGo, anchor.transform, LeeleeCameraIdlePriority);
         return cameraGo;
     }
 
@@ -355,7 +367,9 @@ public static class Issue641YamaRevengeSetup
             SetSayDialog(c, sayDialog);
         }
 
-        GameObject unikiEmotion = n.uniki.transform.Find("Emotion")?.gameObject;
+        GameObject karmaEmotion = n.karma.transform.Find("Emotion")?.gameObject;
+        if (karmaEmotion == null) Debug.LogError("[Issue641] KarmaNPC に Emotion 子がありません。");
+        GameObject anchorCameraGo = FindInScene(scene, AnchorCameraName);
         float yamaY = n.yama.transform.position.y;
         AudioClip punchSe = AssetDatabase.LoadAssetAtPath<AudioClip>(PunchSePath);
 
@@ -368,12 +382,16 @@ public static class Issue641YamaRevengeSetup
 
         // Millco と VLYama の対峙
         AddSay(flowchart, block, millco, "あんたたち なんなのよ！\n暴力反対ー");
-        AddSay(flowchart, block, yama, "ふむ。何度も言うように\nこちらの要求に従ってくれれば\n問題はないのだが");
+        AddSay(flowchart, block, yama, "ふむ。何度も言うように\nこちらの要求に従っていただければ\n問題はないのだが");
         AddSay(flowchart, block, millco, "だから虹の種なんて あたし「は」\nよく知らねーんだって。\n別の村で聞いてみれば？");
+        AddSay(flowchart, block, yama, "で、あるか\nならば");
+        AddWait(flowchart, block, 1f);
         AddInvokeMethod(flowchart, block, n.yama, typeof(NPCController), "SetSpeed", 10f);
         AddPunch(flowchart, block, n.yama, YamaX, punchSe);
         AddWait(flowchart, block, 0.4f);
         AddPunch(flowchart, block, n.yama, YamaX, punchSe);
+        AddWait(flowchart, block, 2f);
+        AddInvokeMethod(flowchart, block, n.millco, typeof(NPCController), "Shake", 0.5f, 0.1f);
         AddSay(flowchart, block, millco, "もー なんであたしばっか\nこんなに殴られないと\nいけないわけー？");
         AddSay(flowchart, block, millco, "クラゲだからってボコボコボコボコ\n殴っていいわけじゃないからね？\nしぬときは死ぬからね？");
         AddSay(flowchart, block, yama, "丈夫で何より。\nギリギリまでいけるというわけだ");
@@ -381,37 +399,45 @@ public static class Issue641YamaRevengeSetup
 
         // ウニキが走ってくる(ボスシーンと同じ)
         AddSay(flowchart, block, uniki, "Millcoさーーーーーーーん！");
+        AddInvokeMethod(flowchart, block, n.yama, typeof(NPCController), "SetDirection", NPCController.Direction.Right);
+        AddInvokeMethod(flowchart, block, n.karma, typeof(NPCController), "SetDirection", NPCController.Direction.Right);
         AddInvokeMethod(flowchart, block, n.uniki, typeof(NPCController), "MoveToPositionEvent", new Vector3(UnikiStopX, 0, 0), 0f, false);
         AddSay(flowchart, block, uniki, "てめMillcoさんに何やってくれちゃ...\nってヤーマ様じゃないですかあ〜。");
         AddSay(flowchart, block, uniki, "なんですかもー、来るなら来るって\n言ってくださればー");
         AddSay(flowchart, block, millco, "あ！ やっと来た！\nいっつもおせーんだよー！");
         AddSay(flowchart, block, millco, "もー なんとか言ってよ\nこの人たちにさー");
         AddSay(flowchart, block, uniki, "コラっ！ Millcoさんコラっ！\n国王に「この人たち」はほんともう\n常識が終わってるから！ コラっ！");
-        AddSay(flowchart, block, uniki, "へっへっへ、すいませんもうどうもね。\n学がね。ないもんでね");
+        AddSay(flowchart, block, uniki, "へっへっへ、すいませんね...もうどうもね。\n学がね。ないもんでね");
         AddSay(flowchart, block, millco, "あぁん！？");
 
         // 目にも止まらぬ早さで Millco とウニキを殴る(瞬間移動 + 殴り + 倒れる)
-        AddPunch(flowchart, block, n.yama, YamaX, punchSe);
+        // 1発目は右を向いているので keepDirection=false で Millco 側(左)へ向き直る
+        AddPunch(flowchart, block, n.yama, YamaX, punchSe, keepDirection: false);
         AddInvokeMethod(flowchart, block, n.millco, typeof(NPCController), "Defeated", 90f);
-        AddInvokeMethod(flowchart, block, n.cameraShaker, typeof(CinemachineImpulseSource), "GenerateImpulseWithForce", 1f);
+        AddInvokeMethod(flowchart, block, n.cameraShaker, typeof(CinemachineImpulseSource), "GenerateImpulseWithForce", 0.5f);
         AddInvokeMethod(flowchart, block, n.yama, typeof(NPCController), "SetPosition", new Vector3(UnikiStopX + 2.4f, yamaY, 0));
         AddInvokeMethod(flowchart, block, n.yama, typeof(NPCController), "SetDirection", NPCController.Direction.Left);
         AddPunch(flowchart, block, n.yama, UnikiStopX + 2.4f, punchSe);
         AddInvokeMethod(flowchart, block, n.uniki, typeof(NPCController), "Defeated", 90f);
-        AddInvokeMethod(flowchart, block, n.cameraShaker, typeof(CinemachineImpulseSource), "GenerateImpulseWithForce", 1f);
+        AddInvokeMethod(flowchart, block, n.cameraShaker, typeof(CinemachineImpulseSource), "GenerateImpulseWithForce", 0.5f);
         AddWait(flowchart, block, 0.4f);
         AddInvokeMethod(flowchart, block, n.yama, typeof(NPCController), "SetPosition", new Vector3(YamaX, yamaY, 0));
         AddInvokeMethod(flowchart, block, n.yama, typeof(NPCController), "SetDirection", NPCController.Direction.Left);
-        AddWait(flowchart, block, 1f);
+        if (karmaEmotion != null) AddInvokeMethod(flowchart, block, karmaEmotion, typeof(Emotion), "Bikkuri");
+        AddWait(flowchart, block, 3f);
 
         AddSay(flowchart, block, yama, "双方ともずいぶんと騒がしく\n礼儀を知らぬ口ぶり。やはり辺境の\n村々の文化は肌にあわぬな。");
         AddSay(flowchart, block, yama, "カルマ、連れて行け。\nVLパレスでじっくりと尋問してやろう");
+        AddInvokeMethod(flowchart, block, n.karma, typeof(NPCController), "SetDirection", NPCController.Direction.Left);
         AddSay(flowchart, block, karma, "はっ！");
+        AddSay(flowchart, block, karma, "(これはなかなかどうして...\nやはりCNPの力は伊達じゃないようだな。\nおもしろくなりそうだ...)");
 
         // ウニキが震えて立ち上がる
         AddInvokeMethod(flowchart, block, n.uniki, typeof(NPCController), "Shake", 1.5f, 0.05f);
         AddWait(flowchart, block, 1f);
-        AddSay(flowchart, block, uniki, "ふふふ。。。ちょっと、\nちょっと待ってくださいよぉ。。。");
+        AddSay(flowchart, block, uniki, "うふふふふふ。。。ちょっと、ぷすす。\nちょっと待ってくださいよぉ。。。ぷす。");
+        AddInvokeMethod(flowchart, block, n.yama, typeof(NPCController), "SetDirection", NPCController.Direction.Right);
+        AddInvokeMethod(flowchart, block, n.karma, typeof(NPCController), "SetDirection", NPCController.Direction.Right);
         AddInvokeMethod(flowchart, block, n.uniki, typeof(NPCController), "Defeated", -90f);
         // 倒れている間に当たり判定が回転して沈むので、起き上がりで地面の高さに戻す
         AddInvokeMethod(flowchart, block, n.uniki, typeof(NPCController), "SetPosition", new Vector3(UnikiStopX, GroundY, 0));
@@ -437,14 +463,19 @@ public static class Issue641YamaRevengeSetup
         AddSay(flowchart, block, leelee, "聞いたで。つまり千載一遇の\nチャンスってわけやな？ ウニ");
         AddInvokeMethod(flowchart, block, n.yama, typeof(NPCController), "SetDirection", NPCController.Direction.Right);
         AddSay(flowchart, block, yama, "おまえは......！");
+        // ヤーマとリーリーが同時に映るよう、ウニキ付近の固定位置(誰も追従しない)へパン
+        if (anchorCameraGo != null)
+        {
+            AddInvokeMethod(flowchart, block, anchorCameraGo, typeof(CMCameraSetFollow), "SetPriority", AnchorCameraPanPriority);
+        }
         AddSay(flowchart, block, leelee, "よーう ヤーマ。1万年ぶりってか？\nつってもこちとら記憶は\nおぼろげやがなあ");
         AddComment(flowchart, block, "TODO(#641): ここから先(WIP)はシナリオ確定後に追加する。最後はごみ捨て部屋への落下 → Coming Soon");
     }
 
     // 殴り: 攻撃者が 1.3 だけ左へ踏み込み、SE を鳴らして元の x へ戻る(ボスシーンの定型)
-    static void AddPunch(Flowchart flowchart, Block block, GameObject attacker, float originX, AudioClip se)
+    static void AddPunch(Flowchart flowchart, Block block, GameObject attacker, float originX, AudioClip se, bool keepDirection = true)
     {
-        AddInvokeMethod(flowchart, block, attacker, typeof(NPCController), "MoveToRelativePositionEvent", new Vector3(-1.3f, 0, 0), 0.3f, true);
+        AddInvokeMethod(flowchart, block, attacker, typeof(NPCController), "MoveToRelativePositionEvent", new Vector3(-1.3f, 0, 0), 0.3f, keepDirection);
         AddWait(flowchart, block, 0.3f);
         AddPlaySound(flowchart, block, se, 0.7f);
         AddInvokeMethod(flowchart, block, attacker, typeof(NPCController), "MoveToPositionEvent", new Vector3(originX, 0, 0), 0f, true);
