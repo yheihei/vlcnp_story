@@ -977,17 +977,18 @@ public static class Issue641YamaRevengeSetup
         }
     }
 
-    // 新規スプライトの取り込み設定(既存キャラと同じ PPU 100・Point・非圧縮)。腕だけ原点を拳の下端にする
+    // 新規スプライトの取り込み設定(既存キャラと同じ PPU 100・Point・非圧縮)。腕だけ原点を拳の下端にする。
+    // 闇堕ち顔は原型 leelee.png と同じ滑らかな線画なので Bilinear にする
     static void EnsureSpriteImports()
     {
         EnsureSpriteImport(GiantSpritePath, 100, SpriteAlignment.Center);
-        EnsureSpriteImport(DarkFacePath, 100, SpriteAlignment.Center);
+        EnsureSpriteImport(DarkFacePath, 100, SpriteAlignment.Center, FilterMode.Bilinear);
         EnsureSpriteImport(ArmSpritePath, 100, SpriteAlignment.BottomCenter);
         EnsureSpriteImport(CrackSpritePath, 100, SpriteAlignment.Center);
         EnsureSpriteImport(HoleSpritePath, 4, SpriteAlignment.Center);
     }
 
-    static void EnsureSpriteImport(string path, int pixelsPerUnit, SpriteAlignment alignment)
+    static void EnsureSpriteImport(string path, int pixelsPerUnit, SpriteAlignment alignment, FilterMode filterMode = FilterMode.Point)
     {
         TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
         if (importer == null)
@@ -1000,7 +1001,7 @@ public static class Issue641YamaRevengeSetup
         bool changed = importer.textureType != TextureImporterType.Sprite
             || importer.spriteImportMode != SpriteImportMode.Single
             || !Mathf.Approximately(importer.spritePixelsPerUnit, pixelsPerUnit)
-            || importer.filterMode != FilterMode.Point
+            || importer.filterMode != filterMode
             || importer.textureCompression != TextureImporterCompression.Uncompressed
             || importer.mipmapEnabled
             || settings.spriteAlignment != (int)alignment;
@@ -1008,7 +1009,7 @@ public static class Issue641YamaRevengeSetup
         importer.textureType = TextureImporterType.Sprite;
         importer.spriteImportMode = SpriteImportMode.Single;
         importer.spritePixelsPerUnit = pixelsPerUnit;
-        importer.filterMode = FilterMode.Point;
+        importer.filterMode = filterMode;
         importer.textureCompression = TextureImporterCompression.Uncompressed;
         importer.mipmapEnabled = false;
         importer.maxTextureSize = 2048;
