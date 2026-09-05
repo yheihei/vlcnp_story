@@ -952,7 +952,14 @@ public static class Issue641YamaRevengeSetup
         CreateImage("LineBottom", band.rectTransform, null, red, new Vector2(3400, 22), new Vector2(0, -269));
         Sprite face = AssetDatabase.LoadAssetAtPath<Sprite>(DarkFacePath);
         if (face == null) Debug.LogError($"[Issue641] 怒り顔が見つかりません: {DarkFacePath}");
-        Image faceImage = CreateImage("Face", content, face, Color.white, new Vector2(720, 720), new Vector2(140, 0));
+        // 顔は帯の下端で切る(上の耳ははみ出させたままにする)。帯の下端に揃えて上へ伸ばした透明な矩形を Mask にし、顔をその子にする。
+        // 帯の回転は打ち消して顔はまっすぐのまま
+        const float maskExtraTop = 400f;
+        // Mask はマスク画像にアルファクリップを掛けるので色は不透明にし、showMaskGraphic=false で描画だけ止める(透明色だと全部隠れる)
+        Image faceMask = CreateImage("FaceMask", band.rectTransform, null, Color.white, new Vector2(3400, 560 + maskExtraTop), new Vector2(0, maskExtraTop / 2));
+        faceMask.gameObject.AddComponent<Mask>().showMaskGraphic = false;
+        Image faceImage = CreateImage("Face", faceMask.rectTransform, face, Color.white, new Vector2(720, 720), new Vector2(140, -maskExtraTop / 2));
+        faceImage.rectTransform.localRotation = Quaternion.Euler(0, 0, 7);
         faceImage.preserveAspect = true;
 
         CutIn cutIn = go.AddComponent<CutIn>();
