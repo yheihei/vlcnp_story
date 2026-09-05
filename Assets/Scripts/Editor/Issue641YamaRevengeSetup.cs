@@ -3,6 +3,7 @@ using System.Linq;
 using Cinemachine;
 using Fungus;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -36,6 +37,10 @@ public static class Issue641YamaRevengeSetup
     const string MillcoAnimatorPath = "Assets/Game/Characters/Animations/MillcoAnimator.overrideController";
     const string NarukamiSpritePath = "Assets/Game/Characters/Sprite/VLNarukami.png";
     const string NarukamiAnimatorPath = "Assets/Game/Characters/Npc/NPCVLNarukamiController.controller";
+    // 飛行中のナルカミ用。止まり姿の NPCVLNarukamiController(Kaze3_boss3 と共用)は触らず、羽ばたき用を別に持つ
+    const string NarukamiFlyAnimatorPath = "Assets/Game/Characters/Npc/NPCVLNarukamiFlyController.controller";
+    const string NarukamiFlapClipPath = "Assets/Game/Characters/Animations/VLNarukamiCarry.anim"; // 翼 上↔下 の2コマ 8fps
+    const float NarukamiFlapSpeed = 0.5f; // Carry(1秒4往復)の半分で滞空らしくする
     const string KarmaFacePath = "Assets/Game/Characters/Sprite/KarmaFace.png";
     const string PunchSePath = "Assets/Game/SE/punch2a.mp3";
 
@@ -136,6 +141,7 @@ public static class Issue641YamaRevengeSetup
         EnsureBuildSetting();
         EnsureKarmaCharacter();
         EnsureSpriteImports();
+        EnsureNarukamiFlyController();
         EnsureDarkLeeleeCharacter();
 
         var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
@@ -308,7 +314,7 @@ public static class Issue641YamaRevengeSetup
     }
 
     // ナルカミは NPC プレハブが無いので Kaze3_boss3 と同じ構成をシーン直組みする。
-    // TODO(#641): 飛行アニメーションは未作成。静止スプライト(翼を広げたコマ)を空中に置いて平行移動させている。
+    // 空中にいるので登場から消えるまで常に羽ばたく(NPCVLNarukamiFlyController)。
     static GameObject CreateNarukami(UnityEngine.SceneManagement.Scene scene)
     {
         GameObject go = new GameObject(NarukamiName);
@@ -329,7 +335,7 @@ public static class Issue641YamaRevengeSetup
         collider.size = new Vector2(2.56f, 2.56f);
         go.AddComponent<NPCController>();
         Animator animator = go.AddComponent<Animator>();
-        animator.runtimeAnimatorController = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(NarukamiAnimatorPath);
+        animator.runtimeAnimatorController = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(NarukamiFlyAnimatorPath);
         if (sprite == null || animator.runtimeAnimatorController == null)
         {
             Debug.LogError("[Issue641] ナルカミのスプライトまたはアニメーターが見つかりません。");
@@ -1012,6 +1018,37 @@ public static class Issue641YamaRevengeSetup
             se.objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(EmotionSePath);
             so.ApplyModifiedPropertiesWithoutUndo();
         }
+    }
+
+    // 羽ばたき用 AnimatorController: 止まり用 NPCVLNarukamiController と同じパラメータ(NPCController が SetBool/SetFloat する)を持ち、
+    // Idle に既存の VLNarukamiCarry.anim をゆっくり(Speed 0.5)割り当てる。無ければ作り、あれば内容を揃える。
+    static void EnsureNarukamiFlyController()
+    {
+        AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(NarukamiFlapClipPath);
+        AnimatorController baseController = AssetDatabase.LoadAssetAtPath<AnimatorController>(NarukamiAnimatorPath);
+        if (clip == null || baseController == null)
+        {
+            Debug.LogError($"[Issue641] 羽ばたきの元アセットが見つかりません。clip={clip} base={baseController}");
+            return;
+        }
+        AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(NarukamiFlyAnimatorPath);
+        if (controller == null)
+        {
+            controller = AnimatorController.CreateAnimatorControllerAtPath(NarukamiFlyAnimatorPath);
+            Debug.Log($"[Issue641] {NarukamiFlyAnimatorPath} を作成しました。");
+        }
+        foreach (AnimatorControllerParameter p in baseController.parameters)
+        {
+            if (controller.parameters.All(q => q.name != p.name)) controller.AddParameter(p.name, p.type);
+        }
+        AnimatorStateMachine sm = controller.layers[0].stateMachine;
+        UnityEditor.Animations.AnimatorState idle = sm.states.Select(c => c.state).FirstOrDefault(st => st.name == "Idle");
+        if (idle == null) idle = sm.AddState("Idle");
+        sm.defaultState = idle;
+        idle.motion = clip;
+        idle.speed = NarukamiFlapSpeed;
+        EditorUtility.SetDirty(controller);
+        AssetDatabase.SaveAssets();
     }
 
     // 新規スプライトの取り込み設定(既存キャラと同じ PPU 100・Point・非圧縮)。腕だけ原点を拳の下端にする。
