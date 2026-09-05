@@ -93,7 +93,10 @@ public static class Issue641YamaRevengeSetup
     const float SeedOffsetY = 3.6f; // Yami5F と同じく対象の頭上
     const float OffscreenUp = 18f;
     const float FallDepth = 14f;
-    const float SinkDepth = 1.2f;
+    // 踏ん張り: 沈む → 少し持ち直す → さらに沈む → 震え → ミタマの叫び → 落下
+    const float SinkDepth = 1.2f;       // 最初に沈む深さ
+    const float HoldLiftHeight = 0.3f;  // 持ち直して浮き上がる高さ
+    const float SinkDepthFinal = 1.5f;  // 落下直前の深さ
 
     // 生成する NPC の名前
     const string MillcoName = "MillcoNPCWithController";
@@ -718,6 +721,7 @@ public static class Issue641YamaRevengeSetup
         AddSetActive(flowchart, block, p.arm, false); // 引き上げ済みの腕を片付ける
         AddSetActive(flowchart, block, p.fakeGround, false);
         AddSetActive(flowchart, block, p.crack, false);
+        // 踏ん張り(1): 沈む
         AddPlaySound(flowchart, block, hoverSe, 0.5f);
         Vector3 sink = new Vector3(0, -SinkDepth, 0);
         AddMoveTo(flowchart, block, n.akim, akimPos + sink, 1.5f, iTween.EaseType.easeInOutSine, false);
@@ -725,7 +729,31 @@ public static class Issue641YamaRevengeSetup
         AddMoveTo(flowchart, block, n.mitama, mitamaPos + sink, 1.5f, iTween.EaseType.easeInOutSine, false);
         AddMoveTo(flowchart, block, n.narukami, narukamiPos + sink, 1.5f, iTween.EaseType.easeInOutSine, false);
         AddWait(flowchart, block, 1.6f);
-        Vector3 drop = new Vector3(0, -SinkDepth - FallDepth, 0);
+        // 踏ん張り(2): 一瞬持ち直して少し浮き上がる
+        AddPlaySound(flowchart, block, hoverSe, 0.5f);
+        Vector3 lift = new Vector3(0, -SinkDepth + HoldLiftHeight, 0);
+        AddMoveTo(flowchart, block, n.akim, akimPos + lift, 0.5f, iTween.EaseType.easeOutQuad, false);
+        AddMoveTo(flowchart, block, n.orochi, orochiPos + lift, 0.5f, iTween.EaseType.easeOutQuad, false);
+        AddMoveTo(flowchart, block, n.mitama, mitamaPos + lift, 0.5f, iTween.EaseType.easeOutQuad, false);
+        AddMoveTo(flowchart, block, n.narukami, narukamiPos + lift, 0.5f, iTween.EaseType.easeOutQuad, false);
+        AddWait(flowchart, block, 0.6f);
+        // 踏ん張り(3): やはり支えきれず、さらに沈む
+        AddPlaySound(flowchart, block, hoverSe, 0.5f);
+        Vector3 sinkFinal = new Vector3(0, -SinkDepthFinal, 0);
+        AddMoveTo(flowchart, block, n.akim, akimPos + sinkFinal, 0.6f, iTween.EaseType.easeInSine, false);
+        AddMoveTo(flowchart, block, n.orochi, orochiPos + sinkFinal, 0.6f, iTween.EaseType.easeInSine, false);
+        AddMoveTo(flowchart, block, n.mitama, mitamaPos + sinkFinal, 0.6f, iTween.EaseType.easeInSine, false);
+        AddMoveTo(flowchart, block, n.narukami, narukamiPos + sinkFinal, 0.6f, iTween.EaseType.easeInSine, false);
+        AddWait(flowchart, block, 0.7f);
+        // 踏ん張り(4): 4人が震える。NPCController.Shake は終了時に元の位置へ戻すので、MoveTo と重ねずセリフの前に終わらせる
+        foreach (GameObject go in new[] { n.akim, n.orochi, n.mitama, n.narukami })
+        {
+            AddInvokeMethod(flowchart, block, go, typeof(NPCController), "Shake", 1f, 0.05f);
+        }
+        AddWait(flowchart, block, 1.1f);
+        AddSay(flowchart, block, c.mitama, "く...！落ちる！");
+        // 落下: セリフを閉じた直後に落とす
+        Vector3 drop = new Vector3(0, -SinkDepthFinal - FallDepth, 0);
         AddMoveTo(flowchart, block, n.akim, akimPos + drop, 0.6f, iTween.EaseType.easeInQuad, false);
         AddMoveTo(flowchart, block, n.orochi, orochiPos + drop, 0.6f, iTween.EaseType.easeInQuad, false);
         AddMoveTo(flowchart, block, n.mitama, mitamaPos + drop, 0.6f, iTween.EaseType.easeInQuad, false);
