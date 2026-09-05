@@ -681,9 +681,10 @@ public static class Issue641YamaRevengeSetup
         AddWait(flowchart, block, 0.7f);
         AddSetActive(flowchart, block, p.giant, false);
 
-        // カットイン → 巨大リーリーパンチ(一行の真上に拳が落ちて地面が割れる)
+        // カットイン → 巨大リーリーパンチ(一行の真上に拳が落ちて地面が割れる)。
+        // カットインは 0.75 秒で左へ抜け始め 0.95 秒で抜け切る。腕の落下(0.25 秒)を 0.7 秒から始めて、抜け切りと着弾・白フラッシュを重ねる
         AddInvokeMethod(flowchart, block, p.cutIn, typeof(CutIn), "Play");
-        AddWait(flowchart, block, 1.1f);
+        AddWait(flowchart, block, 0.7f);
         AddSetActive(flowchart, block, p.arm, true);
         AddMoveTo(flowchart, block, p.arm, new Vector3(orochiX, surfaceY + 0.1f, 0), 0.25f, iTween.EaseType.easeInQuart, true);
         AddFadeScreen(flowchart, block, 0.05f, 1f, Color.white, true);
