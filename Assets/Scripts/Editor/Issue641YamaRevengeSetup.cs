@@ -40,7 +40,7 @@ public static class Issue641YamaRevengeSetup
     // 飛行中のナルカミ用。止まり姿の NPCVLNarukamiController(Kaze3_boss3 と共用)は触らず、羽ばたき用を別に持つ
     const string NarukamiFlyAnimatorPath = "Assets/Game/Characters/Npc/NPCVLNarukamiFlyController.controller";
     const string NarukamiFlapClipPath = "Assets/Game/Characters/Animations/VLNarukamiCarry.anim"; // 翼 上↔下 の2コマ 8fps
-    const float NarukamiFlapSpeed = 0.5f; // Carry(1秒4往復)の半分で滞空らしくする
+    const float NarukamiFlapSpeed = 0.75f; // Carry(1秒4往復)より遅くして滞空らしくする(エディタで調整した値)
     const string KarmaFacePath = "Assets/Game/Characters/Sprite/KarmaFace.png";
     const string PunchSePath = "Assets/Game/SE/punch2a.mp3";
 
