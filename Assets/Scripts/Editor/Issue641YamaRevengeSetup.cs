@@ -63,7 +63,13 @@ public static class Issue641YamaRevengeSetup
     const string DarkFacePath = "Assets/Game/Characters/Sprite/dark_leelee_face_1024x1024.png";
     const string ArmSpritePath = "Assets/Game/Characters/Sprite/dark_giant_leelee_arm_512x1280.png";
     const string CrackSpritePath = "Assets/Game/Effect/ground_crack_debris_640x192.png";
-    const string HoleSpritePath = "Assets/Game/Effect/hole_black_4x4.png";
+    const string HoleSpritePath = "Assets/Game/Effect/hole_wall_224x448.png"; // 穴の奥の面(7x14 ユニット、PPU32、原点は上端中央)。左右 1 ユニットは壁面タイルの裏に隠れる余白(縁タイルの透明部分から背景が抜けないように)
+    // 穴の壁面: 両隣の列を Cainos の外縁タイルへ差し替える(左壁は右向きの縁、右壁は左向きの縁)
+    const string GroundTileDir = "Assets/ExtraPackage/Cainos/Pixel Art Platformer - Village Props/Tileset Palette/TP Ground/";
+    const string WallLeftTopTilePath = GroundTileDir + "TX Tileset Ground_2.asset";  // 草付き右角
+    const string WallLeftTilePath = GroundTileDir + "TX Tileset Ground_5.asset";     // 右縁
+    const string WallRightTopTilePath = GroundTileDir + "TX Tileset Ground_0.asset"; // 草付き左角
+    const string WallRightTilePath = GroundTileDir + "TX Tileset Ground_3.asset";    // 左縁
     const string YotyouBgmPath = "Assets/Game/BGM/MusMus-BGM-051_yotyou.mp3";
     const string HowanSePath = "Assets/Game/SE/howan.mp3";
     const string AbsorbSePath = "Assets/Game/SE/jump06.mp3";
@@ -79,7 +85,6 @@ public static class Issue641YamaRevengeSetup
     const int HoleCellMin = -1;
     const int HoleCellMax = 3;
     const float HoleCenterX = (HoleCellMin + HoleCellMax + 1) / 2f;
-    const float HoleWidth = HoleCellMax - HoleCellMin + 1;
     // NPC(scale 1.667、BoxCollider 高さ 2.55)の当たり判定の下端 = NPC が立つ高さ
     const float NpcHalfHeight = 2.55f * 1.6666665f / 2f;
     const float GroundSurfaceY = GroundY - NpcHalfHeight;
@@ -803,7 +808,8 @@ public static class Issue641YamaRevengeSetup
         return p;
     }
 
-    // 穴のセルのタイルを本物の Tilemap から FakeGround へ移す。イベント中に FakeGround を消すと穴が開く
+    // 穴のセルのタイルを本物の Tilemap から FakeGround へ移す。イベント中に FakeGround を消すと穴が開く。
+    // 両隣の列は本物の Tilemap を縁タイル(穴の壁面)に差し替え、元のタイルを FakeGround に持たせて開くまで隠す
     static GameObject CarveHole(UnityEngine.SceneManagement.Scene scene, out float tileSurfaceY)
     {
         tileSurfaceY = GroundSurfaceY;
@@ -822,6 +828,7 @@ public static class Issue641YamaRevengeSetup
         fake.tileAnchor = ground.tileAnchor;
         TilemapRenderer fakeRenderer = fakeGo.AddComponent<TilemapRenderer>();
         EditorUtility.CopySerialized(groundGo.GetComponent<TilemapRenderer>(), fakeRenderer);
+        fakeRenderer.sortingOrder += 1; // 壁面の縁タイルより手前に描いて隠す
         TilemapCollider2D fakeCollider = fakeGo.AddComponent<TilemapCollider2D>();
         EditorUtility.CopySerialized(groundGo.GetComponent<TilemapCollider2D>(), fakeCollider);
 
@@ -853,11 +860,40 @@ public static class Issue641YamaRevengeSetup
         tileSurfaceY = topY + 1;
         Debug.Log($"[Issue641] 穴: {moved} タイルを {FakeGroundName} へ移しました。");
 
-        // 穴の奥(黒)。タイルより後ろに描く
-        GameObject back = CreateSpriteObject(scene, HoleBackName, HoleSpritePath, fakeRenderer.sortingLayerID, fakeRenderer.sortingOrder - 1,
-            new Vector3(HoleCenterX, tileSurfaceY - FallDepth / 2f, 0), 1f);
-        back.transform.localScale = new Vector3(HoleWidth, FallDepth, 1); // hole_black は 1 ユニット四方(PPU 4)
+        // 穴の壁面: 両隣の列を縁タイルに差し替える(地表の行は草付きの角、下は縁)
+        int walls = ReplaceWallColumn(ground, fake, HoleCellMin - 1, bounds.yMin, yMax, topY, WallLeftTopTilePath, WallLeftTilePath)
+            + ReplaceWallColumn(ground, fake, HoleCellMax + 1, bounds.yMin, yMax, topY, WallRightTopTilePath, WallRightTilePath);
+        Debug.Log($"[Issue641] 穴の壁面: {walls} タイルを縁タイルに差し替えました。");
+
+        // 穴の奥の面(壁面の内側、下は奈落の黒)。タイルより後ろに描く。原点は上端中央
+        CreateSpriteObject(scene, HoleBackName, HoleSpritePath, groundGo.GetComponent<TilemapRenderer>().sortingLayerID,
+            groundGo.GetComponent<TilemapRenderer>().sortingOrder - 1, new Vector3(HoleCenterX, tileSurfaceY, 0), 1f);
         return fakeGo;
+    }
+
+    // 列 x の地面より下の行を壁面の縁タイルに差し替え、元のタイルは FakeGround に写して開くまで隠す
+    static int ReplaceWallColumn(Tilemap ground, Tilemap fake, int x, int yMin, int yMax, int topY, string topTilePath, string tilePath)
+    {
+        TileBase topTile = AssetDatabase.LoadAssetAtPath<TileBase>(topTilePath);
+        TileBase tile = AssetDatabase.LoadAssetAtPath<TileBase>(tilePath);
+        if (topTile == null || tile == null)
+        {
+            Debug.LogError($"[Issue641] 壁面の縁タイルが見つかりません: {topTilePath} / {tilePath}");
+            return 0;
+        }
+        int replaced = 0;
+        for (int y = yMin; y < yMax; y++)
+        {
+            Vector3Int cell = new Vector3Int(x, y, 0);
+            TileBase original = ground.GetTile(cell);
+            if (original == null) continue;
+            fake.SetTile(cell, original);
+            fake.SetTransformMatrix(cell, ground.GetTransformMatrix(cell));
+            ground.SetTile(cell, y == topY ? topTile : tile);
+            ground.SetTransformMatrix(cell, Matrix4x4.identity);
+            replaced++;
+        }
+        return replaced;
     }
 
     static void RestoreHole(Tilemap fake, Tilemap ground)
@@ -1078,7 +1114,7 @@ public static class Issue641YamaRevengeSetup
         EnsureSpriteImport(DarkFacePath, 100, SpriteAlignment.Center, FilterMode.Bilinear);
         EnsureSpriteImport(ArmSpritePath, 100, SpriteAlignment.BottomCenter);
         EnsureSpriteImport(CrackSpritePath, 100, SpriteAlignment.Center);
-        EnsureSpriteImport(HoleSpritePath, 4, SpriteAlignment.Center);
+        EnsureSpriteImport(HoleSpritePath, 32, SpriteAlignment.TopCenter);
     }
 
     static void EnsureSpriteImport(string path, int pixelsPerUnit, SpriteAlignment alignment, FilterMode filterMode = FilterMode.Point)
@@ -1385,6 +1421,27 @@ public static class Issue641YamaRevengeSetup
             return;
         }
         cutIn.Play();
+    }
+
+    // プレイモード検証用: 穴を開けてカメラを穴の上に置く(本番と同じ足元基準の構図)
+    [MenuItem("Tools/Issue641/Debug/Open Hole")]
+    public static void DebugOpenHole()
+    {
+        GameObject fake = GameObject.Find(FakeGroundName);
+        if (fake == null)
+        {
+            Debug.LogWarning($"[Issue641] {FakeGroundName} がシーンにありません。");
+            return;
+        }
+        fake.SetActive(false);
+        GameObject target = new GameObject("DebugHoleCameraTarget");
+        target.transform.position = new Vector3(HoleCenterX, GroundY, 0);
+        CinemachineVirtualCamera vcam = GameObject.Find("CMCamera2")?.GetComponent<CinemachineVirtualCamera>();
+        if (vcam != null)
+        {
+            vcam.Follow = target.transform;
+            vcam.Priority = 100;
+        }
     }
 
     // プレイモード検証用: シーンを開く(エディットモード)
