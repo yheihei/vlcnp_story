@@ -31,12 +31,17 @@ namespace VLCNP.Movie
             animator = GetComponent<Animator>();
         }
 
-        // 接地判定 Gwround tagがついたオブジェクトに接触しているか
+        // 接地判定 Ground tagがついたコライダーに何個触れているか
+        // 隣り合う2つの地面(Tilemap と別 Tilemap など)を跨ぐとき、片方の Exit で
+        // 空中扱いにならないよう bool ではなく接触数で判定する
+        int groundContactCount = 0;
+
         void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.tag == "Ground")
             {
-                SetGround(true);
+                groundContactCount++;
+                SetGround(groundContactCount > 0);
             }
         }
 
@@ -44,7 +49,8 @@ namespace VLCNP.Movie
         {
             if (collision.gameObject.tag == "Ground")
             {
-                SetGround(false);
+                groundContactCount = Mathf.Max(0, groundContactCount - 1);
+                SetGround(groundContactCount > 0);
             }
         }
 
