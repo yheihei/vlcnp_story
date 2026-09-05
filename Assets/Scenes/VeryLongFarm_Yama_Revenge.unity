@@ -1241,6 +1241,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 133397306}
   m_CullTransparentMesh: 1
+--- !u!1 &137890025
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 137890027}
+  - component: {fileID: 137890026}
+  m_Layer: 0
+  m_Name: Emotion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &137890026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137890025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5099b2757ca0c4ba0bac998bc84c1fed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  se: {fileID: 8300000, guid: d186235e0361445b8affabe74e632c81, type: 3}
+  BikkuriVolume: 0.4
+--- !u!4 &137890027
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137890025}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.24, y: 0.97, z: 0}
+  m_LocalScale: {x: 2.2222164, y: 2.16727, z: 2.16727}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 323431200}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &142816604
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2159,6 +2205,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 214248764}
   m_CullTransparentMesh: 1
+--- !u!1 &219250030 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6829915045133465680, guid: e6bd1f0355d8b4b5698930cbe2ae035e, type: 3}
+  m_PrefabInstance: {fileID: 2003469413}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &229154307
 GameObject:
   m_ObjectHideFlags: 0
@@ -2932,7 +2983,6 @@ GameObject:
   - component: {fileID: 323431196}
   - component: {fileID: 323431195}
   - component: {fileID: 323431194}
-  - component: {fileID: 323431193}
   m_Layer: 0
   m_Name: VLNarukamiNPC
   m_TagString: Untagged
@@ -2940,20 +2990,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &323431193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 323431192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5099b2757ca0c4ba0bac998bc84c1fed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  se: {fileID: 8300000, guid: d186235e0361445b8affabe74e632c81, type: 3}
-  BikkuriVolume: 0.4
 --- !u!114 &323431194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3136,7 +3172,8 @@ Transform:
   m_LocalPosition: {x: 9.5, y: -13.3, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 137890027}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &323748864
@@ -6119,6 +6156,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &447238934 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1111501092868480800, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
+  m_PrefabInstance: {fileID: 8608520200701860216}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &449276880
 GameObject:
   m_ObjectHideFlags: 0
@@ -14277,6 +14319,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1122432236 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5673283106632018065, guid: 1f56bfd2c24f24da7a741e32da77d584, type: 3}
+  m_PrefabInstance: {fileID: 4744353881058596750}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1126272755
 GameObject:
   m_ObjectHideFlags: 0
@@ -14407,6 +14454,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1147286649}
   - component: {fileID: 1147286648}
+  - component: {fileID: 1147286650}
   m_Layer: 0
   m_Name: GroundCrack
   m_TagString: Untagged
@@ -14475,12 +14523,24 @@ Transform:
   m_GameObject: {fileID: 1147286647}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: -16.65, z: 0}
+  m_LocalPosition: {x: 1, y: -17, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1147286650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147286647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abaf7b5e6550142a9a8c2ced2685593c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1165591266
 GameObject:
   m_ObjectHideFlags: 0
@@ -20532,6 +20592,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1314117538 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9213149848775126394, guid: 609e601810f114177ba8ba5d72522b0a, type: 3}
+  m_PrefabInstance: {fileID: 1934009352}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1316347175
 GameObject:
   m_ObjectHideFlags: 0
@@ -20766,20 +20831,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3936373900520718780, guid: 1f56bfd2c24f24da7a741e32da77d584, type: 3}
   m_PrefabInstance: {fileID: 4744353881058596750}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1327734386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1327734385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5099b2757ca0c4ba0bac998bc84c1fed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  se: {fileID: 8300000, guid: d186235e0361445b8affabe74e632c81, type: 3}
-  BikkuriVolume: 0.4
 --- !u!114 &1327734387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21363,20 +21414,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8608520201518773773, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
   m_PrefabInstance: {fileID: 8608520200701860216}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1373056886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1373056885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5099b2757ca0c4ba0bac998bc84c1fed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  se: {fileID: 8300000, guid: d186235e0361445b8affabe74e632c81, type: 3}
-  BikkuriVolume: 0.4
 --- !u!1001 &1373120175
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61520,29 +61557,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 558707079448216663, guid: 609e601810f114177ba8ba5d72522b0a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1934009355}
-    - targetCorrespondingSourceObject: {fileID: 558707079448216663, guid: 609e601810f114177ba8ba5d72522b0a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1934009354}
   m_SourcePrefab: {fileID: 100100000, guid: 609e601810f114177ba8ba5d72522b0a, type: 3}
 --- !u!1 &1934009353 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 558707079448216663, guid: 609e601810f114177ba8ba5d72522b0a, type: 3}
   m_PrefabInstance: {fileID: 1934009352}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1934009354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1934009353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5099b2757ca0c4ba0bac998bc84c1fed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  se: {fileID: 8300000, guid: d186235e0361445b8affabe74e632c81, type: 3}
-  BikkuriVolume: 0.4
 --- !u!114 &1934009355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62406,7 +62426,7 @@ Transform:
   m_GameObject: {fileID: 1981083528}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 19.71, y: -14.518001, z: -10.086484}
+  m_LocalPosition: {x: 4.1099997, y: -14.5199995, z: -10.086484}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -62830,29 +62850,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2797852840669221245, guid: e6bd1f0355d8b4b5698930cbe2ae035e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2003469416}
-    - targetCorrespondingSourceObject: {fileID: 2797852840669221245, guid: e6bd1f0355d8b4b5698930cbe2ae035e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2003469415}
   m_SourcePrefab: {fileID: 100100000, guid: e6bd1f0355d8b4b5698930cbe2ae035e, type: 3}
 --- !u!1 &2003469414 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2797852840669221245, guid: e6bd1f0355d8b4b5698930cbe2ae035e, type: 3}
   m_PrefabInstance: {fileID: 2003469413}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2003469415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2003469414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5099b2757ca0c4ba0bac998bc84c1fed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  se: {fileID: 8300000, guid: d186235e0361445b8affabe74e632c81, type: 3}
-  BikkuriVolume: 0.4
 --- !u!114 &2003469416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63378,7 +63381,7 @@ Transform:
   m_GameObject: {fileID: 2046206965}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 19.71, y: -14.518001, z: -10.086484}
+  m_LocalPosition: {x: 7.66, y: -14.5199995, z: -10.086484}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -64505,6 +64508,8 @@ GameObject:
   - component: {fileID: 2112447362}
   - component: {fileID: 2112447361}
   - component: {fileID: 2112447360}
+  - component: {fileID: 2112447568}
+  - component: {fileID: 2112447567}
   m_Layer: 0
   m_Name: YamaRevengeEvent
   m_TagString: Untagged
@@ -65555,7 +65560,7 @@ MonoBehaviour:
   itemId: 166
   indentLevel: 0
   description: 
-  targetObject: {fileID: 1373056885}
+  targetObject: {fileID: 447238934}
   targetComponentAssemblyName: VLCNP.Movie.Emotion, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
@@ -65583,7 +65588,7 @@ MonoBehaviour:
   itemId: 165
   indentLevel: 0
   description: 
-  targetObject: {fileID: 323431192}
+  targetObject: {fileID: 137890025}
   targetComponentAssemblyName: VLCNP.Movie.Emotion, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
@@ -65611,7 +65616,7 @@ MonoBehaviour:
   itemId: 164
   indentLevel: 0
   description: 
-  targetObject: {fileID: 2003469414}
+  targetObject: {fileID: 219250030}
   targetComponentAssemblyName: VLCNP.Movie.Emotion, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
@@ -65639,7 +65644,7 @@ MonoBehaviour:
   itemId: 163
   indentLevel: 0
   description: 
-  targetObject: {fileID: 1934009353}
+  targetObject: {fileID: 1314117538}
   targetComponentAssemblyName: VLCNP.Movie.Emotion, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
@@ -65667,7 +65672,7 @@ MonoBehaviour:
   itemId: 162
   indentLevel: 0
   description: 
-  targetObject: {fileID: 1327734385}
+  targetObject: {fileID: 1122432236}
   targetComponentAssemblyName: VLCNP.Movie.Emotion, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
@@ -66703,7 +66708,7 @@ MonoBehaviour:
   itemId: 125
   indentLevel: 0
   description: 
-  targetObject: {fileID: 323431192}
+  targetObject: {fileID: 137890025}
   targetComponentAssemblyName: VLCNP.Movie.Emotion, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
@@ -66731,7 +66736,7 @@ MonoBehaviour:
   itemId: 124
   indentLevel: 0
   description: 
-  targetObject: {fileID: 2003469414}
+  targetObject: {fileID: 219250030}
   targetComponentAssemblyName: VLCNP.Movie.Emotion, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
@@ -66759,7 +66764,7 @@ MonoBehaviour:
   itemId: 123
   indentLevel: 0
   description: 
-  targetObject: {fileID: 1934009353}
+  targetObject: {fileID: 1314117538}
   targetComponentAssemblyName: VLCNP.Movie.Emotion, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
   targetComponentFullname: UnityEngine.Component[]
@@ -71484,6 +71489,7 @@ MonoBehaviour:
   - {fileID: 2112447396}
   - {fileID: 2112447395}
   - {fileID: 2112447394}
+  - {fileID: 2112447568}
   - {fileID: 2112447393}
   - {fileID: 2112447392}
   - {fileID: 2112447391}
@@ -71493,6 +71499,7 @@ MonoBehaviour:
   - {fileID: 2112447387}
   - {fileID: 2112447386}
   - {fileID: 2112447385}
+  - {fileID: 2112447567}
   - {fileID: 2112447384}
   - {fileID: 2112447383}
   - {fileID: 2112447382}
@@ -71617,6 +71624,72 @@ Transform:
   - {fileID: 1928611096}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2112447567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112447359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd8c931f22994b9d90e2037fffaa770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 203
+  indentLevel: 0
+  _targetGameObject:
+    gameObjectRef: {fileID: 0}
+    gameObjectVal: {fileID: 1147286647}
+  activeState:
+    booleanRef: {fileID: 0}
+    booleanVal: 0
+  targetGameObjectOLD: {fileID: 0}
+--- !u!114 &2112447568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112447359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 202
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 1147286647}
+  targetComponentAssemblyName: VLCNP.Movie.ManualFadeObject, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: UnityEngine.Component[]
+  targetComponentText: ManualFadeObject
+  targetMethod: FadeOut
+  targetMethodText: 'FadeOut (Single): Void'
+  methodParameters:
+  - objValue:
+      typeAssemblyname: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      typeFullname: System.Single
+      intValue: 0
+      boolValue: 0
+      floatValue: 0.5
+      stringValue: 
+      colorValue: {r: 0, g: 0, b: 0, a: 0}
+      gameObjectValue: {fileID: 0}
+      materialValue: {fileID: 0}
+      objectValue: {fileID: 0}
+      spriteValue: {fileID: 0}
+      textureValue: {fileID: 0}
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+    variableKey: 
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
 --- !u!1 &2125148522
 GameObject:
   m_ObjectHideFlags: 0
@@ -78211,9 +78284,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3936373900520718780, guid: 1f56bfd2c24f24da7a741e32da77d584, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1327734387}
-    - targetCorrespondingSourceObject: {fileID: 3936373900520718780, guid: 1f56bfd2c24f24da7a741e32da77d584, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1327734386}
   m_SourcePrefab: {fileID: 100100000, guid: 1f56bfd2c24f24da7a741e32da77d584, type: 3}
 --- !u!1001 &6065290892581696838
 PrefabInstance:
@@ -78347,10 +78417,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8608520201518773773, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1373056886}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79c261943088d4b4391aca88ad1d6272, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

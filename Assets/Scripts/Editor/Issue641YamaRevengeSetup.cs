@@ -690,6 +690,9 @@ public static class Issue641YamaRevengeSetup
         AddBikkuri(flowchart, block, n.uniki);
         AddWait(flowchart, block, 0.8f);
 
+        // 拳が引き上がった後、穴が開くまでに地割れを消す。
+        AddInvokeMethod(flowchart, block, p.crack, typeof(ManualFadeObject), "FadeOut", 0.5f);
+
         // 落下: 落ちる 4 人を Kinematic にして Transform で動かす(「掴んで踏ん張るが沈む」を作るため物理には任せない)
         foreach (GameObject go in new[] { n.akim, n.orochi, n.mitama, n.narukami })
         {
@@ -705,6 +708,7 @@ public static class Issue641YamaRevengeSetup
         AddWait(flowchart, block, 0.5f);
         AddSetActive(flowchart, block, p.arm, false); // 引き上げ済みの腕を片付ける
         AddSetActive(flowchart, block, p.fakeGround, false);
+        AddSetActive(flowchart, block, p.crack, false);
         AddPlaySound(flowchart, block, hoverSe, 0.5f);
         Vector3 sink = new Vector3(0, -SinkDepth, 0);
         AddMoveTo(flowchart, block, n.akim, akimPos + sink, 1.5f, iTween.EaseType.easeInOutSine, false);
@@ -791,7 +795,8 @@ public static class Issue641YamaRevengeSetup
         p.arm = CreateSpriteObject(scene, ArmName, ArmSpritePath, layer, 5, new Vector3(orochiX, p.tileSurfaceY + OffscreenUp, 0), 1f); // 原点は拳の下端
         p.arm.SetActive(false);
 
-        p.crack = CreateSpriteObject(scene, CrackName, CrackSpritePath, layer, -1, new Vector3(orochiX, p.tileSurfaceY + 0.35f, 0), 1f);
+        p.crack = CreateSpriteObject(scene, CrackName, CrackSpritePath, layer, -1, new Vector3(orochiX, p.tileSurfaceY, 0), 1f);
+        p.crack.AddComponent<ManualFadeObject>();
         p.crack.SetActive(false);
 
         p.cutIn = CreateCutIn(scene);
@@ -1004,13 +1009,26 @@ public static class Issue641YamaRevengeSetup
         return component != null ? component : go.AddComponent<T>();
     }
 
-    // Emotion が無い NPC に追加する。SE が null だと Bikkuri() の PlayClipAtPoint で例外になり
+    // 頭上の Emotion 子を使い、NPC 本体の縮尺でマークが小さくなるのを防ぐ。
+    // SE が null だと Bikkuri() の PlayClipAtPoint で例外になり
     // Fungus の InvokeMethod がそこで止まるので、必ず SE を入れる(既存の Emotion も null なら補う)
     static void EnsureEmotion(GameObject go)
     {
         if (go == null) return;
-        Emotion emotion = go.GetComponent<Emotion>();
-        if (emotion == null) emotion = go.AddComponent<Emotion>();
+        Transform emotionTransform = go.transform.Find("Emotion");
+        if (emotionTransform == null)
+        {
+            Transform reference = AssetDatabase.LoadAssetAtPath<GameObject>(NpcPrefabPath).transform.Find("Emotion");
+            emotionTransform = Object.Instantiate(reference.gameObject, go.transform).transform;
+            emotionTransform.name = "Emotion";
+            if (go.name == NarukamiName)
+            {
+                // Kaze3_boss3 のナルカミと同じ頭上位置・縮尺。
+                emotionTransform.localPosition = new Vector3(1.24f, 0.97f, 0);
+                emotionTransform.localScale = new Vector3(2.2222164f, 2.16727f, 2.16727f);
+            }
+        }
+        Emotion emotion = EnsureComponent<Emotion>(emotionTransform.gameObject);
         SerializedObject so = new SerializedObject(emotion);
         SerializedProperty se = so.FindProperty("se");
         if (se.objectReferenceValue == null)
@@ -1150,7 +1168,7 @@ public static class Issue641YamaRevengeSetup
 
     static void AddBikkuri(Flowchart flowchart, Block block, GameObject go)
     {
-        AddInvokeMethod(flowchart, block, go, typeof(Emotion), "Bikkuri");
+        AddInvokeMethod(flowchart, block, go.transform.Find("Emotion").gameObject, typeof(Emotion), "Bikkuri");
     }
 
     static void AddSetActive(Flowchart flowchart, Block block, GameObject target, bool active)
