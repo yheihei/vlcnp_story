@@ -714,7 +714,7 @@ public static class Issue641YamaRevengeSetup
         Vector3 orochiPos = new Vector3(orochiX, GroundY, 0);
         // 見た目の背丈は当たり判定より低い(約1.5ユニット)ので、掴む高さは相手の頭のすぐ上に寄せる
         Vector3 mitamaPos = new Vector3(orochiX, GroundY + 1.4f, 0);        // オロチの頭上で掴む
-        Vector3 narukamiPos = new Vector3(akimX - 0.5f, NarukamiY - 1.3f, 0); // アキムの頭上で掴む(ナルカミの原点は左上)
+        Vector3 narukamiPos = new Vector3(akimX - 0.5f, NarukamiY - 1.8f, 0); // アキムの頭上で掴む(ナルカミの原点は左上)。アキムは小さいので爪が耳に触れる高さまで下げる
         AddMoveTo(flowchart, block, n.mitama, mitamaPos, 0.4f, iTween.EaseType.easeOutQuad, false);
         AddMoveTo(flowchart, block, n.narukami, narukamiPos, 0.4f, iTween.EaseType.easeOutQuad, false);
         AddWait(flowchart, block, 0.5f);
