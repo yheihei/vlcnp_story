@@ -74,7 +74,7 @@ public static class Issue641YamaRevengeSetup
     const string HowanSePath = "Assets/Game/SE/howan.mp3";
     const string AbsorbSePath = "Assets/Game/SE/jump06.mp3";
     const string ChargeSePath = "Assets/Game/SE/エネルギー充填.mp3";
-    const string CutInSePath = "Assets/Game/SE/keen.mp3";
+    const string CutInSePath = "Assets/Game/SE/sword3.mp3";
     const string JumpSePath = "Assets/Game/SE/jump04.mp3";
     const string ImpactSePath = "Assets/Game/SE/destruction3.mp3";
     const string BombSePath = "Assets/Game/SE/bomb.mp3";
