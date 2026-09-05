@@ -52,6 +52,9 @@ public static class Issue641YamaRevengeSetup
     const string GroundTilemapName = "Tilemap";
     const string DarkLeeleeCharacterName = "LeeleeDarkCharacter";
     const string GiantSpritePath = "Assets/Game/Characters/Sprite/dark_giant_leelee_512x640.png";
+    const string GiantAuraName = "DarkAura";
+    const int GiantAuraFrameCount = 5;
+    static string GiantAuraSpritePath(int i) => $"Assets/Game/Characters/Sprite/dark_giant_aura_{i}_512x640.png";
     const string DarkFacePath = "Assets/Game/Characters/Sprite/dark_leelee_face_1024x1024.png";
     const string ArmSpritePath = "Assets/Game/Characters/Sprite/dark_giant_leelee_arm_512x1280.png";
     const string CrackSpritePath = "Assets/Game/Effect/ground_crack_debris_640x192.png";
@@ -770,10 +773,12 @@ public static class Issue641YamaRevengeSetup
         p.giant.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0); // FadeIn で現す
         p.giant.AddComponent<ManualFadeObject>();
         p.giant.AddComponent<ShakeObject>();
+        AddGiantAura(p.giant, layer, 2);
         p.giant.SetActive(false);
 
         p.giantFalling = CreateSpriteObject(scene, GiantFallingName, GiantSpritePath, layer, 3, new Vector3(HoleCenterX, p.tileSurfaceY + OffscreenUp, 0), GiantScale);
         p.giantFalling.transform.rotation = Quaternion.Euler(0, 0, 180); // 逆さ
+        AddGiantAura(p.giantFalling, layer, 2);
         p.giantFalling.SetActive(false);
 
         float orochiX = LeeleeStopX + PartyGap * 2;
@@ -896,6 +901,31 @@ public static class Issue641YamaRevengeSetup
         return go;
     }
 
+    // 巨大リーリーの黒紫の炎: 本体の子に別スプライトで持たせ、SpriteFlipbook でコマを切り替える(本体の透明度に追従)
+    static void AddGiantAura(GameObject giant, int sortingLayerID, int sortingOrder)
+    {
+        GameObject go = new GameObject(GiantAuraName);
+        go.transform.SetParent(giant.transform, false);
+        SpriteRenderer renderer = go.AddComponent<SpriteRenderer>();
+        renderer.sortingLayerID = sortingLayerID;
+        renderer.sortingOrder = sortingOrder;
+        renderer.color = giant.GetComponent<SpriteRenderer>().color;
+        Sprite[] frames = new Sprite[GiantAuraFrameCount];
+        for (int i = 0; i < GiantAuraFrameCount; i++)
+        {
+            frames[i] = AssetDatabase.LoadAssetAtPath<Sprite>(GiantAuraSpritePath(i));
+            if (frames[i] == null) Debug.LogError($"[Issue641] 炎スプライトが見つかりません: {GiantAuraSpritePath(i)}");
+        }
+        renderer.sprite = frames[0];
+        SpriteFlipbook flipbook = go.AddComponent<SpriteFlipbook>();
+        SerializedObject so = new SerializedObject(flipbook);
+        SerializedProperty prop = so.FindProperty("frames");
+        prop.arraySize = frames.Length;
+        for (int i = 0; i < frames.Length; i++) prop.GetArrayElementAtIndex(i).objectReferenceValue = frames[i];
+        so.FindProperty("framesPerSecond").floatValue = 8f;
+        so.ApplyModifiedPropertiesWithoutUndo();
+    }
+
     // カットイン: 全画面 Canvas に「斜めの暗帯 + 赤い線 + 怒り顔」を Content としてまとめ、CutIn.Play() で走らせる
     static GameObject CreateCutIn(UnityEngine.SceneManagement.Scene scene)
     {
@@ -982,6 +1012,7 @@ public static class Issue641YamaRevengeSetup
     static void EnsureSpriteImports()
     {
         EnsureSpriteImport(GiantSpritePath, 100, SpriteAlignment.Center);
+        for (int i = 0; i < GiantAuraFrameCount; i++) EnsureSpriteImport(GiantAuraSpritePath(i), 100, SpriteAlignment.Center);
         EnsureSpriteImport(DarkFacePath, 100, SpriteAlignment.Center, FilterMode.Bilinear);
         EnsureSpriteImport(ArmSpritePath, 100, SpriteAlignment.BottomCenter);
         EnsureSpriteImport(CrackSpritePath, 100, SpriteAlignment.Center);
