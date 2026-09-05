@@ -505,7 +505,7 @@ public static class Issue641YamaRevengeSetup
         AddSay(flowchart, block, uniki, "てめMillcoさんに何やってくれちゃ...\nってヤーマ様じゃないですかあ〜。");
         AddSay(flowchart, block, uniki, "なんですかもー、来るなら来るって\n言ってくださればー");
         AddSay(flowchart, block, millco, "あ！ やっと来た！\nいっつもおせーんだよー！");
-        AddSay(flowchart, block, millco, "もー なんとか言ってよ\nこの人たちにさー");
+        AddSay(flowchart, block, millco, "もー なんとか言ってよ\nこの人たちさぁー まじでやばいー");
         AddSay(flowchart, block, uniki, "コラっ！ Millcoさんコラっ！\n国王に「この人たち」はほんともう\n常識が終わってるから！ コラっ！");
         AddSay(flowchart, block, uniki, "へっへっへ、すいませんね...もうどうもね。\n学がね。ないもんでね");
         AddSay(flowchart, block, millco, "あぁん！？");
@@ -526,11 +526,11 @@ public static class Issue641YamaRevengeSetup
         if (karmaEmotion != null) AddInvokeMethod(flowchart, block, karmaEmotion, typeof(Emotion), "Bikkuri");
         AddWait(flowchart, block, 3f);
 
-        AddSay(flowchart, block, yama, "双方ともずいぶんと騒がしく\n礼儀を知らぬ口ぶり。やはり辺境の\n村々の文化は肌にあわぬな。");
-        AddSay(flowchart, block, yama, "カルマ、連れて行け。\nVLパレスでじっくりと尋問してやろう");
+        AddSay(flowchart, block, yama, "ずいぶんと騒がしく\n礼儀を知らぬ口ぶり。やはり辺境の\n村々の文化は肌にあわぬな。");
+        AddSay(flowchart, block, yama, "カルマ、連れて行け。\nベリーロングパレスで\nじっくりと尋問してやろう。");
         AddInvokeMethod(flowchart, block, n.karma, typeof(NPCController), "SetDirection", NPCController.Direction.Left);
         AddSay(flowchart, block, karma, "はっ！");
-        AddSay(flowchart, block, karma, "(これはなかなかどうして...\nやはりCNPの力は伊達じゃないようだな。\nおもしろくなりそうだ...)");
+        AddSay(flowchart, block, karma, "(これはなかなかどうして...\nやはりCNPの力は伊達じゃない。\nおもしろくなりそうだ...)");
 
         // ウニキが震えて立ち上がる
         AddInvokeMethod(flowchart, block, n.uniki, typeof(NPCController), "Shake", 1.5f, 0.05f);
@@ -543,7 +543,7 @@ public static class Issue641YamaRevengeSetup
         AddInvokeMethod(flowchart, block, n.uniki, typeof(NPCController), "SetPosition", new Vector3(UnikiStopX, GroundY, 0));
         AddWait(flowchart, block, 0.5f);
         AddSay(flowchart, block, uniki, "もしかしてぇ〜 今日はシモーヌさんは\nいない感じですかぁ？");
-        AddSay(flowchart, block, yama, "ふむ。そちらについても聞きたい。\nどうもあの日以来姿が見えんのだ。");
+        AddSay(flowchart, block, yama, "ふむ。そちらについても聞きたい。\nどうもあの日以来\n姿が見えんのだ。");
         AddSay(flowchart, block, yama, "うぬらが良からぬ気を起こしては\nいまいかとな。そのあたりもよーーく\n聞き取りすることになるだろう");
         AddSay(flowchart, block, uniki, "へ、へえ〜。。。シモーヌさん\n会いたかったな〜　いないんだ〜");
         AddSay(flowchart, block, uniki, "ですって！ リーリーさん！！");
@@ -603,7 +603,10 @@ public static class Issue641YamaRevengeSetup
         // カルマがヤーマの隣へ寄って耳打ちし、元の位置へ戻る
         AddInvokeMethod(flowchart, block, n.karma, typeof(NPCController), "MoveToPositionEvent", new Vector3(YamaX + 1.1f, 0, 0), 0f, false);
         AddWait(flowchart, block, 0.8f);
-        AddSay(flowchart, block, c.karma, "ヤーマ様...");
+        AddSay(flowchart, block, c.karma, "ヤーマ様...\n(ごにょごにょごにょ)");
+        AddWait(flowchart, block, 1f);
+        AddBikkuri(flowchart, block, n.yama);
+        AddWait(flowchart, block, 1f);
         AddSay(flowchart, block, c.yama, "ほう...よかろう。\n好きにせい...");
         AddInvokeMethod(flowchart, block, n.karma, typeof(NPCController), "MoveToPositionEvent", new Vector3(KarmaX, 0, 0), 0f, false);
         AddWait(flowchart, block, 0.6f);
@@ -611,7 +614,7 @@ public static class Issue641YamaRevengeSetup
         AddInvokeMethod(flowchart, block, p.bgmWrapper, typeof(BGMWrapper), "FadeOut", 2f);
         AddSay(flowchart, block, c.yama, "リーリーよ 旧交を温めたいところだが\nあいにく余には時間がない。\n国王としての責務がある");
         AddSay(flowchart, block, c.leelee, "なーにが国王や！ 国王は...");
-        AddSay(flowchart, block, c.yama, "おおっと そこまでだ。カルマ！");
+        AddSay(flowchart, block, c.yama, "おおっと そこまでだ！\nカルマ！");
         AddSay(flowchart, block, c.karma, "はっ！");
 
         // 召喚(Yami5F と同じ段取り): 構え 3 秒 → 発動 → リーリーへ寄る → 種が頭上に出て取り込まれる
@@ -637,6 +640,7 @@ public static class Issue641YamaRevengeSetup
         AddSetActive(flowchart, block, p.seed, false);
         AddInvokeMethod(flowchart, block, n.karma, typeof(NPCController), "PlayMagicAnimation", false);
         AddSay(flowchart, block, c.leelee, "なっ！");
+        AddInvokeMethod(flowchart, block, n.uniki, typeof(NPCController), "SetDirection", NPCController.Direction.Right);
 
         // 予兆の BGM に切り替え、リーリーが震え、3 人がビックリ
         AddInvokeMethod(flowchart, block, p.bgmWrapper, typeof(BGMWrapper), "Play", yotyou, 0.3f, 1f);
@@ -769,7 +773,7 @@ public static class Issue641YamaRevengeSetup
             EnsureComponent<Rigidbody2DSwitch>(go);
         }
         EnsureComponent<ManualFadeObject>(n.leelee);
-        foreach (GameObject go in new[] { n.akim, n.orochi, n.mitama, n.narukami, n.uniki })
+        foreach (GameObject go in new[] { n.akim, n.orochi, n.mitama, n.narukami, n.uniki, n.yama })
         {
             EnsureEmotion(go);
         }
