@@ -48,28 +48,74 @@ public static class Issue657EienAtmosphereSetup
         new FlameSpec { suffix = "Road Lamp.prefab", offset = new Vector3(0.855f, 2.2f, 0f), fire = false },
     };
 
-    /** 低い靄。床面(タイル上面)から画面高さの 1/4(約 2.5 ユニット)を覆う帯を置く。y は床面 + 1.0 */
-    private struct MistSpec { public float x, y, width; }
-    private static readonly Dictionary<string, MistSpec[]> Mists = new Dictionary<string, MistSpec[]>
+    /**
+     * 低い靄。Tilemap(tag Ground)の床面(上が空いているタイルの連続区間)をすべて拾い、
+     * 各区間に画面高さの 1/4(約 2.5 ユニット)を覆う帯を置く。maxFloorY より高い面は洞窟の天井なので除外する。
+     * 小さな穴(mergeGapCells 以下)はまたいで 1 本の帯にする。
+     */
+    private struct MistArea { public float maxFloorY; public int minCells; public int mergeGapCells; }
+    private static readonly Dictionary<string, MistArea> MistAreas = new Dictionary<string, MistArea>
     {
-        {
-            "Ohirunebeya_2", new[]
-            {
-                new MistSpec { x = 1.5f, y = -5f, width = 9f },
-                new MistSpec { x = 20.5f, y = -2f, width = 5f },
-                new MistSpec { x = 30f, y = 9f, width = 12f },
-            }
-        },
-        {
-            "Ohirunebeya_4", new[]
-            {
-                new MistSpec { x = 1.5f, y = -5f, width = 9f },
-                new MistSpec { x = 29f, y = -5f, width = 10f },
-                new MistSpec { x = 64f, y = -5f, width = 16f },
-                new MistSpec { x = 120.5f, y = -5f, width = 11f },
-            }
-        },
+        { "Ohirunebeya_2", new MistArea { maxFloorY = 10f, minCells = 3, mergeGapCells = 6 } },
+        { "Ohirunebeya_4", new MistArea { maxFloorY = 5f, minCells = 3, mergeGapCells = 6 } },
     };
+
+    private struct MistSpec { public float x, y, width; }
+
+    private static List<MistSpec> CollectMistSpecs(Scene scene, MistArea area)
+    {
+        var specs = new List<MistSpec>();
+        foreach (var tilemap in scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<UnityEngine.Tilemaps.Tilemap>(true)))
+        {
+            if (!tilemap.CompareTag("Ground")) continue;
+            var bounds = tilemap.cellBounds;
+            for (var y = bounds.yMin; y < bounds.yMax; y++)
+            {
+                var runs = new List<(int start, int end)>();
+                var start = int.MinValue;
+                for (var x = bounds.xMin; x <= bounds.xMax; x++)
+                {
+                    var floor = x < bounds.xMax
+                        && tilemap.HasTile(new Vector3Int(x, y, 0))
+                        && !tilemap.HasTile(new Vector3Int(x, y + 1, 0));
+                    if (floor && start == int.MinValue) start = x;
+                    if (!floor && start != int.MinValue)
+                    {
+                        if (x - start >= area.minCells) runs.Add((start, x));
+                        start = int.MinValue;
+                    }
+                }
+
+                // 小さな穴はまたぐ
+                var merged = new List<(int start, int end)>();
+                foreach (var run in runs)
+                {
+                    if (merged.Count > 0 && run.start - merged[merged.Count - 1].end <= area.mergeGapCells)
+                    {
+                        merged[merged.Count - 1] = (merged[merged.Count - 1].start, run.end);
+                    }
+                    else
+                    {
+                        merged.Add(run);
+                    }
+                }
+
+                foreach (var run in merged)
+                {
+                    var left = tilemap.CellToWorld(new Vector3Int(run.start, y + 1, 0));
+                    var right = tilemap.CellToWorld(new Vector3Int(run.end, y + 1, 0));
+                    if (left.y > area.maxFloorY) continue;
+                    specs.Add(new MistSpec
+                    {
+                        x = (left.x + right.x) * 0.5f,
+                        y = left.y + 1.0f,
+                        width = right.x - left.x,
+                    });
+                }
+            }
+        }
+        return specs;
+    }
 
     /** 前景の草。PlayerUpperObject 層に暗めの色で置く。足場・ジャンプ先の上には置かない */
     private struct ForegroundSpec { public string prefab; public float x, y, scale; public bool flip; }
@@ -171,9 +217,10 @@ public static class Issue657EienAtmosphereSetup
 
         // 3. 低い靄と前景
         var mists = 0;
-        if (!isEvent && Mists.TryGetValue(scene.name, out var mistSpecs))
+        if (!isEvent && MistAreas.TryGetValue(scene.name, out var mistArea))
         {
-            for (var i = 0; i < mistSpecs.Length; i++)
+            var mistSpecs = CollectMistSpecs(scene, mistArea);
+            for (var i = 0; i < mistSpecs.Count; i++)
             {
                 PlaceMist(scene, fogPrefab, mistSpecs[i], $"{MistPrefix} ({i})");
                 mists++;
@@ -214,14 +261,15 @@ public static class Issue657EienAtmosphereSetup
         main.startLifetime = new ParticleSystem.MinMaxCurve(14f, 22f);
         main.startSizeX = new ParticleSystem.MinMaxCurve(9f, 13f);
         main.startSizeY = new ParticleSystem.MinMaxCurve(3.2f);
-        main.maxParticles = 10;
+        // 幅に応じて粒数を決める(寿命 14〜22 秒 × 発生率 width/40)
+        main.maxParticles = Mathf.Clamp(Mathf.CeilToInt(spec.width * 0.5f) + 2, 4, 16);
         main.startColor = new Color(0.85f, 0.85f, 0.95f, 1f);
 
         var emission = ps.emission;
         emission.rateOverTime = Mathf.Max(0.15f, spec.width / 40f);
 
         var shape = ps.shape;
-        shape.scale = new Vector3(spec.width, 1.5f, 0f);
+        shape.scale = new Vector3(Mathf.Max(spec.width - 4f, 2f), 1.5f, 0f);
 
         var velocity = ps.velocityOverLifetime;
         velocity.x = new ParticleSystem.MinMaxCurve(0.1f, 0.25f);
