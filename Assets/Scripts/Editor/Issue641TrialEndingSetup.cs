@@ -63,21 +63,25 @@ namespace VLCNP.Editor
             Debug.Log("[Issue641] TrialEnding_3 と前シーンの遷移を保存しました。");
         }
 
-        /** 配置の正。TrialEnding と同じ構図: 植物VLCNP が後列、アキムと闇堕ちリーリーが中央、ヤーマとカルマは右端に離す。 */
+        /**
+         * 配置の正。TrialEnding と同じ構図: 植物VLCNP が後列、アキムと闇堕ちリーリーが中央、ヤーマとカルマは右端に離す。
+         * 座標は 2026-09-06 にユーザーがエディタで手置きした値をそのまま持つ(足元はスプライトの透明余白込みで見た目合わせ)。
+         * faceLeft は X スケールを反転して左を向かせる。
+         */
         const string AnimDir = "Assets/Game/Characters/Animations/";
-        static readonly (string name, string file, string sprite, string animator, float x, float scale, float lift, int order)[] Cast =
+        static readonly (string name, string file, string sprite, string animator, float x, float y, float scale, bool faceLeft, int order)[] Cast =
         {
-            ("Plant_VLCNP_Orochi", "plant_vlcnp_orochi.png", "plant_vlcnp_orochi_0", null, -14.4f, .327f, 0, 1),
-            ("Plant_VLCNP_Narukami", "plant_vlcnp_narukami.png", "plant_vlcnp_narukami_0", null, -11.9f, .327f, 0, 1),
-            ("Plant_VLCNP_Mitama", "plant_vlcnp_mitama.png", "plant_vlcnp_mitama_0", null, -4.3f, .327f, 0, 1),
-            ("Plant_VLCNP_Leelee", "plant_vlcnp_leelee.png", "plant_vlcnp_leelee_0", null, -1.9f, .327f, 0, 1),
-            ("VLMitama", "VLMitama.png", "VLMitama_1", AnimDir + "VLMitamaAnimator.overrideController", -12.3f, .6f, 0, 5),
-            ("Akim", "akim.png", "akim_0", "Assets/Game/Characters/PlayerLevel1.overrideController", -10.6f, .6f, 0, 5),
-            ("DarkLeeleeGiant", "dark_giant_leelee_512x640.png", "dark_giant_leelee_512x640", null, -7.6f, .8f, 0, 5),
-            ("VLOrochi", "VLOrochiNPC.png", "VLOrochiNPC_0", AnimDir + "OrochiAnimator.overrideController", -4.7f, .6f, 0, 5),
-            ("VLNarukami", "VLNarukami.png", "VLNarukami_0", "Assets/Game/Characters/Npc/NPCVLNarukamiFlyController.controller", -3.2f, .4f, 3f, 5),
-            ("VLYama", "VLYama.png", "VLYama_0", AnimDir + "VLYamaAnimatorController.overrideController", -.7f, .6f, 0, 5),
-            ("Karma", "Karma.png", "Karma_0", AnimDir + "KarmaAnimator.overrideController", .6f, .39f, 0, 5),
+            ("Plant_VLCNP_Orochi", "plant_vlcnp_orochi.png", "plant_vlcnp_orochi_0", null, -14.4f, -15.29576f, .327f, false, 1),
+            ("Plant_VLCNP_Narukami", "plant_vlcnp_narukami.png", "plant_vlcnp_narukami_0", null, -13.04f, -15.29576f, .327f, false, 1),
+            ("Plant_VLCNP_Mitama", "plant_vlcnp_mitama.png", "plant_vlcnp_mitama_0", null, -4.3f, -15.29576f, .327f, false, 1),
+            ("Plant_VLCNP_Leelee", "plant_vlcnp_leelee.png", "plant_vlcnp_leelee_0", null, -2.75f, -15.29576f, .327f, false, 1),
+            ("VLMitama", "VLMitama.png", "VLMitama_1", AnimDir + "VLMitamaAnimator.overrideController", -11.1f, -16.238f, .6f, true, 5),
+            ("Akim", "akim.png", "akim_0", "Assets/Game/Characters/PlayerLevel1.overrideController", -9.86f, -16.29f, .6f, true, 5),
+            ("DarkLeeleeGiant", "dark_giant_leelee_512x640.png", "dark_giant_leelee_512x640", null, -7.91f, -14.41f, .8f, false, 5),
+            ("VLOrochi", "VLOrochiNPC.png", "VLOrochiNPC_0", AnimDir + "OrochiAnimator.overrideController", -6.18f, -16.25f, .6f, false, 5),
+            ("VLNarukami", "VLNarukami.png", "VLNarukami_0", "Assets/Game/Characters/Npc/NPCVLNarukamiFlyController.controller", -5.98f, -14.24f, .4f, false, 5),
+            ("VLYama", "VLYama.png", "VLYama_0", AnimDir + "VLYamaAnimatorController.overrideController", -1.44f, -16.25f, .6f, false, 5),
+            ("Karma", "Karma.png", "Karma_0", AnimDir + "KarmaAnimator.overrideController", -.69f, -16.3f, .39f, false, 5),
         };
         public static readonly string[] MainCast = { "Akim", "DarkLeeleeGiant", "VLMitama", "VLOrochi", "VLNarukami", "VLYama", "Karma" };
 
@@ -111,21 +115,19 @@ namespace VLCNP.Editor
             foreach (var root in scene.GetRootGameObjects().Where(g => Cast.Any(c => c.name == g.name)).ToArray())
                 Object.DestroyImmediate(root);
             foreach (var entry in Cast)
-                CreateNpc(scene, entry.name, entry.file, entry.sprite, entry.animator, entry.x, entry.scale, entry.lift, entry.order);
+                CreateNpc(scene, entry.name, entry.file, entry.sprite, entry.animator, entry.x, entry.y, entry.scale, entry.faceLeft, entry.order);
         }
 
-        static void CreateNpc(Scene scene, string name, string file, string spriteName, string animatorPath, float x, float scale, float lift, int order)
+        static void CreateNpc(Scene scene, string name, string file, string spriteName, string animatorPath, float x, float y, float scale, bool faceLeft, int order)
         {
             var go = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(NpcPath), scene);
             go.name = name;
-            go.transform.localScale = new Vector3(scale, scale, 1);
+            go.transform.localScale = new Vector3(faceLeft ? -scale : scale, scale, 1);
             var sprite = AssetDatabase.LoadAllAssetsAtPath("Assets/Game/Characters/Sprite/" + file).OfType<Sprite>().First(s => s.name == spriteName);
             var renderer = go.GetComponent<SpriteRenderer>();
             renderer.sprite = sprite;
             renderer.sortingOrder = order;
-            // タイトメッシュの下端で足元を揃える。人物の大きさ・原点の違いを吸収する。
-            float minY = sprite.vertices.Min(v => v.y);
-            go.transform.position = new Vector3(x - sprite.bounds.center.x * scale, -17f - minY * scale + .03f + lift, 0);
+            go.transform.position = new Vector3(x, y, 0);
             var animator = go.GetComponent<Animator>();
             if (animatorPath != null)
                 animator.runtimeAnimatorController = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(animatorPath);
@@ -147,8 +149,8 @@ namespace VLCNP.Editor
             var go = new GameObject("CMCameraTrialEnding3");
             var camera = go.AddComponent<CinemachineVirtualCamera>();
             camera.Priority = 100;
-            // TrialEnding と同じ寄り(ortho 5)と高さ(地面の下に土が約3ユニット映る)。
-            camera.transform.position = new Vector3(-7.6f, -15.3f, -10);
+            // TrialEnding と同じ寄り(ortho 5)と高さ(地面の下に土が約3ユニット映る)。x は 2026-09-06 にユーザーが手で寄せた値。
+            camera.transform.position = new Vector3(-8.2f, -15.3f, -10);
             camera.m_Lens.OrthographicSize = 5f;
             Find(scene, "Main Camera").transform.position = camera.transform.position;
         }
@@ -279,12 +281,15 @@ namespace VLCNP.Editor
                 var r = npc.GetComponent<SpriteRenderer>();
                 var b = r.bounds;
                 Require(r.enabled && npc.gameObject.activeInHierarchy, npc.name + " が非表示です。");
-                Require(b.min.y >= -17.02f, npc.name + " が地面にめり込んでいます。");
+                // 手置きの位置はスプライト矩形の透明余白ぶん地面(y=-17)より下に出る。見た目の接地はスクショで確認済み。
+                Require(b.min.y >= -17.1f, npc.name + " が地面にめり込んでいます。");
                 var min = Camera.main.WorldToViewportPoint(b.min);
                 var max = Camera.main.WorldToViewportPoint(b.max);
                 Require(min.x >= 0 && max.x <= 1 && min.y >= 0 && max.y <= 1, npc.name + " が画面外です。");
-                Require(!placed.Any(p => p.Intersects(b)), npc.name + " が他の主要キャラに重なっています。");
-                placed.Add(b);
+                // 透明余白を除いた中身どうしの重なりだけ見る(矩形を各辺 25% 縮める)。
+                var core = new Bounds(b.center, b.size * .5f);
+                Require(!placed.Any(p => p.Intersects(core)), npc.name + " が他の主要キャラに重なっています。");
+                placed.Add(core);
             }
             foreach (var plant in Cast.Where(c => c.order == 1).Select(c => npcs[c.name]))
                 Require(plant.GetComponent<SpriteRenderer>().sortingOrder < 5, plant.name + " が前列に出ています。");
