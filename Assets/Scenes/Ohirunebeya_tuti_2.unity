@@ -2012,7 +2012,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5708614890347238871, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: moveAmount
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5924593477178116203, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_Profile
@@ -2450,6 +2450,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c291fb3305c043418fb0c912fe30358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &354106603 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5708614890347238871, guid: 011494565755b490386e78a113e3c871, type: 3}
+  m_PrefabInstance: {fileID: 354106601}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63d38d4f6492a4dc8bfbbab2eb014080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &357120593 stripped
@@ -5209,7 +5220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f377714899014f93bb4bbab25686ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraPositionChanger: {fileID: 0}
+  cameraPositionChanger: {fileID: 354106603}
   cameraModeOnEnter: 2
   cameraModeOnExit: 0
 --- !u!61 &661946343
@@ -8319,7 +8330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f377714899014f93bb4bbab25686ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraPositionChanger: {fileID: 1956418996}
+  cameraPositionChanger: {fileID: 354106603}
   cameraModeOnEnter: 2
   cameraModeOnExit: 0
 --- !u!61 &1330428153
