@@ -50,14 +50,14 @@ public static class Issue657EienAtmosphereSetup
 
     /**
      * 低い靄。Tilemap(tag Ground)の床面(上が空いているタイルの連続区間)をすべて拾い、
-     * 各区間に画面高さの 1/4(約 2.5 ユニット)を覆う帯を置く。maxFloorY より高い面は洞窟の天井なので除外する。
+     * 各区間に画面高さの 1/4(約 2.5 ユニット)を覆う帯を置く。maxFloorY より高い面(高い足場・段差の上・天井)には置かない。地面(y=-6)だけに置く。
      * 小さな穴(mergeGapCells 以下)はまたいで 1 本の帯にする。
      */
     private struct MistArea { public float maxFloorY; public int minCells; public int mergeGapCells; }
     private static readonly Dictionary<string, MistArea> MistAreas = new Dictionary<string, MistArea>
     {
-        { "Ohirunebeya_2", new MistArea { maxFloorY = 10f, minCells = 3, mergeGapCells = 6 } },
-        { "Ohirunebeya_4", new MistArea { maxFloorY = 5f, minCells = 3, mergeGapCells = 6 } },
+        { "Ohirunebeya_2", new MistArea { maxFloorY = -5f, minCells = 3, mergeGapCells = 6 } },
+        { "Ohirunebeya_4", new MistArea { maxFloorY = -5f, minCells = 3, mergeGapCells = 6 } },
     };
 
     private struct MistSpec { public float x, y, width; }
