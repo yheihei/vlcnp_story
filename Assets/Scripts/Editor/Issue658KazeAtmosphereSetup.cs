@@ -51,8 +51,8 @@ public static class Issue658KazeAtmosphereSetup
 
     /** 闇エリアの窓の光(Window03A)の色を参考にした冷たい色 */
     private static readonly Color WindowLightColor = new Color(0.125f, 0.22f, 0.227f);
-    private const float WindowLightIntensity = 3.5f;
-    private const float WindowLightOuterRadius = 3.2f;
+    private const float WindowLightIntensity = 2.5f;
+    private const float WindowLightOuterRadius = 2.8f;
     private const float WindowLightInnerRadius = 0.4f;
     private const float WindowLightFalloff = 0.5f;
     /** 表の座標とインスタンス座標の許容差 */

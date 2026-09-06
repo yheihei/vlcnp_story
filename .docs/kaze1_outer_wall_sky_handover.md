@@ -77,7 +77,7 @@ Core/Main Camera/
    - 霧(Fog): velocity.x −0.45〜−0.15、色 (0.8, 0.86, 1.0)。Effect 層 order −5 にして塔(タイルマップと小物)の手前、
      プレイヤーの奥を横切らせる
 2. 窓の点光源。`AmbientPointLight` を表にある窓(round_window_lattice_02 / round_window_cross_01 のインスタンス)の子に置く。
-   色 (0.125, 0.22, 0.227)、強さ 3.5、半径 0.4〜3.2、減衰 0.5、ゆらぎ(LightFlicker2D)は無効。
+   色 (0.125, 0.22, 0.227)、強さ 2.5、半径 0.4〜2.8、減衰 0.5、ゆらぎ(LightFlicker2D)は無効。
    Kaze1 6 か所、Kaze2 6 か所。WindowGun(敵)が重なる窓は避けている
 3. 前景。`ivy_overlay_01_32x96` と `spider_web_01_32x32` を PlayerUpperObject 層に、青みの暗い色 (0.42, 0.46, 0.62) で
    1 シーン 3 個。壁面(BGTilemap)の前に置き、足場やジャンプ先の上には置かない
