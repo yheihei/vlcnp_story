@@ -73,7 +73,7 @@ Core/Main Camera/
    月夜の青紫のグローバルライト(0.72, 0.78, 1.0)と `Kaze_Post Processing Profile`。
    漂う埃(Dust)は風の場面に合わないので無効にしてある
    - 風筋と葉(WindStreaks): velocity.x −7〜−4(右から左)、FollowMainCamera の offset (+11, 0) で画面右端の外から湧く。
-     発生率 3.5/秒、最大 36 粒。目立ちすぎないよう startColor のアルファ 0.65 で少し透かす
+     発生率 3.5/秒、最大 36 粒。目立ちすぎないよう startColor のアルファ 0.35 で透かす
    - 霧(Fog): velocity.x −0.45〜−0.15、色 (0.8, 0.86, 1.0)。Effect 層 order −5 にして塔(タイルマップと小物)の手前、
      プレイヤーの奥を横切らせる
 2. 窓の点光源。`AmbientPointLight` を表にある窓(round_window_lattice_02 / round_window_cross_01 のインスタンス)の子に置く。
