@@ -48,25 +48,25 @@ public static class Issue657EienAtmosphereSetup
         new FlameSpec { suffix = "Road Lamp.prefab", offset = new Vector3(0.855f, 2.2f, 0f), fire = false },
     };
 
-    /** 低い靄。床面(タイル上面)の少し上に、幅 width の帯を置く */
+    /** 低い靄。床面(タイル上面)から画面高さの 1/4(約 2.5 ユニット)を覆う帯を置く。y は床面 + 1.0 */
     private struct MistSpec { public float x, y, width; }
     private static readonly Dictionary<string, MistSpec[]> Mists = new Dictionary<string, MistSpec[]>
     {
         {
             "Ohirunebeya_2", new[]
             {
-                new MistSpec { x = 1.5f, y = -5.5f, width = 9f },
-                new MistSpec { x = 20.5f, y = -2.5f, width = 5f },
-                new MistSpec { x = 30f, y = 8.5f, width = 12f },
+                new MistSpec { x = 1.5f, y = -5f, width = 9f },
+                new MistSpec { x = 20.5f, y = -2f, width = 5f },
+                new MistSpec { x = 30f, y = 9f, width = 12f },
             }
         },
         {
             "Ohirunebeya_4", new[]
             {
-                new MistSpec { x = 1.5f, y = -5.5f, width = 9f },
-                new MistSpec { x = 29f, y = -5.5f, width = 10f },
-                new MistSpec { x = 64f, y = -5.5f, width = 16f },
-                new MistSpec { x = 120.5f, y = -5.5f, width = 11f },
+                new MistSpec { x = 1.5f, y = -5f, width = 9f },
+                new MistSpec { x = 29f, y = -5f, width = 10f },
+                new MistSpec { x = 64f, y = -5f, width = 16f },
+                new MistSpec { x = 120.5f, y = -5f, width = 11f },
             }
         },
     };
@@ -212,16 +212,16 @@ public static class Issue657EienAtmosphereSetup
         var ps = go.GetComponent<ParticleSystem>();
         var main = ps.main;
         main.startLifetime = new ParticleSystem.MinMaxCurve(14f, 22f);
-        main.startSizeX = new ParticleSystem.MinMaxCurve(6f, 9f);
-        main.startSizeY = new ParticleSystem.MinMaxCurve(1.6f);
-        main.maxParticles = 8;
+        main.startSizeX = new ParticleSystem.MinMaxCurve(9f, 13f);
+        main.startSizeY = new ParticleSystem.MinMaxCurve(3.2f);
+        main.maxParticles = 10;
         main.startColor = new Color(0.85f, 0.85f, 0.95f, 1f);
 
         var emission = ps.emission;
         emission.rateOverTime = Mathf.Max(0.15f, spec.width / 40f);
 
         var shape = ps.shape;
-        shape.scale = new Vector3(spec.width, 1.2f, 0f);
+        shape.scale = new Vector3(spec.width, 1.5f, 0f);
 
         var velocity = ps.velocityOverLifetime;
         velocity.x = new ParticleSystem.MinMaxCurve(0.1f, 0.25f);
@@ -235,8 +235,8 @@ public static class Issue657EienAtmosphereSetup
             new[]
             {
                 new GradientAlphaKey(0f, 0f),
-                new GradientAlphaKey(0.16f, 0.25f),
-                new GradientAlphaKey(0.16f, 0.75f),
+                new GradientAlphaKey(0.2f, 0.25f),
+                new GradientAlphaKey(0.2f, 0.75f),
                 new GradientAlphaKey(0f, 1f),
             });
         color.color = new ParticleSystem.MinMaxGradient(gradient);
