@@ -48,11 +48,11 @@ public static class Issue659TutiAtmosphereSetup
         "Ohirunebeya_tuti_6_boss_3",
     };
 
-    /** 各シーンのカメラ ortho(#660 まで変えない)。粒子の発生範囲の計算に使う */
+    /** 各シーンのカメラ ortho(シーンの CMCamera と合わせる)。粒子の発生範囲の計算に使う */
     private static readonly Dictionary<string, float> OrthoSizes = new Dictionary<string, float>
     {
         { "Ohirunebeya_tuti_1", 6f },
-        { "Ohirunebeya_tuti_2", 5f },
+        { "Ohirunebeya_tuti_2", 6f },  // 2026-09-07 に 5 から 6 へ(tuti_1 と同じ見え方にするため)
         { "Ohirunebeya_tuti_3", 7.5f },
         { "Ohirunebeya_tuti_4", 7.6f },
         { "Ohirunebeya_tuti_5", 5f },
