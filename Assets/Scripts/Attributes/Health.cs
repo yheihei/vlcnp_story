@@ -80,6 +80,8 @@ namespace VLCNP.Attributes
         }
         SpriteRenderer playerSprite;
         TakeDamageSe takeDamageSe;
+        BaseStats baseStats;
+        Rigidbody2D rBody;
 
         [SerializeField]
         AudioClip zeroDamageSe = null;
@@ -95,11 +97,13 @@ namespace VLCNP.Attributes
 
         private void Awake()
         {
-            healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
+            baseStats = GetComponent<BaseStats>();
+            healthPoints = baseStats.GetStat(Stat.Health);
             playerSprite = GetComponent<SpriteRenderer>();
             takeDamageSe = GetComponent<TakeDamageSe>();
             damageStun = GetComponent<DamageStun>();
             audioSource = GetComponent<AudioSource>();
+            rBody = GetComponent<Rigidbody2D>();
         }
 
         private void Update()
@@ -122,7 +126,6 @@ namespace VLCNP.Attributes
             if (_damage <= 0)
             {
                 _damage = 0;
-                AudioSource audioSource = GetComponent<AudioSource>();
                 if (audioSource)
                     audioSource.PlayOneShot(zeroDamageSe, 0.5f);
                 takeDamage?.Invoke(_damage);
@@ -140,7 +143,6 @@ namespace VLCNP.Attributes
             else
             {
                 // 吹っ飛ばす
-                Rigidbody2D rBody = GetComponent<Rigidbody2D>();
                 if (isBlowAway)
                 {
                     rBody.AddForce(
@@ -164,7 +166,6 @@ namespace VLCNP.Attributes
         {
             if (IsInvincible())
             {
-                SpriteRenderer playerSprite = GetComponent<SpriteRenderer>();
                 float level = Mathf.Abs(Mathf.Sin(Time.time * 10));
                 playerSprite.color = new Color(1f, 1f, 1f, level);
             }
@@ -304,7 +305,7 @@ namespace VLCNP.Attributes
         // 全回復させるメソッド
         public void RestoreHealth()
         {
-            healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
+            healthPoints = baseStats.GetStat(Stat.Health);
             SetHealthPoints(healthPoints);
         }
 
@@ -312,7 +313,7 @@ namespace VLCNP.Attributes
         {
             healthPoints = Mathf.Min(
                 healthPoints + amount,
-                GetComponent<BaseStats>().GetStat(Stat.Health)
+                baseStats.GetStat(Stat.Health)
             );
             if (audioSource != null && se != null)
             {
