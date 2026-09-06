@@ -161,6 +161,8 @@ public static class Issue641YamaRevengeSetup
         GameObject cameraGo = SetupCamera(scene, npcs);
         Props props = SetupProps(scene, npcs);
         SetupEvent(scene, npcs, props, cameraGo);
+        // 完了挨拶シーン作成後は、再セットアップ時も遷移を復元する。
+        VLCNP.Editor.Issue641TrialEndingSetup.ConnectPrevious(scene);
 
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);
@@ -253,7 +255,7 @@ public static class Issue641YamaRevengeSetup
         }
         foreach (string name in new[]
         {
-            EventObjectName, MillcoName, KarmaName, OrochiName, MitamaName, NarukamiName, YamaCameraName, YamaAnchorName, AnchorName, AnchorCameraName,
+            EventObjectName, "ToTrialEnding3", MillcoName, KarmaName, OrochiName, MitamaName, NarukamiName, YamaCameraName, YamaAnchorName, AnchorName, AnchorCameraName,
             SeedName, GiantName, GiantFallingName, ArmName, CrackName, HoleBackName, FakeGroundName, CutInName,
         })
         {
