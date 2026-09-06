@@ -124,6 +124,8 @@ public static class Issue658KazeAtmosphereSetup
     private const float WindSpawnOffsetX = 11f;
     private const float WindRate = 3.5f;
     private const int WindMaxParticles = 36;
+    /** 目立ちすぎないよう少し透ける(プレハブの寿命アルファ 0.9 に掛かる) */
+    private const float WindAlpha = 0.65f;
 
     private const float FogVelocityMin = -0.45f;
     private const float FogVelocityMax = -0.15f;
@@ -327,6 +329,7 @@ public static class Issue658KazeAtmosphereSetup
         var ps = wind.GetComponent<ParticleSystem>();
         var main = ps.main;
         main.maxParticles = WindMaxParticles;
+        main.startColor = new Color(1f, 1f, 1f, WindAlpha);
 
         var emission = ps.emission;
         emission.rateOverTime = WindRate;
