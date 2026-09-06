@@ -540,7 +540,7 @@ namespace VLCNP.Editor
             return text;
         }
 
-        /** issue コメント 5557271332 の台本。Start ブロックを作り直す。 */
+        /** issue コメント 5557271332 の台本(2026-09-06 にユーザーがエディタで調整した版)。Start ブロックを作り直す。 */
         static void BuildStartBlock(Flowchart flow, System.Collections.Generic.Dictionary<string, Character> faces, GameObject guide)
         {
             var block = flow.FindBlock("Start");
@@ -559,13 +559,18 @@ namespace VLCNP.Editor
             AddSay(flow, block, leelee, "体験版、しゅーーーーりょぉーーーーー！");
             AddWait(flow, block, 2f);
             AddSay(flow, block, leelee, "プレイありがとうな？ 面白かった？ このあとどうなってしまうんやろな〜。");
-            AddSay(flow, block, mitama, "てか 闇堕ちしながら普通に喋ってますが。大丈夫なんですか？");
-            AddSay(flow, block, orochi, "{size=36}めっちゃぶん殴られたけど...{/size}");
-            AddSay(flow, block, narukami, "大穴が空いて奈落に落ちていったようだな。無事では済むまい。");
-            AddSay(flow, block, leelee, "せやねん、無事じゃないねん。果たして5人のVLCNPは生きているのか？ いなくなったシモーヌはどうなったのか？ Millcoさんやウニはどうなってしまうのか。気になるとこやね〜！");
-            AddSay(flow, block, leelee, "VLCNP物語は、近日発売予定や！ Steamのサイトからウィッシュリスト登録しておくと、発売日当日に通知が来るからな。是非登録してみてや。");
-            AddSay(flow, block, mitama, "制作者のXもフォローしておくと色々捗るかもしれないですね〜");
-            AddSay(flow, block, narukami, "おうえんのコメントもいただけると泣いて喜ぶらしいぞ");
+            AddSay(flow, block, mitama, "てか 闇堕ちしながら普通に喋ってますが。\n大丈夫なんですか？");
+            AddSay(flow, block, orochi, "{size=32}めっちゃぶん殴られたけど...{/size}");
+            AddSay(flow, block, narukami, "大穴が空いて奈落に落ちていったようだな。\n無事では済むまい。");
+            AddSay(flow, block, leelee, "せやねん、無事じゃないねんw");
+            AddSay(flow, block, leelee, "果たして5人のVLCNPは生きているのか？ いなくなったシモーヌはどうなったのか？ Millcoさんやウニはどうなってしまうのか？");
+            AddSay(flow, block, mitama, "気になるところで終わりましたね...");
+            AddSay(flow, block, leelee, "これは見逃せへんでえ〜w");
+            AddWait(flow, block, 2f);
+            AddSay(flow, block, leelee, "では最後にアナウンス！\nVLCNP物語は、近日発売予定や！");
+            AddSay(flow, block, leelee, "Steamのサイトからウィッシュリスト登録しておくと、\n発売日当日に通知が来るからな。\n是非登録してみてや。");
+            AddSay(flow, block, mitama, "制作者のXもフォローしておくと\n色々捗るかもしれないですね〜。");
+            AddSay(flow, block, narukami, "おうえんのコメントもいただけると\n泣いて喜ぶらしいぞ。");
             AddWait(flow, block, 2f);
             AddSay(flow, block, leelee, "では発売まで首をベリーロングにして待っといてや！ また会えることを楽しみにしとるで〜！");
             // 暗転・BGM フェード・発売案内の表示は ReleaseGuideMenu が担う。
