@@ -9,6 +9,15 @@ namespace VLCNP.UI
         [SerializeField] GameObject selectButton;
         [SerializeField] NewGame newGame;
         [SerializeField] ContinueGame continueGame;
+
+        [Header("カーソル配置")]
+        [Tooltip("「はじめから」のラベル。カーソルはこのラベルを基準に配置する")]
+        [SerializeField] RectTransform newGameLabel;
+        [Tooltip("「つづきから」のラベル。カーソルはこのラベルを基準に配置する")]
+        [SerializeField] RectTransform continueGameLabel;
+        [Tooltip("ラベル中心からカーソルまでのワールド座標オフセット")]
+        [SerializeField] Vector2 cursorOffset = new Vector2(-1.84f, 0.17f);
+
         enum Select
         {
             Start,
@@ -46,19 +55,46 @@ namespace VLCNP.UI
             }
         }
 
+        // ラベルは Screen Space - Camera の Canvas 上にあり、カメラ位置に追従する。
+        // カーソルはワールド空間のスプライトなので、シーンに保存されたカメラ位置が
+        // 変わるとラベルとの相対位置が崩れる。毎フレームラベル基準で置き直して防ぐ。
+        private void LateUpdate()
+        {
+            PlaceCursor();
+        }
+
+        public void MoveCursorToNewGame()
+        {
+            ChangeSelect(Select.Start);
+        }
+
+        public void MoveCursorToContinueGame()
+        {
+            ChangeSelect(Select.Load);
+        }
+
         private void ChangeSelect(Select select)
         {
-            switch (select)
+            currentSelect = select;
+            PlaceCursor();
+        }
+
+        private void PlaceCursor()
+        {
+            RectTransform label = currentSelect == Select.Start ? newGameLabel : continueGameLabel;
+            if (label == null)
             {
-                case Select.Start:
-                    currentSelect = Select.Start;
-                    selectButton.transform.position = selectButtonOriginalPosition;
-                    break;
-                case Select.Load:
-                    currentSelect = Select.Load;
-                    selectButton.transform.position = new Vector3(selectButtonOriginalPosition.x, selectButtonOriginalPosition.y - 0.9f, selectButtonOriginalPosition.z);
-                    break;
+                // ラベル未設定時は従来どおりシーン配置の位置を使う
+                float offsetY = currentSelect == Select.Start ? 0f : -0.9f;
+                selectButton.transform.position = selectButtonOriginalPosition + new Vector3(0f, offsetY, 0f);
+                return;
             }
+            Vector3 labelPosition = label.position;
+            selectButton.transform.position = new Vector3(
+                labelPosition.x + cursorOffset.x,
+                labelPosition.y + cursorOffset.y,
+                selectButton.transform.position.z
+            );
         }
 
         private void SelectGameMode()
