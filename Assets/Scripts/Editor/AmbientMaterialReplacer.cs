@@ -11,7 +11,8 @@ using UnityEngine.Tilemaps;
  * #656 対象シーンのタイルマップと小物のマテリアルを、builtin Sprites-Default から
  * ライト対応の AmbientSpriteLit へ差し替えるエディタ拡張。
  *
- * 差し替えるのは SpriteRenderer と TilemapRenderer で、共有マテリアルが builtin Sprites-Default のものだけ。
+ * 差し替えるのは SpriteRenderer と TilemapRenderer で、共有マテリアルが builtin Sprites-Default のものだけ
+ * (呼び出し側が extraSources / replaceMissing を渡した場合は、指定した独自マテリアルと参照切れも対象にする)。
  * Core(プレイヤー・UI)と Assets/Game/Characters 配下のプレハブ由来のもの、Fungus 由来のものは触らない。
  * ライト対応マテリアルは Global Light 2D が無いと黒く描かれるので、シーンにグローバルライトが無ければ中断する。
  */
@@ -52,6 +53,15 @@ public static class AmbientMaterialReplacer
 
     public static int Replace(Scene scene, bool requireGlobalLight)
     {
+        return Replace(scene, requireGlobalLight, null, false);
+    }
+
+    /**
+     * extraSources に渡したマテリアル(Sprites/Default と同じ見た目の独自マテリアル)も差し替える。
+     * replaceMissing が true なら、参照切れ(null)のマテリアルも差し替える(参照切れは Sprites-Default で描かれているので見た目は変わらない)。
+     */
+    public static int Replace(Scene scene, bool requireGlobalLight, IReadOnlyCollection<Material> extraSources, bool replaceMissing)
+    {
         var target = AssetDatabase.LoadAssetAtPath<Material>(AmbientAtmosphereBuilder.LitMaterialPath);
         if (target == null)
         {
@@ -84,7 +94,11 @@ public static class AmbientMaterialReplacer
             var changed = false;
             for (var i = 0; i < materials.Length; i++)
             {
-                if (materials[i] == builtinDefault)
+                var source = materials[i];
+                var replace = source == builtinDefault
+                    || (replaceMissing && source == null)
+                    || (extraSources != null && source != null && extraSources.Contains(source));
+                if (replace)
                 {
                     materials[i] = target;
                     changed = true;
