@@ -23,6 +23,8 @@ namespace VLCNP.UI
         [SerializeField] AudioClip guideBgm;
         [SerializeField] float guideBgmVolume = 0.4f;
         [SerializeField] float guideBgmPitch = 1f;
+        [SerializeField] TrialEndCtaActions ctaActions;
+        [SerializeField] float exitFadeDuration = 1f;
 
         int index;
         bool ready;
@@ -84,6 +86,26 @@ namespace VLCNP.UI
         {
             if (items == null || items.Length == 0) return;
             items[index].Submit();
+        }
+
+        /** タイトルへ戻る。BGM をフェードアウトして止めてから遷移する。 */
+        public void ReturnToTitle()
+        {
+            if (!ready) return;
+            ready = false;
+            StartCoroutine(ReturnToTitleRoutine());
+        }
+
+        IEnumerator ReturnToTitleRoutine()
+        {
+            if (bgmWrapper != null)
+            {
+                bgmWrapper.FadeOut(exitFadeDuration);
+                yield return new WaitForSeconds(exitFadeDuration);
+                bgmWrapper.Stop();
+            }
+            Debug.Log("[ReleaseGuide] BGM を停止してタイトルへ戻ります。");
+            if (ctaActions != null) ctaActions.BackToTitle();
         }
 
         void Select(int target, bool immediate)

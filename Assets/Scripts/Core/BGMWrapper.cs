@@ -39,6 +39,11 @@ namespace VLCNP.Core
             bgm.PlayOneShot(clip, volume);
         }
 
+        public void Stop()
+        {
+            bgm?.Stop();
+        }
+
         // BGMをフェードアウトさせる
         public void FadeOut(float duration)
         {

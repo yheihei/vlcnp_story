@@ -438,7 +438,8 @@ namespace VLCNP.Editor
             var backToTitle = CreateTextCard(content, "BackToTitle", new Vector2(620, 40), new Vector2(480, 275), "タイトルへ戻る", font);
             UnityEventTools.AddVoidPersistentListener(followX.OnSubmit, cta.OpenX);
             UnityEventTools.AddVoidPersistentListener(wishlist.OnSubmit, cta.OpenWishlist);
-            UnityEventTools.AddVoidPersistentListener(backToTitle.OnSubmit, cta.BackToTitle);
+            // タイトルへ戻るは BGM を止めてから遷移するので menu 経由。
+            UnityEventTools.AddVoidPersistentListener(backToTitle.OnSubmit, menu.ReturnToTitle);
 
             var hint = CreateText("Hint", content, "左右で選択 / 決定で開く", font, 32, new Color(.8f, .8f, .8f));
             hint.rectTransform.anchoredPosition = new Vector2(0, -440);
@@ -459,6 +460,8 @@ namespace VLCNP.Editor
             so.FindProperty("guideBgm").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(OpeningBgmPath);
             so.FindProperty("guideBgmVolume").floatValue = .4f;
             so.FindProperty("guideBgmPitch").floatValue = 1f;
+            so.FindProperty("ctaActions").objectReferenceValue = cta;
+            so.FindProperty("exitFadeDuration").floatValue = 1f;
             so.ApplyModifiedPropertiesWithoutUndo();
             return go;
         }
