@@ -97,8 +97,7 @@ namespace VLCNP.Attributes
 
         private void Awake()
         {
-            baseStats = GetComponent<BaseStats>();
-            healthPoints = baseStats.GetStat(Stat.Health);
+            healthPoints = GetBaseStats().GetStat(Stat.Health);
             playerSprite = GetComponent<SpriteRenderer>();
             takeDamageSe = GetComponent<TakeDamageSe>();
             damageStun = GetComponent<DamageStun>();
@@ -109,6 +108,15 @@ namespace VLCNP.Attributes
         private void Update()
         {
             timeSinceLastHit += Time.deltaTime;
+        }
+
+        // 非アクティブなパーティメンバーなど Awake 前に RestoreHealth が呼ばれる経路があるため、
+        // 未取得なら取得してキャッシュする
+        private BaseStats GetBaseStats()
+        {
+            if (baseStats == null)
+                baseStats = GetComponent<BaseStats>();
+            return baseStats;
         }
 
         public void TakeDamage(float damage, bool isBlowAwayDirectionLeft = false)
@@ -305,7 +313,7 @@ namespace VLCNP.Attributes
         // 全回復させるメソッド
         public void RestoreHealth()
         {
-            healthPoints = baseStats.GetStat(Stat.Health);
+            healthPoints = GetBaseStats().GetStat(Stat.Health);
             SetHealthPoints(healthPoints);
         }
 
@@ -313,7 +321,7 @@ namespace VLCNP.Attributes
         {
             healthPoints = Mathf.Min(
                 healthPoints + amount,
-                baseStats.GetStat(Stat.Health)
+                GetBaseStats().GetStat(Stat.Health)
             );
             if (audioSource != null && se != null)
             {
