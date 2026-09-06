@@ -682,7 +682,7 @@ public static class Issue641YamaRevengeSetup
         AddSetActive(flowchart, block, p.giant, false);
 
         // カットイン → 巨大リーリーパンチ(一行の真上に拳が落ちて地面が割れる)。
-        // カットインは 0.75 秒で左へ抜け始め 0.95 秒で抜け切る。腕の落下(0.25 秒)を 0.7 秒から始めて、抜け切りと着弾・白フラッシュを重ねる
+        // カットインは 0.83 秒で閉じ始め 0.95 秒で閉じ切る。腕の落下(0.25 秒)を 0.7 秒から始めて、閉じ切りと着弾・白フラッシュを重ねる
         AddInvokeMethod(flowchart, block, p.cutIn, typeof(CutIn), "Play");
         AddWait(flowchart, block, 0.7f);
         AddSetActive(flowchart, block, p.arm, true);
@@ -1006,7 +1006,7 @@ public static class Issue641YamaRevengeSetup
         so.ApplyModifiedPropertiesWithoutUndo();
     }
 
-    // カットイン: 全画面 Canvas に「斜めの暗帯 + 赤い線 + 怒り顔」を Content としてまとめ、CutIn.Play() で走らせる
+    // カットイン: 顔と斜めの帯を定位置に置き、CutIn.Play() で上下にワイプする
     static GameObject CreateCutIn(UnityEngine.SceneManagement.Scene scene)
     {
         GameObject go = new GameObject(CutInName);
@@ -1047,8 +1047,65 @@ public static class Issue641YamaRevengeSetup
         so.FindProperty("content").objectReferenceValue = content;
         so.FindProperty("se").objectReferenceValue = AssetDatabase.LoadAssetAtPath<AudioClip>(CutInSePath);
         so.ApplyModifiedPropertiesWithoutUndo();
+        ConfigureCutInWipe(go);
         content.gameObject.SetActive(false);
         return go;
+    }
+
+    // 既存の色・画像・大きさを保ち、カットインの階層だけをワイプ用に更新する。
+    static void ConfigureCutInWipe(GameObject go)
+    {
+        RectTransform content = (RectTransform)go.transform.Find("Content");
+        RectTransform bandWipe = (RectTransform)content.Find("BandWipe");
+        RectTransform band = (RectTransform)(bandWipe != null ? bandWipe.Find("Band") : content.Find("Band"));
+        RectTransform faceWipe = (RectTransform)(content.Find("FaceMask") ?? band.Find("FaceMask"));
+
+        if (bandWipe == null)
+        {
+            Image maskImage = CreateImage("BandWipe", content, null, Color.white, band.sizeDelta, band.anchoredPosition);
+            maskImage.gameObject.AddComponent<Mask>().showMaskGraphic = false;
+            bandWipe = maskImage.rectTransform;
+            bandWipe.localRotation = band.localRotation;
+            bandWipe.SetSiblingIndex(band.GetSiblingIndex());
+
+            // 顔を帯のマスクの外に置き、帯上端から耳が出る余白を残す。
+            faceWipe.SetParent(content, false);
+            faceWipe.localRotation = band.localRotation;
+            band.SetParent(bandWipe, false);
+            band.anchoredPosition = Vector2.zero;
+            band.localRotation = Quaternion.identity;
+        }
+
+        // マスクを別階層にした後も、斜めの帯の下端と顔の下端を一致させる。
+        float faceExtraTop = faceWipe.sizeDelta.y - band.sizeDelta.y;
+        faceWipe.anchoredPosition = bandWipe.anchoredPosition
+            + (Vector2)(bandWipe.localRotation * new Vector3(0, faceExtraTop * 0.5f, 0));
+        content.anchoredPosition = Vector2.zero;
+        CutIn cutIn = go.GetComponent<CutIn>();
+        SerializedObject so = new SerializedObject(cutIn);
+        so.FindProperty("bandWipe").objectReferenceValue = bandWipe;
+        so.FindProperty("faceWipe").objectReferenceValue = faceWipe;
+        so.FindProperty("face").objectReferenceValue = faceWipe.Find("Face");
+        so.FindProperty("lineTop").objectReferenceValue = band.Find("LineTop");
+        so.FindProperty("lineBottom").objectReferenceValue = band.Find("LineBottom");
+        so.FindProperty("wipeInDuration").floatValue = 0.14f;
+        so.FindProperty("holdDuration").floatValue = 0.69f;
+        so.FindProperty("wipeOutDuration").floatValue = 0.12f;
+        so.ApplyModifiedPropertiesWithoutUndo();
+    }
+
+    [MenuItem("Tools/Issue641/Update CutIn Wipe")]
+    public static void UpdateCutInWipe()
+    {
+        if (EditorApplication.isPlaying) return;
+        GameObject go = FindInScene(EditorSceneManager.GetActiveScene(), CutInName);
+        if (go == null)
+        {
+            Debug.LogWarning("[Issue641] CutIn がシーンにありません。");
+            return;
+        }
+        ConfigureCutInWipe(go);
+        EditorSceneManager.MarkSceneDirty(go.scene);
     }
 
     static RectTransform CreateRect(string name, Transform parent)
