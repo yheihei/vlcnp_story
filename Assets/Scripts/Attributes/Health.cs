@@ -35,6 +35,9 @@ namespace VLCNP.Attributes
         public UnityEvent<GameObject> dieEvent;
         public event Action onDie;
 
+        // 死亡が確定した直後(dieEvent や死亡演出より前)に一度だけ発火する
+        public event Action onDieStarted;
+
         [SerializeField]
         public bool IsGameOverEventExecute = false;
 
@@ -200,6 +203,7 @@ namespace VLCNP.Attributes
 
             isDead = true;
             HideBossStatusOnDeath();
+            onDieStarted?.Invoke();
 
             if (dieEvent.GetPersistentEventCount() > 0)
             {
