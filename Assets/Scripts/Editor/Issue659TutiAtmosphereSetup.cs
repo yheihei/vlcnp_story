@@ -103,6 +103,19 @@ public static class Issue659TutiAtmosphereSetup
 
     private struct MistSpec { public float x, y, width; }
 
+    /** 床の拾い方から漏れる場所(短い床が段々に続く区間など)に手で置く帯。座標はこの表が正 */
+    private static readonly Dictionary<string, MistSpec[]> ExtraMists = new Dictionary<string, MistSpec[]>
+    {
+        {
+            "Ohirunebeya_tuti_1", new[]
+            {
+                new MistSpec { x = 33f, y = -1f, width = 26f },   // Bee_1 周辺(x 20〜46、床が -2/-4 の段々)
+                new MistSpec { x = 26f, y = -2.5f, width = 14f }, // 同区間の低い段
+                new MistSpec { x = 44f, y = 0.5f, width = 14f },  // Bee_2 周辺(x 37〜51)
+            }
+        },
+    };
+
     /** 靄の帯の濃さ(#657 の永遠は 0.2) */
     private const float MistAlpha = 0.3f;
     /** カメラ追従の中景の霧の濃さ(プレハブ既定は 0.22) */
@@ -121,6 +134,7 @@ public static class Issue659TutiAtmosphereSetup
                 new CameraSpot { x = 0f, y = 1f },      // スポーン地点
                 new CameraSpot { x = 48f, y = 0f },     // 中盤
                 new CameraSpot { x = 110f, y = -6f },   // 終盤
+                new CameraSpot { x = 36f, y = -2f },    // Bee_1〜Bee_2 の段々区間
             }
         },
         {
@@ -203,7 +217,10 @@ public static class Issue659TutiAtmosphereSetup
     [MenuItem("Tools/Issue659/Debug/Camera Spot 3", false, 3492)]
     public static void CameraSpot3() => MoveCameraToSpot(2);
 
-    [MenuItem("Tools/Issue659/Debug/Restore Camera Follow", false, 3493)]
+    [MenuItem("Tools/Issue659/Debug/Camera Spot 4", false, 3493)]
+    public static void CameraSpot4() => MoveCameraToSpot(3);
+
+    [MenuItem("Tools/Issue659/Debug/Restore Camera Follow", false, 3494)]
     public static void RestoreCameraFollow()
     {
         var brain = Object.FindObjectOfType<Cinemachine.CinemachineBrain>(true);
@@ -334,6 +351,7 @@ public static class Issue659TutiAtmosphereSetup
         {
             var fogPrefab = Load<GameObject>(AmbientAtmosphereBuilder.FogPath);
             var mistSpecs = CollectMistSpecs(scene, mistArea);
+            if (ExtraMists.TryGetValue(scene.name, out var extra)) mistSpecs.AddRange(extra);
             for (var i = 0; i < mistSpecs.Count; i++)
             {
                 PlaceMist(scene, fogPrefab, mistSpecs[i], $"{MistPrefix} ({i})");
