@@ -114,6 +114,14 @@ public static class Issue659TutiAtmosphereSetup
                 new MistSpec { x = 44f, y = 0.5f, width = 14f },  // Bee_2 周辺(x 37〜51)
             }
         },
+        {
+            "Ohirunebeya_tuti_2", new[]
+            {
+                new MistSpec { x = 61f, y = -1f, width = 24f },   // Bee_2〜Bee_3 の水面の上(x 49〜73)。自動配置は水底 y -6 にしか無い
+                new MistSpec { x = 56f, y = 0.5f, width = 14f },  // 同区間の点在する足場(53〜55、59〜60)
+                new MistSpec { x = 66f, y = 2f, width = 14f },    // 同区間の高い足場(64〜65)と Bee_3 周辺
+            }
+        },
     };
 
     /** 靄の帯の濃さ(#657 の永遠は 0.2) */
@@ -143,6 +151,7 @@ public static class Issue659TutiAtmosphereSetup
                 new CameraSpot { x = 9.3f, y = -2.58f }, // スポーン地点
                 new CameraSpot { x = 30f, y = -3f },     // 水面
                 new CameraSpot { x = 75f, y = -3f },     // 後半の水面
+                new CameraSpot { x = 61f, y = 0f },      // Bee_2〜Bee_3 の水面の上
             }
         },
         {
