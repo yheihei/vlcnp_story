@@ -202,6 +202,7 @@ namespace VLCNP.Attributes
                 return;
 
             isDead = true;
+            RecordBossDefeated();
             HideBossStatusOnDeath();
             onDieStarted?.Invoke();
 
@@ -211,6 +212,14 @@ namespace VLCNP.Attributes
                 return;
             }
             DeadEffectAndDestroy();
+        }
+
+        // defeatedFlag を持つボスの死亡を計測する(フラグの設定より前、死亡確定時に一度だけ)
+        private void RecordBossDefeated()
+        {
+            if (defeatedFlag == Flag.None)
+                return;
+            VLCNPAnalytics.RecordBossDefeated(defeatedFlag.ToString());
         }
 
         private void HideBossStatusOnDeath()

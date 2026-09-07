@@ -33,6 +33,10 @@ namespace VLCNP.Core
 
         public void Execute()
         {
+            VLCNPAnalytics.RecordGameOver(
+                SceneManager.GetActiveScene().name,
+                VLCNPAnalytics.GetCurrentAreaName()
+            );
             flowChart.ExecuteBlock("GameOver");
         }
 

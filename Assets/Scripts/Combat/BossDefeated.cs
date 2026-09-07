@@ -27,6 +27,7 @@ namespace VLCNP.Combat
 
         void Die()
         {
+            VLCNPAnalytics.RecordBossDefeated(defeatedFlag.ToString());
             flagManager.SetFlag(defeatedFlag, true);
         }
     }    
