@@ -7,7 +7,7 @@ description: Build a complete Unity 2D stage/map asset set for vlcnpStory2022 fr
 
 参考イメージ画像 + ステージ説明を受け取り、Unity で配置できるタイルセットとプロップ Prefab 一式まで一気通貫で作る。
 
-画像生成は `generate-2d-sprite` skill に従って Codex へ委譲する。Unity 操作は `unity-development` + `unity-editor-automation` skill に従う。配置規約は `unity-project-conventions` skill に従う。本 skill はそれらを重複させず、ステージ素材作成に固有の手順と、実際にハマった落とし穴だけを定める。
+画像生成は `generate-2d-sprite` skill に従う(Codex 自身なら直接生成、Claude 等は Codex へ委譲)。Unity 操作は `unity-development` + `unity-editor-automation` skill に従う。配置規約は `unity-project-conventions` skill に従う。本 skill はそれらを重複させず、ステージ素材作成に固有の手順と、実際にハマった落とし穴だけを定める。
 
 実例: `Assets/Game/MapObject/KazeBossTilemap`(風エリア ボス部屋 / 荒廃した武家屋敷)。タイル28枚 + プロップ18個。ビルダーは `Assets/Scripts/Editor/KazeBossTilesetBuilder.cs` と `KazeBossPropsBuilder.cs`。**新規セットはこの2つをコピーして定数を差し替えるのが最短。**
 

@@ -149,7 +149,7 @@ https://steamcdn-a.akamaihd.net/client/installer/steamcmd_osx.tar.gz
 
 アップロードスクリプトへ`STEAMCMD`環境変数を明示する。VDFの`"SetLive" ""`は維持し、アップロードと公開を分離する。
 
-初回認証で対話入力が必要な場合、Codex内蔵ターミナルではなく、Finderから一時的な`.command`を開いてmacOS Terminalを使う。次を守る。
+初回認証で対話入力が必要な場合、エージェントの内蔵ターミナル(Codex / Claude Code の Bash)ではなく、Finderから一時的な`.command`を開いてmacOS Terminalを使う。次を守る。
 
 - パスワードやSteam Guardコードはユーザー本人がTerminalへ直接入力する。
 - 認証情報を`.command`へ書かない。

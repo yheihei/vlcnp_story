@@ -1,13 +1,13 @@
 ---
 name: git-workflow
-description: Git workflow rules for /Users/yhei/unity/vlcnpStory2022. Use when Codex works in this repository and needs to commit, push, choose whether to create a branch, write a commit message, or handle issue-linked work.
+description: Git workflow rules for the vlcnpStory2022 repository. Use when an agent working in this repository needs to commit, push, choose whether to create a branch, write a commit message, or handle issue-linked work.
 ---
 
 # Git Workflow
 
 ## Overview
 
-この skill は `/Users/yhei/unity/vlcnpStory2022` の commit / push 方針を定義する。ユーザーへの応答は日本語で行う。
+この skill はこのリポジトリ(vlcnpStory2022)の commit / push 方針を定義する。ユーザーへの応答は日本語で行う。
 
 ## Project Context
 

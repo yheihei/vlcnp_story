@@ -40,7 +40,7 @@ rg --files Assets/Game/Characters/Enemy | rg '\.prefab$'
 
 次を設定する。
 
-- Sprite と Animator Controller(新規スプライト画像が必要な場合は `generate-2d-sprite` スキルに従い Codex CLI で生成する)
+- Sprite と Animator Controller(新規スプライト画像が必要な場合は `generate-2d-sprite` skill に従う)
 - `EnemyV2Controller` と `RangeDetect`
 - 順序付きの `enemyActions`
 - 専用の `StatClass`、`BaseStats`、`Progression` の Health

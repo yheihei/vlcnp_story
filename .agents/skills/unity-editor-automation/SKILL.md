@@ -53,7 +53,7 @@ unicli eval 'UnityEditor.EditorUtility.ClearProgressBar(); return true;' --json
 - `Eval` は **エディットモード専用**。プレイモード中に実行するとコンパイルが保留され、サーバー全体が `Server is busy executing 'Eval'` のまま固まる。タイムアウトでは復旧せず、エディタ側でプレイモードを停止する必要がある。
 - プレイモード中の確認・操作には `Eval` ではなく、対応する非 Eval コマンドを使う。スクリーンショットはユーザーが明示的に依頼した場合だけ取得する。
 - Eval 内では `Object` の曖昧さを避けるため、`UnityEngine.Object` のように完全修飾する。
-- 複雑または反復的な処理は長い Eval ではなく、`Assets/Scripts/Editor/` に `[MenuItem]` 付きエディタスクリプトを置き、コンパイル後にメニューから実行する。例: `Assets/Scripts/Editor/Kaze1MapBuilder.cs`。
+- 複雑または反復的な処理は長い Eval ではなく、`Assets/Scripts/Editor/` に `[MenuItem]` 付きエディタスクリプトを置き、コンパイル後にメニューから実行する。例: `Assets/Scripts/Editor/KazeBossTilesetBuilder.cs`。
 
 ## 問題が起きた場合
 

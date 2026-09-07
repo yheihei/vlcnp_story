@@ -51,7 +51,7 @@ Default building dimensions:
 
 ## Image Generation And Extraction
 
-To generate new source PNGs, delegate to Codex CLI following the `generate-2d-sprite` skill (Claude cannot generate images itself).
+To generate new source PNGs, follow the `generate-2d-sprite` skill. It covers both cases: Codex generates directly, and agents that cannot generate images delegate to the Codex CLI.
 
 When generating new building assets, ask for a contact sheet only if it helps review; extract final individual PNGs with deterministic pixel crops. Name files with dimensions:
 
@@ -103,9 +103,9 @@ Validate:
 
 Create palette prefabs under the map's `Palette` folder.
 
-Follow the existing Unity palette structure used by project palettes such as `TP Dungeon Ground`:
+Follow the structure of the project's own palettes, `Assets/Game/MapObject/PagodaTilemap/Palette/PagodaPalette.prefab` and `Assets/Game/MapObject/KazeBossTilemap/Palette/KazeBossPalette.prefab`:
 
-- Root GameObject with `Grid`, layer 31 if that is the local palette convention.
+- Root GameObject with `Grid`, layer 0 (the third-party `TP Dungeon Ground` palette uses layer 31; do not copy that).
 - Child `Layer1` with `Tilemap` and `TilemapRenderer`.
 - Place background wall tiles first, then ground/floor/roof tiles.
 - Use compact rows such as 16 columns.

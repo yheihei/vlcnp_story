@@ -9,7 +9,7 @@ description: Proportionate implementation workflow for vlcnpStory2022. Use at th
 
 ## 1. 着手前(調査)
 
-- 依頼を自分の言葉で言い換え、完了条件を 1〜2 行で明確にする。issue 番号があれば控える。
+- 完了条件を明確にしてから着手する。issue 番号があれば控える。
 - 機能追加や設計変更では、類似の既存実装を先に検索する(grep / `unicli exec Search` / `unicli exec AssetDatabase.Find`)。Health, Flag, FallMissZone, CameraConfineArea など、適用できる既存部品を再利用する。
 - シーンまたはプレハブを変更する場合だけ、必要に応じて `Editor.Status` / `GameObject.GetHierarchy` で現状を確認する。
 
