@@ -33,9 +33,11 @@ description: Proportionate implementation workflow for vlcnpStory2022. Use at th
 
 - 日本語で報告する: 変更内容 / 検証結果 / 重要な未検証事項。結果の説明に必要な場合を除き、全コマンドを列挙しない。
 - コミットは `git-workflow` skill に従う(main 直コミット可、日本語メッセージ、`#issue番号`)。
+- 作業のために書いた Issue 用のエディタスクリプトは、完了報告の前に削除してコミットに含める(理由と手順は `unity-editor-automation` skill の「Issue 用エディタスクリプトの扱い」)。
 
 ## 禁止事項
 
 - 検証せずに「動作します」と報告する(推測は推測と明記する)。
+- シーンやプレハブの手動修正を、エディタスクリプトの再実行で上書きする(生成物を全部消して置き直す方式を書かない)。
 - コンパイル結果を確認しないままコミットする。
 - Console のエラーや例外を握りつぶして進める(`Console.GetLog` で確認し、原因を潰す)。
