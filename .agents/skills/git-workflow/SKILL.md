@@ -31,6 +31,7 @@ description: Git workflow rules for the vlcnpStory2022 repository. Use when an a
 
 - ユーザーが明示的に依頼しない限り、feature ブランチを作らない。
 - `main` に直接 commit して push してよい。
+- デバッグ用の変更(シーン内のデバッグ用フラグプリセットの値変更、Debug メニューの追加など)は、ユーザーに断らずに commit して push してよい(2026-09-07 指示)。
 - commit messageは日本語
 - 元の issue がある場合、commit message に issue 番号を `#618` の形式で含める。
 - issue 番号がローカル文脈から分からない場合は、捏造せず、ユーザーに確認するか省略する。
