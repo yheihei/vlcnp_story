@@ -120,6 +120,8 @@ public static class Issue659TutiAtmosphereSetup
                 new MistSpec { x = 61f, y = -1f, width = 24f },   // Bee_2〜Bee_3 の水面の上(x 49〜73)。自動配置は水底 y -6 にしか無い
                 new MistSpec { x = 56f, y = 0.5f, width = 14f },  // 同区間の点在する足場(53〜55、59〜60)
                 new MistSpec { x = 66f, y = 2f, width = 14f },    // 同区間の高い足場(64〜65)と Bee_3 周辺
+                new MistSpec { x = 60f, y = 2f, width = 16f },    // (60, 2) 周辺を濃くする(x 52〜68)
+                new MistSpec { x = 60f, y = 3.5f, width = 12f },  // 同地点の少し上
             }
         },
     };
