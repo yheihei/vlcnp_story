@@ -31912,6 +31912,7 @@ GameObject:
   - component: {fileID: 924947676}
   - component: {fileID: 924947675}
   - component: {fileID: 924947680}
+  - component: {fileID: 924947681}
   m_Layer: 0
   m_Name: Start
   m_TagString: Untagged
@@ -32021,8 +32022,9 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 924947676}
   commandList:
-  - {fileID: 924947675}
+  - {fileID: 924947681}
   - {fileID: 924947680}
+  - {fileID: 924947675}
   suppressAllAutoSelections: 0
 --- !u!114 &924947678
 MonoBehaviour:
@@ -32123,6 +32125,23 @@ MonoBehaviour:
   returnValueType: System.Void
   showInherited: 0
   callMode: 0
+--- !u!114 &924947681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924947674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de9232e9295ed476a8cfb707b5c242b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 3
+  indentLevel: 0
+  frameCount:
+    integerRef: {fileID: 0}
+    integerVal: 1
 --- !u!1001 &933487626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -111362,7 +111381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 1648699408}
+  selectedFlowchart: {fileID: 924947678}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1

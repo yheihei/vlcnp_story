@@ -26978,9 +26978,10 @@ GameObject:
   - component: {fileID: 1338699388}
   - component: {fileID: 1338699389}
   - component: {fileID: 1338699390}
-  - component: {fileID: 1338699391}
   - component: {fileID: 1338699392}
   - component: {fileID: 1338699393}
+  - component: {fileID: 1338699394}
+  - component: {fileID: 1338699395}
   m_Layer: 0
   m_Name: Start
   m_TagString: Untagged
@@ -27041,6 +27042,7 @@ MonoBehaviour:
   description: 
   eventHandler: {fileID: 0}
   commandList:
+  - {fileID: 1338699395}
   - {fileID: 1338699393}
   - {fileID: 1338699392}
   - {fileID: 1338699372}
@@ -27054,7 +27056,6 @@ MonoBehaviour:
   - {fileID: 1338699385}
   - {fileID: 1338699384}
   - {fileID: 1338699388}
-  - {fileID: 1338699391}
   - {fileID: 1338699382}
   - {fileID: 1338699381}
   - {fileID: 1338699390}
@@ -27085,7 +27086,8 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 1338699374}
-  selectedCommands: []
+  selectedCommands:
+  - {fileID: 1338699390}
   variables: []
   description: 
   stepPause: 0
@@ -27557,68 +27559,6 @@ MonoBehaviour:
   stringEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1338699391
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338699371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemId: 17
-  indentLevel: 0
-  description: 
-  targetObject: {fileID: 1520025447}
-  targetComponentAssemblyName: VLCNP.Core.FlagManager, Assembly-CSharp, Version=0.0.0.0,
-    Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
-  targetComponentText: FlagManager
-  targetMethod: SetFlag
-  targetMethodText: 'SetFlag (Flag, Boolean): Void'
-  methodParameters:
-  - objValue:
-      typeAssemblyname: VLCNP.Core.Flag, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      typeFullname: VLCNP.Core.Flag
-      intValue: 3
-      boolValue: 0
-      floatValue: 0
-      stringValue: 
-      colorValue: {r: 0, g: 0, b: 0, a: 0}
-      gameObjectValue: {fileID: 0}
-      materialValue: {fileID: 0}
-      objectValue: {fileID: 0}
-      spriteValue: {fileID: 0}
-      textureValue: {fileID: 0}
-      vector2Value: {x: 0, y: 0}
-      vector3Value: {x: 0, y: 0, z: 0}
-    variableKey: 
-  - objValue:
-      typeAssemblyname: System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      typeFullname: System.Boolean
-      intValue: 0
-      boolValue: 0
-      floatValue: 0
-      stringValue: 
-      colorValue: {r: 0, g: 0, b: 0, a: 0}
-      gameObjectValue: {fileID: 0}
-      materialValue: {fileID: 0}
-      objectValue: {fileID: 0}
-      spriteValue: {fileID: 0}
-      textureValue: {fileID: 0}
-      vector2Value: {x: 0, y: 0}
-      vector3Value: {x: 0, y: 0, z: 0}
-    variableKey: 
-  saveReturnValue: 0
-  returnValueVariableKey: 
-  returnValueType: System.Void
-  showInherited: 0
-  callMode: 0
 --- !u!114 &1338699392
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -27692,6 +27632,35 @@ MonoBehaviour:
   returnValueType: System.Void
   showInherited: 0
   callMode: 0
+--- !u!114 &1338699394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338699371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4eb8b6fa435c48729aca57c84b6b44f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1338699395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338699371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de9232e9295ed476a8cfb707b5c242b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: 20
+  indentLevel: 0
+  frameCount:
+    integerRef: {fileID: 0}
+    integerVal: 1
 --- !u!4 &1342773469 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3564026850829729314, guid: b51901e6748833e4695e0c1db509dcd4, type: 3}
@@ -29450,11 +29419,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 011494565755b490386e78a113e3c871, type: 3}
---- !u!1 &1520025447 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1564656777239395355, guid: 011494565755b490386e78a113e3c871, type: 3}
-  m_PrefabInstance: {fileID: 1520025446}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1528346565
 PrefabInstance:
   m_ObjectHideFlags: 0
