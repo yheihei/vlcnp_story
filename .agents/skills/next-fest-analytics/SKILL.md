@@ -16,7 +16,7 @@ description: Next Fest 中の体験版の遊ばれ方を Unity Analytics(Unity G
 | イベント | パラメータ | 発火点 |
 | --- | --- | --- |
 | `areaEntered` | `areaName` | エリア名バナー表示時(`AreaNameShow.Show`)。同一エリア内の部屋移動では出ない |
-| `bossDefeated` | `bossName` | `defeatedFlag` を持つ `Health` の死亡時、および `BossDefeated` の死亡時。値はフラグ名 |
+| `bossDefeated` | `bossName` | `defeatedFlag` を持つ `Health` の死亡時、`BossDefeated` の死亡時、`BossDefeatedAnalytics` を付けたボスの死亡時 |
 | `gameOver` | `sceneName`, `areaName` | `GameOver.Execute`。sceneName はシーン名、areaName はその時のバナー文字列 |
 | `trialEnd` | なし | 体験版完了挨拶シーン `TrialEnding_3` の開始時 |
 | `trial1End` | なし | 旧体験版の終了。到達経路は #662 で断ってあり、今は送られない |
@@ -31,10 +31,19 @@ description: Next Fest 中の体験版の遊ばれ方を Unity Analytics(Unity G
 | 風 | `おひるねべや(風)` |
 | 拠点 | `ベリーロングCNPファーム` |
 
-`bossName` の値は `Flag` のフラグ名。現状で送られるのは
-`VLKamaitachi1Defeated`(Kaze1)、`VLKamaitachi1Defeated2`(Kaze2)、`VeryEnemyAnimalsBossDefeated`(Ohirunebeya_5_boss)。
-ドラァグクイーン、闇のスケルトン系、ダークミタマ、カルマは `defeatedFlag` を使っていないので送られない。
-ボスの撃破率が要るときは、そのボスの次のエリア到達(`areaEntered`)で代用する。
+`bossName` の値は次のとおり。
+
+| bossName | ボス | シーン | 送り方 |
+| --- | --- | --- | --- |
+| `VeryEnemyAnimalsBossDefeated` | 永遠の最終ボス Very Enemy Animals | Ohirunebeya_5_boss | `BossDefeated` |
+| `VLOrochiBossDefeated` | 土の最終ボス VLヤマタノオロチ | Ohirunebeya_tuti_6_boss_2 | `BossDefeatedAnalytics` |
+| `VLMitamaBossDefeated` | 闇の最終ボス ダークミタマ | Yami5F-2 | `BossDefeatedAnalytics` |
+| `VLKamaitachi1Defeated` | 風のかまいたち 1 | Kaze1 | `Health.defeatedFlag` |
+| `VLKamaitachi1Defeated2` | 風のかまいたち 2 | Kaze2 | `Health.defeatedFlag` |
+| `VLNarukamiBossDefeated` | 風の最終ボス VLナルカミ | Kaze3_boss_2 | `BossDefeatedAnalytics` |
+
+ドラァグクイーン、闇のスケルトン系は送られない。新しいボスを計測に足すときは、ボスの Health と同じオブジェクトに
+`BossDefeatedAnalytics`(`Assets/Scripts/Combat/BossDefeatedAnalytics.cs`)を付けて `bossName` を入れる。
 
 ## 反映の遅れ
 

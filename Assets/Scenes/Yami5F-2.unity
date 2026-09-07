@@ -23355,6 +23355,7 @@ MonoBehaviour:
   isAutoSave: 1
   isRetryOnDestination: 0
   isShowAreaName: 0
+  isFreezePlayerOnStart: 1
 --- !u!4 &1687767868
 Transform:
   m_ObjectHideFlags: 0
@@ -24564,7 +24565,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7737478085877585054, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1998557027}
   m_SourcePrefab: {fileID: 100100000, guid: dee4f5b52b75942dd8c1df41b4c4875c, type: 3}
 --- !u!1 &1998557017 stripped
 GameObject:
@@ -24637,6 +24641,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e78c3d07b7ca14277a73e30d9d5304da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1998557027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998557017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a25baa2aee34d13a937cd358ac8cd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossName: VLMitamaBossDefeated
 --- !u!1 &2009437654
 GameObject:
   m_ObjectHideFlags: 0
