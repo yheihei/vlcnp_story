@@ -25304,6 +25304,7 @@ GameObject:
   - component: {fileID: 766582174}
   - component: {fileID: 766582173}
   - component: {fileID: 766582175}
+  - component: {fileID: 766582176}
   m_Layer: 0
   m_Name: verylonggun_fukkatu
   m_TagString: Untagged
@@ -25757,6 +25758,18 @@ MonoBehaviour:
     booleanRef: {fileID: 0}
     booleanVal: 0
   targetGameObjectOLD: {fileID: 0}
+--- !u!114 &766582176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766582161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4eb8b6fa435c48729aca57c84b6b44f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &766667196 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3564026850829729314, guid: 406ae01b7bf025d478da7b57dfe1715c, type: 3}
@@ -39240,6 +39253,7 @@ GameObject:
   - component: {fileID: 1648699408}
   - component: {fileID: 1648699407}
   - component: {fileID: 1648699406}
+  - component: {fileID: 1648699409}
   m_Layer: 0
   m_Name: leelee
   m_TagString: Untagged
@@ -39342,8 +39356,7 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 1648699407}
-  selectedCommands:
-  - {fileID: 1648699406}
+  selectedCommands: []
   variables: []
   description: 
   stepPause: 0
@@ -39355,6 +39368,18 @@ MonoBehaviour:
   hideCommands: []
   luaEnvironment: {fileID: 0}
   luaBindingName: flowchart
+--- !u!114 &1648699409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648699404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4eb8b6fa435c48729aca57c84b6b44f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1653866186
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -111337,7 +111362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dddfdc5e0e44ca298d8f46f7f5a915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedFlowchart: {fileID: 1889043794}
+  selectedFlowchart: {fileID: 1648699408}
 --- !u!4 &1903074192
 Transform:
   m_ObjectHideFlags: 1
