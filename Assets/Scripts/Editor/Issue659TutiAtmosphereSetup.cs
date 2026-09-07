@@ -17,6 +17,8 @@ using VLCNP.Effects;
  *   3. Core の CMCamera 配下にある既存の埃(DangeonParticle・DangeonParticle_1)を無効にする(#656 の埃に置き換える)
  *   4. tuti_2 の水面(WaterSarface のインスタンス)に WaterSurfaceSway(上下 1px と明るさの周期変化)を付ける。当たり判定は触らない
  *   5. builtin Sprites-Default の背景と小物のマテリアルを AmbientSpriteLit に差し替える(AmbientMaterialReplacer の既定)
+ *   6. 霧(2026-09-07 追加、#657 の永遠エリアより多め)。AreaAtmosphere_Tuti の Fog(カメラ追従の中景の霧)を有効にして画面幅に合わせ、
+ *      さらに Tilemap(tag Ground)の床面ごとに低い靄の帯(TutiMist)を床に固定して置く
  * ボス戦とイベントのシーン(tuti_6_boss_1〜3)はライト(グローバル・松明の点光源)と Volume だけにし、粒子と既存の埃は触らない。
  * 確認用のカメラ位置はこのスクリプト内の表が正。手直しは表へ戻す。
  */
@@ -27,6 +29,7 @@ public static class Issue659TutiAtmosphereSetup
     private const string LegacyGlobalLightName = "Light 2D";
     private const string LegacyDustPrefix = "DangeonParticle";
     private const string WaterSurfacePrefabSuffix = "/WaterSarface.prefab";
+    private const string MistPrefix = "TutiMist";
 
     public static readonly string[] Scenes =
     {
@@ -80,6 +83,30 @@ public static class Issue659TutiAtmosphereSetup
     private const float DebrisSpawnHeight = 0.5f;
     /** 発生範囲の横幅は画面幅より少し広くする(カメラが動いても途切れないように) */
     private const float SpawnMarginX = 4f;
+
+    // ---------------------------------------------------------------- 霧
+
+    /**
+     * 低い靄。Tilemap(tag Ground)の床面(上が空いているタイルの連続区間)をすべて拾い、各区間に帯を置く(#657 と同じ拾い方)。
+     * 永遠エリアと違い高さ制限は付けず、足場の上にも置く(霧を多めにするため)。minCells 未満の短い足場は飛ばし、
+     * 小さな穴(mergeGapCells 以下)はまたいで 1 本の帯にする
+     */
+    private struct MistArea { public float maxFloorY; public int minCells; public int mergeGapCells; }
+    private static readonly Dictionary<string, MistArea> MistAreas = new Dictionary<string, MistArea>
+    {
+        { "Ohirunebeya_tuti_1", new MistArea { maxFloorY = float.MaxValue, minCells = 4, mergeGapCells = 6 } },
+        { "Ohirunebeya_tuti_2", new MistArea { maxFloorY = float.MaxValue, minCells = 4, mergeGapCells = 6 } },
+        { "Ohirunebeya_tuti_3", new MistArea { maxFloorY = float.MaxValue, minCells = 4, mergeGapCells = 6 } },
+        { "Ohirunebeya_tuti_4", new MistArea { maxFloorY = float.MaxValue, minCells = 4, mergeGapCells = 6 } },
+        { "Ohirunebeya_tuti_5", new MistArea { maxFloorY = float.MaxValue, minCells = 4, mergeGapCells = 6 } },
+    };
+
+    private struct MistSpec { public float x, y, width; }
+
+    /** 靄の帯の濃さ(#657 の永遠は 0.2) */
+    private const float MistAlpha = 0.3f;
+    /** カメラ追従の中景の霧の濃さ(プレハブ既定は 0.22) */
+    private const float FogAlpha = 0.2f;
 
     // ---------------------------------------------------------------- 確認用のカメラ位置
 
@@ -252,6 +279,7 @@ public static class Issue659TutiAtmosphereSetup
         {
             ConfigureDust(dust, ortho);
             ConfigureDebris(debris, ortho);
+            ConfigureFog(atmosphere.transform.Find("Fog").gameObject, ortho);
         }
 
         // 2. 松明・焚き火の点光源
@@ -300,7 +328,151 @@ public static class Issue659TutiAtmosphereSetup
         // 5. マテリアル差し替え(グローバルライトを置いた後に行う)
         var replaced = AmbientMaterialReplacer.Replace(scene, requireGlobalLight: true);
 
-        Debug.Log($"[Issue659] {scene.name}: removedGlobalLights={removedLights} lights={lights} legacyDusts={legacyDusts} waters={waters} replaced={replaced} event={isEvent}");
+        // 6. 床に固定する低い靄
+        var mists = 0;
+        if (!isEvent && MistAreas.TryGetValue(scene.name, out var mistArea))
+        {
+            var fogPrefab = Load<GameObject>(AmbientAtmosphereBuilder.FogPath);
+            var mistSpecs = CollectMistSpecs(scene, mistArea);
+            for (var i = 0; i < mistSpecs.Count; i++)
+            {
+                PlaceMist(scene, fogPrefab, mistSpecs[i], $"{MistPrefix} ({i})");
+                mists++;
+            }
+        }
+
+        Debug.Log($"[Issue659] {scene.name}: removedGlobalLights={removedLights} lights={lights} legacyDusts={legacyDusts} waters={waters} replaced={replaced} mists={mists} event={isEvent}");
+    }
+
+    /** カメラ追従の中景の霧。画面全体を覆うよう発生範囲を ortho に合わせ、有効にする */
+    private static void ConfigureFog(GameObject fog, float ortho)
+    {
+        fog.SetActive(true);
+        var ps = fog.GetComponent<ParticleSystem>();
+        var shape = ps.shape;
+        var scale = shape.scale;
+        var width = Mathf.Max(scale.x, ortho * 2f * ViewAspect + SpawnMarginX);
+        var height = Mathf.Max(scale.y, ortho * 2f);
+        shape.scale = new Vector3(width, height, 0f);
+        var main = ps.main;
+        main.maxParticles = Mathf.Max(main.maxParticles, Mathf.CeilToInt(width * 0.6f));
+        var emission = ps.emission;
+        emission.rateOverTime = Mathf.Max(emission.rateOverTime.constant, width / 60f);
+        SetAlphaOverLifetime(ps, FogAlpha);
+    }
+
+    private static List<MistSpec> CollectMistSpecs(Scene scene, MistArea area)
+    {
+        var specs = new List<MistSpec>();
+        foreach (var tilemap in scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<UnityEngine.Tilemaps.Tilemap>(true)))
+        {
+            if (!tilemap.CompareTag("Ground")) continue;
+            var bounds = tilemap.cellBounds;
+            for (var y = bounds.yMin; y < bounds.yMax; y++)
+            {
+                var runs = new List<(int start, int end)>();
+                var start = int.MinValue;
+                for (var x = bounds.xMin; x <= bounds.xMax; x++)
+                {
+                    var floor = x < bounds.xMax
+                        && tilemap.HasTile(new Vector3Int(x, y, 0))
+                        && !tilemap.HasTile(new Vector3Int(x, y + 1, 0));
+                    if (floor && start == int.MinValue) start = x;
+                    if (!floor && start != int.MinValue)
+                    {
+                        if (x - start >= area.minCells) runs.Add((start, x));
+                        start = int.MinValue;
+                    }
+                }
+
+                // 小さな穴はまたぐ
+                var merged = new List<(int start, int end)>();
+                foreach (var run in runs)
+                {
+                    if (merged.Count > 0 && run.start - merged[merged.Count - 1].end <= area.mergeGapCells)
+                    {
+                        merged[merged.Count - 1] = (merged[merged.Count - 1].start, run.end);
+                    }
+                    else
+                    {
+                        merged.Add(run);
+                    }
+                }
+
+                foreach (var run in merged)
+                {
+                    var left = tilemap.CellToWorld(new Vector3Int(run.start, y + 1, 0));
+                    var right = tilemap.CellToWorld(new Vector3Int(run.end, y + 1, 0));
+                    if (left.y > area.maxFloorY) continue;
+                    specs.Add(new MistSpec
+                    {
+                        x = (left.x + right.x) * 0.5f,
+                        y = left.y + 1.0f,
+                        width = right.x - left.x,
+                    });
+                }
+            }
+        }
+        return specs;
+    }
+
+    /** 床に固定した低い靄の帯。#657 の PlaceMist より粒を多く・濃くしてある */
+    private static void PlaceMist(Scene scene, GameObject fogPrefab, MistSpec spec, string name)
+    {
+        var go = (GameObject)PrefabUtility.InstantiatePrefab(fogPrefab, scene);
+        go.name = name;
+        go.transform.position = new Vector3(spec.x, spec.y, 0f);
+
+        // カメラ追従を切り、床に固定する
+        var follow = go.GetComponent<FollowMainCamera>();
+        if (follow != null)
+        {
+            follow.enabled = false;
+        }
+
+        var ps = go.GetComponent<ParticleSystem>();
+        var main = ps.main;
+        main.startLifetime = new ParticleSystem.MinMaxCurve(14f, 22f);
+        main.startSizeX = new ParticleSystem.MinMaxCurve(10f, 14f);
+        main.startSizeY = new ParticleSystem.MinMaxCurve(3.5f);
+        // 幅に応じて粒数を決める(寿命 14〜22 秒 × 発生率 width/25)
+        main.maxParticles = Mathf.Clamp(Mathf.CeilToInt(spec.width * 0.8f) + 3, 6, 30);
+        main.startColor = new Color(0.9f, 0.88f, 0.82f, 1f);
+
+        var emission = ps.emission;
+        emission.rateOverTime = Mathf.Max(0.25f, spec.width / 25f);
+
+        var shape = ps.shape;
+        shape.scale = new Vector3(Mathf.Max(spec.width - 4f, 2f), 1.5f, 0f);
+
+        var velocity = ps.velocityOverLifetime;
+        velocity.x = new ParticleSystem.MinMaxCurve(0.1f, 0.25f);
+        velocity.y = new ParticleSystem.MinMaxCurve(-0.01f, 0.01f);
+        velocity.z = new ParticleSystem.MinMaxCurve(0f, 0f);
+
+        SetAlphaOverLifetime(ps, MistAlpha);
+
+        var renderer = go.GetComponent<ParticleSystemRenderer>();
+        renderer.sortingLayerName = "Effect";
+        renderer.sortingOrder = -5;
+    }
+
+    /** 寿命の 25〜75% を alpha で保ち、両端はゼロへ */
+    private static void SetAlphaOverLifetime(ParticleSystem ps, float alpha)
+    {
+        var color = ps.colorOverLifetime;
+        color.enabled = true;
+        var gradient = new Gradient();
+        gradient.SetKeys(
+            new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
+            new[]
+            {
+                new GradientAlphaKey(0f, 0f),
+                new GradientAlphaKey(alpha, 0.25f),
+                new GradientAlphaKey(alpha, 0.75f),
+                new GradientAlphaKey(0f, 1f),
+            });
+        color.color = new ParticleSystem.MinMaxGradient(gradient);
     }
 
     /** 漂う埃。画面全体を覆うよう発生範囲を ortho に合わせる(プレハブの既定 20x12 より小さくはしない) */
@@ -376,7 +548,7 @@ public static class Issue659TutiAtmosphereSetup
         var toDestroy = new List<GameObject>();
         foreach (var root in roots)
         {
-            if (root.name == AtmosphereName)
+            if (root.name == AtmosphereName || root.name.StartsWith(MistPrefix))
             {
                 toDestroy.Add(root);
                 continue;
