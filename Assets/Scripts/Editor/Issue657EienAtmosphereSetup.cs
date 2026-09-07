@@ -37,7 +37,7 @@ public static class Issue657EienAtmosphereSetup
     };
 
     /** イベントの部屋。ライトと Volume だけ置く */
-    private static readonly HashSet<string> EventScenes = new HashSet<string> { "Ohirunebeya_3_leelee", "Ohirunebeya_5_boss" };
+    private static readonly HashSet<string> EventScenes = new HashSet<string> { "Ohirunebeya_3_leelee" };
 
     /** 炎の位置(プレハブのローカル座標)。fire=false は街灯で、火の粉を付けない */
     private struct FlameSpec { public string suffix; public Vector3 offset; public bool fire; }
