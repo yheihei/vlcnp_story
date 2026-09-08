@@ -119,14 +119,17 @@ namespace VLCNP.SceneManagement
                 savingWrapper = FindObjectOfType<SavingWrapper>();
                 savingWrapper.LoadOnlyState(autoSaveFileName);
 
-                // BGMの変更があれば変更
-                yield return ChangeBGM();
-
+                // BGM 切替(フェード待ち)より先にスポーン地点へ移す
+                // 旧シーンの座標のまま新シーンの地形に埋まった状態で自動起動イベントの StopAll を受けると、
+                // 壁キックの接触フラグが固着するため
                 TransitionSpawnPoint transitionSpawnPoint =
                     GetTransitionSpawnPoint()
                     ?? throw new System.Exception("Transition spawn point not found");
                 print("transition spawn point found");
                 UpdatePlayerPosition(transitionSpawnPoint);
+
+                // BGMの変更があれば変更
+                yield return ChangeBGM();
 
                 // 遷移前のプレイヤーが残っている場合に備えて固定を解除する
                 UnfreezePlayers();

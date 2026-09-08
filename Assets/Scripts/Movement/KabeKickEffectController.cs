@@ -32,7 +32,15 @@ namespace VLCNP.Movement
         public bool IsStopped
         {
             get => isStopped;
-            set => isStopped = value;
+            // StopAll はこのプロパティ経由で止めるので、Stop() と同じく接触フラグをリセットする
+            // (停止中は OnTriggerExit2D を無視するため、リセットしないと壁接触が固着して見えない壁になる)
+            set
+            {
+                if (value)
+                    Stop();
+                else
+                    Restart();
+            }
         }
 
         // 壁キック時の重力の倍率
@@ -254,8 +262,12 @@ namespace VLCNP.Movement
         public void Stop()
         {
             isJumping = false;
-            playerRigidbody2D.gravityScale = originalGravity;
-            animator.SetBool("isKabe", false);
+            jumpTime = 0f;
+            // Awake 前(非アクティブなパーティメンバー)に呼ばれても落ちないようにする
+            if (playerRigidbody2D != null)
+                playerRigidbody2D.gravityScale = originalGravity;
+            if (animator != null)
+                animator.SetBool("isKabe", false);
             SetColliding(false);
             isStopped = true;
         }
