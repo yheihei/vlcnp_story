@@ -29,5 +29,6 @@ namespace VLCNP.Stats
         VLKamaitachi,
         VLNarukamiBoss,
         NarukamiShockwave,
+        VLMitama,
     }
 }
