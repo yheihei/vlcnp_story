@@ -696,22 +696,27 @@ public static class Issue641YamaRevengeSetup
         // 着弾した拳を 1 秒見せてから引き上げる(拳が振ってきたと分かるように。#664 のテストプレイFBで 0.5 から延長)
         AddWait(flowchart, block, 1.0f);
         AddMoveTo(flowchart, block, p.arm, new Vector3(orochiX, surfaceY + OffscreenUp, 0), 0.5f, iTween.EaseType.easeInQuad, false);
-        AddWait(flowchart, block, 0.3f);
+        // 腕が引き上がり切ってから 1 秒置く(#664 のテストプレイFB)
+        AddWait(flowchart, block, 1.5f);
+
+        // 穴が開くまでに地割れを消す。
+        AddInvokeMethod(flowchart, block, p.crack, typeof(ManualFadeObject), "FadeOut", 0.5f);
+
+        // 落下: 落ちる 4 人を Kinematic にして Transform で動かす(「掴んで踏ん張るが沈む」を作るため物理には任せない)。穴を開ける前に切り替える
+        foreach (GameObject go in new[] { n.akim, n.orochi, n.mitama, n.narukami })
+        {
+            AddInvokeMethod(flowchart, block, go, typeof(Rigidbody2DSwitch), "SetKinematic", true);
+        }
+        AddSetActive(flowchart, block, p.arm, false); // 引き上げ済みの腕を片付ける
+        // 穴が開く → びっくり → ミタマとナルカミが掴みに行く、の順(#664 のテストプレイFB。穴が開いたから支え始めたと分かるように)
+        AddSetActive(flowchart, block, p.fakeGround, false);
         AddBikkuri(flowchart, block, n.akim);
         AddBikkuri(flowchart, block, n.orochi);
         AddBikkuri(flowchart, block, n.mitama);
         AddBikkuri(flowchart, block, n.narukami);
         AddBikkuri(flowchart, block, n.uniki);
         AddWait(flowchart, block, 0.8f);
-
-        // 拳が引き上がった後、穴が開くまでに地割れを消す。
-        AddInvokeMethod(flowchart, block, p.crack, typeof(ManualFadeObject), "FadeOut", 0.5f);
-
-        // 落下: 落ちる 4 人を Kinematic にして Transform で動かす(「掴んで踏ん張るが沈む」を作るため物理には任せない)
-        foreach (GameObject go in new[] { n.akim, n.orochi, n.mitama, n.narukami })
-        {
-            AddInvokeMethod(flowchart, block, go, typeof(Rigidbody2DSwitch), "SetKinematic", true);
-        }
+        AddSetActive(flowchart, block, p.crack, false);
         Vector3 akimPos = new Vector3(akimX, GroundY, 0);
         Vector3 orochiPos = new Vector3(orochiX, GroundY, 0);
         // 見た目の背丈は当たり判定より低い(約1.5ユニット)ので、掴む高さは相手の頭のすぐ上に寄せる
@@ -720,9 +725,6 @@ public static class Issue641YamaRevengeSetup
         AddMoveTo(flowchart, block, n.mitama, mitamaPos, 0.4f, iTween.EaseType.easeOutQuad, false);
         AddMoveTo(flowchart, block, n.narukami, narukamiPos, 0.4f, iTween.EaseType.easeOutQuad, false);
         AddWait(flowchart, block, 0.5f);
-        AddSetActive(flowchart, block, p.arm, false); // 引き上げ済みの腕を片付ける
-        AddSetActive(flowchart, block, p.fakeGround, false);
-        AddSetActive(flowchart, block, p.crack, false);
         // 踏ん張り(1): 沈む(ホバー SE は #664 のテストプレイFBで不要と判断し鳴らさない)
         Vector3 sink = new Vector3(0, -SinkDepth, 0);
         AddMoveTo(flowchart, block, n.akim, akimPos + sink, 1.5f, iTween.EaseType.easeInOutSine, false);
