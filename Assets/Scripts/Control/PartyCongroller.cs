@@ -358,6 +358,20 @@ namespace VLCNP.Control
             );
         }
 
+        // スポーン地点は標準体型(members[0]=アキム)の原点位置として置かれている。
+        // キャラごとに足(Leg)の高さが違うため、足元が標準体型と同じ高さになるよう y を補正する
+        // (キャラ交代時の SetNextPlayerPosition と同じ考え方)
+        public Vector3 GetSpawnPositionFor(GameObject member, Vector3 spawnPosition)
+        {
+            if (memberCaches == null || memberCaches.Length == 0) return spawnPosition;
+            MemberRuntimeCache reference = memberCaches[0];
+            MemberRuntimeCache target = GetMemberCache(member);
+            if (target == null || reference.legTransform == null || target.legTransform == null)
+                return spawnPosition;
+            float offsetY = reference.legTransform.localPosition.y - target.legTransform.localPosition.y;
+            return spawnPosition + new Vector3(0, offsetY, 0);
+        }
+
         public GameObject GetCurrentPlayer()
         {
             return currentPlayer;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VLCNP.Control;
 using VLCNP.Core;
 using VLCNP.UI;
 
@@ -297,9 +298,12 @@ namespace VLCNP.SceneManagement
             print("UpdatePlayerPosition");
             // Playerタグ全てをspawnPointの位置に移動
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            PartyCongroller party = FindObjectOfType<PartyCongroller>(true);
             foreach (GameObject player in players)
             {
-                player.transform.position = transitionSpawnPoint.transform.position;
+                Vector3 spawnPosition = transitionSpawnPoint.transform.position;
+                player.transform.position =
+                    party != null ? party.GetSpawnPositionFor(player, spawnPosition) : spawnPosition;
                 // 向きを変える
                 var mover = player.GetComponent<Movement.Mover>();
                 if (mover != null)

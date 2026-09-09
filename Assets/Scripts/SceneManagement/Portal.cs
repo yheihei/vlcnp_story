@@ -146,10 +146,13 @@ namespace VLCNP.SceneManagement
             print("UpdatePlayerPosition");
             // Playerタグ全てをspawnPointの位置に移動
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            PartyCongroller party = FindObjectOfType<PartyCongroller>(true);
             foreach (GameObject player in players)
             {
                 print(player.name);
-                player.transform.position = otherPortal.spawnPoint.position;
+                Vector3 spawnPosition = otherPortal.spawnPoint.position;
+                player.transform.position =
+                    party != null ? party.GetSpawnPositionFor(player, spawnPosition) : spawnPosition;
                 // 向きを変える
                 Mover mover = player.GetComponent<Movement.Mover>();
                 if (mover == null) return;
