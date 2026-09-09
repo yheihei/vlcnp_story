@@ -710,7 +710,7 @@ public static class Issue641YamaRevengeSetup
         AddSetActive(flowchart, block, p.arm, false); // 引き上げ済みの腕を片付ける
         // 穴が開く → びっくり → ミタマとナルカミが掴みに行く、の順(#664 のテストプレイFB。穴が開いたから支え始めたと分かるように)
         AddSetActive(flowchart, block, p.fakeGround, false);
-        AddBikkuri(flowchart, block, n.akim);
+        // アキムには「！」を出さない(#664 のテストプレイFB)
         AddBikkuri(flowchart, block, n.orochi);
         AddBikkuri(flowchart, block, n.mitama);
         AddBikkuri(flowchart, block, n.narukami);
@@ -777,7 +777,7 @@ public static class Issue641YamaRevengeSetup
         AddInvokeMethod(flowchart, block, p.bgmWrapper, typeof(BGMWrapper), "FadeOut", 2f);
         AddFadeScreen(flowchart, block, 2f, 1f, Color.black, true);
         // 暗転してから体験版終了画面(BGM 開始)までの余韻(#664 のテストプレイFB)。遷移の InvokeEvent は Issue641TrialEndingSetup.ConnectPrevious がこの後ろに足す
-        AddWait(flowchart, block, 2.5f);
+        AddWait(flowchart, block, 5f);
         AddComment(flowchart, block, "TODO(#641): 次シーン(Coming Soon / 体験版終了)への遷移は体験版終了の実装時に追加する");
     }
 
