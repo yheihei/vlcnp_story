@@ -43,6 +43,13 @@ namespace VLCNP.Control
 
         public void StartAll()
         {
+            // イベントのガードが稼働中は、別の Flowchart(チェックポイント等)の StartAll で
+            // 操作停止を打ち消さない。解除はガードが全ブロック終了時に行う(#664)
+            if (FlowchartStopAllGuard.ActiveGuards > 0)
+            {
+                PerfLog.Log("Start All Components ignored (guard active)");
+                return;
+            }
             PerfLog.Log("Start All Components Called");
             StartSafeCoroutine(ApplyAllAfterLoad(false, ++requestSequence));
         }

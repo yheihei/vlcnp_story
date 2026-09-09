@@ -105,6 +105,13 @@ namespace VLCNP.Core
             GameObject auraEffect = animationsPerLevels[levelIndex].auraEffect;
             if (auraEffect != null && aura == null)
             {
+                // イベントシーンは本体のSpriteRendererを無効化してキャラクターを隠す運用のため、
+                // 本体が非表示ならオーラも生成しない(Fighter.HideHandIfCharacterInvisible と同じ考え方)
+                SpriteRenderer characterSprite = GetComponent<SpriteRenderer>();
+                if (characterSprite != null && !characterSprite.enabled)
+                {
+                    return;
+                }
                 Transform leg = transform.Find("Leg");
                 aura = Instantiate(auraEffect, leg.position + new Vector3(0, 0.3f, 0), Quaternion.identity, leg);
             }

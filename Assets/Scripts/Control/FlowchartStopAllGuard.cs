@@ -17,6 +17,9 @@ namespace VLCNP.Control
         // 先に終わったガードのStartAllが連鎖先ガードのStopAllを上書きしないよう、最後の1つだけがStartAllする
         static int activeGuards = 0;
 
+        // 稼働中のガード数。0 より大きい間は StoppableController.StartAll を受け付けない(解除はガードが行う)
+        public static int ActiveGuards => activeGuards;
+
         Flowchart flowchart;
         Coroutine watching;
 
@@ -37,7 +40,11 @@ namespace VLCNP.Control
             if (watching != null)
             {
                 watching = null;
-                ReleaseGuard(StoppableController.FindInScene());
+                // シーン破棄で無効化されたときは StartAll を出さない。
+                // 旧シーンの StoppableController への要求は AsyncCoroutineRunner 経由で遷移先に適用され、
+                // 遷移先冒頭の StopAll を後出しで打ち消すため(#664)
+                bool isSceneUnloading = !gameObject.scene.isLoaded;
+                ReleaseGuard(isSceneUnloading ? null : StoppableController.FindInScene());
             }
         }
 
