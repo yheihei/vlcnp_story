@@ -71,10 +71,10 @@ namespace VLCNP.Editor
         const string AnimDir = "Assets/Game/Characters/Animations/";
         static readonly (string name, string file, string sprite, string animator, float x, float y, float scale, bool faceLeft, int order)[] Cast =
         {
-            ("Plant_VLCNP_Orochi", "plant_vlcnp_orochi.png", "plant_vlcnp_orochi_0", null, -14.4f, -15.29576f, .327f, false, 1),
-            ("Plant_VLCNP_Narukami", "plant_vlcnp_narukami.png", "plant_vlcnp_narukami_0", null, -13.04f, -15.29576f, .327f, false, 1),
-            ("Plant_VLCNP_Mitama", "plant_vlcnp_mitama.png", "plant_vlcnp_mitama_0", null, -4.3f, -15.29576f, .327f, false, 1),
-            ("Plant_VLCNP_Leelee", "plant_vlcnp_leelee.png", "plant_vlcnp_leelee_0", null, -2.75f, -15.29576f, .327f, false, 1),
+            ("Plant_VLCNP_Orochi", "plant_vlcnp_orochi.png", "plant_vlcnp_orochi_0", AnimDir + "plant_vlcnp_orochi_0.controller", -14.4f, -15.29576f, .327f, false, 1),
+            ("Plant_VLCNP_Narukami", "plant_vlcnp_narukami.png", "plant_vlcnp_narukami_0", AnimDir + "plant_vlcnp_narukami_0.controller", -13.04f, -15.29576f, .327f, false, 1),
+            ("Plant_VLCNP_Mitama", "plant_vlcnp_mitama.png", "plant_vlcnp_mitama_0", AnimDir + "plant_vlcnp_mitama_0.controller", -4.3f, -15.29576f, .327f, false, 1),
+            ("Plant_VLCNP_Leelee", "plant_vlcnp_leelee.png", "plant_vlcnp_leelee_0", AnimDir + "plant_vlcnp_leelee_0.controller", -2.75f, -15.29576f, .327f, false, 1),
             ("VLMitama", "VLMitama.png", "VLMitama_1", AnimDir + "VLMitamaAnimator.overrideController", -11.1f, -16.238f, .6f, true, 5),
             ("Akim", "akim.png", "akim_0", "Assets/Game/Characters/PlayerLevel1.overrideController", -9.86f, -16.29f, .6f, true, 5),
             ("DarkLeeleeGiant", "dark_giant_leelee_512x640.png", "dark_giant_leelee_512x640", null, -7.91f, -14.41f, .8f, false, 5),
@@ -132,6 +132,8 @@ namespace VLCNP.Editor
             if (animatorPath != null)
                 animator.runtimeAnimatorController = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(animatorPath);
             else animator.enabled = false;
+            // 植物VLCNP は揺れるだけの背景。NPCController が isGround 等のパラメータを毎フレーム書いて警告を出すので止める。
+            if (name.StartsWith("Plant_")) go.GetComponent<NPCController>().enabled = false;
             var body = go.GetComponent<Rigidbody2D>();
             body.bodyType = RigidbodyType2D.Kinematic;
             body.gravityScale = 0;
@@ -247,6 +249,24 @@ namespace VLCNP.Editor
             var command = Add<InvokeEvent>(flow, block);
             UnityEventTools.AddVoidPersistentListener(Event(command), transition.ExecuteTransition);
             EditorSceneManager.MarkSceneDirty(scene);
+        }
+
+        /** #664: 既存の植物VLCNP 4本を作り直さずに、揺れアニメだけ付ける。 */
+        [MenuItem("Tools/Issue641/Animate Trial Ending 3 Plants")]
+        public static void AnimatePlants()
+        {
+            var scene = EditorSceneManager.OpenScene(ScenePath);
+            foreach (var entry in Cast.Where(c => c.name.StartsWith("Plant_")))
+            {
+                var go = Find(scene, entry.name);
+                var animator = go.GetComponent<Animator>();
+                animator.runtimeAnimatorController = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(entry.animator);
+                animator.enabled = true;
+                go.GetComponent<NPCController>().enabled = false;
+                EditorUtility.SetDirty(go);
+            }
+            EditorSceneManager.SaveScene(scene);
+            Debug.Log("[Issue641] 植物VLCNP にアニメーションを付けて保存しました。");
         }
 
         [MenuItem("Tools/Issue641/Verify Trial Ending 3 Runtime")]
