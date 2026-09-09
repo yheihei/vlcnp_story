@@ -693,7 +693,8 @@ public static class Issue641YamaRevengeSetup
         AddPlaySound(flowchart, block, bombSe, 0.8f);
         AddSetActive(flowchart, block, p.crack, true);
         AddFadeScreen(flowchart, block, 0.4f, 0f, Color.white, false);
-        AddWait(flowchart, block, 0.5f);
+        // 着弾した拳を 1 秒見せてから引き上げる(拳が振ってきたと分かるように。#664 のテストプレイFBで 0.5 から延長)
+        AddWait(flowchart, block, 1.0f);
         AddMoveTo(flowchart, block, p.arm, new Vector3(orochiX, surfaceY + OffscreenUp, 0), 0.5f, iTween.EaseType.easeInQuad, false);
         AddWait(flowchart, block, 0.3f);
         AddBikkuri(flowchart, block, n.akim);
