@@ -776,6 +776,8 @@ public static class Issue641YamaRevengeSetup
         AddWait(flowchart, block, 0.5f);
         AddInvokeMethod(flowchart, block, p.bgmWrapper, typeof(BGMWrapper), "FadeOut", 2f);
         AddFadeScreen(flowchart, block, 2f, 1f, Color.black, true);
+        // 暗転してから体験版終了画面(BGM 開始)までの余韻(#664 のテストプレイFB)。遷移の InvokeEvent は Issue641TrialEndingSetup.ConnectPrevious がこの後ろに足す
+        AddWait(flowchart, block, 2.5f);
         AddComment(flowchart, block, "TODO(#641): 次シーン(Coming Soon / 体験版終了)への遷移は体験版終了の実装時に追加する");
     }
 
