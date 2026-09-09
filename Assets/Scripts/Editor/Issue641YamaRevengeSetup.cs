@@ -78,7 +78,6 @@ public static class Issue641YamaRevengeSetup
     const string JumpSePath = "Assets/Game/SE/jump04.mp3";
     const string ImpactSePath = "Assets/Game/SE/destruction3.mp3";
     const string BombSePath = "Assets/Game/SE/bomb.mp3";
-    const string HoverSePath = "Assets/Game/SE/thruster.wav";
     const string EmotionSePath = "Assets/Game/SE/emotion.mp3";
     const int LeeleeCameraCloseupPriority = 50;
     // 穴: 一行(x≈-0.1〜2.1)の足元。セル x=-1..3 を全行くり抜き、同じタイルを FakeGround に持たせる
@@ -594,7 +593,6 @@ public static class Issue641YamaRevengeSetup
         AudioClip jumpSe = AssetDatabase.LoadAssetAtPath<AudioClip>(JumpSePath);
         AudioClip impactSe = AssetDatabase.LoadAssetAtPath<AudioClip>(ImpactSePath);
         AudioClip bombSe = AssetDatabase.LoadAssetAtPath<AudioClip>(BombSePath);
-        AudioClip hoverSe = AssetDatabase.LoadAssetAtPath<AudioClip>(HoverSePath);
         AudioClip yotyou = AssetDatabase.LoadAssetAtPath<AudioClip>(YotyouBgmPath);
         float akimX = LeeleeStopX + PartyGap;
         float orochiX = LeeleeStopX + PartyGap * 2;
@@ -724,8 +722,7 @@ public static class Issue641YamaRevengeSetup
         AddSetActive(flowchart, block, p.arm, false); // 引き上げ済みの腕を片付ける
         AddSetActive(flowchart, block, p.fakeGround, false);
         AddSetActive(flowchart, block, p.crack, false);
-        // 踏ん張り(1): 沈む
-        AddPlaySound(flowchart, block, hoverSe, 0.5f);
+        // 踏ん張り(1): 沈む(ホバー SE は #664 のテストプレイFBで不要と判断し鳴らさない)
         Vector3 sink = new Vector3(0, -SinkDepth, 0);
         AddMoveTo(flowchart, block, n.akim, akimPos + sink, 1.5f, iTween.EaseType.easeInOutSine, false);
         AddMoveTo(flowchart, block, n.orochi, orochiPos + sink, 1.5f, iTween.EaseType.easeInOutSine, false);
@@ -733,7 +730,6 @@ public static class Issue641YamaRevengeSetup
         AddMoveTo(flowchart, block, n.narukami, narukamiPos + sink, 1.5f, iTween.EaseType.easeInOutSine, false);
         AddWait(flowchart, block, 1.6f);
         // 踏ん張り(2): 一瞬持ち直して少し浮き上がる
-        AddPlaySound(flowchart, block, hoverSe, 0.5f);
         Vector3 lift = new Vector3(0, -SinkDepth + HoldLiftHeight, 0);
         AddMoveTo(flowchart, block, n.akim, akimPos + lift, 0.5f, iTween.EaseType.easeOutQuad, false);
         AddMoveTo(flowchart, block, n.orochi, orochiPos + lift, 0.5f, iTween.EaseType.easeOutQuad, false);
@@ -741,7 +737,6 @@ public static class Issue641YamaRevengeSetup
         AddMoveTo(flowchart, block, n.narukami, narukamiPos + lift, 0.5f, iTween.EaseType.easeOutQuad, false);
         AddWait(flowchart, block, 0.6f);
         // 踏ん張り(3): やはり支えきれず、さらに沈む
-        AddPlaySound(flowchart, block, hoverSe, 0.5f);
         Vector3 sinkFinal = new Vector3(0, -SinkDepthFinal, 0);
         AddMoveTo(flowchart, block, n.akim, akimPos + sinkFinal, 0.6f, iTween.EaseType.easeInSine, false);
         AddMoveTo(flowchart, block, n.orochi, orochiPos + sinkFinal, 0.6f, iTween.EaseType.easeInSine, false);
