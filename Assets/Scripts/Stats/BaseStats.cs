@@ -28,6 +28,8 @@ namespace VLCNP.Stats
             {
                 experience.onExperienceGained += UpdateLevel;
                 experience.onExperienceLost += UpdateLevel;
+                // 待機中や初回の有効化前に設定・復元された経験値を反映する。
+                UpdateLevel();
             }
         }
 
@@ -42,7 +44,7 @@ namespace VLCNP.Stats
         private void UpdateLevel() {
             int newLevel = CalculateLevel();
             currentLevel = newLevel;
-            OnChangeLevel(currentLevel);
+            OnChangeLevel?.Invoke(currentLevel);
         }
 
         private int CalculateLevel()

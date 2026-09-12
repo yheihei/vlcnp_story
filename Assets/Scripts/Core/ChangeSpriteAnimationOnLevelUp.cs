@@ -40,12 +40,12 @@ namespace VLCNP.Core
 
         private void Awake() {
             animator = GetComponent<Animator>();
-            ChangeAnimation(GetComponent<BaseStats>().GetLevel());
             groundTransform = GetComponent<BoxCollider2D>() ? GetComponent<BoxCollider2D>().transform : null;
         }
 
         private void OnEnable() {
             GetComponent<BaseStats>().OnChangeLevel += ChangeAnimation;
+            ChangeAnimation(GetComponent<BaseStats>().GetLevel());
         }
 
         private void OnDisable() {
