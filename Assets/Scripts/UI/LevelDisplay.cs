@@ -6,6 +6,8 @@ namespace VLCNP.UI
 {
     public class LevelDisplay : MonoBehaviour
     {
+        [SerializeField] private StatusValueFeedback feedback;
+
         private Text text;
         private BaseStats baseStats;
         private int displayedLevel = int.MinValue;
@@ -23,26 +25,22 @@ namespace VLCNP.UI
             if (baseStats == null)
                 return;
 
-            if (baseStats.isReachedMaxLevel()) {
-                if (!displayedMax)
-                {
-                    text.text = "MAX";
-                    displayedMax = true;
-                }
-                return;
-            }
-
             int level = baseStats.GetLevel();
-            if (displayedMax || displayedLevel != level)
-            {
-                text.text = level.ToString();
-                displayedLevel = level;
-                displayedMax = false;
-            }
+            bool isMax = baseStats.isReachedMaxLevel();
+            if (displayedLevel == level && displayedMax == isMax)
+                return;
+
+            if (displayedLevel != int.MinValue && level > displayedLevel)
+                feedback?.Play(true);
+
+            text.text = isMax ? "MAX" : level.ToString();
+            displayedLevel = level;
+            displayedMax = isMax;
         }
 
         public void SetBaseStats(BaseStats newBaseStats)
         {
+            feedback?.Cancel();
             baseStats = newBaseStats;
             displayedLevel = int.MinValue;
             displayedMax = false;
