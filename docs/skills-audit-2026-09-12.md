@@ -6,11 +6,11 @@
 
 | 配置 | Skill | 変更 |
 | --- | --- | --- |
-| プロジェクト | [implementation-workflow](../.agents/skills/implementation-workflow/SKILL.md) | 関係する規約だけを読む構成に変更。重複コンパイル、固定回数での中断、文書へのUnity検証を除いた |
+| プロジェクト | `implementation-workflow` | 関係する規約だけを読む構成に変更。重複コンパイル、固定回数での中断、文書へのUnity検証を除いた |
 | プロジェクト | [unity-project-conventions](../.agents/skills/unity-project-conventions/SKILL.md) | 配置・namespace・マップ構成に絞り、規約合わせだけの既存API変更を避けるよう整理 |
-| プロジェクト | [git-workflow](../.agents/skills/git-workflow/SKILL.md) | ゲーム概要や実装手順の重複を削除。main・日本語メッセージ・既知issue番号を維持 |
+| プロジェクト | `git-workflow` | ゲーム概要や実装手順の重複を削除。main・日本語メッセージ・既知issue番号を維持 |
 | プロジェクト | [unity-editor-automation](../.agents/skills/unity-editor-automation/SKILL.md) | 保存・差分更新・Eval制約を本体に残し、残留ダイアログと復旧を条件付き参照へ分離 |
-| プロジェクト | [unity-playmode-verification](../.agents/skills/unity-playmode-verification/SKILL.md) | 観察する変更に適用を限定。Play Modeの調整値を記録し、終了後に反映する手順を明確化 |
+| プロジェクト | `unity-playmode-verification` | 観察する変更に適用を限定。Play Modeの調整値を記録し、終了後に反映する手順を明確化 |
 | プロジェクト | [unity-performance-optimizer](../.agents/skills/unity-performance-optimizer/SKILL.md) | 全面スキャンを任意化。実測と静的推定を区別し、移行や設定変更を一律に推奨しない形に変更 |
 | プロジェクト | [create-enemy-character](../.agents/skills/create-enemy-character/SKILL.md) | Prefab・Health、Action・検知、描画・物理を分離。RangeDetectを現行コードへ合わせた |
 | プロジェクト | [generate-2d-sprite](../.agents/skills/generate-2d-sprite/SKILL.md) | 直接生成とCLI委譲を分離。固定effort・sandbox無効化の指示を削除し、透過Propsと不透明タイルを区別 |
@@ -55,3 +55,13 @@ descriptionは15件とも44〜64文字に収めた。既存のUI設定10件を�
 文面の適用範囲も、既知の性能問題、単一の壁修正、ビルドのみ、許可済み公開、分析のみ、未取得データという依頼例で点検した。これは文面の静的な点検であり、別エージェントの実行評価ではない。
 
 今回の変更はSkillと監査文書。Unityの実行、画像生成、Steam・Unity Dashboardへの書き込みを伴う実地検証は行っていない。
+
+## 2026-09-17の整理
+
+Unity 6版では次の3件を独立したSkillから外した。上表は9月12日時点の監査履歴であり、現在のSkill一覧ではない。
+
+- `implementation-workflow` は一般的な作業方針と案内の重複を削除。文書だけの変更でUnity検証を行わない条件をAGENTS.mdへ移した。
+- `git-workflow` はmainへの直接commit・push、日本語メッセージ、issue番号の規約をAGENTS.mdへ統合した。
+- `unity-playmode-verification` は再コンパイル制約、調整値の記録、Edit Modeへの反映・保存をunity-editor-automationへ統合した。
+
+AGENTS.mdのSkill対応表と重複した復旧説明を削り、CLAUDE.mdはAGENTS.mdの参照に絞った。敵・素材・配信・計測などの固有手順、補助スクリプト、公式CLI / PipelineのSkillは維持した。
