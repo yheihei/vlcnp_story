@@ -44,4 +44,4 @@ sub-asset が存在してキャッシュだけが古い場合は `UnityEditor.Ti
 
 ## 完了確認
 
-変更した対象で、PNG 寸法、Tile と Sprite の対応、背景・地面の collider、Prefab の Renderer と Sprite、Palette の登録・配置を確認する。ファイル数だけを成功条件にしない。C# を追加・変更・削除した場合は最終 Compile を行い、対象 Prefab・Scene・asset の保存を確認する。
+変更した対象で、PNG 寸法、Tile と Sprite の対応、背景・地面の collider、Prefab の Renderer と Sprite、Palette の登録・配置を確認する。ファイル数だけを成功条件にしない。C# を追加・変更・削除した場合は最終再コンパイル を行い、対象 Prefab・Scene・asset の保存を確認する。

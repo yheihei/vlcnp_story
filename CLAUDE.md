@@ -1,45 +1,9 @@
-# AGENTS.md
-# ───────────────────────────────────────────────
-# Unity プロジェクト用 ガイドライン
-# ───────────────────────────────────────────────
+# Claude Code向けプロジェクトガイド
 
-## 受け答えの方法
+共通の作業規約は @AGENTS.md を読み、その指示に従う。日本語で応答する。
 
-ユーザーには日本語でレスポンスせよ
+プロジェクト固有Skillは `.agents/skills/` にあり、`.claude/skills` はそこへのシンボリックリンク。編集は実体側で行う。
 
-## Skills(エージェント共通の作業手順書)
+Editor操作は公式Unity CLIとPipelineを使う。UniCLIは削除済みで、このプロジェクトでは使用しない。操作前に `.agents/skills/unity-editor-automation/SKILL.md` と、そこから参照する `unity-cli` / `unity-pipeline` を読む。
 
-作業別の手順書が `.agents/skills/<name>/SKILL.md` にある。該当する作業を始める前に対応する SKILL.md を読み、その手順に従うこと。
-(Claude Code からは `.claude/skills` → `.agents/skills` のシンボリックリンク経由で同じものが見える)
-
-## Editor操作
-
-公式Unity CLIと `com.unity.pipeline` を使う。このプロジェクトではUniCLIを使わない。`.agents/skills/unity-editor-automation/SKILL.md` と公式の `unity-cli` / `unity-pipeline` を参照する。
-
-## プロジェクト概要
-- **エンジン**: Unity 6.3 LTS / 6000.3.24f1
-- **ビルド対象**: Windows / macOS Standalone(Steam 配信)
-- **主目的**: メトロイドヴァニア型 2D アクション
-- **ゴール**: 2026年12月末に Steam でリリース(¥980 / 発売時は日本語のみ)。発売時ウィッシュリスト 2,500 → 発売後1年で累計販売 1,000 本
-- **直近マイルストーン**: 2026年10月の Steam Next Fest 出展。体験版の完成度が最重要
-
-## ディレクトリ規約
-| フォルダ | 用途 |
-| -------- | ---- |
-| `Assets/Scripts/` | ゲームプレイロジック |
-| `Assets/Game/` | 各種Prefab |
-| `Assets/Scenes/` | シーン |
-
-その他は不使用。実装対象外。
-
-## Unityがハングした場合
-
-- Unity Editorがハングした、または操作不能になった場合は、Computer Useで画面と応答状態を確認し、状況に応じた操作で復帰させること。ツールのタイムアウトだけでハングと判断せず、コンパイルやインポートが進行中か確認する。
-- ダイアログへの応答、停止可能な処理のキャンセル、Play Modeの終了など、未保存の作業を失わない操作から試す。応答不能なAPI呼び出しを繰り返して放置しない。
-- 通常操作で復帰しない場合は、可能な範囲で作業を保存してから、Computer UseでUnity Editorを終了・再起動する。強制終了は通常終了もできない場合の最終手段とし、対象プロジェクトのEditorだけに行う。
-- 復帰後は対象プロジェクトとシーン、Consoleの状態を確認して作業を再開する。未保存の変更が失われた可能性があればユーザーに報告する。
-
-## Git作業の決まり
-
-- すべてmainブランチで作業してpushしてよい
-- issue がある場合は `#issue番号` のmessageをつけてcommitすること
+公式の作業別SkillはAGENTS.mdの対応表から選び、Claude Codeで利用可能か確認して読み込む。Codexへのプラグイン導入だけでClaude Codeにも導入済みとは判断しない。

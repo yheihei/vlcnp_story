@@ -1,6 +1,6 @@
 ---
 name: create-enemy-character
-description: vlcnpStory2022 の敵を追加する、または EnemyV2 の行動・検知・向き・敵Prefabを修正するときに使う。
+description: vlcnpStory6 の敵を追加する、または EnemyV2 の行動・検知・向き・敵Prefabを修正するときに使う。
 ---
 
 # 敵キャラ作成
@@ -21,4 +21,4 @@ description: vlcnpStory2022 の敵を追加する、または EnemyV2 の行動�
 - シーンの配置座標を Prefab へ Apply しない。Play Mode の調整は終了後に Edit Mode へ反映する。
 - `enemyActions` は配列サイズだけでなく、各 component 参照と実行順を確認する。
 
-C#・アセットを変更したら [Editor 操作](../unity-editor-automation/SKILL.md) に従って Import・必要な Compile・保存を行う。実行時の確認は [Play Mode 検証](../unity-playmode-verification/SKILL.md) を使い、変更に関係する観点だけ選ぶ。行動ループなら2周目と中断、向きなら左右、Health なら実際の初期値を確認する。
+C#・アセットを変更したら [Editor 操作](../unity-editor-automation/SKILL.md) に従って インポート・必要な再コンパイル・保存を行う。実行時の確認は [Play Mode 検証](../unity-playmode-verification/SKILL.md) を使い、変更に関係する観点だけ選ぶ。行動ループなら2周目と中断、向きなら左右、Health なら実際の初期値を確認する。

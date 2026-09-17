@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: vlcnpStory2022 で commit・push・ブランチ操作を行うときの規約。
+description: vlcnpStory6 で commit・push・ブランチ操作を行うときの規約。
 ---
 
 # Git 規約

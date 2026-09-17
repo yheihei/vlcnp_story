@@ -1,6 +1,6 @@
 ---
 name: stage-map-assets
-description: vlcnpStory2022 の新しいステージ・エリア用に、タイルとプロップの素材セットを作成・拡張するときに使う。
+description: vlcnpStory6 の新しいステージ・エリア用に、タイルとプロップの素材セットを作成・拡張するときに使う。
 ---
 
 # ステージ素材セット

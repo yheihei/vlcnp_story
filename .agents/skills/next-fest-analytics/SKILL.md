@@ -1,6 +1,6 @@
 ---
 name: next-fest-analytics
-description: vlcnpStory2022 の体験版について、Unity Analytics でエリア到達・離脱・死亡地点を調べるときに使う。
+description: vlcnpStory6 の体験版について、Unity Analytics でエリア到達・離脱・死亡地点を調べるときに使う。
 ---
 
 # 体験版の計測

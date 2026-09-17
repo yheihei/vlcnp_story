@@ -1,6 +1,6 @@
 ---
 name: steam-demo-release
-description: vlcnpStory2022 の Steam体験版のビルド、公証、アップロード、公開を依頼されたときに使う。
+description: vlcnpStory6 の Steam体験版のビルド、公証、アップロード、公開を依頼されたときに使う。
 ---
 
 # Steam 体験版リリース

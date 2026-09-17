@@ -13,7 +13,9 @@ description: vlcnpStory6 を公式Unity CLIとPipelineで操作するときの�
 - 操作には `--project-path <このプロジェクトの絶対パス>` と `--caller plugin --skill <使用Skill名>` を付ける。CLIは1.0.0-beta.10以降が必要。
 - 自動操作前に `set_autotick --enable true`。編集前は `editor_status` とシーンのdirty状態を確認する。dirtyは `UnityEngine.SceneManagement.SceneManager` から取得できる。
 - C#変更後は `recompile` を起動し、`recompile_status` の完了とエラーを確認する。ドメイン再読み込み中の一時的な切断を失敗と決めつけない。
-- パッケージの追加・削除は、現在のPipelineにある `package_add` / `package_remove` を使い、`package_status` と再コンパイル完了を確認する。
+- パッケージ操作では、公式 `unity-package-management` のCLI非対応という記述と、接続中Pipelineの機能を区別する。追加・削除は現在のコマンド一覧に存在する場合、 `package_add` / `package_remove` を使い、`package_status` と再コンパイル完了を確認する。
+
+公式Skillの `run_script` にあるビルダー保存例やRuntime code reloadは、毎回必要な工程ではない。既存のシーン・Prefabの差分更新を基本とし、検査のためだけに `[CodeReload]` や永続ビルダーを追加しない。
 
 ## 保存と一時処理
 

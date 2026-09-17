@@ -1,6 +1,6 @@
 ---
 name: unity-project-conventions
-description: vlcnpStory2022 の C#・Prefab・シーンを変更するときに、配置・名前空間・既存のマップ構成を確認する。
+description: vlcnpStory6 の C#・Prefab・シーンを変更するときに、配置・名前空間・既存のマップ構成を確認する。
 ---
 
 # プロジェクト規約

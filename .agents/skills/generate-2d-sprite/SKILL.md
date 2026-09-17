@@ -1,6 +1,6 @@
 ---
 name: generate-2d-sprite
-description: vlcnpStory2022 用の新規・改訂スプライト、タイル、プロップの PNG を生成するときに使う。
+description: vlcnpStory6 用の新規・改訂スプライト、タイル、プロップの PNG を生成するときに使う。
 ---
 
 # 2D スプライト生成

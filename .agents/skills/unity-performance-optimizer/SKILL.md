@@ -1,6 +1,6 @@
 ---
 name: unity-performance-optimizer
-description: vlcnpStory2022 の FPS低下・GC・ロード遅延を診断する、または性能レビューを依頼されたときに使う。
+description: vlcnpStory6 の FPS低下・GC・ロード遅延を診断する、または性能レビューを依頼されたときに使う。
 ---
 
 # Unity 性能診断
@@ -20,6 +20,6 @@ python3 .agents/skills/unity-performance-optimizer/scripts/scan_unity_perf.py .
 
 スキャン結果は候補であり、性能劣化の証明ではない。実行頻度と実測の寄与を優先し、未使用の Update や低頻度の LINQ を一律に修正しない。
 
-挙動、シリアライズ、Prefab 互換性を保つ。Input System・Addressables・TMP への移行や物理設定変更は、性能修正の定型作業にしない。C# を編集する場合は [Editor 操作](../unity-editor-automation/SKILL.md) の Import / Compile を行う。
+挙動、シリアライズ、Prefab 互換性を保つ。Input System・Addressables・TMP への移行や物理設定変更は、性能修正の定型作業にしない。C# を編集する場合は [Editor 操作](../unity-editor-automation/SKILL.md) の インポートと再コンパイル を行う。
 
 結果は変更点とその根拠、変更前後の測定値があればその比較、未計測の範囲を伝える。
