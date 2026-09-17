@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -42,8 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -66,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -141,6 +138,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &24756726
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -156,6 +154,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -177,9 +180,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300190, guid: aa6fa552817c22a4e844b81b8ead69d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -189,7 +194,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &24756727
 Transform:
@@ -218,6 +222,10 @@ PrefabInstance:
     - target: {fileID: 625646515341984492, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: m_Name
       value: Debug
+      objectReference: {fileID: 0}
+    - target: {fileID: 625646515341984492, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 625646515341984494, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
       propertyPath: m_LocalPosition.x
@@ -264,15 +272,15 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 625646515341984495, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
-      propertyPath: trueFlags.Array.data[0]
+      propertyPath: 'trueFlags.Array.data[0]'
       value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 625646515341984495, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
-      propertyPath: trueFlags.Array.data[1]
+      propertyPath: 'trueFlags.Array.data[1]'
       value: 43
       objectReference: {fileID: 0}
     - target: {fileID: 625646515341984495, guid: 821136a10022444dcbe386dd845f1ace, type: 3}
-      propertyPath: trueFlags.Array.data[2]
+      propertyPath: 'trueFlags.Array.data[2]'
       value: 48
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -364,6 +372,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &98592619
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -379,6 +388,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -400,9 +414,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300190, guid: aa6fa552817c22a4e844b81b8ead69d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -412,7 +428,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &98592620
 Transform:
@@ -539,7 +554,7 @@ MonoBehaviour:
   targetObject: {fileID: 1047597896}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StartAll
   targetMethodText: 'StartAll (): Void'
@@ -621,7 +636,7 @@ MonoBehaviour:
   targetObject: {fileID: 1047597896}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StopAll
   targetMethodText: 'StopAll (): Void'
@@ -677,6 +692,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &236014666
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -692,6 +708,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -713,9 +734,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300190, guid: aa6fa552817c22a4e844b81b8ead69d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -725,7 +748,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &236014667
 Transform:
@@ -914,6 +936,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &323748866
 TilemapRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -929,6 +952,11 @@ TilemapRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -950,9 +978,11 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1538544979
   m_SortingLayer: -2
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -960,7 +990,6 @@ TilemapRenderer:
   m_SortOrder: 0
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
-  m_MaskInteraction: 0
 --- !u!1839735485 &323748867
 Tilemap:
   m_ObjectHideFlags: 0
@@ -4852,23 +4881,23 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[0]
+      propertyPath: 'commandList.Array.data[0]'
       value: 
       objectReference: {fileID: 333794250}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[1]
+      propertyPath: 'commandList.Array.data[1]'
       value: 
       objectReference: {fileID: 333794244}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[2]
+      propertyPath: 'commandList.Array.data[2]'
       value: 
       objectReference: {fileID: 333794248}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[3]
+      propertyPath: 'commandList.Array.data[3]'
       value: 
       objectReference: {fileID: 333794246}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[4]
+      propertyPath: 'commandList.Array.data[4]'
       value: 
       objectReference: {fileID: 333794249}
     m_RemovedComponents:
@@ -5033,7 +5062,7 @@ MonoBehaviour:
   targetObject: {fileID: 333794242}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StartAll
   targetMethodText: 'StartAll (): Void'
@@ -5061,7 +5090,7 @@ MonoBehaviour:
   targetObject: {fileID: 333794242}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StopAll
   targetMethodText: 'StopAll (): Void'
@@ -5240,7 +5269,7 @@ MonoBehaviour:
   targetObject: {fileID: 805366616}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StartAll
   targetMethodText: 'StartAll (): Void'
@@ -5322,7 +5351,7 @@ MonoBehaviour:
   targetObject: {fileID: 805366616}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StopAll
   targetMethodText: 'StopAll (): Void'
@@ -5418,7 +5447,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &444811988
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5434,6 +5463,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5455,9 +5489,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -5489,7 +5525,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &444811989
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -10244,6 +10279,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &446340889
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -10259,6 +10295,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10280,9 +10321,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300190, guid: aa6fa552817c22a4e844b81b8ead69d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -10292,7 +10335,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &446340890
 Transform:
@@ -10485,7 +10527,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &526643016
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -10501,6 +10543,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10522,9 +10569,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -10556,7 +10605,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &526643017
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -15373,7 +15421,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: selectedCommands.Array.data[0]
+      propertyPath: 'selectedCommands.Array.data[0]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
@@ -15393,31 +15441,31 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[0]
+      propertyPath: 'commandList.Array.data[0]'
       value: 
       objectReference: {fileID: 540580532}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[1]
+      propertyPath: 'commandList.Array.data[1]'
       value: 
       objectReference: {fileID: 540580528}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[2]
+      propertyPath: 'commandList.Array.data[2]'
       value: 
       objectReference: {fileID: 540580527}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[3]
+      propertyPath: 'commandList.Array.data[3]'
       value: 
       objectReference: {fileID: 540580533}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[4]
+      propertyPath: 'commandList.Array.data[4]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[5]
+      propertyPath: 'commandList.Array.data[5]'
       value: 
       objectReference: {fileID: 540580528}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[6]
+      propertyPath: 'commandList.Array.data[6]'
       value: 
       objectReference: {fileID: 540580527}
     m_RemovedComponents:
@@ -15516,7 +15564,7 @@ MonoBehaviour:
   targetObject: {fileID: 259302840}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StopAll
   targetMethodText: 'StopAll (): Void'
@@ -15544,7 +15592,7 @@ MonoBehaviour:
   targetObject: {fileID: 259302840}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StartAll
   targetMethodText: 'StartAll (): Void'
@@ -15657,7 +15705,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &551625501
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -15673,6 +15721,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -15694,9 +15747,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -15728,7 +15783,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &551625502
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -20544,6 +20598,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &620198656
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -20559,6 +20614,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -20580,9 +20640,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300190, guid: aa6fa552817c22a4e844b81b8ead69d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -20592,7 +20654,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &620198657
 Transform:
@@ -20673,7 +20734,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &777997107
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -20689,6 +20750,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -20710,9 +20776,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -20744,7 +20812,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &777997108
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -25871,7 +25938,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &865780364
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -25887,6 +25954,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -25908,9 +25980,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -25942,7 +26016,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &865780365
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -30827,19 +30900,19 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[0]
+      propertyPath: 'commandList.Array.data[0]'
       value: 
       objectReference: {fileID: 952536545}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[1]
+      propertyPath: 'commandList.Array.data[1]'
       value: 
       objectReference: {fileID: 952536540}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[2]
+      propertyPath: 'commandList.Array.data[2]'
       value: 
       objectReference: {fileID: 952536539}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[3]
+      propertyPath: 'commandList.Array.data[3]'
       value: 
       objectReference: {fileID: 952536544}
     m_RemovedComponents:
@@ -30938,7 +31011,7 @@ MonoBehaviour:
   targetObject: {fileID: 259302840}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StartAll
   targetMethodText: 'StartAll (): Void'
@@ -30966,7 +31039,7 @@ MonoBehaviour:
   targetObject: {fileID: 259302840}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StopAll
   targetMethodText: 'StopAll (): Void'
@@ -31130,31 +31203,31 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[0]
+      propertyPath: 'commandList.Array.data[0]'
       value: 
       objectReference: {fileID: 1020305151}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[1]
+      propertyPath: 'commandList.Array.data[1]'
       value: 
       objectReference: {fileID: 1020305146}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[2]
+      propertyPath: 'commandList.Array.data[2]'
       value: 
       objectReference: {fileID: 1020305145}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[3]
+      propertyPath: 'commandList.Array.data[3]'
       value: 
       objectReference: {fileID: 1020305144}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[4]
+      propertyPath: 'commandList.Array.data[4]'
       value: 
       objectReference: {fileID: 1020305143}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[5]
+      propertyPath: 'commandList.Array.data[5]'
       value: 
       objectReference: {fileID: 1020305142}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[6]
+      propertyPath: 'commandList.Array.data[6]'
       value: 
       objectReference: {fileID: 1020305150}
     m_RemovedComponents:
@@ -31347,7 +31420,7 @@ MonoBehaviour:
   targetObject: {fileID: 259302840}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StartAll
   targetMethodText: 'StartAll (): Void'
@@ -31375,7 +31448,7 @@ MonoBehaviour:
   targetObject: {fileID: 259302840}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StopAll
   targetMethodText: 'StopAll (): Void'
@@ -31510,6 +31583,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1052016271}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -31533,7 +31607,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -31544,11 +31619,11 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 2.3, y: 3}
   m_EdgeRadius: 0
 --- !u!212 &1052016276
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -31564,6 +31639,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -31585,9 +31665,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -31597,7 +31679,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1052016277
 Transform:
@@ -31786,7 +31867,7 @@ MonoBehaviour:
   targetObject: {fileID: 1664957949}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StartAll
   targetMethodText: 'StartAll (): Void'
@@ -31868,7 +31949,7 @@ MonoBehaviour:
   targetObject: {fileID: 1664957949}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StopAll
   targetMethodText: 'StopAll (): Void'
@@ -31924,6 +32005,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1149517628
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -31939,6 +32021,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -31960,9 +32047,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2004786389
   m_SortingLayer: -1
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -2145196789, guid: 0afeb8577b003fb4589464f46d5b4b88, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -31972,7 +32061,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1149517629
 Transform:
@@ -32018,14 +32106,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ComponentVersion: 1
+  m_ComponentVersion: 3
   m_LightType: 4
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_LightVolumeIntensity: 1
-  m_LightVolumeIntensityEnabled: 0
+  m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 000000005355b45bd59c7e771b7a498b733ce5d1afe67b84
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
@@ -32035,8 +32123,10 @@ MonoBehaviour:
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
-  m_ShadowIntensityEnabled: 0
+  m_ShadowsEnabled: 0
   m_ShadowIntensity: 0.75
+  m_ShadowSoftness: 0
+  m_ShadowSoftnessFalloffIntensity: 0.5
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
@@ -32130,7 +32220,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &1212893624
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -32146,6 +32236,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -32167,9 +32262,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -32201,7 +32298,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &1212893625
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -36956,6 +37052,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1364200273
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -36971,6 +37068,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -36992,9 +37094,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300190, guid: aa6fa552817c22a4e844b81b8ead69d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -37004,7 +37108,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1364200274
 Transform:
@@ -37171,6 +37274,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1481989804
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -37186,6 +37290,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -37207,9 +37316,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300190, guid: aa6fa552817c22a4e844b81b8ead69d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -37219,7 +37330,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1481989805
 Transform:
@@ -37369,6 +37479,10 @@ PrefabInstance:
       propertyPath: m_FontData.m_Font
       value: 
       objectReference: {fileID: 12800000, guid: e70cea16225cc4df594bb6b97050a9b1, type: 3}
+    - target: {fileID: 3632680317639142205, guid: 011494565755b490386e78a113e3c871, type: 3}
+      propertyPath: m_ClearFlags
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3839066468994462574, guid: 011494565755b490386e78a113e3c871, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -37945,7 +38059,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &1584817774
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -37961,6 +38075,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -37982,9 +38101,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -38016,7 +38137,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &1584817775
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -42898,6 +43018,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1652875166}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -42921,7 +43042,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -42932,11 +43054,11 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 2.3, y: 3}
   m_EdgeRadius: 0
 --- !u!212 &1652875171
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -42952,6 +43074,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -42973,9 +43100,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -42985,7 +43114,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1652875172
 Transform:
@@ -43072,6 +43200,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1720681171
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -43087,6 +43216,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43108,9 +43242,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300190, guid: aa6fa552817c22a4e844b81b8ead69d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -43120,7 +43256,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1720681172
 Transform:
@@ -43218,6 +43353,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1731792862
 TilemapRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -43233,6 +43369,11 @@ TilemapRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -43254,9 +43395,11 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
+  m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -43264,7 +43407,6 @@ TilemapRenderer:
   m_SortOrder: 0
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
-  m_MaskInteraction: 0
 --- !u!1839735485 &1731792863
 Tilemap:
   m_ObjectHideFlags: 0
@@ -51975,6 +52117,7 @@ TilemapCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1731792860}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 6200000, guid: e0a5404c9899647f7a60230ef4c36d14, type: 2}
   m_IncludeLayers:
@@ -51998,7 +52141,8 @@ TilemapCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
@@ -52099,7 +52243,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &1749558462
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -52115,6 +52259,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -52136,9 +52285,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -52170,7 +52321,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &1749558463
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -57043,27 +57193,27 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[0]
+      propertyPath: 'commandList.Array.data[0]'
       value: 
       objectReference: {fileID: 1760758577}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[1]
+      propertyPath: 'commandList.Array.data[1]'
       value: 
       objectReference: {fileID: 1760758572}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[2]
+      propertyPath: 'commandList.Array.data[2]'
       value: 
       objectReference: {fileID: 1760758589}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[3]
+      propertyPath: 'commandList.Array.data[3]'
       value: 
       objectReference: {fileID: 1760758588}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[4]
+      propertyPath: 'commandList.Array.data[4]'
       value: 
       objectReference: {fileID: 1760758587}
     - target: {fileID: 5307012217563610202, guid: fbb78368ef33c44faa030963b129d648, type: 3}
-      propertyPath: commandList.Array.data[5]
+      propertyPath: 'commandList.Array.data[5]'
       value: 
       objectReference: {fileID: 1760758573}
     m_RemovedComponents:
@@ -57162,7 +57312,7 @@ MonoBehaviour:
   targetObject: {fileID: 781162230}
   targetComponentAssemblyName: VLCNP.SceneManagement.TransitionEvent, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: TransitionEvent
   targetMethod: ExecuteTransition
   targetMethodText: 'ExecuteTransition (): Void'
@@ -57249,7 +57399,7 @@ MonoBehaviour:
   targetObject: {fileID: 1760758569}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StopAll
   targetMethodText: 'StopAll (): Void'
@@ -57277,7 +57427,7 @@ MonoBehaviour:
   targetObject: {fileID: 1760758569}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StartAll
   targetMethodText: 'StartAll (): Void'
@@ -57305,7 +57455,7 @@ MonoBehaviour:
   targetObject: {fileID: 1760758569}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StopAll
   targetMethodText: 'StopAll (): Void'
@@ -57416,7 +57566,7 @@ MonoBehaviour:
   targetObject: {fileID: 1520025448}
   targetComponentAssemblyName: VLCNP.Control.PartyCongroller, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: PartyCongroller
   targetMethod: SetCurrentPlayerByName
   targetMethodText: 'SetCurrentPlayerByName (String): Void'
@@ -57479,7 +57629,7 @@ MonoBehaviour:
   targetObject: {fileID: 1520025449}
   targetComponentAssemblyName: VLCNP.Core.FaderWrapper, Assembly-CSharp, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: FaderWrapper
   targetMethod: FadeOut
   targetMethodText: 'FadeOut (Single): Void'
@@ -57626,7 +57776,7 @@ MonoBehaviour:
   targetObject: {fileID: 1727555461}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StartAll
   targetMethodText: 'StartAll (): Void'
@@ -57708,7 +57858,7 @@ MonoBehaviour:
   targetObject: {fileID: 1727555461}
   targetComponentAssemblyName: VLCNP.Control.StoppableController, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  targetComponentFullname: UnityEngine.Component[]
+  targetComponentFullname: 'UnityEngine.Component[]'
   targetComponentText: StoppableController
   targetMethod: StopAll
   targetMethodText: 'StopAll (): Void'
@@ -57825,6 +57975,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1888137699
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -57840,6 +57991,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -57861,9 +58017,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2004786389
   m_SortingLayer: -1
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 1751090435, guid: 0f0a8733dd66f4942b389f0e071f42a0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -57873,7 +58031,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1888137700
 Transform:
@@ -58026,6 +58183,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &1913784159
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -58041,6 +58199,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -58062,9 +58225,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300190, guid: aa6fa552817c22a4e844b81b8ead69d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -58074,7 +58239,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1913784160
 Transform:
@@ -58200,6 +58364,7 @@ GameObject:
   m_IsActive: 1
 --- !u!212 &2009540079
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -58215,6 +58380,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -58236,9 +58406,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300190, guid: aa6fa552817c22a4e844b81b8ead69d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -58248,7 +58420,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &2009540080
 Transform:
@@ -58301,7 +58472,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &2013266844
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -58317,6 +58488,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -58338,9 +58514,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -58372,7 +58550,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &2013266845
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -63143,7 +63320,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &2030667584
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -63159,6 +63336,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -63180,9 +63362,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -63214,7 +63398,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!198 &2030667585
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -68027,6 +68210,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2051886000}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -68050,7 +68234,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -68061,11 +68246,11 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 2.3, y: 3}
   m_EdgeRadius: 0
 --- !u!212 &2051886005
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -68081,6 +68266,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -68102,9 +68292,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -68114,7 +68306,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &2051886006
 Transform:
@@ -68210,6 +68401,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074422904}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -68233,7 +68425,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -68244,11 +68437,11 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 2.3, y: 3}
   m_EdgeRadius: 0
 --- !u!212 &2074422909
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -68264,6 +68457,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -68285,9 +68483,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -68297,7 +68497,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &2074422910
 Transform:
@@ -68656,7 +68855,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &2097258146
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -68670,6 +68869,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

@@ -66,3 +66,19 @@ unity command editor_status --project-path "$PWD" --caller plugin --skill unity-
 - [Unity Pipelineの対応条件と導入](https://docs.unity.com/en-us/unity-production-pipeline/local-tools-cli/unity-pipeline-package)
 - [Unity 6へのアップグレード](https://docs.unity3d.com/6000.3/Documentation/Manual/UpgradeGuideUnity6.html)
 - [URP 17へのアップグレード](https://docs.unity3d.com/6000.3/Documentation/Manual/urp/upgrade-guide-unity-6.html)
+
+## 実行ファイルのビルド・起動確認
+
+2026-09-17、既存のSteam Demo Release BuildメニューでWindows / macOSをビルドした。作業開始時から保存済みの `BlockChainRoom.unity` 差分を含む。
+
+- 初回Windowsビルドは、URP Global Settingsに残った `m_EnableRenderCompatibilityMode: 1` が原因で失敗。Unity 6.3では `URP_COMPATIBILITY_MODE` 未定義時の実際の描画はすでにRender Graphであり、保存値を0へ合わせて解消した。
+- Windowsの再ビルドは成功。約249.5秒、356,011,941 bytes。`Builds/SteamDemo/Windows/VlcnpStory.exe`、`UnityPlayer.dll`、`steam_api64.dll` を確認。Windows実機での起動は未確認。
+- macOSビルドは成功。約288.2秒、374,411,020 bytes。BuildReportはError 0、Warning 178、BuildOptions.None。警告には非推奨API、未使用フィールド、一部マテリアルの2D SRP Batcher非対応、Unity Servicesのプロジェクト連携、Pipeline Runtime設定未作成が含まれる。
+- `Builds/SteamDemo/Mac/VlcnpStory.app` の実行ファイルは `x86_64 arm64`。`steam_api.bundle` を確認。
+- macOSでは既存のFontLicenseBuildProcessorが署名後にOFL.txtを追加するため、生成直後の署名検証は不整合になった。今回の成果物にはローカル検証用のアドホック再署名を行い、`codesign --verify --deep --strict` が成功。配布用のDeveloper ID署名・公証は未実施。
+- このMacでアプリを起動し、CryptoNinja Gamesロゴ、タイトル、日本語メニュー、下キーによる「つづきから」への選択移動を目視確認。実行ログにExceptionはなし。Steam未起動のためSteamAPI初期化は失敗し、既存のフォールバックで起動継続。Steam連携、ゲーム本編の通しプレイ、音声の聴取は今回の確認範囲外。
+- 初回ビルドがURPのprefilter/runtime settings、DefaultVolumeProfile、Standalone batching、UnityConnectSettingsのシリアライズを更新した。これらの更新と互換モード修正を作業ツリーに保持。ユーザーのBlockChainRoom差分は変更していない。
+
+検証ログは `Logs/unity6-build-check/`。Steamへのアップロード・公開は実施していない。
+
+起動確認後はアプリのQuitメニューで終了し、プロセス消滅を確認した。終了時ログにはスレッド終了とComputeBuffer解放に関する警告が残った。EditorはBlockChainRoom、dirty=false、Play Mode停止、readyの状態。
