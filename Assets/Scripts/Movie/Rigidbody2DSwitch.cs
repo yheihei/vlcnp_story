@@ -13,7 +13,7 @@ namespace VLCNP.Movie
         public void SetKinematic(bool isKinematic)
         {
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0;
             rb.bodyType = isKinematic ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;
         }

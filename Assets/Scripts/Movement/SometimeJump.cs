@@ -57,7 +57,7 @@ namespace VLCNP.Movement
 
         private void FixedUpdate() {
             // ジャンプしていなかったら横方向の速度を0に
-            if (rBody.velocity.y == 0) rBody.velocity = new Vector2(0, rBody.velocity.y);
+            if (rBody.linearVelocity.y == 0) rBody.linearVelocity = new Vector2(0, rBody.linearVelocity.y);
         }
 
         private void OnTriggerStay2D(Collider2D collision)
@@ -98,7 +98,7 @@ namespace VLCNP.Movement
             rBody.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             // 向きをscaleから取得
             bool isRight = transform.localScale.x > 0;
-            rBody.velocity = new Vector2(isRight ? velocityX : -1 * velocityX, rBody.velocity.y);
+            rBody.linearVelocity = new Vector2(isRight ? velocityX : -1 * velocityX, rBody.linearVelocity.y);
             timeSinceLastJump = 0f;
         }
 

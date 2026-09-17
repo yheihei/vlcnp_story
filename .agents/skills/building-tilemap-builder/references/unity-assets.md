@@ -34,7 +34,7 @@ UnityEditor.AssetDatabase.Refresh();
 
 既存の `Assets/Scripts/Editor/KazeBossTilesetBuilder.cs` / `KazeBossPropsBuilder.cs` は実装例として必要部分だけ参照する。コピーと定数置換を必須にしない。自動化は差分更新にし、手動調整や既存参照を作り直さない。一時ビルダーの後片付けは Editor 操作の手順に従う。
 
-メニュー経由なら `Menu.Execute` の引数は現在の UniCli 定義で確認する。既存例は `menuItemPath`。成功応答だけでなく Console の新規例外と生成物も確認する。
+メニュー経由なら公式CLIの `menu --path "<メニューパス>"` を使う。実際の定義は `unity command` で確認する。成功応答だけでなく Console の新規例外と生成物も確認する。
 
 ## Palette が認識されない場合
 

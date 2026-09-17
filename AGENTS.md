@@ -15,13 +15,14 @@
 ### Unity公式Skills
 
 - Codexに `unity@unity-agent-plugin` を導入済み。UI、Sprite、Tilemap、音声などの作業では、該当する公式Skillとプロジェクト固有の手順を併用する。
-- 公式プラグインと `com.unity.pipeline` のサポート対象はUnity 6.0以降。Unity 2022.3では公式Skillを参考資料として使い、コード例や推奨パッケージは現在のバージョンとの互換性を確認する。
-- このプロジェクトがUnity 2022.3の間は、Editor操作に既存のUniCliを使う。公式の `unity command` は別のCLIであり、そのまま置き換えない。Skillの導入だけを理由にPipelineの追加やUnityの更新を行わない。
+- Editor操作は公式Unity CLIと `com.unity.pipeline` を使う。このUnity 6プロジェクトではUniCLIを使わない。
+- `unity status` と `unity command` で接続・実際のコマンド定義を確認する。操作時は `--project-path` でこのプロジェクトを指定し、`--caller plugin --skill <使用Skill名>` を付ける。
+- 操作手順は `.agents/skills/unity-cli`、`.agents/skills/unity-pipeline` とプロジェクトの `unity-editor-automation` を参照する。
 - 公式Skillの一般的な推奨で、既存のUI方式・フォント・アセット構成を一括変更しない。変更は依頼対象に限る。
-- 導入時の確認結果は `docs/unity-official-skills-trial-2026-09-17.md` を参照。
+- Unity 6移行と公式CLIの検証結果は `docs/unity6-migration-2026-09-17.md` を参照。2022版での試用結果は `docs/unity-official-skills-trial-2026-09-17.md` に残す。
 
 ## プロジェクト概要
-- **エンジン**: Unity 2022.3
+- **エンジン**: Unity 6.3 LTS / 6000.3.24f1
 - **ビルド対象**: Windows / macOS Standalone(Steam 配信)
 - **主目的**: メトロイドヴァニア型 2D アクション
 - **ゴール**: 2026年12月末に Steam でリリース(¥980 / 発売時は日本語のみ)。発売時ウィッシュリスト 2,500 → 発売後1年で累計販売 1,000 本

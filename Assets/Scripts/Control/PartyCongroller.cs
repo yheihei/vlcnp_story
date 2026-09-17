@@ -179,7 +179,7 @@ namespace VLCNP.Control
             MemberRuntimeCache previousCache = currentMemberCache;
             MemberRuntimeCache nextCache = GetMemberCache(nextPlayer);
             Vector2 previousVelocity =
-                previousCache?.rigidbody2D?.velocity ?? Vector2.zero;
+                previousCache?.rigidbody2D?.linearVelocity ?? Vector2.zero;
 
             SetNextPlayerPosition(nextCache, previousCache);
             nextCache.health.InheritInvincible(previousCache.health);
@@ -252,7 +252,7 @@ namespace VLCNP.Control
             Rigidbody2D currentRigitBody = currentMemberCache.rigidbody2D;
             if (currentRigitBody != null)
             {
-                currentRigitBody.velocity = velocity;
+                currentRigitBody.linearVelocity = velocity;
             }
         }
 

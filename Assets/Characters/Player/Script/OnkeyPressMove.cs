@@ -84,7 +84,7 @@ public class OnkeyPressMove : MonoBehaviour
             vx = -speed; // 左に進む移動量を入れる
             leftFlag = true;
         }
-        if (Input.GetKey("space") && groundFlag && rbody.velocity.y < 2)
+        if (Input.GetKey("space") && groundFlag && rbody.linearVelocity.y < 2)
         {
             if (pushFlag == false)
             {
@@ -100,7 +100,7 @@ public class OnkeyPressMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        rbody.velocity = new Vector2(vx, rbody.velocity.y);
+        rbody.linearVelocity = new Vector2(vx, rbody.linearVelocity.y);
         // 左右の向きを変える
         if (leftFlag)
         {
@@ -110,7 +110,7 @@ public class OnkeyPressMove : MonoBehaviour
         {
             player.transform.localScale = new Vector3(-1 * Mathf.Abs(player.transform.localScale.x), player.transform.localScale.y, player.transform.localScale.z);
         }
-        if (groundFlag && Mathf.Abs(rbody.velocity.x) < 0.01 && groundFlag && Mathf.Abs(rbody.velocity.y) < 0.01)
+        if (groundFlag && Mathf.Abs(rbody.linearVelocity.x) < 0.01 && groundFlag && Mathf.Abs(rbody.linearVelocity.y) < 0.01)
         {
             animator.Play(currentMode, 0, 0);
         } else

@@ -78,7 +78,7 @@ namespace VLCNP.Combat.EnemyAction
                 float theta = Mathf.Clamp01(elapsed / loopDuration) * Mathf.PI * 2f;
                 Vector2 position = center
                     + new Vector2(Mathf.Sin(theta) * radius * directionX, -Mathf.Cos(theta) * radius);
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
                 rbody.MovePosition(position);
                 yield return new WaitForFixedUpdate();
             }
@@ -93,7 +93,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             if (rbody != null)
             {
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
             }
         }
     }

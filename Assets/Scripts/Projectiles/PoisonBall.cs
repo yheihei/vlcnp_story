@@ -60,7 +60,7 @@ namespace VLCNP.Projectiles
             // rb.velocity = direction * speed;
             // 速さに10%のランダム性をもたせる
             float randomSpeed = speed * (1 + Random.Range(-0.1f, 0.1f));
-            rb.velocity = direction * randomSpeed;
+            rb.linearVelocity = direction * randomSpeed;
         }
 
         public GameObject GetGameObject()

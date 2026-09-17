@@ -194,7 +194,7 @@ namespace VLCNP.Combat
             Rigidbody2D rigidBody2D = GetComponent<Rigidbody2D>();
             if (rigidBody2D != null)
             {
-                rigidBody2D.velocity = Vector2.zero;
+                rigidBody2D.linearVelocity = Vector2.zero;
                 rigidBody2D.simulated = false;
             }
             // 10s後に削除

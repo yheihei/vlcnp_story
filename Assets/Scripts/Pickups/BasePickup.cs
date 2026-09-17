@@ -41,7 +41,7 @@ namespace VLCNP.Pickups
         {
             if (rbody == null)
                 return;
-            rbody.velocity *= 0.5f;
+            rbody.linearVelocity *= 0.5f;
         }
 
         public void OnWaterExit()

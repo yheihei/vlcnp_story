@@ -133,7 +133,7 @@ namespace VLCNP.Combat.EnemyAction
         private void UpdateMoveSpeed(float _vx)
         {
             vx = _vx;
-            rbody.velocity = new Vector2(vx, 0.1f);
+            rbody.linearVelocity = new Vector2(vx, 0.1f);
         }
 
         public void SetDirection(Direction _direction)

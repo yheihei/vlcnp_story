@@ -66,7 +66,7 @@ namespace VLCNP.Combat.EnemyAction
             }
             if (rbody != null)
             {
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
             }
             IsExecuting = false;
             IsDone = true;
@@ -112,7 +112,7 @@ namespace VLCNP.Combat.EnemyAction
 
                 if (rbody != null)
                 {
-                    rbody.velocity = finalVelocity;
+                    rbody.linearVelocity = finalVelocity;
                 }
                 else
                 {
@@ -126,7 +126,7 @@ namespace VLCNP.Combat.EnemyAction
 
             if (rbody != null)
             {
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
             }
             IsDone = true;
         }

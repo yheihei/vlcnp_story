@@ -60,7 +60,7 @@ namespace VLCNP.Combat.EnemyAction
             rbody.AddForce(new Vector2(direction == Direction.Left ? -swimPower : swimPower, 0));
             yield return new WaitForSeconds(strokeInterval);
             // 停止
-            rbody.velocity = new Vector2(0, 0);
+            rbody.linearVelocity = new Vector2(0, 0);
             UpdateSwimAnimation(0);
             IsDone = true;
         }

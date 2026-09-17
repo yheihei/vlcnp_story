@@ -110,7 +110,7 @@ namespace VLCNP.Combat.EnemyAction
                 float modifiedSpeed = speedModifier != null
                     ? speedModifier.CalculateModifiedSpeed(speed)
                     : speed;
-                rbody.velocity = chargeDirection * modifiedSpeed;
+                rbody.linearVelocity = chargeDirection * modifiedSpeed;
                 UpdateOrientation();
                 elapsed += Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
@@ -125,7 +125,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             if (rbody != null)
             {
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
             }
         }
 

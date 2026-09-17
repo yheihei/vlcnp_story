@@ -17,7 +17,7 @@ namespace VLCNP.Combat
         void FixedUpdate()
         {
             if (_rb == null) return;
-            Vector2 v = _rb.velocity;
+            Vector2 v = _rb.linearVelocity;
             if (v.sqrMagnitude < minSpeed * minSpeed) return;
 
             float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;

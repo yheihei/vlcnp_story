@@ -422,7 +422,7 @@ namespace VLCNP.Combat.EnemyAction
 
             if (body != null)
             {
-                body.velocity = Vector2.zero;
+                body.linearVelocity = Vector2.zero;
                 body.angularVelocity = 0f;
                 body.gravityScale = 0f;
                 body.constraints = RigidbodyConstraints2D.FreezeAll;

@@ -163,7 +163,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             if (rbody != null)
             {
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
             }
         }
 

@@ -93,7 +93,7 @@ namespace VLCNP.Movement
             if (isDashing)
             {
                 float vx = mover.IsLeft ? -dashPower : dashPower;
-                rBody.velocity = new Vector2(vx, rBody.velocity.y);
+                rBody.linearVelocity = new Vector2(vx, rBody.linearVelocity.y);
             }
         }
 

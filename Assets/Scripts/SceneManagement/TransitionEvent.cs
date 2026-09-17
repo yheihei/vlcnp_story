@@ -203,7 +203,7 @@ namespace VLCNP.SceneManagement
                 frozenPlayers.Add(
                     new FrozenPlayer { Rigidbody = rbody, Constraints = rbody.constraints }
                 );
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
                 rbody.angularVelocity = 0f;
                 rbody.constraints = RigidbodyConstraints2D.FreezeAll;
             }
@@ -219,7 +219,7 @@ namespace VLCNP.SceneManagement
                 if (frozen.Rigidbody == null)
                     continue;
                 frozen.Rigidbody.constraints = frozen.Constraints;
-                frozen.Rigidbody.velocity = Vector2.zero;
+                frozen.Rigidbody.linearVelocity = Vector2.zero;
                 frozen.Rigidbody.angularVelocity = 0f;
             }
             frozenPlayers.Clear();

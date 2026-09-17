@@ -123,13 +123,13 @@ namespace VLCNP.Movement
         public bool IsGrabbing()
         {
             // 地面についておらず、壁に衝突し、かつ下降中であれば壁をつかんでいると判定
-            return !leg.IsGround && isColliding && playerRigidbody2D.velocity.y < 0;
+            return !leg.IsGround && isColliding && playerRigidbody2D.linearVelocity.y < 0;
         }
 
         void Update()
         {
             // ジャンプの開始判定
-            if (IsKabekick() && PlayerInputAdapter.WasJumpPressed("space") && playerRigidbody2D.velocity.y < -0.1)
+            if (IsKabekick() && PlayerInputAdapter.WasJumpPressed("space") && playerRigidbody2D.linearVelocity.y < -0.1)
             {
                 isJumping = true;
                 PlayJumpSound();
@@ -167,12 +167,12 @@ namespace VLCNP.Movement
             {
                 return;
             }
-            if (playerRigidbody2D.velocity.y >= 0)
+            if (playerRigidbody2D.linearVelocity.y >= 0)
             {
                 return;
             }
             // ジャンプ前に縦方向の速度を0にする
-            playerRigidbody2D.velocity = new Vector2(playerRigidbody2D.velocity.x, 0);
+            playerRigidbody2D.linearVelocity = new Vector2(playerRigidbody2D.linearVelocity.x, 0);
             // 斜め方向にジャンプ 左向きなら右方向に、右向きなら左方向にジャンプ
             float _jumpPowerX = playerMover.IsLeft ? jumpPowerX : -1 * jumpPowerX;
             playerRigidbody2D.AddForce(new Vector2(_jumpPowerX, jumpPowerY), ForceMode2D.Impulse);
@@ -191,21 +191,21 @@ namespace VLCNP.Movement
                 return;
             }
             // カベキック中でないか、上昇中の場合は重力は元に戻す
-            if (!IsKabekick() || playerRigidbody2D.velocity.y >= 0)
+            if (!IsKabekick() || playerRigidbody2D.linearVelocity.y >= 0)
             {
                 playerRigidbody2D.gravityScale = originalGravity;
                 return;
             }
             // カベキック中かつ落下中であれば重力を減らす
-            playerRigidbody2D.velocity = new Vector2(0f, playerRigidbody2D.velocity.y);
+            playerRigidbody2D.linearVelocity = new Vector2(0f, playerRigidbody2D.linearVelocity.y);
             playerRigidbody2D.gravityScale = originalGravity * gravityWhenKabeKickMagnification;
 
             // Y方向の速度はmaxAbsoluteVelocityYを超えないようにする
-            if (Mathf.Abs(playerRigidbody2D.velocity.y) > maxAbsoluteVelocityY)
+            if (Mathf.Abs(playerRigidbody2D.linearVelocity.y) > maxAbsoluteVelocityY)
             {
-                playerRigidbody2D.velocity = new Vector2(
-                    playerRigidbody2D.velocity.x,
-                    maxAbsoluteVelocityY * Mathf.Sign(playerRigidbody2D.velocity.y)
+                playerRigidbody2D.linearVelocity = new Vector2(
+                    playerRigidbody2D.linearVelocity.x,
+                    maxAbsoluteVelocityY * Mathf.Sign(playerRigidbody2D.linearVelocity.y)
                 );
             }
         }
@@ -218,13 +218,13 @@ namespace VLCNP.Movement
                 return false;
             }
             // x方向に移動していれば壁ではないので何もしない
-            if (playerRigidbody2D.velocity.x != 0f)
+            if (playerRigidbody2D.linearVelocity.x != 0f)
             {
                 effectElapsedTime = 0f;
                 return false;
             }
             // y方向の速度が一定以上であれば何もしない
-            if (playerRigidbody2D.velocity.y >= -0.05f)
+            if (playerRigidbody2D.linearVelocity.y >= -0.05f)
             {
                 effectElapsedTime = 0f;
                 return false;

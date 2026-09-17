@@ -119,7 +119,7 @@ namespace VLCNP.Combat.EnemyAction
             {
                 yield return null;
             }
-            rBody.velocity = new Vector2(0, 0);
+            rBody.linearVelocity = new Vector2(0, 0);
             // カメラを揺らす
             if (impulseSource != null)
             {

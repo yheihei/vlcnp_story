@@ -99,9 +99,9 @@ namespace VLCNP.Movement
         {
             EndJump();
             // 落下速度がマイナスで着地の際は落下速度を0にしてバウンドを回避
-            if (rBody.velocity.y < 0)
+            if (rBody.linearVelocity.y < 0)
             {
-                rBody.velocity = new Vector2(rBody.velocity.x, 0);
+                rBody.linearVelocity = new Vector2(rBody.linearVelocity.x, 0);
             }
         }
 
@@ -117,7 +117,7 @@ namespace VLCNP.Movement
                 return;
             }
 
-            rBody.velocity = new Vector2(rBody.velocity.x, 0);
+            rBody.linearVelocity = new Vector2(rBody.linearVelocity.x, 0);
 
             // ジャンプの速度をアニメーションカーブから取得
             float t = jumpTime / maxJumpTime;

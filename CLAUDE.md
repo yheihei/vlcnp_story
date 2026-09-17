@@ -12,8 +12,12 @@
 作業別の手順書が `.agents/skills/<name>/SKILL.md` にある。該当する作業を始める前に対応する SKILL.md を読み、その手順に従うこと。
 (Claude Code からは `.claude/skills` → `.agents/skills` のシンボリックリンク経由で同じものが見える)
 
+## Editor操作
+
+公式Unity CLIと `com.unity.pipeline` を使う。このプロジェクトではUniCLIを使わない。`.agents/skills/unity-editor-automation/SKILL.md` と公式の `unity-cli` / `unity-pipeline` を参照する。
+
 ## プロジェクト概要
-- **エンジン**: Unity 2022.3
+- **エンジン**: Unity 6.3 LTS / 6000.3.24f1
 - **ビルド対象**: Windows / macOS Standalone(Steam 配信)
 - **主目的**: メトロイドヴァニア型 2D アクション
 - **ゴール**: 2026年12月末に Steam でリリース(¥980 / 発売時は日本語のみ)。発売時ウィッシュリスト 2,500 → 発売後1年で累計販売 1,000 本

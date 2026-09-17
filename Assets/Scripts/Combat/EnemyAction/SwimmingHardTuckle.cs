@@ -74,7 +74,7 @@ namespace VLCNP.Combat.EnemyAction
             rbody.AddForce(playerDirection.normalized * swimPower);
             yield return new WaitForSeconds(strokeInterval);
             // 止める
-            rbody.velocity = new Vector2(0, 0);
+            rbody.linearVelocity = new Vector2(0, 0);
             IsDone = true;
         }
 
@@ -110,7 +110,7 @@ namespace VLCNP.Combat.EnemyAction
         private IEnumerator StopYVelocity()
         {
             yield return new WaitForSeconds(0.2f);
-            rbody.velocity = new Vector2(rbody.velocity.x, 0);
+            rbody.linearVelocity = new Vector2(rbody.linearVelocity.x, 0);
         }
 
         public void OnWaterExit()

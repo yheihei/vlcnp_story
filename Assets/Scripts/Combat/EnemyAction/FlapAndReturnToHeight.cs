@@ -95,7 +95,7 @@ namespace VLCNP.Combat.EnemyAction
                     * bobAmplitude * damp;
                 float desiredY = baseY + bob;
 
-                rbody.velocity = new Vector2(
+                rbody.linearVelocity = new Vector2(
                     0f,
                     (desiredY - cachedTransform.position.y) / deltaTime
                 );
@@ -120,7 +120,7 @@ namespace VLCNP.Combat.EnemyAction
                     -modifiedSpeed,
                     modifiedSpeed
                 );
-                rbody.velocity = new Vector2(0f, velocityY);
+                rbody.linearVelocity = new Vector2(0f, velocityY);
                 yield return waitForFixedUpdate;
             }
 
@@ -147,7 +147,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             if (rbody != null)
             {
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
             }
         }
 

@@ -177,16 +177,16 @@ namespace VLCNP.Movement
             switch (thrustDirection)
             {
                 case ThrustDirection.Up:
-                    rBody.velocity = new Vector2(rBody.velocity.x, boostSpeed);
+                    rBody.linearVelocity = new Vector2(rBody.linearVelocity.x, boostSpeed);
                     break;
                 case ThrustDirection.Down:
-                    rBody.velocity = new Vector2(rBody.velocity.x, -boostSpeed);
+                    rBody.linearVelocity = new Vector2(rBody.linearVelocity.x, -boostSpeed);
                     break;
                 case ThrustDirection.Left:
-                    rBody.velocity = new Vector2(-boostSpeed, 0f);
+                    rBody.linearVelocity = new Vector2(-boostSpeed, 0f);
                     break;
                 case ThrustDirection.Right:
-                    rBody.velocity = new Vector2(boostSpeed, 0f);
+                    rBody.linearVelocity = new Vector2(boostSpeed, 0f);
                     break;
             }
         }
@@ -293,11 +293,11 @@ namespace VLCNP.Movement
             switch (thrustDirection)
             {
                 case ThrustDirection.Up:
-                    rBody.velocity = new Vector2(rBody.velocity.x, rBody.velocity.y / 2f);
+                    rBody.linearVelocity = new Vector2(rBody.linearVelocity.x, rBody.linearVelocity.y / 2f);
                     break;
                 case ThrustDirection.Left:
                 case ThrustDirection.Right:
-                    rBody.velocity = new Vector2(rBody.velocity.x / 2f, rBody.velocity.y);
+                    rBody.linearVelocity = new Vector2(rBody.linearVelocity.x / 2f, rBody.linearVelocity.y);
                     break;
             }
             PerfLog.Log(

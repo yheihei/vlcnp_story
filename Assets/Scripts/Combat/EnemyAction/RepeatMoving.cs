@@ -130,7 +130,7 @@ namespace VLCNP.Combat.EnemyAction
         private void UpdateMoveSpeed(float _vx)
         {
             vx = _vx;
-            rbody.velocity = new Vector2(vx, rbody.velocity.y);
+            rbody.linearVelocity = new Vector2(vx, rbody.linearVelocity.y);
             animator?.SetFloat("vx", Mathf.Abs(vx));
         }
 

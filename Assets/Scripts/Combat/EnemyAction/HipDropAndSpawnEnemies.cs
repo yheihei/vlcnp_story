@@ -148,7 +148,7 @@ namespace VLCNP.Combat.EnemyAction
             yield return new WaitForSeconds(0.5f);
             // 重力加速度を2倍にして強力な下方向の加速度を与える
             rBody.gravityScale = originalGravityScale * 2;
-            rBody.velocity = new Vector2(0, -verticalForce);
+            rBody.linearVelocity = new Vector2(0, -verticalForce);
             // 着地まで待機
             float timeout = 5.0f; // 5秒のタイムアウト
             float startTime = Time.time;
@@ -162,7 +162,7 @@ namespace VLCNP.Combat.EnemyAction
                 }
                 yield return null;
             }
-            rBody.velocity = new Vector2(0, 0);
+            rBody.linearVelocity = new Vector2(0, 0);
             // カメラを揺らす
             if (impulseSource != null)
             {

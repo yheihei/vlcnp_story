@@ -140,7 +140,7 @@ namespace VLCNP.Movement
 
         private void UpdateMoveSpeed()
         {
-            rbody.velocity = new Vector2(vx, rbody.velocity.y);
+            rbody.linearVelocity = new Vector2(vx, rbody.linearVelocity.y);
         }
 
         private void UpdateCharacterDirection()
@@ -166,7 +166,7 @@ namespace VLCNP.Movement
         public void OnWaterEnter()
         {
             isInWater = true;
-            rbody.velocity = rbody.velocity / 2;
+            rbody.linearVelocity = rbody.linearVelocity / 2;
         }
 
         public void OnWaterExit()

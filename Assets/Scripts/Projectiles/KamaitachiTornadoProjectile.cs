@@ -230,7 +230,7 @@ namespace VLCNP.Projectiles
 
             if (rbody != null)
             {
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
                 rbody.simulated = false;
             }
 
@@ -276,7 +276,7 @@ namespace VLCNP.Projectiles
 
             if (rbody != null)
             {
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
                 rbody.simulated = false;
             }
 

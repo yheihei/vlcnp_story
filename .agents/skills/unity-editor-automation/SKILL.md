@@ -1,25 +1,30 @@
 ---
 name: unity-editor-automation
-description: vlcnpStory2022 を UniCli で操作するときの保存、一時スクリプト、Eval 停止対策。
+description: vlcnpStory6 を公式Unity CLIとPipelineで操作するときの接続、保存、一時処理、復旧手順。
 ---
 
 # Unity Editor 操作の補足
 
-UniCli のコマンド探索・Import・Compile は、利用可能な `unity-development` skill に従う。ここではこのプロジェクト固有の制約を扱う。
+このプロジェクトはUnity 6.3 LTS。UniCLIは使わず、公式の [unity-cli](../unity-cli/SKILL.md) と [unity-pipeline](../unity-pipeline/SKILL.md) を使う。
+
+## 接続と実行
+
+- `unity status --format json` で対象と接続を確認する。`unity command` で実際のコマンドと引数を取得し、UniCLIの名前を流用しない。
+- 操作には `--project-path <このプロジェクトの絶対パス>` と `--caller plugin --skill <使用Skill名>` を付ける。CLIは1.0.0-beta.10以降が必要。
+- 自動操作前に `set_autotick --enable true`。編集前は `editor_status` とシーンのdirty状態を確認する。dirtyは `UnityEngine.SceneManagement.SceneManager` から取得できる。
+- C#変更後は `recompile` を起動し、`recompile_status` の完了とエラーを確認する。ドメイン再読み込み中の一時的な切断を失敗と決めつけない。
+- パッケージの追加・削除は、現在のPipelineにある `package_add` / `package_remove` を使い、`package_status` と再コンパイル完了を確認する。
 
 ## 保存と一時処理
 
-- シーンは `Scene.Save`、Prefab は変更方法に応じて `Prefab.Save` / `Prefab.Apply` で保存する。対象の保存を確認し、他の作業の dirty 状態を一括保存・破棄して解消しない。
-- シーン・Prefab の実データを正とする。自動処理は対象への差分更新にし、全削除・再配置でユーザーの手調整を上書きしない。
-- 反復処理に一時的な `[MenuItem]` スクリプトを使った場合、作業後にそのスクリプトと `.meta` を除く。追跡済みなら `git rm`、未追跡なら通常の削除を使う。繰り返し使う計測・検証ツールは残してよい。
-- 一時 C# の削除後も Refresh / Import と Compile を確認する。古い生成テーブルの再実行を将来の編集方法として残さない。
+- シーンは対象を指定した `save_scene`、Prefabは変更方法に応じた保存APIで保存する。他の作業のdirty状態を一括保存・破棄して解消しない。
+- シーン・Prefabの実データを正とする。自動処理は対象への差分更新にし、全削除・再配置でユーザーの手調整を上書きしない。
+- 複数行の処理はファイルに書いて `run_script` で実行する。一時検査はAssets外に置ける。残すEditor拡張は `Assets/Scripts/Editor/` に置く。
+- 一時C#をAssets内に置いた場合は作業後に `.meta` とともに除き、Refreshと再コンパイルを確認する。古い生成処理を将来の編集方法として残さない。
+- `eval` は短い単発処理に限る。型名が曖昧なら `UnityEngine.Object` のように完全修飾する。
 
-## Eval の制約
+## 実行時の検査と復旧
 
-- `Eval` は Edit Mode 専用。Play Mode 中はコンパイル待ちに陥り、サーバーが `Server is busy executing 'Eval'` のまま停止する。タイムアウトで解消しない。
-- Play Mode 中は対応する非 Eval コマンドを使う。挙動の観察手順は必要なときだけ [Play Mode 検証](../unity-playmode-verification/SKILL.md) を読む。
-- Eval の型名が曖昧なら `UnityEngine.Object` のように完全修飾する。長い処理や再利用する処理にはエディタスクリプトを検討する。
+Play Modeは `editor_play` / `editor_stop`、観察は `find_gameobjects`、`get_component_properties`、`console`、`capture_game_view` を使う。必要に応じて [Play Mode検証](../unity-playmode-verification/SKILL.md) を読む。
 
-## 応答やダイアログに問題があるとき
-
-タイムアウト、残留した `Compiling Scripts`、操作不能の報告がある場合に [Editor の復旧](references/editor-recovery.md) を読む。正常に完了したすべての操作へ UI 点検や復旧処理を追加しない。
+タイムアウトは処理の取消しではない。初回のシーン読み込みがタイムアウトしても後から完了する場合がある。同じ操作を再送せず、画面とEditorログを確認する。操作不能や残留する進捗表示には [Editorの復旧](references/editor-recovery.md) を使う。

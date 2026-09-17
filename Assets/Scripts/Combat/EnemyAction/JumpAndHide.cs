@@ -60,7 +60,7 @@ namespace VLCNP.Combat.EnemyAction
             //hidePositionに移動し、重力加速度を0にして浮いておく
             transform.position = hidePosition.position;
             rBody.gravityScale = 0;
-            rBody.velocity = Vector2.zero;
+            rBody.linearVelocity = Vector2.zero;
             // 透明解除
             if (spriteRenderer != null)
             {

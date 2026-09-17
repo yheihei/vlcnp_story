@@ -30,7 +30,7 @@ namespace VLCNP.Movement
         public void Move()
         {
             velocityX = speed;
-            rBody.velocity = new Vector2(velocityX, rBody.velocity.y);
+            rBody.linearVelocity = new Vector2(velocityX, rBody.linearVelocity.y);
             animator.SetFloat("vx", velocityX);
         }
 

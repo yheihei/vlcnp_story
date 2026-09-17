@@ -118,7 +118,7 @@ namespace VLCNP.Combat.EnemyAction
                 {
                     velocity = velocity.normalized * maxSpeed;
                 }
-                rbody.velocity = velocity;
+                rbody.linearVelocity = velocity;
                 if (Mathf.Abs(velocity.x) > 0.01f)
                 {
                     SetDirection(velocity.x < 0f);
@@ -216,7 +216,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             if (rbody != null)
             {
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
             }
         }
 

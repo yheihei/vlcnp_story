@@ -283,7 +283,7 @@ namespace VLCNP.Combat.EnemyAction
             vy = newVy;
             if (rbody != null)
             {
-                rbody.velocity = new Vector2(vx, vy);
+                rbody.linearVelocity = new Vector2(vx, vy);
             }
             animator?.SetFloat("vx", Mathf.Abs(vx));
         }

@@ -80,7 +80,7 @@ namespace VLCNP.Combat
 
             // 初期速度を設定
             int directionX = isLeft ? -1 : 1;
-            rb.velocity = new Vector2(directionX * speed, 0);
+            rb.linearVelocity = new Vector2(directionX * speed, 0);
 
             // 自動削除
             if (deleteTime > 0)
@@ -98,7 +98,7 @@ namespace VLCNP.Combat
             if (rb != null)
             {
                 int directionX = isLeft ? -1 : 1;
-                rb.velocity = new Vector2(directionX * speed, rb.velocity.y);
+                rb.linearVelocity = new Vector2(directionX * speed, rb.linearVelocity.y);
             }
         }
 
@@ -140,11 +140,11 @@ namespace VLCNP.Combat
                 2 * Physics2D.gravity.magnitude * gravityScale * maxBounceHeight
             );
 
-            Vector2 velocity = rb.velocity;
+            Vector2 velocity = rb.linearVelocity;
             if (velocity.y > maxVelocityY)
             {
                 velocity.y = maxVelocityY;
-                rb.velocity = velocity;
+                rb.linearVelocity = velocity;
             }
         }
 
@@ -230,10 +230,10 @@ namespace VLCNP.Combat
             }
 
             // 水平速度を維持（重力による影響を受けないように）
-            Vector2 velocity = rb.velocity;
+            Vector2 velocity = rb.linearVelocity;
             int directionX = isLeft ? -1 : 1;
             velocity.x = directionX * speed;
-            rb.velocity = velocity;
+            rb.linearVelocity = velocity;
         }
 
         private void UpdateDirection()

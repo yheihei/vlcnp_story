@@ -108,7 +108,7 @@ namespace VLCNP.Combat.EnemyAction
                 position.x += Mathf.Sin(phase) * amplitude;
                 position.y +=
                     Mathf.Sin(rate * Mathf.PI * 2f * verticalBobCycles) * verticalBobAmplitude;
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
                 rbody.MovePosition(position);
 
                 elapsed += Time.fixedDeltaTime;
@@ -124,7 +124,7 @@ namespace VLCNP.Combat.EnemyAction
         {
             if (rbody != null)
             {
-                rbody.velocity = Vector2.zero;
+                rbody.linearVelocity = Vector2.zero;
             }
         }
     }

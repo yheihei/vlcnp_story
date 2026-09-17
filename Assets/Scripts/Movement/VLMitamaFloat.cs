@@ -114,7 +114,7 @@ namespace VLCNP.Movement
                 return;
 
             fuelSeconds = Mathf.Max(0f, fuelSeconds - Time.fixedDeltaTime);
-            rBody.velocity = new Vector2(rBody.velocity.x, floatVelocityY);
+            rBody.linearVelocity = new Vector2(rBody.linearVelocity.x, floatVelocityY);
 
             if (fuelSeconds <= 0f)
             {
@@ -135,7 +135,7 @@ namespace VLCNP.Movement
                 && !IsWaterBlocking()
                 && !IsKabeBlocking()
                 && !IsThrusterBlocking()
-                && rBody.velocity.y <= activationVelocityY;
+                && rBody.linearVelocity.y <= activationVelocityY;
         }
 
         private bool ShouldStopFloating()

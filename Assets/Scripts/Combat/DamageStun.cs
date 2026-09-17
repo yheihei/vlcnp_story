@@ -45,7 +45,7 @@ namespace VLCNP.Combat
                 isStunned = true;
                 if (TryCacheRigidbody())
                 {
-                    originalVelocity = rb.velocity; // 現在の速度を保存
+                    originalVelocity = rb.linearVelocity; // 現在の速度を保存
                 }
                 StartCoroutine(Shake()); // ブルブル効果開始
             }
@@ -78,7 +78,7 @@ namespace VLCNP.Combat
             transform.position = originalPosition; // 元の位置に戻す
             if (TryCacheRigidbody())
             {
-                rb.velocity = originalVelocity; // 保存した速度を復元
+                rb.linearVelocity = originalVelocity; // 保存した速度を復元
             }
             isStunned = false;
         }

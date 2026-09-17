@@ -27,7 +27,7 @@ namespace VLCNP.Combat
             if (!isStunned) // すでにStunned状態でないことを確認
             {
                 isStunned = true;
-                rb.velocity = Vector2.zero;
+                rb.linearVelocity = Vector2.zero;
                 StartCoroutine(StunRecovery());
             }
         }
