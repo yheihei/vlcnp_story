@@ -12,6 +12,14 @@
 作業別の手順書が `.agents/skills/<name>/SKILL.md` にある。該当する作業を始める前に対応する SKILL.md を読み、その手順に従うこと。
 (Claude Code からは `.claude/skills` → `.agents/skills` のシンボリックリンク経由で同じものが見える)
 
+### Unity公式Skills
+
+- Codexに `unity@unity-agent-plugin` を導入済み。UI、Sprite、Tilemap、音声などの作業では、該当する公式Skillとプロジェクト固有の手順を併用する。
+- 公式プラグインと `com.unity.pipeline` のサポート対象はUnity 6.0以降。Unity 2022.3では公式Skillを参考資料として使い、コード例や推奨パッケージは現在のバージョンとの互換性を確認する。
+- このプロジェクトがUnity 2022.3の間は、Editor操作に既存のUniCliを使う。公式の `unity command` は別のCLIであり、そのまま置き換えない。Skillの導入だけを理由にPipelineの追加やUnityの更新を行わない。
+- 公式Skillの一般的な推奨で、既存のUI方式・フォント・アセット構成を一括変更しない。変更は依頼対象に限る。
+- 導入時の確認結果は `docs/unity-official-skills-trial-2026-09-17.md` を参照。
+
 ## プロジェクト概要
 - **エンジン**: Unity 2022.3
 - **ビルド対象**: Windows / macOS Standalone(Steam 配信)
