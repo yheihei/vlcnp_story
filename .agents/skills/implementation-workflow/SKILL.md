@@ -1,43 +1,18 @@
 ---
 name: implementation-workflow
-description: Proportionate implementation workflow for vlcnpStory2022. Use at the start of non-trivial development tasks in this repository to investigate existing code, make minimal changes, choose verification based on the change type, and report honestly in Japanese.
+description: vlcnpStory2022 の機能追加・不具合修正で、既存実装の再利用と変更に応じた検証範囲を判断する。
 ---
 
 # 実装ワークフロー
 
-この skill は、このリポジトリでタスクを完遂するための標準フローを定める。変更内容に応じた調査と検証だけを適用する。
+依頼された結果が実装され、必要な検証と保存が済むまで進める。完了条件は依頼と既存の文脈から判断し、結果を左右する不足情報だけ確認する。
 
-## 1. 着手前(調査)
+- 機能追加や設計変更では、関連する既存実装を検索する。再利用候補は `Health`、`Flag`、`FallMissZone`、`CameraConfineArea` など。小さな修正に全体調査を追加しない。
+- C#・アセットの配置やシリアライズを変えるときは [プロジェクト規約](../unity-project-conventions/SKILL.md) を使う。
+- Unity を操作するときは [Editor 操作](../unity-editor-automation/SKILL.md) を使う。まとまった C# 変更を Import して Compile し、その後に編集がなければ同じ検証を繰り返さない。
+- 実行時の挙動は関連テストで確認する。直接観察が必要なら [Play Mode 検証](../unity-playmode-verification/SKILL.md) を使う。シーン・Prefab は対象の保存も確認する。
+- 文書・Skill だけの変更では、参照や形式を検証する。Unity の起動・コンパイル・Play Mode は不要。
+- 失敗が続く場合はログや状態を調べ、原因に応じて手段を変える。回数だけを理由に中断しない。
+- commit / push を行うときは [Git 規約](../git-workflow/SKILL.md) を使う。
 
-- 完了条件を明確にしてから着手する。issue 番号があれば控える。
-- 機能追加や設計変更では、類似の既存実装を先に検索する(grep / `unicli exec Search` / `unicli exec AssetDatabase.Find`)。Health, Flag, FallMissZone, CameraConfineArea など、適用できる既存部品を再利用する。
-- シーンまたはプレハブを変更する場合だけ、必要に応じて `Editor.Status` / `GameObject.GetHierarchy` で現状を確認する。
-
-## 2. 実装
-
-- 最小差分で書く。依頼されていないリファクタや「ついで修正」をしない。
-- 規約は `unity-project-conventions` skill に従う。
-- C# のまとまった変更後と完了報告前に、対象アセットを `AssetDatabase.Import` して `Compile` する(手順は `unity-editor-automation` skill)。編集途中の保存ごとにコンパイルする必要はない。
-- 同じアプローチで 3 回失敗したら、繰り返さずにアプローチを変えるか、状況と選択肢をユーザーに報告する。
-
-## 3. 検証
-
-- 変更種別に応じて検証を選ぶ。
-  - C# 変更: 最終的に `Compile` する。
-  - 実行時の挙動変更: 関連テストを実行し、有効なテストがなければ対象の挙動をプレイモードで確認する。
-  - シーン・プレハブ変更: 保存済みを確認し、実行時挙動に影響する場合だけプレイモードを使う。
-  - ドキュメント・Skill のみの変更: Unity での検証は不要。
-- プレイモードを使う場合は `unity-playmode-verification` skill の安全手順に従う。
-
-## 4. 報告・コミット
-
-- 日本語で報告する: 変更内容 / 検証結果 / 重要な未検証事項。結果の説明に必要な場合を除き、全コマンドを列挙しない。
-- コミットは `git-workflow` skill に従う(main 直コミット可、日本語メッセージ、`#issue番号`)。
-- 作業のために書いた Issue 用のエディタスクリプトは、完了報告の前に削除してコミットに含める(理由と手順は `unity-editor-automation` skill の「Issue 用エディタスクリプトの扱い」)。
-
-## 禁止事項
-
-- 検証せずに「動作します」と報告する(推測は推測と明記する)。
-- シーンやプレハブの手動修正を、エディタスクリプトの再実行で上書きする(生成物を全部消して置き直す方式を書かない)。
-- コンパイル結果を確認しないままコミットする。
-- Console のエラーや例外を握りつぶして進める(`Console.GetLog` で確認し、原因を潰す)。
+日本語で、変更結果・実際の検証結果・重要な未検証事項を伝える。既存のエラーと変更で生じたエラーを区別し、未検証の動作を確認済みとしない。

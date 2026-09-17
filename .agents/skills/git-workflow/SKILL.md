@@ -1,42 +1,14 @@
 ---
 name: git-workflow
-description: Git workflow rules for the vlcnpStory2022 repository. Use when an agent working in this repository needs to commit, push, choose whether to create a branch, write a commit message, or handle issue-linked work.
+description: vlcnpStory2022 で commit・push・ブランチ操作を行うときの規約。
 ---
 
-# Git Workflow
+# Git 規約
 
-## Overview
+- `main` に直接 commit・push してよい。ブランチ作成が指定されていなければ、作業のためだけに feature ブランチを作らない。既存の作業ブランチを勝手に切り替えない。
+- 依頼範囲のデバッグ用変更も同じ扱いとする。確認を繰り返す必要はない。
+- commit message は日本語。関連 issue が分かっている場合は `#618` の形で含める。例: `ジャンプタイミングを修正 #618`。
+- issue が不明なら捏造せず省略する。番号だけを理由に作業を止めない。
+- stage する差分を確認し、ユーザーや他の作業の変更を巻き込まない。グローバルの Skill はこのリポジトリの commit に含まれない。
 
-この skill はこのリポジトリ(vlcnpStory2022)の commit / push 方針を定義する。ユーザーへの応答は日本語で行う。
-
-## Project Context
-
-- Unity: 2022.3
-- Target: Windows / macOS Standalone (Steam)
-- Genre: Metroidvania-style 2D action
-- Goal: Steam release at the end of December 2026 (JPY 980, Japanese only at launch); 2,500 wishlists at launch, 1,000 copies sold in the first year
-- Near-term milestone: Steam Next Fest in October 2026 — demo quality is the priority
-
-## Directory Scope
-
-実装作業では主に次のディレクトリを使う。
-
-- `Assets/Scripts/`: gameplay logic
-- `Assets/Game/`: prefabs
-- `Assets/Scenes/`: scenes
-
-ユーザーが明示した場合、または依頼を安全に完了するために必要な場合を除き、他のディレクトリは実装対象外として扱う。
-
-## Git Rules
-
-- ユーザーが明示的に依頼しない限り、feature ブランチを作らない。
-- `main` に直接 commit して push してよい。
-- デバッグ用の変更(シーン内のデバッグ用フラグプリセットの値変更、Debug メニューの追加など)は、ユーザーに断らずに commit して push してよい(2026-09-07 指示)。
-- commit messageは日本語
-- 元の issue がある場合、commit message に issue 番号を `#618` の形式で含める。
-- issue 番号がローカル文脈から分からない場合は、捏造せず、ユーザーに確認するか省略する。
-- issue 番号が分かっている場合、commit message は `プレイヤーのジャンプタイミングを修正 #618` のように簡潔にする。
-
-## Validation
-
-コード変更時は、利用可能なプロジェクトツールで Unity の検証を優先する。C# 編集では実行可能な範囲でコンパイルまたは関連 Unity テストを実行し、検証できなかった場合は明記する。
+この規約は Git 操作を許可するもので、閲覧や相談の依頼に commit・push を追加する指示ではない。検証は変更内容に応じたものを使い、C# を変更していない作業に Unity コンパイルを課さない。

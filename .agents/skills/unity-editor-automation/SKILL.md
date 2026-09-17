@@ -1,61 +1,25 @@
 ---
 name: unity-editor-automation
-description: >-
-  Project-specific supplements for Unity Editor automation in vlcnpStory2022.
-  Apply together with the `unity-development` skill when a task uses UniCli;
-  this skill adds the project workflow, save requirements, and the Play Mode
-  Eval deadlock safeguard, plus safe cleanup of stale Compiling Scripts
-  progress dialogs after automation.
+description: vlcnpStory2022 を UniCli で操作するときの保存、一時スクリプト、Eval 停止対策。
 ---
 
-# Unity エディタ操作のプロジェクト補足
+# Unity Editor 操作の補足
 
-UniCli による標準的な操作、コマンド探索、`AssetDatabase.Import`、コンパイル、テストの手順は、必ず **`unity-development` skill** に従う。本 skill はその内容を重複させず、vlcnpStory2022 固有の追加ルールだけを定める。
+UniCli のコマンド探索・Import・Compile は、利用可能な `unity-development` skill に従う。ここではこのプロジェクト固有の制約を扱う。
 
-## 作業フロー
+## 保存と一時処理
 
-1. Unity エディタを操作するタスクでは、まず `unity-development` skill を適用する。
-2. 変更種別に応じた実装・検証は `implementation-workflow` skill に従う。ランタイム観察が必要なときだけ `unity-playmode-verification` skill を追加で使う。
-3. シーンを変更したら `Scene.Save` を実行する。プレハブを変更したら `Prefab.Save` または `Prefab.Apply` を実行し、未保存の変更が残っていないことを `Editor.Status` で確認する。
-4. UniCli のコマンドや引数は記憶に頼らず、`unity-development` で定めるコマンド探索手順で確認する。
+- シーンは `Scene.Save`、Prefab は変更方法に応じて `Prefab.Save` / `Prefab.Apply` で保存する。対象の保存を確認し、他の作業の dirty 状態を一括保存・破棄して解消しない。
+- シーン・Prefab の実データを正とする。自動処理は対象への差分更新にし、全削除・再配置でユーザーの手調整を上書きしない。
+- 反復処理に一時的な `[MenuItem]` スクリプトを使った場合、作業後にそのスクリプトと `.meta` を除く。追跡済みなら `git rm`、未追跡なら通常の削除を使う。繰り返し使う計測・検証ツールは残してよい。
+- 一時 C# の削除後も Refresh / Import と Compile を確認する。古い生成テーブルの再実行を将来の編集方法として残さない。
 
-## Issue 用エディタスクリプトの扱い
+## Eval の制約
 
-シーンやプレハブをまとめて触るために `Assets/Scripts/Editor/` に `[MenuItem]` 付きの一時スクリプトを書いてよい。ただし次を守る。
+- `Eval` は Edit Mode 専用。Play Mode 中はコンパイル待ちに陥り、サーバーが `Server is busy executing 'Eval'` のまま停止する。タイムアウトで解消しない。
+- Play Mode 中は対応する非 Eval コマンドを使う。挙動の観察手順は必要なときだけ [Play Mode 検証](../unity-playmode-verification/SKILL.md) を読む。
+- Eval の型名が曖昧なら `UnityEngine.Object` のように完全修飾する。長い処理や再利用する処理にはエディタスクリプトを検討する。
 
-1. **手動修正を破棄しない。** 「前回の生成物を全部消してから置き直す(Remove → Apply)」方式や、テーブルの値でシーン全体を上書きする方式は使わない。既存オブジェクトには差分だけを入れ、置き直すのは自分がその実行で新しく作るものに限る。複数シーンに同じ変更を入れるときも、シーンごとに対象を特定して変更する。
-2. **使い終わったら削除する。** 完了報告の前にスクリプトと `.meta` を `git rm` し、`AssetDatabase.Refresh` 後に `Compile` でエラー 0 を確認してからコミットする。残すのは、性能計測や検証のように今後も繰り返し使う汎用ツールだけ。
-3. スクリプトに「手直しは表へ戻す」「再実行で置き直せる」といった運用を前提にした注記を書かない。正はシーン・プレハブ側の実データとする。
+## 応答やダイアログに問題があるとき
 
-理由: ユーザーはシーン上で直接、霧の位置やカメラなどを手で調整する。一括で置き直すスクリプトが残っていると、後で別の目的で再実行したときにその手調整が先祖返りする(2026-09-07、土エリアの環境演出で実際に起きた)。また使い終わったスクリプトは、何を前提に動くか分からなくなった頃に誤って実行される危険があるため、残さない。
-
-## 作業完了時の残留コンパイルダイアログ
-
-C# の変更、`Compile`、または `Eval` を伴う作業では、最終報告の前に次を実行する。
-
-1. `unicli exec Editor.Status` で `Playing`、`Compiling`、`Updating`、`Dirty scenes` を確認する。
-2. `Compiling: True` または `Updating: True` なら実処理中なので進捗表示を消さず、完了を待ってから再確認する。
-3. `Compiling: False` かつ `Updating: False` になったら、UI を確認できる環境では `computer-use` skill を適用し、Unity の最前面に `Compiling Scripts` / `ScriptCompilation: Running Backend` が残っていないかアクセシビリティ情報で確認する。ユーザーから残留の報告があった場合も同じ扱いにする。
-4. ダイアログが残り、かつ `Playing: False` の場合だけ、次を一度実行する。
-
-```bash
-unicli eval 'UnityEditor.EditorUtility.ClearProgressBar(); return true;' --json
-```
-
-5. UI と `Editor.Status` を再確認し、ダイアログが消え、`Compiling: False` / `Updating: False` であることを確認してから完了を報告する。
-
-- `Playing: True` の間は上記 Eval を実行しない。エージェント自身が開始した Play Mode なら停止してから再確認し、ユーザーが開始した可能性がある場合は勝手に停止しない。
-- 解除に失敗しても Eval やコンパイルを繰り返さない。Editor ログと `bee_backend` の有無を調査して報告する。
-- `Dirty scenes: Yes` の場合、残留ダイアログを理由に Unity を終了・再起動したり、所有者不明の変更を保存・破棄したりしない。
-
-## Eval の重要な制約
-
-- `Eval` は **エディットモード専用**。プレイモード中に実行するとコンパイルが保留され、サーバー全体が `Server is busy executing 'Eval'` のまま固まる。タイムアウトでは復旧せず、エディタ側でプレイモードを停止する必要がある。
-- プレイモード中の確認・操作には `Eval` ではなく、対応する非 Eval コマンドを使う。スクリーンショットはユーザーが明示的に依頼した場合だけ取得する。
-- Eval 内では `Object` の曖昧さを避けるため、`UnityEngine.Object` のように完全修飾する。
-- 複雑または反復的な処理は長い Eval ではなく、`Assets/Scripts/Editor/` に `[MenuItem]` 付きエディタスクリプトを置き、コンパイル後にメニューから実行する。例: `Assets/Scripts/Editor/KazeBossTilesetBuilder.cs`。
-
-## 問題が起きた場合
-
-- コマンドが返らない場合は、プレイモード中に Eval を実行していないか確認し、該当すればエディタ側でプレイモードを停止する。
-- エラーや警告の確認、アセットの再インポート、コンパイル確認は `unity-development` skill の手順に従う。
+タイムアウト、残留した `Compiling Scripts`、操作不能の報告がある場合に [Editor の復旧](references/editor-recovery.md) を読む。正常に完了したすべての操作へ UI 点検や復旧処理を追加しない。

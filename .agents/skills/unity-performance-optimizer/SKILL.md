@@ -1,65 +1,25 @@
 ---
 name: unity-performance-optimizer
-description: "Unity projects performance diagnosis and optimization guidance for gameplay code, UI, assets, physics, memory/GC, Windows/macOS standalone builds, and profiling. Use when asked to make a Unity game lighter or faster, reduce frame drops, improve FPS, remove GC allocations, optimize Update/FixedUpdate hot paths, improve uGUI/TMP/Animator/Input/physics usage, replace synchronous loading, investigate standalone build performance, or review Unity C# code for performance risks."
+description: vlcnpStory2022 の FPS低下・GC・ロード遅延を診断する、または性能レビューを依頼されたときに使う。
 ---
 
-# Unity Performance Optimizer
+# Unity 性能診断
 
-## Workflow
+対象は Windows / macOS Standalone。症状と再現経路を依頼や既存の計測から絞り、CPU・GPU・GC・メモリ・ロードのどこが支配的かを判断する。
 
-Optimize only after building a small evidence loop:
+計測できる場合は同じ場面のフレーム時間、割り当て量、ロード時間などを変更前後で比較する。Profiler がなくても静的レビューや原因の明らかな修正は進め、実測と推定を区別する。既知のボトルネックがあるなら全面スキャンは不要。
 
-1. Identify the target: platform, scene, symptom, target FPS, reproduction path, and whether the issue is CPU, GPU, memory, GC, loading, or input latency.
-2. Measure first when possible: Unity Profiler, Memory Profiler, Frame Debugger, Physics Profiler, build logs, standalone player attach/profiling, or a focused static scan.
-3. Make the smallest high-confidence change that targets the measured bottleneck.
-4. Re-run the same measurement and report before/after evidence. If measurement is unavailable, state the assumption and residual risk.
+## 調査の入口
 
-For Unity C# edits, also follow the `unity-development` skill: import changed assets and compile after script changes.
-
-## Static Scan
-
-Use `scripts/scan_unity_perf.py` for a first pass before manual edits:
+- コード全体の性能レビューや調査対象が未特定の場合は [静的スキャナー](scripts/scan_unity_perf.py) を使える。
+- 特定の問題への対策を選ぶときだけ [対策の判断材料](references/unity-performance-checklist.md) の該当項目を読む。
 
 ```bash
 python3 .agents/skills/unity-performance-optimizer/scripts/scan_unity_perf.py .
 ```
 
-Treat findings as triage hints, not proof. Prioritize hits inside `Update`, `FixedUpdate`, `LateUpdate`, `OnGUI`, `OnTriggerStay`, frequently fired callbacks, and empty Unity event methods that can be deleted.
+スキャン結果は候補であり、性能劣化の証明ではない。実行頻度と実測の寄与を優先し、未使用の Update や低頻度の LINQ を一律に修正しない。
 
-## Priority Rules
+挙動、シリアライズ、Prefab 互換性を保つ。Input System・Addressables・TMP への移行や物理設定変更は、性能修正の定型作業にしない。C# を編集する場合は [Editor 操作](../unity-editor-automation/SKILL.md) の Import / Compile を行う。
 
-Prefer changes in this order:
-
-1. Proven frame-time or allocation regressions from Profiler/Memory Profiler.
-2. Hot-path C# allocations and scene-wide searches.
-3. Synchronous loading or repeated instantiate/destroy bursts.
-4. UI rebuild/raycast waste and text update churn.
-5. Physics timestep, collision, and Rigidbody/Rigidbody2D work proven expensive in Profiler.
-6. Render batching/material/culling issues found with Frame Debugger.
-7. Architectural cleanup only when it directly removes repeated work or enables measurement/testing.
-
-Do not replace clear code with obscure micro-optimizations. Keep gameplay behavior identical unless the user explicitly asks for design changes.
-
-## Common Fixes
-
-Load `references/unity-performance-checklist.md` when you need specific patterns. It covers:
-
-- `GetComponent`, `transform`, `Camera.main`, `GameObject.Find`, `FindObjectOfType`, and Rigidbody/Rigidbody2D reference caching.
-- Reducing work in `Update` with events, dirty flags, timers, and pure C# logic classes.
-- Removing empty Unity event methods such as unused `Start`, `Update`, `FixedUpdate`, and `LateUpdate`.
-- Avoiding GC from LINQ, per-frame `new`, string churn, logging, and object creation/destruction.
-- Data structure choices for repeated lookup.
-- Distance comparisons, Animator hashes, `CompareTag`, Input System migration.
-- uGUI Canvas splitting, GraphicRaycaster removal, Raycast Target cleanup, TMP migration.
-- `MaterialPropertyBlock`, culling/LOD checks, Addressables, async IO, parallel independent loads.
-- Profiling loop and standalone build verification notes.
-
-## Reporting
-
-When finishing an optimization task, report:
-
-- what was measured or scanned;
-- files changed;
-- the bottleneck class addressed;
-- how to verify in Unity;
-- any remaining risks or measurements still needed.
+結果は変更点とその根拠、変更前後の測定値があればその比較、未計測の範囲を伝える。

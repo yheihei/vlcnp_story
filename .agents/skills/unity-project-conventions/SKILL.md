@@ -1,43 +1,34 @@
 ---
 name: unity-project-conventions
-description: Code, asset, and scene conventions for vlcnpStory2022. Use when creating or editing C# scripts, prefabs, ScriptableObject configs, scenes, or tilemaps — namespaces, file placement, tags, sorting layers, and which directories are off-limits.
+description: vlcnpStory2022 の C#・Prefab・シーンを変更するときに、配置・名前空間・既存のマップ構成を確認する。
 ---
 
 # プロジェクト規約
 
-## ファイル配置
+## 配置とコード
 
 | 種類 | 場所 |
-| ---- | ---- |
-| C# ゲームロジック | `Assets/Scripts/<カテゴリ>/`(Actions, Attributes, Combat, Control, Core, Effects, Movement, Pickups, Projectiles, Saving, SceneManagement, Stats, Steam, UI など) |
+| --- | --- |
+| ゲームロジック | `Assets/Scripts/<カテゴリ>/` |
 | エディタ拡張 | `Assets/Scripts/Editor/` |
-| プレハブ・マップ素材 | `Assets/Game/` |
-| 武器などの Config(ScriptableObject) | `Assets/Game/Resources/`(例: `ArrowConfig.asset`, `VeryLongGunConfig.asset`) |
+| Prefab・マップ素材 | `Assets/Game/` |
+| Config の ScriptableObject | `Assets/Game/Resources/` |
 | シーン | `Assets/Scenes/` |
 
-`Assets/ExtraPackage/`(Thirdweb 等)や `Assets/Fungus/` などのサードパーティ資産は**変更しない**。上記以外のディレクトリは原則実装対象外(AGENTS.md / CLAUDE.md 準拠)。
+`Assets/ExtraPackage/`、`Assets/Fungus/` などのサードパーティ資産を実装対象にしない。作業範囲は AGENTS.md と依頼に従う。
 
-## C# コーディング規約
+- namespace はフォルダに対応する `VLCNP.<カテゴリ>`。既存クラスはその周辺の規約に合わせる。
+- Inspector に出すフィールドは private と `[SerializeField]` を使う。既存の公開 API や保存済みフィールドを規約合わせだけで変更しない。
+- クラス説明は日本語の `/** ... */`。
+- タグ・レイヤーの実名は `ProjectSettings/TagManager.asset` で確認する。まず既存値を使う。
 
-- namespace は `VLCNP.<カテゴリ>`。フォルダと対応させる(例: `Assets/Scripts/Combat/` → `VLCNP.Combat`)。
-- フィールドは private + `[SerializeField]` で Inspector に出す。
-- クラスの説明コメントは日本語の `/** ... */`。
-- 新しい仕組みを書く前に、既存の類似コンポーネントを検索して流用・踏襲する(例: `Health`, `Flag`, `FallMissZone`, `CameraConfineArea`)。
+## マップと演出
 
-## タグ・レイヤー
+既存の標準構成は `Grid` 配下の次の2枚。個別シーンの変更で全シーンをこの形へ揃え直さない。
 
-- 主要タグ: `Enemy`, `Weapon`, `Item`, `Ground`, `Water`, `Projectile`, `CMCamera`, `FlagManager` など(全量は `ProjectSettings/TagManager.asset`)。
-- 新規タグ・レイヤーの追加は最終手段。まず既存を使う。
-- レイヤー: `Default`, `Player`, `Water` など。
+| Tilemap | 用途 | 設定 |
+| --- | --- | --- |
+| `Tilemap` | 足場・屋根・ブロック | tag=`Ground`、`TilemapCollider2D`、sorting order 100 |
+| `BGTilemap` | 背景の壁 | コライダーなし、sorting order -1 |
 
-## シーン・タイルマップ構成
-
-- `Grid` 配下に 2 枚:
-  - `Tilemap` — tag=`Ground`、`TilemapCollider2D` あり、sorting order 100。足場・屋根・ブロックなど衝突するもの。
-  - `BGTilemap` — コライダーなし、sorting order -1。背景の壁など非衝突のもの。
-- カメラ追従範囲の制限は `CameraConfineArea`、落下ミスは `FallMissZone` + `Health.Kill`(実装例: `Assets/Scenes/Kaze1.unity`)。
-
-## その他
-
-- 会話・イベント演出は Fungus を使う。
-- Unity 2022.3 / ビルドターゲットは Windows・macOS Standalone(Steam 配信)。
+カメラ範囲は `CameraConfineArea`、落下ミスは `FallMissZone` と `Health.Kill` を利用する。配置例は `Assets/Scenes/Kaze1.unity`。会話・イベント演出は既存の Fungus 構成を使う。
