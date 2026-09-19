@@ -15,6 +15,8 @@ namespace VLCNP.Stats
         // public delegate void ExperienceGainedDelegate();
         public event Action onExperienceGained;
         public event Action onExperienceLost;
+        // 取得・被ダメージによるレベル変化だけを通知する。復元・パーティ間の同期は対象外。
+        public event Action<int, int> onLevelChanged;
         BaseStats baseStats;
 
         private void Awake() {
@@ -30,19 +32,33 @@ namespace VLCNP.Stats
         public void GainExperience(float experience)
         {
             if (baseStats.isReachedMaxLevel()) return;
+            int previousLevel = baseStats.GetLevel();
             experiencePoints += experience;
             if (audioSource != null && getSeSound != null)
             {
                 audioSource.PlayOneShot(getSeSound, SEVolume);
             }
             onExperienceGained();
+            NotifyLevelChanged(previousLevel);
         }
 
         public void LoseExperience(float experience)
         {
+            int previousLevel = baseStats.GetLevel();
             float loseExperiencePoint = experience * loseExperienceModifier;
             experiencePoints = Mathf.Max(experiencePoints - loseExperiencePoint, 0);
             onExperienceLost();
+            NotifyLevelChanged(previousLevel);
+        }
+
+        private void NotifyLevelChanged(int previousLevel)
+        {
+            // 既存の経験値イベントで BaseStats の再計算が終わってから比較する。
+            int currentLevel = baseStats.GetLevel();
+            if (currentLevel != previousLevel)
+            {
+                onLevelChanged?.Invoke(previousLevel, currentLevel);
+            }
         }
 
         public void SetExperiencePoints(float experience)
