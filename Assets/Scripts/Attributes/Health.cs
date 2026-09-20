@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using VLCNP.Combat;
 using VLCNP.Core;
+using VLCNP.Movie;
 using VLCNP.Saving;
 using VLCNP.Stats;
 using VLCNP.UI;
@@ -143,6 +144,7 @@ namespace VLCNP.Attributes
                 return;
             }
             healthPoints = Mathf.Max(healthPoints - _damage, 0);
+            HealthCameraShake.ShakeEnemyHit(this, isBlowAwayDirectionLeft);
             takeDamageSe?.Play();
             takeDamage.Invoke(_damage);
             if (damageStun != null)
