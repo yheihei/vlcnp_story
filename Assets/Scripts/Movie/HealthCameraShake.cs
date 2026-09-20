@@ -29,10 +29,10 @@ namespace VLCNP.Movie
         private Health health;
         private CinemachineImpulseSource impulseSource;
 
-        // 通常命中はプレイヤー被弾の約1/4の振幅。全敵で間隔を共有し、揺れを重ねない。
+        // 通常命中はプレイヤー被弾の約1/8の振幅。全敵で間隔を共有し、揺れを重ねない。
         private const float EnemyHitDuration = 0.06f;
         private const float EnemyHitInterval = 0.08f;
-        private static readonly Vector3 EnemyHitVelocity = new Vector3(0.025f, -0.0275f, 0f);
+        private static readonly Vector3 EnemyHitVelocity = new Vector3(0.0125f, -0.01375f, 0f);
         private static CinemachineImpulseDefinition enemyHitImpulse;
         private static float nextEnemyHitTime;
 
