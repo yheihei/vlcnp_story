@@ -12,6 +12,7 @@ Unity 6.3 LTS・URPのメトロイドヴァニア型2Dアクション。Windows 
 
 - ゲームロジックは `Assets/Scripts/`、Prefab・素材は `Assets/Game/`、シーンは `Assets/Scenes/`。その他のアセットフォルダは実装対象外。
 - C#・Prefab・シーンの変更時は [プロジェクト規約](.agents/skills/unity-project-conventions/SKILL.md) を参照する。
+- 会話文の作成・修正時は [write-game-dialogue](.agents/skills/write-game-dialogue/SKILL.md) を使う。
 - Editor操作時は [unity-editor-automation](.agents/skills/unity-editor-automation/SKILL.md) を使う。公式Unity CLIと `com.unity.pipeline` が対象。旧UniCLI用Skillは使わず、UniCLIも再導入しない。
 - Editorが応答しない場合はComputer Useで状態を確認し、[復旧手順](.agents/skills/unity-editor-automation/references/editor-recovery.md) に従って復帰させる。
 - 検証は変更内容に応じて行う。文書・Skillだけの変更ではUnityの起動・コンパイル・Play Modeは不要。
