@@ -70,8 +70,8 @@ namespace VLCNP.Combat.EnemyAction
             UpdateDirectionFromCurrentTransform();
             // プレイヤーの方角のベクトルを取得
             Vector2 playerDirection = player.transform.position - transform.position;
-            // プレイヤーの方角に力を加える
-            rbody.AddForce(playerDirection.normalized * swimPower);
+            // プレイヤーの方角に力を加える。毒などで SpeedModifier が下がっていれば弱まる
+            rbody.AddForce(playerDirection.normalized * GetModifiedSpeed(swimPower));
             yield return new WaitForSeconds(strokeInterval);
             // 止める
             rbody.linearVelocity = new Vector2(0, 0);

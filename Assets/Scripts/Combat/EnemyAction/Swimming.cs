@@ -16,6 +16,10 @@ namespace VLCNP.Combat.EnemyAction
         [SerializeField]
         private float strokeInterval = 1.5f;
 
+        [Header("泳ぎはじめる前の溜め時間")]
+        [SerializeField]
+        private float preSwimSeconds = 0.5f;
+
         Rigidbody2D rbody;
         Animator animator;
         float vx = 0;
@@ -54,10 +58,11 @@ namespace VLCNP.Combat.EnemyAction
             }
             UpdateDirectionFromCurrentTransform();
             animator?.SetBool("throw", true);
-            yield return new WaitForSeconds(0.5f);
-            // 向いている方向にpowerを加える
+            yield return new WaitForSeconds(preSwimSeconds);
+            // 向いている方向にpowerを加える。毒などで SpeedModifier が下がっていれば弱まる
             UpdateSwimAnimation(10f);
-            rbody.AddForce(new Vector2(direction == Direction.Left ? -swimPower : swimPower, 0));
+            float power = GetModifiedSpeed(swimPower);
+            rbody.AddForce(new Vector2(direction == Direction.Left ? -power : power, 0));
             yield return new WaitForSeconds(strokeInterval);
             // 停止
             rbody.linearVelocity = new Vector2(0, 0);

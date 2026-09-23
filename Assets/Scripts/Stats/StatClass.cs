@@ -30,5 +30,7 @@ namespace VLCNP.Stats
         VLNarukamiBoss,
         NarukamiShockwave,
         VLMitama,
+        CrocodileFast,
+        CrocodileGiant,
     }
 }
