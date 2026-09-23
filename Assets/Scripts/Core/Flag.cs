@@ -55,5 +55,6 @@ namespace VLCNP.Core
         VLNarukamiJoined, // VLナルカミが仲間になった
         ReturnedToVLFarm, // 全員加入後にベリーロングファームに帰ってきた
         GomisutebeyaBabylonOnceChat, // ゴミ捨て部屋ではじめてベビロンと会話した
+        GomisutebeyaVeryShortOniOnceChat, // ゴミ捨て部屋(横穴)でベリーショートな人と一度会話した
     }
 }
