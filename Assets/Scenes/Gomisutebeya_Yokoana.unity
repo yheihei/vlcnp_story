@@ -34309,6 +34309,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4798937653612913099, guid: 81bc892991e174a5da7c6c4ae66fdc2f, type: 3}
   m_PrefabInstance: {fileID: 1259121267}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1261841753 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4508691083924122255, guid: 2cd3a188dec9d4834b441e8cdd1783cf, type: 3}
+  m_PrefabInstance: {fileID: 1668745124133217001}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1268797815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34462,6 +34467,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1279710999 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7258517368173513654, guid: 00ae423a6e8bf43c081376796b003062, type: 3}
+  m_PrefabInstance: {fileID: 1436783269}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1280675154
 GameObject:
   m_ObjectHideFlags: 0
@@ -35292,6 +35302,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1618750130}
     m_Modifications:
     - target: {fileID: 359197817468982660, guid: 00ae423a6e8bf43c081376796b003062, type: 3}
+      propertyPath: detect.unityReference
+      value: 
+      objectReference: {fileID: 1436783294}
+    - target: {fileID: 359197817468982660, guid: 00ae423a6e8bf43c081376796b003062, type: 3}
       propertyPath: enemyActions.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -35382,7 +35396,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7258517368173513654, guid: 00ae423a6e8bf43c081376796b003062, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1436783294}
   m_SourcePrefab: {fileID: 100100000, guid: 00ae423a6e8bf43c081376796b003062, type: 3}
 --- !u!4 &1436783270 stripped
 Transform:
@@ -35394,7 +35411,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3340429508231648147, guid: 00ae423a6e8bf43c081376796b003062, type: 3}
   m_PrefabInstance: {fileID: 1436783269}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1279710999}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a8233cacde4d46d3b02b18192ee78b2, type: 3}
@@ -35405,7 +35422,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5710517516468335503, guid: 00ae423a6e8bf43c081376796b003062, type: 3}
   m_PrefabInstance: {fileID: 1436783269}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1279710999}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d15366448660947e69667e0750d49457, type: 3}
@@ -35416,12 +35433,48 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7097381656904953430, guid: 00ae423a6e8bf43c081376796b003062, type: 3}
   m_PrefabInstance: {fileID: 1436783269}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1279710999}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c22f4d1c4e37477cbf35124059958f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1436783283 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 248547047090550089, guid: 00ae423a6e8bf43c081376796b003062, type: 3}
+  m_PrefabInstance: {fileID: 1436783269}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279710999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7552815d7f0994c43b945726c84646e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1436783294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279710999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66277ec81c29046e8b75418230d167f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VLCNP.Combat.EnemyAction.TerritoryDetect
+  detect:
+    mode: 0
+    unityReference: {fileID: 1436783283}
+    rawReference:
+      rid: -2
+  territoryLeftEdge: {fileID: 1261841753}
+  returnSpeed: 2
+  arriveDistance: 0.1
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1001 &1507437347
 PrefabInstance:
   m_ObjectHideFlags: 0
