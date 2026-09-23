@@ -14,9 +14,10 @@ namespace VLCNP.Movement
         // 着地したときのイベント
         public event Action OnLanded;
 
+        // tag プロパティは呼ぶたびに文字列を生成するので CompareTag で比べる
         private void OnTriggerStay2D(Collider2D collision)
         {
-            if (!collision.tag.Equals("Ground") && !collision.tag.Equals("Enemy"))
+            if (!collision.CompareTag("Ground") && !collision.CompareTag("Enemy"))
             {
                 return;
             }
@@ -25,7 +26,7 @@ namespace VLCNP.Movement
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (!collision.tag.Equals("Ground") && !collision.tag.Equals("Enemy"))
+            if (!collision.CompareTag("Ground") && !collision.CompareTag("Enemy"))
             {
                 return;
             }
@@ -34,7 +35,7 @@ namespace VLCNP.Movement
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if ((collision.tag.Equals("Ground") || collision.tag.Equals("Enemy")) && !IsGround)
+            if ((collision.CompareTag("Ground") || collision.CompareTag("Enemy")) && !IsGround)
             {
                 OnLanded?.Invoke();
             }

@@ -77,8 +77,7 @@ namespace VLCNP.Control
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            ICollisionAction _collisionAction = other.GetComponent<ICollisionAction>();
-            if (_collisionAction == null)
+            if (!other.TryGetComponent(out ICollisionAction _collisionAction))
                 return;
             if (collisionAction != null)
                 return;
@@ -90,10 +89,9 @@ namespace VLCNP.Control
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            ICollisionAction _collisionAction = other.GetComponent<ICollisionAction>();
-            if (_collisionAction == null)
+            if (!other.TryGetComponent(out ICollisionAction _collisionAction))
                 return;
-            if (collisionAction == other.GetComponent<ICollisionAction>())
+            if (collisionAction == _collisionAction)
             {
                 collisionAction.HideInformation();
                 collisionAction = null;
