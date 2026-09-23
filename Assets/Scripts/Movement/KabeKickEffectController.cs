@@ -28,18 +28,22 @@ namespace VLCNP.Movement
         // 壁に接触しているかどうか
         bool isColliding = false;
 
-        bool isStopped = false;
+        // StopAll による停止と水中による停止は別々に持つ。
+        // StartAll で水中の停止まで解くと、水中でも GravityChange が重力を元に戻し、泳いで浮上できなくなる
+        bool isStoppedByEvent = false;
+        bool isInWater = false;
+        bool isStopped => isStoppedByEvent || isInWater;
+
         public bool IsStopped
         {
-            get => isStopped;
-            // StopAll はこのプロパティ経由で止めるので、Stop() と同じく接触フラグをリセットする
+            get => isStoppedByEvent;
+            // StopAll はこのプロパティ経由で止めるので、水に入ったときと同じく接触フラグをリセットする
             // (停止中は OnTriggerExit2D を無視するため、リセットしないと壁接触が固着して見えない壁になる)
             set
             {
+                isStoppedByEvent = value;
                 if (value)
-                    Stop();
-                else
-                    Restart();
+                    ResetKabeKick();
             }
         }
 
@@ -259,7 +263,7 @@ namespace VLCNP.Movement
             }
         }
 
-        public void Stop()
+        void ResetKabeKick()
         {
             isJumping = false;
             jumpTime = 0f;
@@ -269,22 +273,17 @@ namespace VLCNP.Movement
             if (animator != null)
                 animator.SetBool("isKabe", false);
             SetColliding(false);
-            isStopped = true;
-        }
-
-        public void Restart()
-        {
-            isStopped = false;
         }
 
         public void OnWaterEnter()
         {
-            Stop();
+            isInWater = true;
+            ResetKabeKick();
         }
 
         public void OnWaterExit()
         {
-            Restart();
+            isInWater = false;
         }
 
         public void OnWaterStay() { }
