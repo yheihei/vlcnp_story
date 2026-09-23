@@ -60,10 +60,11 @@ namespace VLCNP.Movement
             if (rBody.linearVelocity.y == 0) rBody.linearVelocity = new Vector2(0, rBody.linearVelocity.y);
         }
 
+        // tag プロパティは呼ぶたびに文字列を生成するので CompareTag で比べる
         private void OnTriggerStay2D(Collider2D collision)
         {
             // ground tagじゃなければ無視
-            if (collision.gameObject.tag != "Ground") return;
+            if (!collision.gameObject.CompareTag("Ground")) return;
             isGround = true;
             UpdateJumpAnimation();
         }
@@ -71,7 +72,7 @@ namespace VLCNP.Movement
         private void OnTriggerExit2D(Collider2D collision)
         {
             // ground tagじゃなければ無視
-            if (collision.gameObject.tag != "Ground") return;
+            if (!collision.gameObject.CompareTag("Ground")) return;
             isGround = false;
             UpdateJumpAnimation();
         }

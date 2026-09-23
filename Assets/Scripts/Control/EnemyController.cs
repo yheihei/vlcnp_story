@@ -35,9 +35,10 @@ namespace VLCNP.Control
             AttackBehavior(other);
         }
 
+        // tag プロパティは呼ぶたびに文字列を生成するので CompareTag で比べる
         private void AttackBehavior(Collision2D other)
         {
-            if (other.gameObject.tag != attackTargetTagName) return;
+            if (!other.gameObject.CompareTag(attackTargetTagName)) return;
             fighter.DirectAttack(other.gameObject);
         }
 
