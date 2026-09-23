@@ -56,5 +56,6 @@ namespace VLCNP.Core
         ReturnedToVLFarm, // 全員加入後にベリーロングファームに帰ってきた
         GomisutebeyaBabylonOnceChat, // ゴミ捨て部屋ではじめてベビロンと会話した
         GomisutebeyaVeryShortOniOnceChat, // ゴミ捨て部屋(横穴)でベリーショートな人と一度会話した
+        GomisutebeyaVeryShortOniHouseKeyGot, // ゴミ捨て部屋(横穴)でベリーショートな人の家のカギを手に入れた
     }
 }
