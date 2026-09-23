@@ -127,7 +127,7 @@ namespace VLCNP.Combat
                 Splash(GetBottomY());
                 return;
             }
-            if (other.GetComponent<Water>() != null)
+            if (other.TryGetComponent(out Water _))
             {
                 // 水面で弾ける
                 Splash(other.bounds.max.y);

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace VLCNP.Movement
 {
@@ -11,11 +12,13 @@ namespace VLCNP.Movement
         {
             if (isTarget(other))
             {
-                IWaterEventListener[] waterEventListeners =
-                    other.GetComponentsInChildren<IWaterEventListener>();
-                foreach (IWaterEventListener waterEventListener in waterEventListeners)
+                using (ListPool<IWaterEventListener>.Get(out List<IWaterEventListener> listeners))
                 {
-                    waterEventListener.OnWaterEnter();
+                    other.GetComponentsInChildren(listeners);
+                    foreach (IWaterEventListener waterEventListener in listeners)
+                    {
+                        waterEventListener.OnWaterEnter();
+                    }
                 }
             }
         }
@@ -24,11 +27,13 @@ namespace VLCNP.Movement
         {
             if (isTarget(other))
             {
-                IWaterEventListener[] waterEventListeners =
-                    other.GetComponentsInChildren<IWaterEventListener>();
-                foreach (IWaterEventListener waterEventListener in waterEventListeners)
+                using (ListPool<IWaterEventListener>.Get(out List<IWaterEventListener> listeners))
                 {
-                    waterEventListener.OnWaterExit();
+                    other.GetComponentsInChildren(listeners);
+                    foreach (IWaterEventListener waterEventListener in listeners)
+                    {
+                        waterEventListener.OnWaterExit();
+                    }
                 }
             }
         }
@@ -37,20 +42,24 @@ namespace VLCNP.Movement
         {
             if (isTarget(other))
             {
-                IWaterEventListener[] waterEventListeners =
-                    other.GetComponentsInChildren<IWaterEventListener>();
-                foreach (IWaterEventListener waterEventListener in waterEventListeners)
+                // 水中のキャラクターの数だけ毎物理ステップ呼ばれるため、プールしたリストで受け取る
+                using (ListPool<IWaterEventListener>.Get(out List<IWaterEventListener> listeners))
                 {
-                    waterEventListener.OnWaterStay();
+                    other.GetComponentsInChildren(listeners);
+                    foreach (IWaterEventListener waterEventListener in listeners)
+                    {
+                        waterEventListener.OnWaterStay();
+                    }
                 }
             }
         }
 
+        // tag プロパティは呼ぶたびに文字列を生成するので CompareTag で比べる
         private bool isTarget(Collider2D other)
         {
-            return other.gameObject.tag == "Player"
-                || other.gameObject.tag == "Enemy"
-                || other.gameObject.tag == "Item";
+            return other.CompareTag("Player")
+                || other.CompareTag("Enemy")
+                || other.CompareTag("Item");
         }
     }
 }
