@@ -95,6 +95,12 @@ namespace VLCNP.SceneManagement
             RegisterSharedState();
             try
             {
+                // 家のPrefabの扉など子オブジェクトに置いた場合は DontDestroyOnLoad が効かず、
+                // 旧シーンの破棄とともに遷移が止まる(状態復元・フェードインが行われない)ため、ルートへ移す
+                if (transform.parent != null)
+                {
+                    transform.SetParent(null, true);
+                }
                 DontDestroyOnLoad(gameObject);
 
                 // フェードアウト中にプレイヤーが落下・移動しないよう固定する
