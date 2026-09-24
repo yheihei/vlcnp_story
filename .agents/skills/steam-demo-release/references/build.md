@@ -1,6 +1,6 @@
 # Windows / macOS のビルド
 
-Unity 操作を行う段階で、公式の `unity-cli` と `unity-pipeline` と [プロジェクトの Editor 操作](../../unity-editor-automation/SKILL.md) を使う。ブラウザや Steam 認証の準備をビルド開始の前提にしない。
+Unity 操作を行う段階で、公式の `unity-cli` と `unity-pipeline` と [プロジェクトの Editor 操作](../../unity-editor-automation/SKILL.md) を使う。Steam 認証とブラウザ操作はアップロード・公開の段階で扱う。
 
 `git status --short` と `unity status --format json`、`editor_status` で対象・Play Mode・コンパイル・保存状態を確認する。自分の変更や依頼で保存対象が明らかな変更は保存する。未保存変更をビルドへ含めるべきか判断できない場合はその点だけ確認し、独立した出力先や設定の確認は進める。
 

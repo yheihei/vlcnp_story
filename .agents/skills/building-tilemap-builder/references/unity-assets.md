@@ -32,7 +32,7 @@ UnityEditor.AssetDatabase.Refresh();
 - Palette は root に Grid、子 `Layer1` に Tilemap と TilemapRenderer。レイヤーは 0。例は `Assets/Game/MapObject/PagodaTilemap/Palette/PagodaPalette.prefab` と `Assets/Game/MapObject/KazeBossTilemap/Palette/KazeBossPalette.prefab`。第三者の layer 31 をコピーしない。列数は素材数に合わせる。
 - 扉・窓・柱・ひび割れなどの非タイル素材は SpriteRenderer Prefab とし、null でない Sprite を設定する。コライダーは動作・接触の要件がある場合だけ付ける。
 
-既存の `Assets/Scripts/Editor/KazeBossTilesetBuilder.cs` / `KazeBossPropsBuilder.cs` は実装例として必要部分だけ参照する。コピーと定数置換を必須にしない。自動化は差分更新にし、手動調整や既存参照を作り直さない。一時ビルダーの後片付けは Editor 操作の手順に従う。
+既存の `Assets/Scripts/Editor/KazeBossTilesetBuilder.cs` / `KazeBossPropsBuilder.cs` は実装例として必要部分だけ参照する。自動化は差分更新にし、手動調整や既存参照を作り直さない。一時ビルダーの後片付けは Editor 操作の手順に従う。
 
 メニュー経由なら公式CLIの `menu --path "<メニューパス>"` を使う。実際の定義は `unity command` で確認する。成功応答だけでなく Console の新規例外と生成物も確認する。
 
