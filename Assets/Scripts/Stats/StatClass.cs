@@ -32,5 +32,6 @@ namespace VLCNP.Stats
         VLMitama,
         CrocodileFast,
         CrocodileGiant,
+        Zombie,
     }
 }
