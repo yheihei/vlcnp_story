@@ -1,3 +1,4 @@
+using Core.Status;
 using UnityEngine;
 using UnityEngine.Events;
 using TNRD;
@@ -55,6 +56,9 @@ namespace Projectiles.StatusEffects
             {
                 if (effectInterface != null && effectInterface.Value != null)
                 {
+                    if (StatusEffectImmunity.IsImmune(target, effectInterface.Value))
+                        continue;
+
                     try
                     {
                         effectInterface.Value.ApplyEffect(target);
