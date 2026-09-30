@@ -280,12 +280,12 @@ public static class AmbientAtmosphereBuilder
 
     private static void BuildGlobalLightVariants(GameObject basePrefab)
     {
-        // 永遠: 松明の琥珀が映えるよう、全体は少し暖かい白
+        // 永遠: 松明・火鉢の琥珀と封印の水色が映えるよう、全体は少し落とした寒色(#681)
         BuildVariant(basePrefab, GlobalLightVariantPath("Eien"), instance =>
         {
             var light = instance.GetComponent<Light2D>();
-            light.color = new Color(0.96f, 0.90f, 0.80f);
-            light.intensity = 1f;
+            light.color = new Color(0.88f, 0.84f, 0.98f);
+            light.intensity = 0.86f;
         });
         // 土: 土色と苔の緑
         BuildVariant(basePrefab, GlobalLightVariantPath("Tuti"), instance =>
