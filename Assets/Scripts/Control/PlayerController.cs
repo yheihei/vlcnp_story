@@ -17,6 +17,7 @@ namespace VLCNP.Control
         ICollisionAction collisionAction;
         bool isStopped = false;
         bool reportedStopped = false;
+        bool canAimDown = true;
 
         public bool IsStopped
         {
@@ -39,6 +40,13 @@ namespace VLCNP.Control
         {
             mover = GetComponent<Mover>();
             fighter = GetComponent<Fighter>();
+            canAimDown = CanAimDown(GetComponent<BaseStats>());
+        }
+
+        // 下方向の攻撃はオロチの役割なので、Akim(StatClass.Player)は下入力で照準を下げない
+        static bool CanAimDown(BaseStats baseStats)
+        {
+            return baseStats == null || baseStats.GetStatClass() != StatClass.Player;
         }
 
         private void OnEnable()
@@ -104,7 +112,7 @@ namespace VLCNP.Control
             {
                 fighter.WeaponUp();
             }
-            else if (PlayerInputAdapter.IsAimDownPressed())
+            else if (canAimDown && PlayerInputAdapter.IsAimDownPressed())
             {
                 fighter.WeaponDown();
             }

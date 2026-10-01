@@ -65,6 +65,11 @@ namespace VLCNP.Stats
             return penultimateLevel + 1;
         }
 
+        public StatClass GetStatClass()
+        {
+            return statClass;
+        }
+
         public int GetCurrentHealthLevel()
         {
             return currentHealthLevel;
