@@ -36,7 +36,7 @@ codesign -d --entitlements :- Builds/SteamDemo/Mac/VlcnpStory.app | plutil -p -
 
 ```sh
 notary_zip="/absolute/path/work/VlcnpStory_Notarization.zip"
-ditto -c -k --keepParent Builds/SteamDemo/Mac/VlcnpStory.app "$notary_zip"
+ditto --norsrc -c -k --keepParent Builds/SteamDemo/Mac/VlcnpStory.app "$notary_zip"
 xcrun notarytool submit "$notary_zip" \
   --keychain-profile vlcnp-notary --output-format json
 ```
@@ -57,3 +57,11 @@ spctl --assess --type execute --verbose=4 Builds/SteamDemo/Mac/VlcnpStory.app
 ```
 
 `spctl` の `accepted` と `source=Notarized Developer ID` を確認する。staple 後の app から完成 ZIP を作り、既定の `/Users/yhei/tool/iOSApp/VlcnpStory_Notarized_YYYYMMDD.zip` または依頼先へ保存し SHA-256 を記録する。同名の既存成果物を不用意に上書きせず、公証前 ZIP を完成品として渡さない。
+
+## Steamworks Webアップロード用ZIP
+
+macOS app のZIPは `ditto --norsrc -c -k --keepParent` で作る。`--norsrc` を省くと、`._*` のAppleDouble補助ファイルがZIP内に入り、Steamの展開後にネストしたbundleの署名検証が失敗する。`__MACOSX/` と `._*` が含まれないことを確認する。
+
+完成ZIPを新しい作業ディレクトリへ展開し、そのappの `codesign --verify --deep --strict`、`xcrun stapler validate`、`spctl --assess --type execute` を通す。Steamにインストールした後も署名を検証し、ローカルの署名済みappだけの検証で完了にしない。
+
+Webアップロードで修正する場合もWindowsとmacOSの両デポを同じビルドに含める。1デポだけアップロードしてCommitしたBuildIDには、もう一方のデポは自動で引き継がれない。公開前に両デポのmanifestを照合する。
