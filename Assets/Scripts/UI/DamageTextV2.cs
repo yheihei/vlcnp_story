@@ -43,6 +43,67 @@ namespace VLCNP.UI
         [SerializeField, Min(0f), Tooltip("消えるときに浮かぶ距離。文字の高さを基準にする")]
         private float levelChangeRiseHeight = 0.75f;
 
+        [Header("ダメージ数字の演出")]
+        [SerializeField, Tooltip("初回表示時にダメージ数字の基本色を下の色へ置き換える。Prefab側の色を使う場合はオフ")]
+        private bool applyDamageColor = true;
+
+        [SerializeField, Tooltip("落ち着いた後のダメージ数字の色")]
+        private Color damageColor = new Color(1f, 0.96f, 0.86f, 1f);
+
+        [SerializeField, Tooltip("ヒット直後に基本色へ乗算する色味。短時間で基本色へ戻る")]
+        private Color damagePopTint = new Color(1f, 0.8f, 0.45f, 1f);
+
+        [SerializeField, Min(1f), Tooltip("最初のヒットで現れるときの拡大率")]
+        private float damageFirstPopScale = 1.45f;
+
+        [SerializeField, Min(1f), Tooltip("表示中の追加ヒットで膨らむ最大の拡大率")]
+        private float damageRehitPopScale = 1.16f;
+
+        [SerializeField, Min(0.01f), Tooltip("拡大と跳ね上がりが落ち着くまでの秒数")]
+        private float damagePopDuration = 0.18f;
+
+        [SerializeField, Min(0.01f), Tooltip("ヒット直後の色味が基本色へ戻るまでの秒数")]
+        private float damageTintDuration = 0.22f;
+
+        [SerializeField, Tooltip("最初に現れる位置。文字の高さを基準にする（負で下）")]
+        private float damageEntryOffset = -0.1f;
+
+        [SerializeField, Tooltip("跳ね上がって静止する位置。文字の高さを基準にする")]
+        private float damageSettleOffset = 0.2f;
+
+        [SerializeField, Min(0f), Tooltip("追加ヒットで一瞬沈む深さ。文字の高さを基準にする")]
+        private float damageRehitDip = 0.05f;
+
+        [SerializeField, Range(0f, 1f), Tooltip("追加ヒットで戻す色味の強さ")]
+        private float damageRehitTintStrength = 0.45f;
+
+        [SerializeField, Min(0.01f), Tooltip("この秒数より短い間隔の追加ヒットほど再反応を弱める")]
+        private float damageRehitRecoveryTime = 0.2f;
+
+        [SerializeField, Range(0f, 1f), Tooltip("ヒット間隔が短いときにも残す再反応の割合")]
+        private float damageRehitMinStrength = 0.35f;
+
+        [SerializeField, Min(0.01f), Tooltip("表示の終わりに消えていく秒数。表示時間の4割を上限とする")]
+        private float damageFadeOutDuration = 0.32f;
+
+        [SerializeField, Min(0f), Tooltip("消えるときに浮かぶ距離。文字の高さを基準にする")]
+        private float damageFadeRise = 0.3f;
+
+        [SerializeField, Range(0f, 0.5f), Tooltip("消えるときに縮む割合")]
+        private float damageFadeShrink = 0.06f;
+
+        [SerializeField, Tooltip("ダメージ数字に落ち影を付ける。既存のShadow/Outlineがあれば再利用する")]
+        private bool useDamageShadow = true;
+
+        [SerializeField]
+        private Color damageShadowColor = new Color(0.06f, 0.05f, 0.12f, 0.85f);
+
+        [SerializeField, Tooltip("落ち影のずれ。文字の高さを基準にする")]
+        private Vector2 damageShadowDistance = new Vector2(0.05f, -0.09f);
+
+        // 死亡後、表示が消えるより先に保険の破棄が走らないための余裕
+        const float WithdrawDestroyMargin = 0.25f;
+
         float damageAmount = 0f;
         float showTime = 0f;
         bool isDestroy = false;
@@ -55,6 +116,20 @@ namespace VLCNP.UI
         Vector3 levelChangeBaseScale;
         Color levelChangeColor;
         float levelChangeLineHeight;
+        bool isDamageStyleReady;
+        RectTransform damageRect;
+        CanvasRenderer damageRenderer;
+        Vector2 damageBasePosition;
+        Vector3 damageBaseScale;
+        float damageLineHeight;
+        bool isDamagePopping;
+        float damagePopTime;
+        float damagePopStartScale;
+        float damagePopStartOffset;
+        float damagePopStartTint;
+        float damageCurrentScale = 1f;
+        float damageCurrentOffset;
+        float damageCurrentTint;
 
         private void Awake()
         {
@@ -98,18 +173,17 @@ namespace VLCNP.UI
             if (isDestroy)
                 return;
 
+            EnsureDamageStyle();
+
+            bool wasVisible = damageText.enabled;
+            float timeSinceLastHit = showTime;
             enabled = true;
             showTime = 0f;
             // ダメージを合算
             damageAmount += damagePoint;
-            damageText.color = new Color(
-                damageText.color.r,
-                damageText.color.g,
-                damageText.color.b,
-                1f
-            );
             damageText.text = damageAmount.ToString();
             damageText.enabled = true;
+            StartDamagePop(wasVisible, timeSinceLastHit);
             UpdateDirection();
         }
 
@@ -122,31 +196,42 @@ namespace VLCNP.UI
             cachedTransform.SetParent(null);
             cachedTransform.position = currentPos;
             isDestroy = true;
-            // 一定時間後に消滅
-            Destroy(gameObject, showTimeDuration);
+            // 表示中は Update で最後まで消してから破棄する。こちらは Update が動かない場合の保険。
+            Destroy(gameObject, showTimeDuration + WithdrawDestroyMargin);
         }
 
         void ResetDamageText()
         {
             damageText.enabled = false;
             damageAmount = 0f;
+
+            if (isDamageStyleReady)
+            {
+                // 次の表示と LevelChange の複製が基準の状態から始まるようにする。
+                isDamagePopping = false;
+                ApplyDamageVisual(1f, 0f, 0f, 1f);
+            }
         }
 
         void Update()
         {
-            if (isDestroy)
+            float deltaTime = Time.deltaTime;
+            // 一時停止中は演出を止め、同じ値の書き込みもしない。
+            if (deltaTime <= 0f)
                 return;
 
             if (damageText.enabled)
             {
-                showTime += Time.deltaTime;
+                showTime += deltaTime;
                 if (showTime > showTimeDuration)
                     ResetDamageText();
+                else
+                    UpdateDamageAnimation(deltaTime);
             }
 
             if (IsLevelChangeTextVisible())
             {
-                levelChangeShowTime += Time.deltaTime;
+                levelChangeShowTime += deltaTime;
                 UpdateLevelChangeAnimation();
                 if (levelChangeShowTime >= levelChangeShowTimeDuration)
                     levelChangeText.enabled = false;
@@ -155,10 +240,135 @@ namespace VLCNP.UI
             if (!damageText.enabled && !IsLevelChangeTextVisible())
             {
                 enabled = false;
+                // 死亡後は表示が消えきった時点で破棄する。
+                if (isDestroy)
+                    Destroy(gameObject);
                 return;
             }
 
             UpdateDirection();
+        }
+
+        private void StartDamagePop(bool wasVisible, float timeSinceLastHit)
+        {
+            if (!wasVisible)
+            {
+                damagePopStartScale = damageFirstPopScale;
+                damagePopStartOffset = damageEntryOffset;
+                damagePopStartTint = 1f;
+            }
+            else
+            {
+                // 間隔の短い連続ヒットほど控えめに反応させる。
+                // 現在値との大きい方を取るだけなので、何度当たっても最初のポップを超えて膨らまない。
+                float strength = Mathf.Lerp(damageRehitMinStrength, 1f,
+                    Mathf.Clamp01(timeSinceLastHit / damageRehitRecoveryTime));
+                damagePopStartScale = Mathf.Max(damageCurrentScale,
+                    1f + (damageRehitPopScale - 1f) * strength);
+                damagePopStartOffset = Mathf.Max(damageCurrentOffset - damageRehitDip * strength,
+                    damageEntryOffset);
+                damagePopStartTint = Mathf.Max(damageCurrentTint, damageRehitTintStrength * strength);
+            }
+
+            damagePopTime = 0f;
+            isDamagePopping = true;
+            // ヒットしたフレームから開始姿勢を見せる。
+            ApplyDamageVisual(damagePopStartScale, damagePopStartOffset, damagePopStartTint, 1f);
+        }
+
+        private void UpdateDamageAnimation(float deltaTime)
+        {
+            float duration = Mathf.Max(0.02f, showTimeDuration);
+            float fadeDuration = Mathf.Clamp(damageFadeOutDuration, 0.01f, duration * 0.4f);
+            float fadeStart = duration - fadeDuration;
+            bool isFading = showTime > fadeStart;
+
+            // 静止中は Rect も色も書き込まず、Canvas の再構築を起こさない。
+            if (!isDamagePopping && !isFading)
+                return;
+
+            float scale = 1f;
+            float offset = damageSettleOffset;
+            float tint = 0f;
+            if (isDamagePopping)
+            {
+                damagePopTime += deltaTime;
+                // 大きく現れて縮みながら跳ね上がり、行き過ぎずに止まる。
+                float pop = Mathf.Clamp01(damagePopTime / damagePopDuration);
+                float popRemain = 1f - pop;
+                float popEase = 1f - popRemain * popRemain * popRemain;
+                scale = Mathf.LerpUnclamped(damagePopStartScale, 1f, popEase);
+                offset = Mathf.LerpUnclamped(damagePopStartOffset, damageSettleOffset, popEase);
+
+                float tintRemain = 1f - Mathf.Clamp01(damagePopTime / damageTintDuration);
+                tint = damagePopStartTint * tintRemain * tintRemain;
+
+                if (pop >= 1f && tintRemain <= 0f)
+                    isDamagePopping = false;
+            }
+
+            float alpha = 1f;
+            if (isFading)
+            {
+                float fade = Mathf.SmoothStep(0f, 1f, (showTime - fadeStart) / fadeDuration);
+                alpha = 1f - fade;
+                offset += damageFadeRise * fade;
+                scale *= 1f - damageFadeShrink * fade;
+            }
+
+            ApplyDamageVisual(scale, offset, tint, alpha);
+        }
+
+        private void ApplyDamageVisual(float scale, float offset, float tint, float alpha)
+        {
+            damageCurrentScale = scale;
+            damageCurrentOffset = offset;
+            damageCurrentTint = tint;
+
+            // 毎回基準値から求めるので、連続ヒットでも位置や大きさがずれていかない。
+            damageRect.localScale = damageBaseScale * scale;
+            damageRect.anchoredPosition = damageBasePosition + Vector2.up * (damageLineHeight * offset);
+
+            // CanvasRenderer の色は頂点を作り直さずに反映される。
+            Color color = Color.LerpUnclamped(Color.white, damagePopTint, tint);
+            color.a = alpha;
+            damageRenderer.SetColor(color);
+        }
+
+        private void EnsureDamageStyle()
+        {
+            if (isDamageStyleReady || damageText == null)
+                return;
+            isDamageStyleReady = true;
+
+            damageRect = damageText.rectTransform;
+            damageRenderer = damageText.canvasRenderer;
+            damageBasePosition = damageRect.anchoredPosition;
+            damageBaseScale = damageRect.localScale;
+            // CanvasScaler 適用後の値が必要なため、Awake ではなく初回表示時に測る。
+            float pixelsPerUnit = damageText.pixelsPerUnit > 0f ? damageText.pixelsPerUnit : 1f;
+            float localLineHeight = damageText.fontSize / pixelsPerUnit;
+            damageLineHeight = localLineHeight * Mathf.Abs(damageBaseScale.y);
+
+            if (applyDamageColor)
+                damageText.color = damageColor;
+
+            UnityEngine.UI.Shadow shadow = damageText.GetComponent<UnityEngine.UI.Shadow>();
+            if (!useDamageShadow)
+                return;
+            // Outline は三角形5倍になるため、新規には三角形2倍の落ち影だけを付ける。
+            // UGUI が三角形ストリームへ展開するため、mesh vertexCount は1文字4→12になる。
+            if (shadow == null)
+                shadow = damageText.gameObject.AddComponent<UnityEngine.UI.Shadow>();
+            shadow.effectColor = damageShadowColor;
+            shadow.useGraphicAlpha = true;
+            Vector2 distance = damageShadowDistance * localLineHeight;
+            if (shadow is UnityEngine.UI.Outline)
+            {
+                float outlineSize = Mathf.Min(Mathf.Abs(distance.x), Mathf.Abs(distance.y));
+                distance = new Vector2(outlineSize, -outlineSize);
+            }
+            shadow.effectDistance = distance;
         }
 
         private bool IsLevelChangeTextVisible()
@@ -212,6 +422,9 @@ namespace VLCNP.UI
             if (levelChangeText != null)
                 return;
 
+            // ダメージ数字の基準位置・大きさを先に確定させる。
+            EnsureDamageStyle();
+
             // フォント・描画レイヤー・縮尺を既存のダメージ数字から引き継ぐ。
             levelChangeText = Instantiate(damageText, damageText.transform.parent, false);
             levelChangeText.gameObject.name = "LevelChangeText";
@@ -222,14 +435,23 @@ namespace VLCNP.UI
             levelChangeText.verticalOverflow = VerticalWrapMode.Overflow;
             levelChangeText.raycastTarget = false;
 
-            RectTransform damageRect = damageText.rectTransform;
+            // ダメージ数字の落ち影と演出中の色は引き継がない。Outline は下で設定し直す。
+            UnityEngine.UI.Shadow[] clonedShadows = levelChangeText.GetComponents<UnityEngine.UI.Shadow>();
+            for (int i = 0; i < clonedShadows.Length; i++)
+            {
+                if (!(clonedShadows[i] is UnityEngine.UI.Outline))
+                    clonedShadows[i].enabled = false;
+            }
+            levelChangeText.canvasRenderer.SetColor(Color.white);
+
             RectTransform levelRect = levelChangeText.rectTransform;
+            // 演出中に複製されても、ダメージ数字の基準の大きさ・位置から配置する。
+            levelRect.localScale = damageBaseScale;
             // World Space Canvas ではフォントのピクセル数を UI の座標単位へ変換する。
-            float damageLineHeight = damageText.fontSize / damageText.pixelsPerUnit;
             float levelLineHeight = levelChangeText.fontSize / levelChangeText.pixelsPerUnit;
             levelRect.sizeDelta = new Vector2(levelLineHeight * 10f, levelLineHeight * 2f);
-            levelRect.anchoredPosition = damageRect.anchoredPosition + Vector2.up
-                * (damageLineHeight * Mathf.Abs(damageRect.localScale.y) * levelChangeLineOffset);
+            levelRect.anchoredPosition = damageBasePosition + Vector2.up
+                * (damageLineHeight * levelChangeLineOffset);
             levelChangeRect = levelRect;
             levelChangeBasePosition = levelRect.anchoredPosition;
             levelChangeBaseScale = levelRect.localScale;
@@ -254,15 +476,21 @@ namespace VLCNP.UI
                 return;
 
             Vector3 scale = cachedTransform.localScale;
+            float scaleX;
             if (IsCharacterDirectionLeft())
             {
-                scale.x = Mathf.Abs(scale.x);
+                scaleX = Mathf.Abs(scale.x);
             }
             else
             {
-                scale.x = -1 * Mathf.Abs(scale.x);
+                scaleX = -1 * Mathf.Abs(scale.x);
             }
-            cachedTransform.localScale = scale;
+            // 向きが変わったときだけ書き込み、Canvas の再計算を避ける。
+            if (scale.x != scaleX)
+            {
+                scale.x = scaleX;
+                cachedTransform.localScale = scale;
+            }
             KeepUpright();
         }
 
@@ -275,7 +503,9 @@ namespace VLCNP.UI
                 return;
             float parentAngle = parent.eulerAngles.z;
             float localAngle = IsCharacterDirectionLeft() ? -parentAngle : parentAngle;
-            cachedTransform.localRotation = Quaternion.Euler(0f, 0f, localAngle);
+            Quaternion rotation = Quaternion.Euler(0f, 0f, localAngle);
+            if (cachedTransform.localRotation != rotation)
+                cachedTransform.localRotation = rotation;
         }
 
         private void EnsureInitialized()
