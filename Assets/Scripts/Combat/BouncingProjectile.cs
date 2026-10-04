@@ -29,6 +29,10 @@ namespace VLCNP.Combat
         GameObject destroyEffect = null;
 
         [SerializeField]
+        [Tooltip("床で跳ねたときに接地点へ出す演出")]
+        GameObject bounceEffect = null;
+
+        [SerializeField]
         string targetTagName = "Enemy";
 
         [SerializeField]
@@ -122,10 +126,23 @@ namespace VLCNP.Combat
                 }
 
                 bounceCount++;
+                SpawnBounceEffect(collision);
 
                 // バウンド後の速度を制限するコルーチンを開始
                 StartCoroutine(LimitBounceHeightByVelocity());
             }
+        }
+
+        private void SpawnBounceEffect(Collision2D collision)
+        {
+            if (bounceEffect == null || collision.contactCount == 0)
+                return;
+            ContactPoint2D contact = collision.GetContact(0);
+            // 壁や天井に当たったときは出さない
+            if (contact.normal.y < 0.5f)
+                return;
+            GameObject effect = Instantiate(bounceEffect, contact.point, Quaternion.identity);
+            Destroy(effect, 1f);
         }
 
         private IEnumerator LimitBounceHeightByVelocity()
