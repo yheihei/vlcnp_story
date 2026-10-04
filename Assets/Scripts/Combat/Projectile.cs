@@ -8,7 +8,7 @@ using VLCNP.Core;
 
 namespace VLCNP.Combat
 {
-    public class Projectile : MonoBehaviour, IStoppable, IProjectile
+    public class Projectile : MonoBehaviour, IStoppable, IProjectile, IProjectileVolleyReceiver
     {
         [SerializeField]
         float speed = 30;
@@ -53,6 +53,7 @@ namespace VLCNP.Combat
         [SerializeField]
         bool isBreakOnGround = false;
         List<GameObject> penetratedObjects = new List<GameObject>();
+        ProjectileVolley volley = null;
         float damage = 0;
         private ParticleSystem particle;
 
@@ -93,6 +94,11 @@ namespace VLCNP.Combat
         public void SetDamage(float damage)
         {
             this.damage = damage;
+        }
+
+        public void SetVolley(ProjectileVolley volley)
+        {
+            this.volley = volley;
         }
 
         private IEnumerator FadeOut(float waitTime)
@@ -145,8 +151,10 @@ namespace VLCNP.Combat
                     return;
                 // ヒットしたオブジェクトを記録しておく
                 penetratedObjects.Add(other.gameObject);
+                // 同時に出した別の弾が既に当てた相手には、ダメージを重ねない
+                bool isFirstHitInVolley = volley == null || volley.TryRegisterHit(other.gameObject);
                 Health health = other.gameObject.GetComponent<Health>();
-                if (health != null)
+                if (health != null && isFirstHitInVolley)
                 {
                     health.TakeDamage(damage, isLeft);
                     // ダメージを与えた後にイベントを発火

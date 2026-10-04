@@ -12,6 +12,10 @@ namespace VLCNP.Combat
         AudioClip blockSe = null;
         private AudioSource audioSource;
 
+        // 同時に撃たれた複数の弾をまとめて弾いたとき、防御音を重ねて大きくしない
+        const float blockSeInterval = 0.05f;
+        float lastBlockSeTime = float.NegativeInfinity;
+
         void Awake()
         {
             audioSource = GetComponent<AudioSource>();
@@ -26,9 +30,14 @@ namespace VLCNP.Combat
                 if (iProjectile != null)
                 {
                     if (iProjectile.IsStucking) return;
-                    if (blockSe != null && audioSource != null)
+                    if (
+                        blockSe != null
+                        && audioSource != null
+                        && Time.time - lastBlockSeTime >= blockSeInterval
+                    )
                     {
                         audioSource.PlayOneShot(blockSe, 2.0f);
+                        lastBlockSeTime = Time.time;
                     }
                     iProjectile.ImpactAndDestroy();
                 }
