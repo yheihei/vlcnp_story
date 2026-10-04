@@ -4,16 +4,18 @@ using UnityEngine;
 using UnityEngine.Events;
 using VLCNP.Attributes;
 using VLCNP.Core;
+using VLCNP.Movie;
 using VLCNP.UI;
 
 namespace VLCNP.Combat
 {
     /**
      * 決めた数の敵を倒すまで、複数の地点から一定間隔で敵を湧かせる防衛戦。
+     * 湧かせる地点は画面に映っているものを優先して選ぶ。
      * 数えるのはこの防衛戦で湧かせた敵の死亡だけで、同じ敵は一度しか数えない。
      * 倒す数に足りる分しか湧かせないので、規定数を倒した時点で湧かせた敵は残らない。
      * 戦闘中だけ有効にする物(見えない壁)・止める物(話しかける判定)、起き上がって撃ってくるアーチャー、
-     * HUD、BGM をまとめて切り替える。
+     * HUD、BGM、カメラの引きをまとめて切り替える。
      */
     public class DefenseBattle : MonoBehaviour, IStoppable
     {
@@ -49,6 +51,9 @@ namespace VLCNP.Combat
         [SerializeField, Min(0f), Tooltip("プレイヤーとの横の距離がこれより近い地点からは湧かせない")]
         float minSpawnDistanceFromPlayer = 3f;
 
+        [SerializeField, Min(0f), Tooltip("画面の左右と上の端からこれより内側にある地点を、映っている地点として優先する")]
+        float visibleSpawnMargin = 1f;
+
         [SerializeField, Tooltip("この範囲の外に出た敵は数えずに消し、代わりを湧かせる。地面に潜っている深さも含める")]
         Rect arenaBounds = new Rect(0f, 0f, 10f, 10f);
 
@@ -64,6 +69,9 @@ namespace VLCNP.Combat
 
         [SerializeField]
         DefenseBattleHud hud;
+
+        [SerializeField, Tooltip("戦闘中だけカメラを引く")]
+        EventCameraZoom cameraZoom;
 
         [Header("音")]
         [SerializeField]
@@ -94,6 +102,7 @@ namespace VLCNP.Combat
         readonly List<Transform> spawnCandidates = new List<Transform>();
         int killCount;
         float spawnTimer;
+        Transform lastSpawnPoint;
         bool lastSpawnWasLeft;
         bool isStopped;
 
@@ -155,6 +164,8 @@ namespace VLCNP.Combat
             }
             if (hud != null)
                 hud.Show(requiredKills);
+            if (cameraZoom != null)
+                cameraZoom.ZoomOut();
             PlayBgm(battleBgm, battleBgmVolume, 1f);
         }
 
@@ -184,8 +195,13 @@ namespace VLCNP.Combat
 
         bool Spawn()
         {
-            Transform spawnPoint = ChooseSpawnPoint();
-            if (spawnPoint == null || enemyPrefab == null)
+            // やられてプレイヤーがいない間(ゲームオーバー中)は湧かせない
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player == null || enemyPrefab == null)
+                return false;
+            float playerX = player.transform.position.x;
+            Transform spawnPoint = ChooseSpawnPoint(playerX);
+            if (spawnPoint == null)
                 return false;
             GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
             if (!enemy.TryGetComponent(out Health health))
@@ -196,35 +212,36 @@ namespace VLCNP.Combat
             }
             aliveEnemies.Add(health);
             health.onDieStarted += () => OnEnemyDied(health);
-            lastSpawnWasLeft = IsLeftSide(spawnPoint);
+            lastSpawnPoint = spawnPoint;
+            lastSpawnWasLeft = spawnPoint.position.x < playerX;
             return true;
         }
 
-        // 左右の湧き地点を交互に使い、プレイヤーのすぐ近くと、前の敵がまだ残っている地点からは湧かせない
-        Transform ChooseSpawnPoint()
+        // 画面に映っている地点からランダムに選ぶ。プレイヤーの左右を交互にし、同じ地点は続けない。
+        // プレイヤーのすぐ近くと、前の敵がまだ残っている地点からは湧かせない
+        Transform ChooseSpawnPoint(float playerX)
         {
-            // やられてプレイヤーがいない間(ゲームオーバー中)は湧かせない
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player == null)
-                return null;
             spawnCandidates.Clear();
             foreach (Transform point in spawnPoints)
             {
                 if (point == null)
                     continue;
-                if (Mathf.Abs(point.position.x - player.transform.position.x) < minSpawnDistanceFromPlayer)
+                if (Mathf.Abs(point.position.x - playerX) < minSpawnDistanceFromPlayer)
                     continue;
                 if (IsOccupied(point))
                     continue;
                 spawnCandidates.Add(point);
             }
+            KeepVisibleCandidates();
+            if (spawnCandidates.Count > 1)
+                spawnCandidates.Remove(lastSpawnPoint);
             if (spawnCandidates.Count == 0)
                 return null;
 
             int otherSideCount = 0;
             foreach (Transform point in spawnCandidates)
             {
-                if (IsLeftSide(point) != lastSpawnWasLeft)
+                if ((point.position.x < playerX) != lastSpawnWasLeft)
                     otherSideCount++;
             }
             if (otherSideCount == 0)
@@ -233,12 +250,40 @@ namespace VLCNP.Combat
             int pick = Random.Range(0, otherSideCount);
             foreach (Transform point in spawnCandidates)
             {
-                if (IsLeftSide(point) == lastSpawnWasLeft)
+                if ((point.position.x < playerX) == lastSpawnWasLeft)
                     continue;
                 if (pick-- == 0)
                     return point;
             }
             return null;
+        }
+
+        // 画面に映っている地点が1つでもあれば、映っていない地点は候補から外す(湧く様子を見せる)
+        void KeepVisibleCandidates()
+        {
+            Camera camera = Camera.main;
+            if (camera == null || !camera.orthographic)
+                return;
+            float halfHeight = camera.orthographicSize;
+            float halfWidth = halfHeight * camera.aspect;
+            Vector3 center = camera.transform.position;
+            Rect view = Rect.MinMaxRect(
+                center.x - halfWidth + visibleSpawnMargin,
+                center.y - halfHeight,
+                center.x + halfWidth - visibleSpawnMargin,
+                center.y + halfHeight - visibleSpawnMargin
+            );
+            bool hasVisible = false;
+            foreach (Transform point in spawnCandidates)
+            {
+                if (view.Contains(point.position))
+                {
+                    hasVisible = true;
+                    break;
+                }
+            }
+            if (hasVisible)
+                spawnCandidates.RemoveAll(point => !view.Contains(point.position));
         }
 
         // 湧いた敵が地面から出きる前・出た直後で、まだ湧き地点に重なっているか
@@ -253,11 +298,6 @@ namespace VLCNP.Combat
                     return true;
             }
             return false;
-        }
-
-        bool IsLeftSide(Transform point)
-        {
-            return point.position.x < arenaBounds.center.x;
         }
 
         // 壁抜けなどで場外に出た敵は数えずに消す(湧かせる数の上限から外れて代わりが湧く)
@@ -307,6 +347,8 @@ namespace VLCNP.Combat
             RemoveRemainingEnemies();
             if (hud != null)
                 hud.ShowCleared();
+            if (cameraZoom != null)
+                cameraZoom.Restore();
             if (clearSe != null)
                 AudioSource.PlayClipAtPoint(clearSe, Camera.main != null ? Camera.main.transform.position : transform.position, clearSeVolume);
             if (battleBgm != null)
