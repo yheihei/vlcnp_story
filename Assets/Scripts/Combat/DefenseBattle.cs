@@ -16,6 +16,7 @@ namespace VLCNP.Combat
      * 倒す数に足りる分しか湧かせないので、規定数を倒した時点で湧かせた敵は残らない。
      * 戦闘中だけ有効にする物(見えない壁)・止める物(話しかける判定)、起き上がって撃ってくるアーチャー、
      * HUD、BGM、カメラの引きをまとめて切り替える。
+     * 操作キャラが倒れたら、その場で防衛戦を終えて戦闘中の物を片付ける(ゲームオーバーからはシーンごと読み直される)。
      */
     public class DefenseBattle : MonoBehaviour, IStoppable
     {
@@ -24,6 +25,7 @@ namespace VLCNP.Combat
             Ready,
             Fighting,
             Cleared,
+            Failed,
         }
 
         [SerializeField, Tooltip("規定数を倒したら立てる。立っていれば開始しない")]
@@ -114,6 +116,7 @@ namespace VLCNP.Combat
 
         public bool IsFighting => state == State.Fighting;
         public bool IsCleared => state == State.Cleared;
+        public bool IsFailed => state == State.Failed;
         public int KillCount => killCount;
         public int RequiredKills => requiredKills;
         public int AliveEnemyCount => aliveEnemies.Count;
@@ -171,7 +174,15 @@ namespace VLCNP.Combat
 
         void Update()
         {
-            if (state != State.Fighting || isStopped)
+            if (state != State.Fighting)
+                return;
+            // 倒れてからゲームオーバーの会話が始まるまでの間に片付ける(会話で止められる前に見る)
+            if (IsPlayerDefeated())
+            {
+                Fail();
+                return;
+            }
+            if (isStopped)
                 return;
             RemoveEnemiesOutOfArena();
             // 上限まで出ている間は時間を進めない(倒した直後にすぐ次を湧かせない)
@@ -337,23 +348,50 @@ namespace VLCNP.Combat
             state = State.Cleared;
             if (clearedFlag != Flag.None && flagManager != null)
                 flagManager.SetFlag(clearedFlag, true);
-            SetFightingObjects(false);
+            EndFighting(true);
+            if (hud != null)
+                hud.ShowCleared();
+            if (clearSe != null)
+                AudioSource.PlayClipAtPoint(clearSe, Camera.main != null ? Camera.main.transform.position : transform.position, clearSeVolume);
+            if (battleBgm != null)
+                StartCoroutine(ReturnToAreaBgm());
+            onCleared?.Invoke();
+        }
+
+        // 操作キャラが倒れたか(倒れるとゲームオーバーになり、仲間への切り替えもできない)
+        bool IsPlayerDefeated()
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            return player != null && player.TryGetComponent(out Health health) && health.IsDead;
+        }
+
+        // 操作キャラが倒れたとき。このシーンでは始め直さない(リトライではシーンごと読み直される)。
+        // BGM はゲームオーバー側が切り替える
+        void Fail()
+        {
+            state = State.Failed;
+            EndFighting(false);
+            if (hud != null)
+                hud.Hide();
+        }
+
+        // 戦闘中だけ有効にした物を戻してアーチャーを崩し、残った敵と矢を消してカメラを戻す。
+        // 守りきったときは話しかける判定などを戻し、敵に倒れる演出を出す。
+        // 負けたときは、倒れたキャラに話しかける案内が出ないよう判定は止めたままにし、敵は演出なしで消す
+        void EndFighting(bool cleared)
+        {
+            SetActiveWhileFighting(false);
+            if (cleared)
+                SetDisabledWhileFighting(false);
             foreach (DefenseBattleArcher archer in archers)
             {
                 if (archer != null)
                     archer.Collapse();
             }
             RemoveEnemyProjectilesInArena();
-            RemoveRemainingEnemies();
-            if (hud != null)
-                hud.ShowCleared();
+            RemoveRemainingEnemies(cleared);
             if (cameraZoom != null)
                 cameraZoom.Restore();
-            if (clearSe != null)
-                AudioSource.PlayClipAtPoint(clearSe, Camera.main != null ? Camera.main.transform.position : transform.position, clearSeVolume);
-            if (battleBgm != null)
-                StartCoroutine(ReturnToAreaBgm());
-            onCleared?.Invoke();
         }
 
         // 飛んでいる矢・地面に刺さった矢を消す(敵の弾は Enemy レイヤー)
@@ -370,24 +408,38 @@ namespace VLCNP.Combat
             }
         }
 
-        // 規定数を倒した時点では残らない数しか湧かせないが、念のため数えずに倒す(ドロップなし)
-        void RemoveRemainingEnemies()
+        // 数えずに消す(ドロップなし)。規定数を倒した時点では残らない数しか湧かせないので、守りきったときは念のため
+        void RemoveRemainingEnemies(bool showDeadEffect)
         {
             foreach (Health enemy in aliveEnemies)
             {
-                if (enemy != null && !enemy.IsDead)
+                if (enemy == null || enemy.IsDead)
+                    continue;
+                if (showDeadEffect)
                     enemy.DeadEffectAndDestroy();
+                else
+                    Destroy(enemy.gameObject);
             }
             aliveEnemies.Clear();
         }
 
         void SetFightingObjects(bool isFighting)
         {
+            SetActiveWhileFighting(isFighting);
+            SetDisabledWhileFighting(isFighting);
+        }
+
+        void SetActiveWhileFighting(bool isFighting)
+        {
             foreach (GameObject target in activeWhileFighting)
             {
                 if (target != null)
                     target.SetActive(isFighting);
             }
+        }
+
+        void SetDisabledWhileFighting(bool isFighting)
+        {
             foreach (Collider2D target in disabledWhileFighting)
             {
                 if (target != null)

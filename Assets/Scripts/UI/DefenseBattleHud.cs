@@ -109,6 +109,14 @@ namespace VLCNP.UI
             StartCoroutine(HideAfter(clearedHoldTime));
         }
 
+        // 守りきれずに終わったとき(操作キャラが倒れたとき)は、文言を変えずにすぐ消す
+        public void Hide()
+        {
+            if (!isActiveAndEnabled)
+                return;
+            Fade(0f, true);
+        }
+
         string FormatCount(int kills)
         {
             return $"{Mathf.Clamp(kills, 0, requiredKills)}/{requiredKills}";
