@@ -30,11 +30,13 @@ namespace VLCNP.Combat
             [SerializeField]
             public int projectileCount = 1;
 
-            [SerializeField]  // 扇状に並べる弾どうしの角度(度)
+            // 扇状に並べる弾どうしの角度(度)。
+            // 1発目は1発だけ撃つときと同じ向きに出し、2発目以降を上側へ傾ける(マイナスなら下側)
+            [SerializeField]
             public float spreadAngle = 0f;
 
             // 扇の要を手からどれだけ後ろに置くか。
-            // 要から放射状に並べるので、大きいほど撃った瞬間から弾が上下に離れて見える
+            // 要から放射状に並べるので、大きいほど撃った瞬間から弾が離れて見える
             [SerializeField]
             public float spreadOriginDistance = 0f;
 
@@ -94,10 +96,11 @@ namespace VLCNP.Combat
                 - handTransform.rotation * Vector3.right * directionSign * _weaponLevel.spreadOriginDistance;
             for (int i = 0; i < projectileCount; i++)
             {
-                // 真ん中の弾を手の向きにそろえ、残りを上下へ spreadAngle ずつ広げる
-                float step = i - (projectileCount - 1) / 2f;
+                // 1発目を手の向きにそろえ、残りを上側へ spreadAngle ずつ広げる。
+                // 左向きは回転の向きが逆になるので、符号をそろえて同じ上側へ広げる
                 Quaternion rotation =
-                    handTransform.rotation * Quaternion.Euler(0, 0, step * _weaponLevel.spreadAngle);
+                    handTransform.rotation
+                    * Quaternion.Euler(0, 0, directionSign * i * _weaponLevel.spreadAngle);
                 Vector3 position =
                     spreadOrigin
                     + rotation * Vector3.right * directionSign * _weaponLevel.spreadOriginDistance;
@@ -110,12 +113,12 @@ namespace VLCNP.Combat
                     isLeft,
                     volley
                 );
-                // 扇の外側の弾ほど奥に描き、真ん中の弾を手前に見せる
-                int depth = Mathf.RoundToInt(Mathf.Abs(step) * 2);
-                if (depth > 0)
+                // 1発目ほど手前に描く。どの弾も Prefab の並び順より奥には回さない
+                int front = projectileCount - 1 - i;
+                if (front > 0)
                 {
                     foreach (SpriteRenderer sprite in projectileObj.GetComponentsInChildren<SpriteRenderer>())
-                        sprite.sortingOrder -= depth;
+                        sprite.sortingOrder += front;
                 }
             }
 
