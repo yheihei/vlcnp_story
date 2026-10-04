@@ -58,5 +58,6 @@ namespace VLCNP.Core
         GomisutebeyaVeryShortOniOnceChat, // ゴミ捨て部屋(横穴)でベリーショートな人と一度会話した
         GomisutebeyaVeryShortOniHouseKeyGot, // ゴミ捨て部屋(横穴)でベリーショートな人の家のカギを手に入れた
         GomisutebeyaOrochiJoined, // ゴミ捨て部屋(横穴)のベリーショートな人の家でオロチと合流した
+        GomisutebeyaMitamaDefenseCleared, // ゴミ捨て部屋(墓場)の最深部でゾンビからミタマを守りきった
     }
 }
