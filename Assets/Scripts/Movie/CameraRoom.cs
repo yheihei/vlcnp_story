@@ -34,7 +34,11 @@ namespace VLCNP.Movie
         [SerializeField, Tooltip("操作キャラの中心がこの中にいると、この区画になる。複数の矩形を合わせて使える")]
         Rect[] areas = { new Rect(0f, 0f, 10f, 10f) };
 
+        [SerializeField, Tooltip("重なった区画では大きい方を使う。縦穴の手前で下をのぞく区画のように、層の区画の上に重ねて置くときに上げる")]
+        int priority;
+
         public CameraMode Mode => mode;
+        public int Priority => priority;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void ResetRooms()
@@ -52,15 +56,16 @@ namespace VLCNP.Movie
             rooms.Remove(this);
         }
 
-        /** point を範囲に含む区画。重なっていれば先に有効になった方。どこにも入らなければ null */
+        /** point を範囲に含む区画。重なっていれば優先度の大きい方、同じなら先に有効になった方。どこにも入らなければ null */
         public static CameraRoom Find(Vector2 point)
         {
+            CameraRoom found = null;
             foreach (CameraRoom room in rooms)
             {
-                if (room.Contains(point))
-                    return room;
+                if ((found == null || room.priority > found.priority) && room.Contains(point))
+                    found = room;
             }
-            return null;
+            return found;
         }
 
         public bool Contains(Vector2 point)

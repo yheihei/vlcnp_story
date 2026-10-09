@@ -5,7 +5,8 @@ namespace VLCNP.Movie
 {
     /**
      * 追従カメラ(CMCamera)の縦位置を、操作キャラのいるカメラ区画(CameraRoom)の決まりに合わせる Cinemachine の拡張。
-     * 区画は毎フレーム操作キャラの位置で選ぶ。今の区画の範囲にいる間は変えないので、重なった所で切り替わり続けない。
+     * 区画は毎フレーム操作キャラの位置で選ぶ。今の区画の範囲にいる間は、優先度の大きい区画に入らない限り変えない。
+     * 同じ優先度の区画が重なった所で、切り替わり続けることはない。
      * 区画が変わったら、直前の位置と速さから続けて、新しい区画の高さとのずれを blendTime ほどで消す。
      * 区画の中では、操作キャラの中心を画面の上下の端から edgeMargin より内側に置くことを、区画の高さやつなぎより優先する。
      * 穴へ落ちるときや区画のつなぎの最中も、キャラが画面から出ない。
@@ -60,9 +61,13 @@ namespace VLCNP.Movie
             float halfHeight = state.Lens.OrthographicSize;
             bool isReset = !hasPrevious || deltaTime < 0f || !vcam.PreviousStateIsValid;
 
+            // 今の区画の範囲にいる間は、それより優先度の大きい区画に入ったときだけ移る
             CameraRoom room = currentRoom;
-            if (room == null || !room.isActiveAndEnabled || !room.Contains(targetPosition))
-                room = CameraRoom.Find(targetPosition);
+            CameraRoom found = CameraRoom.Find(targetPosition);
+            bool keepsRoom = room != null && room.isActiveAndEnabled && room.Contains(targetPosition)
+                && (found == null || found.Priority <= room.Priority);
+            if (!keepsRoom)
+                room = found;
             float roomY = ComputeY(room, position.y, targetPosition.y, halfHeight);
 
             if (isReset || blendTime <= 0f)

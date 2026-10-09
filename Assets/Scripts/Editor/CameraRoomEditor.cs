@@ -60,7 +60,8 @@ public class CameraRoomEditor : Editor
             DrawHeightHandle(serializedObject.FindProperty("viewBottom"), origin, x, color, "映す下端");
             DrawHeightHandle(serializedObject.FindProperty("viewTop"), origin, x, color, "映す上端");
             string mode = room.Mode == CameraRoom.CameraMode.Fixed ? "固定" : "追従";
-            Handles.Label(new Vector3(xMin, yMax, origin.z), $"{room.name}({mode})");
+            string priority = room.Priority != 0 ? $"・優先度{room.Priority}" : "";
+            Handles.Label(new Vector3(xMin, yMax, origin.z), $"{room.name}({mode}{priority})");
         }
         serializedObject.ApplyModifiedProperties();
     }
