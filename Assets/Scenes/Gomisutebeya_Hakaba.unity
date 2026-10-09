@@ -1284,6 +1284,7 @@ MonoBehaviour:
     y: 40
     width: 7
     height: 18.5
+  priority: 0
 --- !u!1 &95581333
 GameObject:
   m_ObjectHideFlags: 0
@@ -35678,6 +35679,7 @@ MonoBehaviour:
     y: 69.5
     width: 48
     height: 6.5
+  priority: 0
 --- !u!1 &151848027
 GameObject:
   m_ObjectHideFlags: 0
@@ -46670,6 +46672,7 @@ MonoBehaviour:
     y: 19
     width: 11
     height: 12
+  priority: 0
 --- !u!1001 &782530843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48408,6 +48411,7 @@ MonoBehaviour:
     y: -12
     width: 48
     height: 15
+  priority: 0
 --- !u!1001 &883167096
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49182,6 +49186,7 @@ MonoBehaviour:
     y: 64
     width: 10.5
     height: 12
+  priority: 0
 --- !u!1 &964372383
 GameObject:
   m_ObjectHideFlags: 0
@@ -49650,6 +49655,7 @@ MonoBehaviour:
     y: 56
     width: 10.5
     height: 10
+  priority: 0
 --- !u!1 &1041286077
 GameObject:
   m_ObjectHideFlags: 0
@@ -53476,6 +53482,60 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4577733472816765853, guid: 58afd053746c64548bbe1a488f9b030c, type: 3}
   m_PrefabInstance: {fileID: 1238310891}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1248476301
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1248476302}
+  - component: {fileID: 1248476303}
+  m_Layer: 0
+  m_Name: UpperRightShaftPeek
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1248476302
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248476301}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1616764683}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1248476303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248476301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d8c754b7fc04f70b2004e50f120100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VLCNP.Movie.CameraRoom
+  mode: 0
+  viewBottom: 72
+  viewTop: 86
+  areas:
+  - serializedVersion: 2
+    x: 43
+    y: 74
+    width: 15
+    height: 14
+  priority: 1
 --- !u!1001 &1259339902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54722,6 +54782,7 @@ MonoBehaviour:
     y: 74.5
     width: 59
     height: 15.5
+  priority: 0
 --- !u!1 &1378254313
 GameObject:
   m_ObjectHideFlags: 0
@@ -55165,6 +55226,7 @@ MonoBehaviour:
     y: 29
     width: 11
     height: 28.5
+  priority: 0
 --- !u!1 &1428582439
 GameObject:
   m_ObjectHideFlags: 0
@@ -55218,6 +55280,7 @@ MonoBehaviour:
     y: 1
     width: 9
     height: 32.5
+  priority: 0
 --- !u!1001 &1428972283
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57017,6 +57080,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c291fb3305c043418fb0c912fe30358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1522249039
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1522249040}
+  - component: {fileID: 1522249041}
+  m_Layer: 0
+  m_Name: LeftShaftPeek
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1522249040
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522249039}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1616764683}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1522249041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522249039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d8c754b7fc04f70b2004e50f120100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VLCNP.Movie.CameraRoom
+  mode: 0
+  viewBottom: 54
+  viewTop: 66
+  areas:
+  - serializedVersion: 2
+    x: -1
+    y: 55
+    width: 12
+    height: 13
+  priority: 1
 --- !u!1001 &1523299513
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58241,8 +58358,10 @@ Transform:
   - {fileID: 1374281257}
   - {fileID: 150875066}
   - {fileID: 945377900}
+  - {fileID: 1248476302}
   - {fileID: 1026659970}
   - {fileID: 85695157}
+  - {fileID: 1522249040}
   - {fileID: 1675262369}
   - {fileID: 1411002099}
   - {fileID: 778231305}
@@ -58968,6 +59087,7 @@ MonoBehaviour:
     y: 33
     width: 7
     height: 8.5
+  priority: 0
 --- !u!1001 &1677235355
 PrefabInstance:
   m_ObjectHideFlags: 0
