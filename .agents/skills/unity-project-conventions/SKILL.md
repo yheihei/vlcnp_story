@@ -32,3 +32,5 @@ description: vlcnpStory6 の C#・Prefab・シーンを変更するときに、�
 | `BGTilemap` | 背景の壁 | コライダーなし、sorting order -1 |
 
 カメラ範囲は `CameraConfineArea`、落下ミスは `FallMissZone` と `Health.Kill` を利用する。配置例は `Assets/Scenes/Kaze1.unity`。会話・イベント演出は既存の Fungus 構成を使う。
+
+縦に層が重なるマップで、層ごとにカメラの上下を固定・制限するときは、`CameraRoomGroup` の子に区画(`CameraRoom`)を置く。区画の範囲はコライダーではなく数値の矩形で持ち、選ぶとシーンビューで動かせる。配置例は `Assets/Scenes/Gomisutebeya_Hakaba.unity` の `Grid/CameraRooms`。
