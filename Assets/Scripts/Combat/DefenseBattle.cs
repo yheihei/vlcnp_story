@@ -17,7 +17,8 @@ namespace VLCNP.Combat
      * 湧かせる地点は画面に映っているものを優先して選ぶ。
      * 数えるのはこの防衛戦で湧かせた敵の死亡だけで、同じ敵は一度しか数えない。
      * 倒す数に足りる分しか湧かせないので、規定数を倒した時点で湧かせた敵は残らない。
-     * 守る相手がいれば、湧かせた敵はその相手へ向かい、触れると被弾させる。決めた回数の被弾でゲームオーバーになる。
+     * 守る相手がいれば、湧かせた敵の一部(決めた割合)はその相手へ、残りはプレイヤーへ向かう。どちらの敵も守る相手に触れると被弾させ、
+     * 決めた回数の被弾でゲームオーバーになる。
      * そのときはカメラを守る相手へ寄せてセリフを言わせ、守る相手を消してからゲームオーバーにする。
      * 戦闘中だけ有効にする物(見えない壁)・止める物(話しかける判定)、起き上がって撃ってくるアーチャー、
      * HUD、BGM、カメラの引きをまとめて切り替える。
@@ -84,8 +85,11 @@ namespace VLCNP.Combat
         EventCameraZoom cameraZoom;
 
         [Header("守る相手")]
-        [SerializeField, Tooltip("湧いた敵が向かう相手。敵に触れられると被弾し、決めた回数でゲームオーバーになる")]
+        [SerializeField, Tooltip("湧いた敵の一部が向かう相手。敵に触れられると被弾し、決めた回数でゲームオーバーになる")]
         DefenseTarget defenseTarget;
+
+        [SerializeField, Range(0f, 1f), Tooltip("湧いた敵が守る相手へ向かう割合。湧いたときに決め、残りはプレイヤーへ向かう")]
+        float targetChaseRate = 0.4f;
 
         [SerializeField, Tooltip("守る相手が倒れたときの、ゲームオーバーの最初の文言")]
         string targetLostMessage = "ミタマを守れなかった...";
@@ -282,8 +286,8 @@ namespace VLCNP.Combat
             }
             aliveEnemies.Add(health);
             health.onDieStarted += () => OnEnemyDied(health);
-            // 守る相手がいれば、プレイヤーではなくその相手へ向かわせる
-            if (defenseTarget != null && enemy.TryGetComponent(out HopTowardPlayer hop))
+            // 守る相手へ向かうか、プレイヤーへ向かうかを湧いたときに決める
+            if (defenseTarget != null && Random.value < targetChaseRate && enemy.TryGetComponent(out HopTowardPlayer hop))
                 hop.SetTarget(defenseTarget.transform);
             bool isLeft = spawnPoint.position.x < playerX;
             sameSideSpawnCount = lastSpawnPoint != null && isLeft == lastSpawnWasLeft ? sameSideSpawnCount + 1 : 1;
