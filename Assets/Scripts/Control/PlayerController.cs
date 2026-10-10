@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using VLCNP.Actions;
@@ -15,6 +16,9 @@ namespace VLCNP.Control
         Mover mover;
         Fighter fighter;
         ICollisionAction collisionAction;
+        // 触れている話しかけ先ごとの、重なっている当たり判定の数。
+        // 操作キャラは当たり判定を複数(体・足・壁)持つので、1つが出ただけでは離れたことにしない
+        readonly Dictionary<ICollisionAction, int> touchingActions = new Dictionary<ICollisionAction, int>();
         bool isStopped = false;
         bool reportedStopped = false;
         bool canAimDown = true;
@@ -57,6 +61,9 @@ namespace VLCNP.Control
         private void OnDisable()
         {
             PerfLog.Log($"[PlayerController] {name} disabled at t={Time.time:F3}");
+            // キャラ切り替えなどで消えるときは、触れていた記録を残さない(戻ったときに入り直しで数え直す)
+            touchingActions.Clear();
+            collisionAction = null;
         }
 
         void Update()
@@ -83,10 +90,13 @@ namespace VLCNP.Control
             InteractWithCollisionActions();
         }
 
+        // 出入りの瞬間だけ数え直す(触れている間の毎フレームの処理はしない)
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.TryGetComponent(out ICollisionAction _collisionAction))
                 return;
+            touchingActions.TryGetValue(_collisionAction, out int count);
+            touchingActions[_collisionAction] = count + 1;
             if (collisionAction != null)
                 return;
             collisionAction = _collisionAction;
@@ -99,10 +109,27 @@ namespace VLCNP.Control
         {
             if (!other.TryGetComponent(out ICollisionAction _collisionAction))
                 return;
-            if (collisionAction == _collisionAction)
+            if (!touchingActions.TryGetValue(_collisionAction, out int count))
+                return;
+            // ほかの当たり判定がまだ触れていれば、話しかけられるままにする
+            if (count > 1)
             {
-                collisionAction.HideInformation();
-                collisionAction = null;
+                touchingActions[_collisionAction] = count - 1;
+                return;
+            }
+            touchingActions.Remove(_collisionAction);
+            if (collisionAction != _collisionAction)
+                return;
+            collisionAction.HideInformation();
+            collisionAction = null;
+            // 重なっていた別の話しかけ先があれば、そちらへ切り替える(触れたときに始まるイベントは始めない)
+            foreach (ICollisionAction touching in touchingActions.Keys)
+            {
+                if (touching is Object touchingObject && touchingObject == null)
+                    continue;
+                collisionAction = touching;
+                collisionAction.ShowInformation();
+                break;
             }
         }
 
