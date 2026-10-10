@@ -1083,6 +1083,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+--- !u!1 &81164668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7599259522315827963, guid: 25b02320df0f24cb8bd69844296b6a35, type: 3}
+  m_PrefabInstance: {fileID: 81164667}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &82244035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46626,12 +46631,17 @@ MonoBehaviour:
   - {fileID: 1114080734}
   hud: {fileID: 620145764}
   cameraZoom: {fileID: 734785820}
+  defenseTarget: {fileID: 2138775863}
+  targetLostMessage: "\u30DF\u30BF\u30DE\u3092\u5B88\u308C\u306A\u304B\u3063\u305F..."
+  targetLostHitStopTime: 1
   bgmWrapper: {fileID: 1520025447}
   battleBgm: {fileID: 8300000, guid: a46eccd7ada9040ecb95d269487643b5, type: 3}
   battleBgmVolume: 0.3
   clearSe: {fileID: 8300000, guid: 05f8c9e6adba743e1961171cba8c0fea, type: 3}
   clearSeVolume: 0.5
   areaBgmReturnDelay: 2.5
+  targetLostSe: {fileID: 8300000, guid: adc0c3c7c1f3a485aac277eeeedd076d, type: 3}
+  targetLostSeVolume: 0.3
   onCleared:
     m_PersistentCalls:
       m_Calls: []
@@ -51539,7 +51549,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812760, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: flagToBlockName.Array.data[1].blockName
-      value: MitamaThanks
+      value: MitamaJoin
       objectReference: {fileID: 0}
     - target: {fileID: 976885865057812762, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
@@ -51622,6 +51632,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      propertyPath: selectedCommands.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3537494708198848658, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       propertyPath: 'selectedCommands.Array.data[0]'
       value: 
       objectReference: {fileID: 0}
@@ -51658,6 +51672,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 976885865057812759, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2138775862}
+    - targetCorrespondingSourceObject: {fileID: 976885865057812759, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2138775863}
+    - targetCorrespondingSourceObject: {fileID: 976885865057812759, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2138775864}
     - targetCorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1114080740}
@@ -51673,6 +51693,30 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1114080736}
+    - targetCorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1114080748}
+    - targetCorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1114080747}
+    - targetCorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1114080746}
+    - targetCorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1114080745}
+    - targetCorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1114080744}
+    - targetCorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1114080743}
+    - targetCorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1114080742}
+    - targetCorrespondingSourceObject: {fileID: 2809543764234509692, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1114080741}
   m_SourcePrefab: {fileID: 100100000, guid: fbb78368ef33c44faa030963b129d648, type: 3}
 --- !u!4 &1114080732 stripped
 Transform:
@@ -51742,11 +51786,19 @@ MonoBehaviour:
   tint: {r: 1, g: 1, b: 1, a: 1}
   useCustomTint: 0
   itemId: 4
-  blockName: MitamaThanks
-  description: "WIP: \u5B88\u308A\u304D\u3063\u305F\u3042\u3068\u306E\u66AB\u5B9A\u306E\u4F1A\u8A71(#676)"
+  blockName: MitamaJoin
+  description: "WIP: \u5B88\u308A\u304D\u3063\u305F\u3042\u3068\u306B\u8A71\u3057\u304B\u3051\u308B\u3068\u4EF2\u9593\u306B\u306A\u308B\u4F1A\u8A71(#676)"
   eventHandler: {fileID: 0}
   commandList:
   - {fileID: 1114080736}
+  - {fileID: 1114080748}
+  - {fileID: 1114080747}
+  - {fileID: 1114080746}
+  - {fileID: 1114080745}
+  - {fileID: 1114080744}
+  - {fileID: 1114080743}
+  - {fileID: 1114080742}
+  - {fileID: 1114080741}
   suppressAllAutoSelections: 0
 --- !u!114 &1114080738
 MonoBehaviour:
@@ -51818,6 +51870,183 @@ MonoBehaviour:
   itemId: 1
   indentLevel: 0
   storyText: "\u305F\u3001\u305F\u3059\u3051\u3066\u304F\u3060\u3055\u3044\u3088\u3045...\uFF01\n\u30AD\u30E7\u30F3\u30B7\u30FC\u305F\u3061\u306B\u6355\u307E\u3063\u3066\n\u3053\u3053\u306B\u7E1B\u308A\u3064\u3051\u3089\u308C\u3061\u3083\u3063\u305F\u3093\u3067\u3059..."
+  description: 
+  character: {fileID: 1584928785}
+  portrait: {fileID: 21300000, guid: 580dc56c31d7b49c3a7792ab3feae2e0, type: 3}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &1114080741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114080733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dec6c4ca71ce4b178f18bcc01520a64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VLCNP.Core.FlagManagerSetFlagCommand
+  itemId: 13
+  indentLevel: 0
+  flag: 55
+  value: 1
+--- !u!114 &1114080742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114080733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dec6c4ca71ce4b178f18bcc01520a64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VLCNP.Core.FlagManagerSetFlagCommand
+  itemId: 12
+  indentLevel: 0
+  flag: 43
+  value: 1
+--- !u!114 &1114080743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114080733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fungus::Fungus.InvokeMethod
+  itemId: 11
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 81164668}
+  targetComponentAssemblyName: VLCNP.Core.BGMWrapper, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: 'UnityEngine.Component[]'
+  targetComponentText: BGMWrapper
+  targetMethod: UnmuteForSE
+  targetMethodText: 'UnmuteForSE (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1114080744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114080733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3315ad2ebb85443909a1203d56d9344e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fungus::Fungus.Wait
+  itemId: 10
+  indentLevel: 0
+  _duration:
+    floatRef: {fileID: 0}
+    floatVal: 1
+  durationOLD: 0
+--- !u!114 &1114080745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114080733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fungus::Fungus.Say
+  itemId: 9
+  indentLevel: 0
+  storyText: "VL\u30DF\u30BF\u30DE\u304C\u306A\u304B\u307E\u306B\u306A\u3063\u305F\uFF01"
+  description: 
+  character: {fileID: 0}
+  portrait: {fileID: 0}
+  voiceOverClip: {fileID: 0}
+  showAlways: 1
+  showCount: 1
+  extendPrevious: 0
+  fadeWhenDone: 1
+  waitForClick: 1
+  stopVoiceover: 1
+  waitForVO: 0
+  setSayDialog: {fileID: 0}
+--- !u!114 &1114080746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114080733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd2f6be51b3d7490ba5633ee095d0391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fungus::Fungus.PlaySound
+  itemId: 8
+  indentLevel: 0
+  soundClip: {fileID: 8300000, guid: a979785ec5f794f23b352560d0a3c338, type: 3}
+  volume: 0.8
+  waitUntilFinished: 0
+--- !u!114 &1114080747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114080733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688e35811870d403f9e2b1ab2a699d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fungus::Fungus.InvokeMethod
+  itemId: 7
+  indentLevel: 0
+  description: 
+  targetObject: {fileID: 81164668}
+  targetComponentAssemblyName: VLCNP.Core.BGMWrapper, Assembly-CSharp, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  targetComponentFullname: 'UnityEngine.Component[]'
+  targetComponentText: BGMWrapper
+  targetMethod: MuteForSE
+  targetMethodText: 'MuteForSE (): Void'
+  methodParameters: []
+  saveReturnValue: 0
+  returnValueVariableKey: 
+  returnValueType: System.Void
+  showInherited: 0
+  callMode: 0
+--- !u!114 &1114080748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114080733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec422cd568a9c4a31ad7c36d0572b9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fungus::Fungus.Say
+  itemId: 6
+  indentLevel: 0
+  storyText: "\u3072\u3068\u308A\u3067\u3044\u305F\u3089\u3001\u307E\u305F\n\u6355\u307E\u3063\u3061\u3083\u3044\u305D\u3046\u3067\u3059\u3057...\n\u3044\u3063\u3057\u3087\u306B\u884C\u3063\u3066\u3082\u3044\u3044\u3067\u3059\u304B\u306D\u3048...\uFF1F"
   description: 
   character: {fileID: 1584928785}
   portrait: {fileID: 21300000, guid: 580dc56c31d7b49c3a7792ab3feae2e0, type: 3}
@@ -58795,6 +59024,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2437737768027628652, guid: 126fd87dede6c4fb89f1a00bfc682f9f, type: 3}
   m_PrefabInstance: {fileID: 1555781004}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1566909542 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 976885865057812763, guid: fbb78368ef33c44faa030963b129d648, type: 3}
+  m_PrefabInstance: {fileID: 1114080731}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1584596328
 PrefabInstance:
@@ -68724,7 +68958,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1114080735}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed4beab253e2c4cd28ea793e77072284, type: 3}
   m_Name: 
@@ -68735,6 +68969,40 @@ MonoBehaviour:
   framesPerSecond: 3
   randomOrder: 0
   followParentAlpha: 0
+--- !u!114 &2138775863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114080735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca49a91b95e4b431d9fe1cb64a4deaaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VLCNP.Combat.DefenseTarget
+  maxHits: 10
+  hitAreaOffset: {x: 0.05, y: 0}
+  hitAreaSize: {x: 1, y: 1.5}
+  bodyRenderer: {fileID: 1566909542}
+  hitSe: {fileID: 8300000, guid: 7b9e9eb8036f34f43b6400f25c0730d6, type: 3}
+  hitSeVolume: 0.4
+--- !u!114 &2138775864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114080735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a31fbfd4f8b0e41248e3482bf005cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VLCNP.Core.VisibilityFlagManager
+  visibilityFlags:
+  - flag: 55
+    additionalFlags: 
+    isVisible: 0
 --- !u!1001 &2138907903
 PrefabInstance:
   m_ObjectHideFlags: 0
