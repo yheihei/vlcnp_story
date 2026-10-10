@@ -58,6 +58,9 @@ namespace VLCNP.Combat
         [SerializeField, Min(0f), Tooltip("プレイヤーとの横の距離がこれより近い地点からは湧かせない")]
         float minSpawnDistanceFromPlayer = 3f;
 
+        [SerializeField, Min(1), Tooltip("プレイヤーの左右どちらから湧くかはランダム。同じ側から続けて湧くのはこの回数まで")]
+        int maxSameSideSpawns = 2;
+
         [SerializeField, Min(0f), Tooltip("画面の左右と上の端からこれより内側にある地点を、映っている地点として優先する")]
         float visibleSpawnMargin = 1f;
 
@@ -141,6 +144,7 @@ namespace VLCNP.Combat
         float spawnTimer;
         Transform lastSpawnPoint;
         bool lastSpawnWasLeft;
+        int sameSideSpawnCount;
         bool isStopped;
         bool isHitStopping;
 
@@ -281,13 +285,15 @@ namespace VLCNP.Combat
             // 守る相手がいれば、プレイヤーではなくその相手へ向かわせる
             if (defenseTarget != null && enemy.TryGetComponent(out HopTowardPlayer hop))
                 hop.SetTarget(defenseTarget.transform);
+            bool isLeft = spawnPoint.position.x < playerX;
+            sameSideSpawnCount = lastSpawnPoint != null && isLeft == lastSpawnWasLeft ? sameSideSpawnCount + 1 : 1;
             lastSpawnPoint = spawnPoint;
-            lastSpawnWasLeft = spawnPoint.position.x < playerX;
+            lastSpawnWasLeft = isLeft;
             return true;
         }
 
-        // 画面に映っている地点からランダムに選ぶ。プレイヤーの左右を交互にし、同じ地点は続けない。
-        // プレイヤーのすぐ近くと、前の敵がまだ残っている地点からは湧かせない
+        // 画面に映っている地点からランダムに選ぶ。プレイヤーの左右もランダムだが、同じ側が決めた回数続いたら反対側から選ぶ。
+        // 同じ地点は続けない。プレイヤーのすぐ近くと、前の敵がまだ残っている地点からは湧かせない
         Transform ChooseSpawnPoint(float playerX)
         {
             spawnCandidates.Clear();
@@ -306,7 +312,10 @@ namespace VLCNP.Combat
                 spawnCandidates.Remove(lastSpawnPoint);
             if (spawnCandidates.Count == 0)
                 return null;
+            if (sameSideSpawnCount < maxSameSideSpawns)
+                return spawnCandidates[Random.Range(0, spawnCandidates.Count)];
 
+            // 同じ側から続いたので、反対側から選ぶ(反対側に候補がなければどこからでも)
             int otherSideCount = 0;
             foreach (Transform point in spawnCandidates)
             {
