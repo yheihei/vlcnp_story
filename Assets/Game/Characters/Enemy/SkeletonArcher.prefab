@@ -23,19 +23,20 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 953629066}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.95, y: -0.49, z: 1.6185602}
+  m_LocalPosition: {x: -0.95, y: -0.34, z: 1.6185602}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2414815130387706685}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &690954853857604762
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1726205011, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
@@ -155,11 +156,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3479366321452464100, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
-      propertyPath: experiences.Array.data[0]
+      propertyPath: 'experiences.Array.data[0]'
       value: 
       objectReference: {fileID: 9160499032431620066, guid: 437fa99437b6b43a4b003571f5e33d78, type: 3}
     - target: {fileID: 3479366321452464100, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
-      propertyPath: experiences.Array.data[1]
+      propertyPath: 'experiences.Array.data[1]'
       value: 
       objectReference: {fileID: 8575966937552474532, guid: 724cc44e667d846e19b7088062dcc428, type: 3}
     - target: {fileID: 3709181065017346542, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
@@ -232,6 +233,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3905410308686529792, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2888467994159925159, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 953629067}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7478345028051563179, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1365612861}
   m_SourcePrefab: {fileID: 100100000, guid: 6a1a36fcef8924a1a8af705fb36926be, type: 3}
 --- !u!114 &690954853301647561 stripped
 MonoBehaviour:
