@@ -252,14 +252,24 @@ namespace Fungus
         /// </summary>
         public static SayDialog GetSayDialog()
         {
+            // A Say Dialog under an inactive parent can't be shown, so Say would never finish
+            if (ActiveSayDialog != null && !CanBeShown(ActiveSayDialog))
+            {
+                ActiveSayDialog = null;
+            }
+
             if (ActiveSayDialog == null)
             {
 				SayDialog sd = null;
 
-				// Use first active Say Dialog in the scene (if any)
-				if (activeSayDialogs.Count > 0)
+				// Use first Say Dialog in the scene that can be shown (if any)
+				for (int i = 0; i < activeSayDialogs.Count; i++)
 				{
-					sd = activeSayDialogs[0];
+					if (activeSayDialogs[i] != null && CanBeShown(activeSayDialogs[i]))
+					{
+						sd = activeSayDialogs[i];
+						break;
+					}
 				}
 
                 if (sd != null)
@@ -282,6 +292,15 @@ namespace Fungus
             }
 
             return ActiveSayDialog;
+        }
+
+        /// <summary>
+        /// True if activating the Say Dialog's own game object is enough to show it.
+        /// </summary>
+        protected static bool CanBeShown(SayDialog sayDialog)
+        {
+            Transform parent = sayDialog.transform.parent;
+            return parent == null || parent.gameObject.activeInHierarchy;
         }
 
         /// <summary>
