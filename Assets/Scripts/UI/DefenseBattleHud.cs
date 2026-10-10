@@ -8,7 +8,7 @@ namespace VLCNP.UI
     /**
      * 防衛戦の目標と、倒した数のメーター、守る相手の残りを画面上部の中央に出す。
      * 倒すたびにメーターを伸ばして数字を光らせ、守りきったら文言を変えてから消える。
-     * 守る相手が被弾するたびに顔を1つ灰色にして行を揺らし、画面の縁を赤く光らせる。
+     * 守る相手が被弾するたびに顔を1つ消して(残りは中央に詰めて)行を揺らし、画面の縁を赤く光らせる。
      * 残りが少なくなったら見出しを警告に変えて赤く点滅させ、顔を震わせ、画面の縁を速い鼓動で脈打たせる。
      * HUD と同じく UICamera に描く(見つからなければ画面に直接描く)。
      */
@@ -61,12 +61,6 @@ namespace VLCNP.UI
 
         [SerializeField, Tooltip("並べる顔の見本(非表示にしておく)。被弾できる回数だけ複製する")]
         Image targetLifeIconTemplate;
-
-        [SerializeField]
-        Sprite targetLifeSprite;
-
-        [SerializeField, Tooltip("被弾して失った分の顔")]
-        Sprite targetLostSprite;
 
         [SerializeField, Min(0), Tooltip("残りがこの数以下になったら危険の表示にする")]
         int dangerRemaining = 3;
@@ -188,7 +182,7 @@ namespace VLCNP.UI
                 countFeedback.Play(true);
         }
 
-        // 守る相手の残りの被弾回数。減ったら顔を灰色にして揺らし、少なくなったら危険の表示にする
+        // 守る相手の残りの被弾回数。減ったら顔を消して(残りは中央に詰まる)揺らし、少なくなったら危険の表示にする
         public void SetTargetRemaining(int remaining)
         {
             if (!isActiveAndEnabled || targetMaxHits <= 0)
@@ -201,13 +195,7 @@ namespace VLCNP.UI
             }
             targetRemaining = remaining;
             for (int i = 0; i < targetMaxHits && i < targetLifeIcons.Count; i++)
-            {
-                bool isLeft = i < remaining;
-                targetLifeIcons[i].sprite = isLeft ? targetLifeSprite : targetLostSprite;
-                // 失った顔には点滅の赤を残さない
-                if (!isLeft)
-                    targetLifeIcons[i].color = Color.white;
-            }
+                targetLifeIcons[i].gameObject.SetActive(i < remaining);
             SetDanger(remaining <= dangerRemaining);
         }
 
@@ -262,7 +250,6 @@ namespace VLCNP.UI
             for (int i = 0; i < targetLifeIcons.Count; i++)
             {
                 targetLifeIcons[i].gameObject.SetActive(i < targetMaxHits);
-                targetLifeIcons[i].sprite = targetLifeSprite;
                 targetLifeIcons[i].color = Color.white;
             }
         }
