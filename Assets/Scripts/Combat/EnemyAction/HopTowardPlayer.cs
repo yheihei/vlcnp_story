@@ -5,8 +5,8 @@ using UnityEngine;
 namespace VLCNP.Combat.EnemyAction
 {
     /**
-     * 毎回同じ高さで跳ねながらプレイヤーへ近づく。
-     * 跳ぶ前に横速度の候補ごとに放物線をなぞって着地点を求め、いちばんプレイヤーに近づける跳び方を選ぶ。
+     * 毎回同じ高さで跳ねながらプレイヤーへ近づく。SetTarget で、プレイヤーの代わりに向かう相手を指定できる。
+     * 跳ぶ前に横速度の候補ごとに放物線をなぞって着地点を求め、いちばん目標に近づける跳び方を選ぶ。
      * 1回で近づけないときは2回分の跳び方を調べ、下がって助走を取ったり障害物を越えたりする。
      * 跳ぶ高さは変えないので、届かない段差は登らずにその場で跳ねる。
      */
@@ -78,6 +78,8 @@ namespace VLCNP.Combat.EnemyAction
         Rigidbody2D rbody;
         Transform playerTransform;
         Collider2D playerCollider;
+        // プレイヤーの代わりに向かう相手(防衛戦で守る相手など)。null ならプレイヤーへ向かう
+        Transform overrideTarget;
         Coroutine hopRoutine;
         ContactFilter2D obstacleFilter;
         ContactFilter2D avoidFilter;
@@ -106,6 +108,13 @@ namespace VLCNP.Combat.EnemyAction
             avoidFilter = new ContactFilter2D();
             avoidFilter.SetLayerMask(avoidLayers);
             avoidFilter.useTriggers = true;
+        }
+
+        // プレイヤーの代わりに target の足元の地面へ向かわせる。null を渡すとプレイヤーへ戻す
+        public void SetTarget(Transform target)
+        {
+            overrideTarget = target;
+            hasStuckRecord = false;
         }
 
         public override void Execute()
@@ -150,7 +159,7 @@ namespace VLCNP.Combat.EnemyAction
             }
 
             HopResult plan = PlanHop(targetFeet);
-            // 助走のために下がるときもプレイヤーの方を向いたまま跳ぶ
+            // 助走のために下がるときも目標の方を向いたまま跳ぶ
             FaceTo(targetFeet.x);
             if (!plan.IsValid)
             {
@@ -216,7 +225,7 @@ namespace VLCNP.Combat.EnemyAction
             return inPlace.IsValid ? inPlace : best;
         }
 
-        // プレイヤーの方向への跳び方のうち、着地点がいちばん近づくもの
+        // 目標の方向への跳び方のうち、着地点がいちばん近づくもの
         HopResult FindBestHop(
             Vector2 start,
             Vector2 size,
@@ -505,16 +514,25 @@ namespace VLCNP.Combat.EnemyAction
             transform.localScale = localScale;
         }
 
-        // 目標はプレイヤーの足元の地面。跳んでいる最中でも狙いがぶれないようにする
+        // 目標はプレイヤー(指定した相手がいればその相手)の足元の地面。跳んでいる最中でも狙いがぶれないようにする
         bool TryGetTargetFeet(out Vector2 targetFeet)
         {
             targetFeet = default;
-            if (!TryGetPlayer(out Transform player))
-                return false;
-            Bounds bounds = playerCollider != null
-                ? playerCollider.bounds
-                : new Bounds(player.position, Vector3.zero);
-            Vector2 feet = new Vector2(bounds.center.x, bounds.min.y);
+            Vector2 feet;
+            if (overrideTarget != null && overrideTarget.gameObject.activeInHierarchy)
+            {
+                // 相手の位置から真下の地面を足元とする
+                feet = overrideTarget.position;
+            }
+            else
+            {
+                if (!TryGetPlayer(out Transform player))
+                    return false;
+                Bounds bounds = playerCollider != null
+                    ? playerCollider.bounds
+                    : new Bounds(player.position, Vector3.zero);
+                feet = new Vector2(bounds.center.x, bounds.min.y);
+            }
             if (
                 TryRaycast(feet + Vector2.up * 0.1f, Vector2.down, maxDropHeight, out RaycastHit2D ground)
                 && ground.normal.y > 0.5f

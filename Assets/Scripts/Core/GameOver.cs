@@ -10,6 +10,9 @@ namespace VLCNP.Core
 {
     public class GameOver : MonoBehaviour
     {
+        // ゲームオーバーの会話の最初の文言を入れる Flowchart の変数
+        const string MessageVariableKey = "GameOverMessage";
+
         Health playerHealth;
         [SerializeField] string autoSaveFileName = "autoSave";
         [SerializeField]
@@ -38,6 +41,15 @@ namespace VLCNP.Core
                 VLCNPAnalytics.GetCurrentAreaName()
             );
             flowChart.ExecuteBlock("GameOver");
+        }
+
+        // 操作キャラが倒れた以外の理由(防衛戦で守る相手が倒れたなど)でゲームオーバーにする。
+        // 最初の文言だけを変え、リトライの選択からは通常と同じ流れになる
+        public void ExecuteWithMessage(string message)
+        {
+            if (!string.IsNullOrEmpty(message))
+                flowChart.SetStringVariable(MessageVariableKey, message);
+            Execute();
         }
 
         public void Retry()

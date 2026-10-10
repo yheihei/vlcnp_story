@@ -25,6 +25,7 @@ namespace VLCNP.Attributes
         // 無敵時間
         [SerializeField]
         float invincibleTime = 3f;
+        public float InvincibleTime => invincibleTime;
 
         [SerializeField]
         GameObject deadEffect = null;

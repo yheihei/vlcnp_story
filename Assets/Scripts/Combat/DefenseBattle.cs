@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using VLCNP.Attributes;
+using VLCNP.Combat.EnemyAction;
+using VLCNP.Control;
 using VLCNP.Core;
 using VLCNP.Movie;
 using VLCNP.UI;
@@ -14,9 +16,10 @@ namespace VLCNP.Combat
      * 湧かせる地点は画面に映っているものを優先して選ぶ。
      * 数えるのはこの防衛戦で湧かせた敵の死亡だけで、同じ敵は一度しか数えない。
      * 倒す数に足りる分しか湧かせないので、規定数を倒した時点で湧かせた敵は残らない。
+     * 守る相手がいれば、湧かせた敵はその相手へ向かい、触れると被弾させる。決めた回数の被弾でゲームオーバーになる。
      * 戦闘中だけ有効にする物(見えない壁)・止める物(話しかける判定)、起き上がって撃ってくるアーチャー、
      * HUD、BGM、カメラの引きをまとめて切り替える。
-     * 操作キャラが倒れたら、その場で防衛戦を終えて戦闘中の物を片付ける(ゲームオーバーからはシーンごと読み直される)。
+     * 操作キャラか守る相手が倒れたら、その場で防衛戦を終えて戦闘中の物を片付ける(ゲームオーバーからはシーンごと読み直される)。
      */
     public class DefenseBattle : MonoBehaviour, IStoppable
     {
@@ -75,6 +78,16 @@ namespace VLCNP.Combat
         [SerializeField, Tooltip("戦闘中だけカメラを引く")]
         EventCameraZoom cameraZoom;
 
+        [Header("守る相手")]
+        [SerializeField, Tooltip("湧いた敵が向かう相手。敵に触れられると被弾し、決めた回数でゲームオーバーになる")]
+        DefenseTarget defenseTarget;
+
+        [SerializeField, Tooltip("守る相手が倒れたときの、ゲームオーバーの最初の文言")]
+        string targetLostMessage = "ミタマを守れなかった...";
+
+        [SerializeField, Min(0f), Tooltip("守る相手が倒れたときのヒットストップ(実時間)。操作キャラが倒れたときと同じ長さ")]
+        float targetLostHitStopTime = 1f;
+
         [Header("音")]
         [SerializeField]
         BGMWrapper bgmWrapper;
@@ -94,6 +107,12 @@ namespace VLCNP.Combat
         [SerializeField, Tooltip("守りきってからエリアのBGMに戻すまでの時間")]
         float areaBgmReturnDelay = 2.5f;
 
+        [SerializeField, Tooltip("守る相手が倒れたときの音(操作キャラが倒れたときと同じもの)")]
+        AudioClip targetLostSe;
+
+        [SerializeField, Range(0f, 1f)]
+        float targetLostSeVolume = 0.3f;
+
         [SerializeField]
         UnityEvent onCleared;
 
@@ -102,11 +121,14 @@ namespace VLCNP.Combat
         readonly List<Health> aliveEnemies = new List<Health>();
         readonly HashSet<Health> countedEnemies = new HashSet<Health>();
         readonly List<Transform> spawnCandidates = new List<Transform>();
+        readonly Collider2D[] targetHitResults = new Collider2D[8];
+        ContactFilter2D targetHitFilter;
         int killCount;
         float spawnTimer;
         Transform lastSpawnPoint;
         bool lastSpawnWasLeft;
         bool isStopped;
+        bool isHitStopping;
 
         public bool IsStopped
         {
@@ -129,6 +151,20 @@ namespace VLCNP.Combat
             if (IsClearedFlagSet())
                 state = State.Cleared;
             SetFightingObjects(false);
+            // 守る相手に触れたかは敵の体(Enemy レイヤーのトリガーでない当たり判定)で見る
+            targetHitFilter = new ContactFilter2D();
+            targetHitFilter.SetLayerMask(LayerMask.GetMask("Enemy"));
+            targetHitFilter.useTriggers = false;
+        }
+
+        void OnDisable()
+        {
+            // ヒットストップの途中で消えたら、時間を止めたままにしない
+            if (isHitStopping)
+            {
+                Time.timeScale = 1f;
+                isHitStopping = false;
+            }
         }
 
         void OnDestroy()
@@ -160,13 +196,15 @@ namespace VLCNP.Combat
             killCount = 0;
             spawnTimer = firstSpawnDelay;
             SetFightingObjects(true);
+            if (defenseTarget != null)
+                defenseTarget.BeginGuard();
             foreach (DefenseBattleArcher archer in archers)
             {
                 if (archer != null)
                     archer.Rise();
             }
             if (hud != null)
-                hud.Show(requiredKills);
+                hud.Show(requiredKills, defenseTarget != null ? defenseTarget.MaxHits : 0);
             if (cameraZoom != null)
                 cameraZoom.ZoomOut();
             PlayBgm(battleBgm, battleBgmVolume, 1f);
@@ -185,6 +223,9 @@ namespace VLCNP.Combat
             if (isStopped)
                 return;
             RemoveEnemiesOutOfArena();
+            CheckTargetHits();
+            if (state != State.Fighting)
+                return;
             // 上限まで出ている間は時間を進めない(倒した直後にすぐ次を湧かせない)
             if (!CanSpawn())
                 return;
@@ -223,6 +264,9 @@ namespace VLCNP.Combat
             }
             aliveEnemies.Add(health);
             health.onDieStarted += () => OnEnemyDied(health);
+            // 守る相手がいれば、プレイヤーではなくその相手へ向かわせる
+            if (defenseTarget != null && enemy.TryGetComponent(out HopTowardPlayer hop))
+                hop.SetTarget(defenseTarget.transform);
             lastSpawnPoint = spawnPoint;
             lastSpawnWasLeft = spawnPoint.position.x < playerX;
             return true;
@@ -329,6 +373,64 @@ namespace VLCNP.Combat
             }
         }
 
+        // 湧かせた敵の体が守る相手の当たり判定に触れていれば、守る相手を被弾させる
+        void CheckTargetHits()
+        {
+            if (defenseTarget == null)
+                return;
+            int count = Physics2D.OverlapBox(
+                defenseTarget.HitAreaCenter,
+                defenseTarget.HitAreaSize,
+                0f,
+                targetHitFilter,
+                targetHitResults
+            );
+            for (int i = 0; i < count; i++)
+            {
+                Rigidbody2D body = targetHitResults[i].attachedRigidbody;
+                if (body == null || !body.TryGetComponent(out Health enemy))
+                    continue;
+                if (enemy.IsDead || !aliveEnemies.Contains(enemy))
+                    continue;
+                // 無敵時間中は何体触れていても被弾しない
+                if (!defenseTarget.TakeHit())
+                    return;
+                if (hud != null)
+                    hud.SetTargetRemaining(defenseTarget.RemainingHits);
+                if (defenseTarget.IsDefeated)
+                    LoseTarget();
+                return;
+            }
+        }
+
+        // 守る相手が倒れたとき。全員を止め、操作キャラが倒れたときと同じヒットストップの後に
+        // 戦闘中の物を片付けて、通常のゲームオーバーへ合流する(文言だけ変える)
+        void LoseTarget()
+        {
+            state = State.Failed;
+            StoppableController controller = StoppableController.FindInScene();
+            if (controller != null)
+                controller.StopAll();
+            StartCoroutine(TargetLostRoutine());
+        }
+
+        IEnumerator TargetLostRoutine()
+        {
+            if (targetLostSe != null)
+                AudioSource.PlayClipAtPoint(targetLostSe, Camera.main != null ? Camera.main.transform.position : transform.position, targetLostSeVolume);
+            isHitStopping = true;
+            Time.timeScale = 0.001f;
+            yield return new WaitForSecondsRealtime(targetLostHitStopTime);
+            Time.timeScale = 1f;
+            isHitStopping = false;
+            EndFighting(false);
+            if (hud != null)
+                hud.Hide();
+            GameOver gameOver = FindFirstObjectByType<GameOver>();
+            if (gameOver != null)
+                gameOver.ExecuteWithMessage(targetLostMessage);
+        }
+
         void OnEnemyDied(Health enemy)
         {
             if (state != State.Fighting)
@@ -383,6 +485,8 @@ namespace VLCNP.Combat
             SetActiveWhileFighting(false);
             if (cleared)
                 SetDisabledWhileFighting(false);
+            if (defenseTarget != null)
+                defenseTarget.EndGuard();
             foreach (DefenseBattleArcher archer in archers)
             {
                 if (archer != null)
