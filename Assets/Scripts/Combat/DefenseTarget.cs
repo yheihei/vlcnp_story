@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using VLCNP.Attributes;
 using VLCNP.Core;
@@ -8,6 +10,7 @@ namespace VLCNP.Combat
      * 防衛戦で守る相手(捕まっているミタマなど)。
      * 防衛戦の敵が当たり判定に触れると被弾し、決めた回数の被弾で守りきれなかったことになる。
      * 被弾後は操作キャラと同じ無敵時間のあいだ同じように点滅し、その間は被弾しない。
+     * 守りきれなかったときは、付いている物(縛っている鎖など)と一緒に消えていく。
      * 当たり判定はコライダーではなく数値の範囲で持つ(トリガーを置くと、触れた操作キャラの接地判定が外れるため)。
      */
     public class DefenseTarget : MonoBehaviour, IStoppable
@@ -29,6 +32,9 @@ namespace VLCNP.Combat
 
         [SerializeField]
         SpriteRenderer bodyRenderer;
+
+        [SerializeField, Tooltip("守りきれなかったときに一緒に消す絵(縛っている鎖など)。被弾の点滅はしない")]
+        SpriteRenderer[] attachedRenderers = new SpriteRenderer[0];
 
         [SerializeField, Tooltip("被弾したときの音(操作キャラと同じもの)")]
         AudioClip hitSe;
@@ -101,6 +107,29 @@ namespace VLCNP.Combat
             return true;
         }
 
+        // 守りきれなかったとき、付いている物と一緒に透明にしていく
+        public IEnumerator FadeOut(float duration)
+        {
+            EndGuard();
+            List<SpriteRenderer> renderers = new List<SpriteRenderer>();
+            if (bodyRenderer != null)
+                renderers.Add(bodyRenderer);
+            foreach (SpriteRenderer attached in attachedRenderers)
+            {
+                if (attached != null)
+                    renderers.Add(attached);
+            }
+            List<float> startAlphas = renderers.ConvertAll(renderer => renderer.color.a);
+            for (float t = 0f; t < duration; t += Time.deltaTime)
+            {
+                for (int i = 0; i < renderers.Count; i++)
+                    SetAlpha(renderers[i], Mathf.Lerp(startAlphas[i], 0f, t / duration));
+                yield return null;
+            }
+            foreach (SpriteRenderer renderer in renderers)
+                SetAlpha(renderer, 0f);
+        }
+
         float GetPlayerInvincibleTime()
         {
             GameObject player = GameObject.FindWithTag("Player");
@@ -111,11 +140,15 @@ namespace VLCNP.Combat
 
         void SetAlpha(float alpha)
         {
-            if (bodyRenderer == null)
-                return;
-            Color color = bodyRenderer.color;
+            if (bodyRenderer != null)
+                SetAlpha(bodyRenderer, alpha);
+        }
+
+        static void SetAlpha(SpriteRenderer renderer, float alpha)
+        {
+            Color color = renderer.color;
             color.a = alpha;
-            bodyRenderer.color = color;
+            renderer.color = color;
         }
 
         void OnDrawGizmosSelected()

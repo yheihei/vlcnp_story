@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
 using VLCNP.Attributes;
@@ -17,6 +18,7 @@ namespace VLCNP.Combat
      * 数えるのはこの防衛戦で湧かせた敵の死亡だけで、同じ敵は一度しか数えない。
      * 倒す数に足りる分しか湧かせないので、規定数を倒した時点で湧かせた敵は残らない。
      * 守る相手がいれば、湧かせた敵はその相手へ向かい、触れると被弾させる。決めた回数の被弾でゲームオーバーになる。
+     * そのときはカメラを守る相手へ寄せてセリフを言わせ、守る相手を消してからゲームオーバーにする。
      * 戦闘中だけ有効にする物(見えない壁)・止める物(話しかける判定)、起き上がって撃ってくるアーチャー、
      * HUD、BGM、カメラの引きをまとめて切り替える。
      * 操作キャラか守る相手が倒れたら、その場で防衛戦を終えて戦闘中の物を片付ける(ゲームオーバーからはシーンごと読み直される)。
@@ -87,6 +89,18 @@ namespace VLCNP.Combat
 
         [SerializeField, Min(0f), Tooltip("守る相手が倒れたときのヒットストップ(実時間)。操作キャラが倒れたときと同じ長さ")]
         float targetLostHitStopTime = 1f;
+
+        [SerializeField, Min(0f), Tooltip("守る相手が倒れたあと、カメラを守る相手へ寄せる時間")]
+        float targetLostCameraTime = 1.2f;
+
+        [SerializeField, Tooltip("守る相手が倒れたときのセリフの Flowchart。操作を止めたままにするため FlowchartStopAllGuard は付けない")]
+        Fungus.Flowchart targetLostFlowchart;
+
+        [SerializeField]
+        string targetLostBlockName = "MitamaLost";
+
+        [SerializeField, Min(0f), Tooltip("セリフのあと、守る相手を消していく時間")]
+        float targetLostFadeTime = 1.5f;
 
         [Header("音")]
         [SerializeField]
@@ -403,8 +417,8 @@ namespace VLCNP.Combat
             }
         }
 
-        // 守る相手が倒れたとき。全員を止め、操作キャラが倒れたときと同じヒットストップの後に
-        // 戦闘中の物を片付けて、通常のゲームオーバーへ合流する(文言だけ変える)
+        // 守る相手が倒れたとき。全員を止め、操作キャラが倒れたときと同じヒットストップの後に戦闘中の物を片付ける。
+        // カメラを守る相手へ寄せてセリフを言わせ、守る相手を消してから、通常のゲームオーバーへ合流する(文言だけ変える)
         void LoseTarget()
         {
             state = State.Failed;
@@ -426,9 +440,45 @@ namespace VLCNP.Combat
             EndFighting(false);
             if (hud != null)
                 hud.Hide();
+            yield return FocusCameraOnTarget();
+            yield return PlayTargetLostTalk();
+            yield return defenseTarget.FadeOut(targetLostFadeTime);
             GameOver gameOver = FindFirstObjectByType<GameOver>();
             if (gameOver != null)
                 gameOver.ExecuteWithMessage(targetLostMessage);
+        }
+
+        // 追従カメラを今の追従先から守る相手まで寄せる。
+        // 追従カメラは横に遅れず付いていくので、間を動く目印を追わせて滑らかにする(ゲームオーバーからはシーンごと読み直される)
+        IEnumerator FocusCameraOnTarget()
+        {
+            GameObject cmCamera = GameObject.FindWithTag("CMCamera");
+            if (cmCamera == null || !cmCamera.TryGetComponent(out CinemachineVirtualCamera virtualCamera))
+                yield break;
+            Vector3 end = defenseTarget.transform.position;
+            Vector3 start = virtualCamera.Follow != null ? virtualCamera.Follow.position : end;
+            Transform focus = new GameObject("TargetLostCameraFocus").transform;
+            focus.SetParent(transform, false);
+            focus.position = start;
+            virtualCamera.Follow = focus;
+            for (float t = 0f; t < targetLostCameraTime; t += Time.deltaTime)
+            {
+                focus.position = Vector3.Lerp(start, end, Mathf.SmoothStep(0f, 1f, t / targetLostCameraTime));
+                yield return null;
+            }
+            focus.position = end;
+        }
+
+        // 守る相手のセリフを流し、読み終わるまで待つ
+        IEnumerator PlayTargetLostTalk()
+        {
+            if (targetLostFlowchart == null)
+                yield break;
+            Fungus.Block block = targetLostFlowchart.FindBlock(targetLostBlockName);
+            bool finished = false;
+            if (block == null || !targetLostFlowchart.ExecuteBlock(block, 0, () => finished = true))
+                yield break;
+            yield return new WaitUntil(() => finished);
         }
 
         void OnEnemyDied(Health enemy)
